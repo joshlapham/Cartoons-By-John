@@ -1,0 +1,535 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05DBFDFE16B54DF8ADCB2816 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52795D1CEF6142A9BA845EF1 /* libPods.a */; };
+		68E48D1C184A247D00600FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1B184A247D00600FA5 /* Foundation.framework */; };
+		68E48D1E184A247D00600FA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1D184A247D00600FA5 /* CoreGraphics.framework */; };
+		68E48D20184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
+		68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D24184A247D00600FA5 /* InfoPlist.strings */; };
+		68E48D28184A247D00600FA5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D27184A247D00600FA5 /* main.m */; };
+		68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D2B184A247D00600FA5 /* KJAppDelegate.m */; };
+		68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */; };
+		68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D30184A247D00600FA5 /* Main_iPad.storyboard */; };
+		68E48D35184A247D00600FA5 /* KJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D34184A247D00600FA5 /* KJViewController.m */; };
+		68E48D37184A247D00600FA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D36184A247D00600FA5 /* Images.xcassets */; };
+		68E48D3E184A247D00600FA5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D3D184A247D00600FA5 /* XCTest.framework */; };
+		68E48D3F184A247D00600FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1B184A247D00600FA5 /* Foundation.framework */; };
+		68E48D40184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
+		68E48D48184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D46184A247D00600FA5 /* InfoPlist.strings */; };
+		68E48D4A184A247D00600FA5 /* Kidney_JohnTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		68E48D41184A247D00600FA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68E48D10184A247D00600FA5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 68E48D17184A247D00600FA5;
+			remoteInfo = "Kidney John";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		52795D1CEF6142A9BA845EF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		68E48D18184A247D00600FA5 /* Kidney John.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kidney John.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		68E48D1B184A247D00600FA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		68E48D1D184A247D00600FA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		68E48D1F184A247D00600FA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		68E48D23184A247D00600FA5 /* Kidney John-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Kidney John-Info.plist"; sourceTree = "<group>"; };
+		68E48D25184A247D00600FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		68E48D27184A247D00600FA5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Prefix.pch"; sourceTree = "<group>"; };
+		68E48D2A184A247D00600FA5 /* KJAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KJAppDelegate.h; sourceTree = "<group>"; };
+		68E48D2B184A247D00600FA5 /* KJAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJAppDelegate.m; sourceTree = "<group>"; };
+		68E48D2E184A247D00600FA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		68E48D31184A247D00600FA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		68E48D33184A247D00600FA5 /* KJViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KJViewController.h; sourceTree = "<group>"; };
+		68E48D34184A247D00600FA5 /* KJViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJViewController.m; sourceTree = "<group>"; };
+		68E48D36184A247D00600FA5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		68E48D3C184A247D00600FA5 /* Kidney JohnTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kidney JohnTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		68E48D3D184A247D00600FA5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		68E48D45184A247D00600FA5 /* Kidney JohnTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Kidney JohnTests-Info.plist"; sourceTree = "<group>"; };
+		68E48D47184A247D00600FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Kidney_JohnTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		68E48D15184A247D00600FA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68E48D1E184A247D00600FA5 /* CoreGraphics.framework in Frameworks */,
+				68E48D20184A247D00600FA5 /* UIKit.framework in Frameworks */,
+				68E48D1C184A247D00600FA5 /* Foundation.framework in Frameworks */,
+				05DBFDFE16B54DF8ADCB2816 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68E48D39184A247D00600FA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68E48D3E184A247D00600FA5 /* XCTest.framework in Frameworks */,
+				68E48D40184A247D00600FA5 /* UIKit.framework in Frameworks */,
+				68E48D3F184A247D00600FA5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		68E48D0F184A247D00600FA5 = {
+			isa = PBXGroup;
+			children = (
+				68E48D21184A247D00600FA5 /* Kidney John */,
+				68E48D43184A247D00600FA5 /* Kidney JohnTests */,
+				68E48D1A184A247D00600FA5 /* Frameworks */,
+				68E48D19184A247D00600FA5 /* Products */,
+				3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		68E48D19184A247D00600FA5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D18184A247D00600FA5 /* Kidney John.app */,
+				68E48D3C184A247D00600FA5 /* Kidney JohnTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		68E48D1A184A247D00600FA5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D1B184A247D00600FA5 /* Foundation.framework */,
+				68E48D1D184A247D00600FA5 /* CoreGraphics.framework */,
+				68E48D1F184A247D00600FA5 /* UIKit.framework */,
+				68E48D3D184A247D00600FA5 /* XCTest.framework */,
+				52795D1CEF6142A9BA845EF1 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		68E48D21184A247D00600FA5 /* Kidney John */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
+				68E48D30184A247D00600FA5 /* Main_iPad.storyboard */,
+				68E48D33184A247D00600FA5 /* KJViewController.h */,
+				68E48D34184A247D00600FA5 /* KJViewController.m */,
+				68E48D36184A247D00600FA5 /* Images.xcassets */,
+				68E48D22184A247D00600FA5 /* Supporting Files */,
+			);
+			path = "Kidney John";
+			sourceTree = "<group>";
+		};
+		68E48D22184A247D00600FA5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
+				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
+				68E48D23184A247D00600FA5 /* Kidney John-Info.plist */,
+				68E48D24184A247D00600FA5 /* InfoPlist.strings */,
+				68E48D27184A247D00600FA5 /* main.m */,
+				68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		68E48D43184A247D00600FA5 /* Kidney JohnTests */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */,
+				68E48D44184A247D00600FA5 /* Supporting Files */,
+			);
+			path = "Kidney JohnTests";
+			sourceTree = "<group>";
+		};
+		68E48D44184A247D00600FA5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D45184A247D00600FA5 /* Kidney JohnTests-Info.plist */,
+				68E48D46184A247D00600FA5 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		68E48D17184A247D00600FA5 /* Kidney John */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68E48D4D184A247D00600FA5 /* Build configuration list for PBXNativeTarget "Kidney John" */;
+			buildPhases = (
+				B2586506AB6D411DA3408D9D /* Check Pods Manifest.lock */,
+				68E48D14184A247D00600FA5 /* Sources */,
+				68E48D15184A247D00600FA5 /* Frameworks */,
+				68E48D16184A247D00600FA5 /* Resources */,
+				122529237A2A4BD2BE392183 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Kidney John";
+			productName = "Kidney John";
+			productReference = 68E48D18184A247D00600FA5 /* Kidney John.app */;
+			productType = "com.apple.product-type.application";
+		};
+		68E48D3B184A247D00600FA5 /* Kidney JohnTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 68E48D50184A247D00600FA5 /* Build configuration list for PBXNativeTarget "Kidney JohnTests" */;
+			buildPhases = (
+				68E48D38184A247D00600FA5 /* Sources */,
+				68E48D39184A247D00600FA5 /* Frameworks */,
+				68E48D3A184A247D00600FA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				68E48D42184A247D00600FA5 /* PBXTargetDependency */,
+			);
+			name = "Kidney JohnTests";
+			productName = "Kidney JohnTests";
+			productReference = 68E48D3C184A247D00600FA5 /* Kidney JohnTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		68E48D10184A247D00600FA5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = KJ;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Josh Lapham";
+				TargetAttributes = {
+					68E48D3B184A247D00600FA5 = {
+						TestTargetID = 68E48D17184A247D00600FA5;
+					};
+				};
+			};
+			buildConfigurationList = 68E48D13184A247D00600FA5 /* Build configuration list for PBXProject "Kidney John" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 68E48D0F184A247D00600FA5;
+			productRefGroup = 68E48D19184A247D00600FA5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				68E48D17184A247D00600FA5 /* Kidney John */,
+				68E48D3B184A247D00600FA5 /* Kidney JohnTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		68E48D16184A247D00600FA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */,
+				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
+				68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */,
+				68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68E48D3A184A247D00600FA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68E48D48184A247D00600FA5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		122529237A2A4BD2BE392183 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B2586506AB6D411DA3408D9D /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		68E48D14184A247D00600FA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68E48D35184A247D00600FA5 /* KJViewController.m in Sources */,
+				68E48D28184A247D00600FA5 /* main.m in Sources */,
+				68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68E48D38184A247D00600FA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				68E48D4A184A247D00600FA5 /* Kidney_JohnTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		68E48D42184A247D00600FA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 68E48D17184A247D00600FA5 /* Kidney John */;
+			targetProxy = 68E48D41184A247D00600FA5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		68E48D24184A247D00600FA5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68E48D25184A247D00600FA5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68E48D2E184A247D00600FA5 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		68E48D30184A247D00600FA5 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68E48D31184A247D00600FA5 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		68E48D46184A247D00600FA5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68E48D47184A247D00600FA5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		68E48D4B184A247D00600FA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		68E48D4C184A247D00600FA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		68E48D4E184A247D00600FA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
+				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		68E48D4F184A247D00600FA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
+				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		68E48D51184A247D00600FA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Kidney John.app/Kidney John";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Kidney JohnTests/Kidney JohnTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		68E48D52184A247D00600FA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Kidney John.app/Kidney John";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
+				INFOPLIST_FILE = "Kidney JohnTests/Kidney JohnTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		68E48D13184A247D00600FA5 /* Build configuration list for PBXProject "Kidney John" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68E48D4B184A247D00600FA5 /* Debug */,
+				68E48D4C184A247D00600FA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		68E48D4D184A247D00600FA5 /* Build configuration list for PBXNativeTarget "Kidney John" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68E48D4E184A247D00600FA5 /* Debug */,
+				68E48D4F184A247D00600FA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		68E48D50184A247D00600FA5 /* Build configuration list for PBXNativeTarget "Kidney JohnTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68E48D51184A247D00600FA5 /* Debug */,
+				68E48D52184A247D00600FA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 68E48D10184A247D00600FA5 /* Project object */;
+}
