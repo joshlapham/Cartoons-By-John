@@ -23,6 +23,7 @@
 		68E48D40184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
 		68E48D48184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D46184A247D00600FA5 /* InfoPlist.strings */; };
 		68E48D4A184A247D00600FA5 /* Kidney_JohnTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */; };
+		68E48D55184A2B0C00600FA5 /* KJListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D54184A2B0C00600FA5 /* KJListViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		68E48D45184A247D00600FA5 /* Kidney JohnTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Kidney JohnTests-Info.plist"; sourceTree = "<group>"; };
 		68E48D47184A247D00600FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Kidney_JohnTests.m; sourceTree = "<group>"; };
+		68E48D53184A2B0C00600FA5 /* KJListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJListViewController.h; sourceTree = "<group>"; };
+		68E48D54184A2B0C00600FA5 /* KJListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJListViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +125,8 @@
 			children = (
 				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
 				68E48D30184A247D00600FA5 /* Main_iPad.storyboard */,
+				68E48D53184A2B0C00600FA5 /* KJListViewController.h */,
+				68E48D54184A2B0C00600FA5 /* KJListViewController.m */,
 				68E48D33184A247D00600FA5 /* KJViewController.h */,
 				68E48D34184A247D00600FA5 /* KJViewController.m */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
@@ -296,6 +301,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68E48D35184A247D00600FA5 /* KJViewController.m in Sources */,
+				68E48D55184A2B0C00600FA5 /* KJListViewController.m in Sources */,
 				68E48D28184A247D00600FA5 /* main.m in Sources */,
 				68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */,
 			);
