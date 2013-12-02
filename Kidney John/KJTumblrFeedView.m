@@ -1,18 +1,18 @@
 //
-//  KJListViewController.m
+//  KJTumblrFeedView.m
 //  Kidney John
 //
-//  Created by jl on 1/12/13.
+//  Created by jl on 2/12/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
 //
 
-#import "KJListViewController.h"
+#import "KJTumblrFeedView.h"
 
-@interface KJListViewController ()
+@interface KJTumblrFeedView ()
 
 @end
 
-@implementation KJListViewController
+@implementation KJTumblrFeedView
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -32,6 +32,8 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.title = @"Tumblr Feed";
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,14 +48,14 @@
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -62,6 +64,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    cell.textLabel.text = @"Feed item";
     
     return cell;
 }

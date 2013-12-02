@@ -1,23 +1,25 @@
 //
-//  KJViewController.m
+//  KJCategoryListView.m
 //  Kidney John
 //
-//  Created by jl on 1/12/13.
+//  Created by jl on 2/12/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
 //
 
-#import "KJViewController.h"
+#import "KJCategoryListView.h"
 
-@interface KJViewController ()
+@interface KJCategoryListView ()
 
 @end
 
-@implementation KJViewController
+@implementation KJCategoryListView
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+	// Do any additional setup after loading the view.
+    
+    self.title = @"Categories";
 }
 
 - (void)didReceiveMemoryWarning

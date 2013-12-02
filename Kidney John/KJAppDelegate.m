@@ -7,15 +7,87 @@
 //
 
 #import "KJAppDelegate.h"
+#import "Parse.h"
+#import "KJVideo.h"
 
 @implementation KJAppDelegate
 
+@synthesize videosArrayToSendToDelegate;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // PARSE SETUP
+    // Parse App ID:
+    // IDGldVVzggf7F2YBimgm7l9Cn1YOktzzy3BbNSkm
+    // Parse Client ID:
+    // VqeQO1YqbioimMbrzD6SMlOKdjvr6VCj6gZqj3VY
+    [Parse setApplicationId:@"IDGldVVzggf7F2YBimgm7l9Cn1YOktzzy3BbNSkm"
+                  clientKey:@"VqeQO1YqbioimMbrzD6SMlOKdjvr6VCj6gZqj3VY"];
+    
+    // Parse security
+    [PFUser enableAutomaticUser];
+    PFACL *defaultACL = [PFACL ACL];
+    // Optionally enable public read access while disabling public write access.
+    [defaultACL setPublicReadAccess:YES];
+    [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
+    // Parse analytics
+    //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    // Parse custom class setup
+    [KJVideo registerSubclass];
+    
+    // Fetch all locations from Parse
+    // and store in array in SchnittyDayProtocol
+    JPLYouTubeVideoProtocol *videoProtocol = [[JPLYouTubeVideoProtocol alloc] init];
+    videoProtocol.delegate = self;
+    
+    // Fetch locations
+    // Query Location Parse class
+    PFQuery *query = [PFQuery queryWithClassName:@"Video"];
+    
+    // Query all videos
+    [query whereKey:@"videoName" notEqualTo:@"LOL"];
+    
+    // Start query with block
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
+            // Do something with the found objects
+            
+            self.videosArrayToSendToDelegate = [NSMutableArray array];
+            
+            for (PFObject *object in objects) {
+                // PFClass for locations
+                KJVideo *video = [[KJVideo alloc] init];
+                [video setVideoId:object[@"videoId"]];
+                [video setVideoName:object[@"videoName"]];
+                [video setVideoDescription:object[@"videoDescription"]];
+                
+                //__block NSMutableArray *videosArrayToSendToDelegate = [[NSMutableArray alloc] init];
+                //[locations addObject:location];
+                [[self videosArrayToSendToDelegate] addObject:video];
+                //NSLog(@"LOCATIONS OBJECT: %@", location);
+                //[videoProtocol updateVideosArrayWithVideo:video];
+                //NSLog(@"LOCATIONS ARRAY: %@", [dayOfWeekProto locationsArray]);
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+        
+        // Set delegate's locations array
+        [videoProtocol setVideosArray:[self videosArrayToSendToDelegate]];
+        NSLog(@"Fetched and stored a total of %lu videos", (unsigned long)[[videoProtocol videosArray] count]);
+        //[dayOfWeekProto returnLocationForGivenWeekday:@"Monday"];
+        //[dayOfWeekProto returnLocationForGivenWeekday:@"Wednesday"];
+        //                [dayOfWeekProto updateCurrentUserLocationWithGeoPoint:geoPoint];
+    }];
+    
     // Override point for customization after application launch.
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

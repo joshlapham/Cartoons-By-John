@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JPLYouTubeVideoProtocol.h"
 
-@interface KJAppDelegate : UIResponder <UIApplicationDelegate>
+@interface KJAppDelegate : UIResponder <UIApplicationDelegate, JPLYouTubeVideoDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) __block NSMutableArray *videosArrayToSendToDelegate;
 
 @end
