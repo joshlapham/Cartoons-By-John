@@ -1,18 +1,22 @@
 //
-//  KJTumblrFeedView.m
+//  KJMoreListView.m
 //  Kidney John
 //
-//  Created by jl on 2/12/13.
+//  Created by jl on 3/12/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
 //
 
-#import "KJTumblrFeedView.h"
+#import "KJMoreListView.h"
 
-@interface KJTumblrFeedView ()
+@interface KJMoreListView ()
+
+@property (nonatomic, strong) NSArray *listItems;
 
 @end
 
-@implementation KJTumblrFeedView
+@implementation KJMoreListView
+
+@synthesize listItems;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -33,7 +37,9 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.title = @"Tumblr Feed";
+    self.title = @"More";
+    
+    listItems = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,28 +49,25 @@
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 10;
+    return [listItems count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"moreItemCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    cell.textLabel.text = @"Feed item";
+    cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
     
     return cell;
 }

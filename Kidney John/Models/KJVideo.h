@@ -16,5 +16,6 @@
 @property (retain) NSString *videoId;
 @property (retain) NSString *videoName;
 @property (retain) NSString *videoDescription;
+@property (retain) NSDate *videoDate;
 
 @end

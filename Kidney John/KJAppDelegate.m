@@ -64,6 +64,17 @@
                 [video setVideoName:object[@"videoName"]];
                 [video setVideoDescription:object[@"videoDescription"]];
                 
+                // Date
+                NSString *dateString = object[@"date"];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                dateFormatter.dateFormat = @"yyyy-MM-dd";
+                NSDate *formattedDate = [dateFormatter dateFromString:dateString];
+                dateFormatter.dateFormat = @"dd-MMM-yyyy";
+                NSLog(@"%@",[dateFormatter stringFromDate:formattedDate]);
+                // Add newly formatted date
+                //[video setVideoDate:object[@"date"]];
+                [video setVideoDate:formattedDate];
+                
                 //__block NSMutableArray *videosArrayToSendToDelegate = [[NSMutableArray alloc] init];
                 //[locations addObject:location];
                 [[self videosArrayToSendToDelegate] addObject:video];
@@ -83,6 +94,18 @@
         //[dayOfWeekProto returnLocationForGivenWeekday:@"Wednesday"];
         //                [dayOfWeekProto updateCurrentUserLocationWithGeoPoint:geoPoint];
     }];
+    
+    // TESTING
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *documentsPath = [resourcePath stringByAppendingPathComponent:@"Comics"];
+    NSError *error;
+    NSArray *comicThumbImages = [[NSArray alloc] init];
+    comicThumbImages = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsPath error:&error];
+    for (id obj in comicThumbImages) {
+        NSLog(@"File: %@", obj);
+    }
+    NSLog(@"IMG ARRAY: %@", [comicThumbImages objectAtIndex:0]);
+    // END OF TESTING
     
     // Override point for customization after application launch.
     return YES;

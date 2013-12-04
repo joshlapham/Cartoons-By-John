@@ -16,6 +16,6 @@
     return @"Video";
 }
 
-@dynamic videoId, videoName, videoDescription;
+@dynamic videoId, videoName, videoDescription, videoDate;
 
 @end

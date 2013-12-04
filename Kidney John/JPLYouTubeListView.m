@@ -216,10 +216,13 @@
     self.clearsSelectionOnViewWillAppear = NO;
     
     // Set title
-    self.title = @"All Videos";
+    self.title = @"Videos";
     
     // Start fetching videos from playlist
     [self callFetchMethod];
+    
+    // TESTING
+    
 }
 
 #pragma mark - Table view data source
@@ -275,7 +278,7 @@
         NSLog(@"%@", thumbnailUrl);
         //UIImage *thumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:thumbnailUrl]];
         UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             cell.imageView.image = thumbnailImage;
             [cell setNeedsLayout];
         });
