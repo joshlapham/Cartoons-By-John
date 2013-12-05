@@ -21,11 +21,24 @@
 
 @implementation KJComicListView
 
+#pragma mark - Prepare for segue
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"comicDetailSegue"]) {
+        NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
+        //NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
+        KJComicDetailView *destViewController = segue.destinationViewController;
+        destViewController.nameFromList = [self.comicImages objectAtIndex:selectedIndexPath.row];
+        //destViewController.nameFromList = @"baby.png";
+    }
+}
+
 #pragma mark UICollectionView delegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     // TODO: select item
     NSLog(@"Selected item: %ld", (long)indexPath.row);
+    [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
     
 }
 
@@ -74,16 +87,6 @@
     
     return cell;
 }
-
-#pragma mark - Prepare for segue
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    if ([segue.identifier isEqualToString:@"comicDetailSegue"]) {
-//        //NSIndexPath *indexPath = [self.collectionView indexPathForSelectedRow];
-//        //KJComicDetailView *destViewController = segue.destinationViewController;
-//        //destViewController.nameFromList = [self.videoIdResults objectAtIndex:indexPath.row];
-//    }
-//}
 
 #pragma mark init methods
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

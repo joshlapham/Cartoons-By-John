@@ -11,5 +11,6 @@
 @interface KJComicDetailView : UIViewController
 
 @property (nonatomic, weak) NSString *nameFromList;
+@property (weak, nonatomic) IBOutlet UIImageView *comicImage;
 
 @end

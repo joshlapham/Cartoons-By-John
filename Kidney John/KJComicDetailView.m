@@ -34,6 +34,9 @@
     self.title = @"Comix";
     
     NSLog(@"Name from list: %@", nameFromList);
+    
+    self.comicImage.image = [UIImage imageNamed:nameFromList];
+    
 }
 
 - (void)didReceiveMemoryWarning
