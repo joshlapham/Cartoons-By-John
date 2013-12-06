@@ -55,7 +55,7 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(20, 20, 50, 20);
+    return UIEdgeInsetsMake(20, 20, 20, 20);
 }
 
 #pragma mark UICollectionView datasource methods
@@ -89,15 +89,6 @@
 }
 
 #pragma mark init methods
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -106,9 +97,28 @@
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
     
     // Add comic thumbs to local array
-    self.comicImages = [NSMutableArray arrayWithObjects:@"aeroplane.png", @"arewethereyet.png", @"armymen.png", @"baby.png", @"bait.png", @"bath.png", @"beatbox.png", @"bird.png", @"blooddonor.png", @"boo.png", nil];
+    self.comicImages = [NSMutableArray arrayWithObjects:@"aeroplane.png", @"arewethereyet.png", @"armymen.png", @"baby.png", @"bait.png", @"bath.png", @"beatbox.png", @"bird.png", @"blooddonor.png", @"boo.png", @"bride.png", @"cake.png", @"cave.png", @"celery.png", @"chimney.png", @"clothes.png", @"clouds.png", @"coffee.png", @"condom.png", @"confessional.png", @"corset.png", @"costume.png", @"customer.png", @"delivery.png", @"diarrhoea.png", @"director.png", @"dishes.png", @"dog.png", @"ear.png", @"earthquake.png", @"eggs.png", @"extinction.png", @"fathersday.png", @"feed.png", @"finger.png", @"flamingo.png", @"flies.png", @"frame.png", @"fries.png", @"genie.png", @"glasses.png", @"goingdown.png", @"goodtimes.png", @"graphics.png", @"guys.png", @"haircut.png", @"hangman.png", @"homeless.png", @"indian.png", @"inside.png", @"inspace.png", @"ispy.png", @"johnson.png", @"keyrings.png", @"kiss.png", @"knockknock.png", @"lightning.png", @"lumberjack.png", @"matress.png", @"microwave.png", @"mosquito.png", @"mothers.png", @"mousetrap.png", @"newyearsresolution.png", @"on.png", @"organised.png", @"paintings.png", @"phone.png", @"pick.png", @"pinata.png", @"poker.png", @"president.png", @"puppies.png", @"razor.png", @"redridinghood.png", @"refund.png", @"roadsigns.png", @"rooster.png", @"sandwich.png", @"santa.png", @"saveme.png", @"shark.png", @"smell.png", @"snowman.png", @"stpatricksday.png", @"surgeon.png", @"tampon.png", @"taste.png", @"text.png", @"topless.png", @"tupperware.png", @"tyrannosaurus.png", @"virus.png", @"water.png", @"weekend.png", @"windbreaker.png", @"wire.png", @"wolf.png", @"worm.png", @"zitpatrol.png", nil];
     
     // TESTING
+    //NSFileManager *fileManager = [NSFileManager defaultManager];
+    //NSURL *bundleURL = [[NSBundle mainBundle] bundleURL];
+    //NSURL *bundleURL = [[NSBundle mainBundle] pathForResource:@"" ofType:@"png" inDirectory:@"Comics"];
+    //NSArray *contents = [fileManager contentsOfDirectoryAtURL:bundleURL
+                                   //includingPropertiesForKeys:@[]
+                                                      //options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                        //error:nil];
+    
+    //NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSBundle mainBundle] resourcePath] error:Nil];
+    
+    //for (NSString *path in contents) {
+        //NSLog(@"FILE: %@", path);
+    //}
+    
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pathExtension ENDSWITH '.png'"];
+//    for (NSString *path in [contents filteredArrayUsingPredicate:predicate]) {
+//        // Enumerate each .png file in directory
+//        NSLog(@"FILE: %@", path);
+//    }
     
     //self.comicThumbImages = [NSMutableArray arrayWithObjects:, nil];
     
