@@ -42,7 +42,7 @@
 
 - (void)setThumbImage:(NSString *)imageName
 {
-    self.comicImageView.image = [UIImage imageNamed:imageName];
+    self.comicImageView.image = [UIImage imageWithContentsOfFile:imageName];
 }
 
 //- (void)setNumber:(NSInteger)number

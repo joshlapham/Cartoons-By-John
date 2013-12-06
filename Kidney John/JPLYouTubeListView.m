@@ -111,102 +111,6 @@
 
 }
 
-- (void)fetchVideosFromPlaylist
-{
-    NSLog(@"IN FETCH VIDEOS METHOD ...");
-    
-    GTLServiceYouTube *service = [[GTLServiceYouTube alloc] init];
-    
-    // Init video detail arrays
-    videoIdResults = [[NSMutableArray alloc] init];
-    videoTitleResults = [[NSMutableArray alloc] init];
-    videoDurationResults = [[NSMutableArray alloc] init];
-    videoDescriptionResults = [[NSMutableArray alloc] init];
-    videoThumbnailUrlResults = [[NSMutableArray alloc] init];
-    
-    // Browser API key
-    service.APIKey = @"AIzaSyDABsoA128lKxXQxrEY8M7QTzf7Vl3yQR0";
-    
-    // Queries
-    //GTLQueryYouTube *playlistQuery = [GTLQueryYouTube queryForPlaylistItemsListWithPart:@"contentDetails,snippet"];
-    GTLQueryYouTube *playlistQuery = [GTLQueryYouTube queryForChannelsListWithPart:@"contentDetails,snippet"];
-    
-    // Query options
-    playlistQuery.maxResults = 50;
-    playlistQuery.channelId = @"johnroderickpaine";
-    
-    [service executeQuery:playlistQuery completionHandler:^(GTLServiceTicket *ticket, id object, NSError *error) {
-        if (!error) {
-            
-            NSLog(@"IN GTL BLOCK ...");
-            
-            //GTLYouTubePlaylistItemListResponse *products = object;
-            GTLYouTubeChannelListResponse *products = object;
-            
-            //for (GTLYouTubePlaylistItem *item in products) {
-            for (GTLYouTubeVideo *item in products) {
-                //NSLog(@"IN FIRST FOR LOOP ...");
-                //self.videoDurationResults = [item JSONValueForKey:@"id"];
-                //NSLog(@"%@", [self.videoDurationResults objectForKey:@"videoId"]);
-                //NSLog(@"%@", [item JSONValueForKey:@"id"]);
-                
-                //GTLYouTubePlaylistItemContentDetails *details = item.contentDetails;
-                GTLYouTubeVideoContentDetails *details = item.contentDetails;
-                
-                // Log details about videos in the playlist
-                //NSLog(@"Video ID: %@, Title: %@, Description: %@", details.videoId, item.snippet.title, item.snippet.descriptionProperty);
-                //NSLog(@"ID: %@, Start At: %@, End At: %@", details.videoId, details.startAt, details.endAt);
-                
-                // Add video ID to array
-                //[videoIdResults addObject:details.videoId];
-                // Add video title to array
-                [videoTitleResults addObject:item.snippet.title];
-                // Add video description to array
-                [videoDescriptionResults addObject:item.snippet.descriptionProperty];
-                // Add video thumbnail URL to array
-                [videoThumbnailUrlResults addObject:[NSURL URLWithString:item.snippet.thumbnails.defaultProperty.url]];
-            }
-            
-        } else {
-            NSLog(@"Error: %@", [error localizedDescription]);
-        }
-        
-        // Get duration of videos
-        for (NSString *videoIdForDuration in videoIdResults) {
-            NSLog(@"%@", videoIdForDuration);
-            
-            GTLQueryYouTube *videoDurationQuery = [GTLQueryYouTube queryForVideosListWithIdentifier:videoIdForDuration part:@"snippet,id,contentDetails"];
-            //videoDurationQuery.videoId = videoIdForDuration;
-            
-            [service executeQuery:videoDurationQuery completionHandler:^(GTLServiceTicket *durationTicket, id object, NSError *error) {
-                if (!error) {
-                    //NSLog(@"IN SECOND QUERY BLOCK ...");
-                    GTLYouTubeSearchListResponse *durationProducts = object;
-                    //GTLYouTubeVideoContentDetails *durationProducts = object;
-                    //NSLog(@"%@", durationProducts.duration);
-                    
-                    for (GTLYouTubeSearchResult *durationItem in durationProducts) {
-                        //NSLog(@"IN SECOND QUERY FOR LOOP ...");
-                        NSMutableDictionary *durationDict = [durationItem JSONValueForKey:@"contentDetails"];
-                        NSLog(@"TITLE: %@, DURATION: %@", durationItem.snippet.title, [durationDict objectForKey:@"duration"]);
-                        [videoDurationResults addObject:[durationDict objectForKey:@"duration"]];
-                        //GTLYouTubeVideoContentDetails *durationDetails = durationItem;
-                        //NSLog(@"%@", durationItem.snippet.title);
-                    }
-                } else {
-                    NSLog(@"Error fetching duration: %@", [error localizedDescription]);
-                }
-            }];
-        }
-        
-        // Reload table data
-        [self.tableView reloadData];
-        
-        // Hide progress
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    }];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -261,16 +165,16 @@
     // Configure the cell...
     
     // Cell text
-    UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica" size:18];
+    UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica" size:20];
     cell.textLabel.font = cellTextFont;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     //cell.textLabel.lineBreakMode = YES;
     cell.textLabel.text = [videoTitleResults objectAtIndex:indexPath.row];
-    [cell.textLabel sizeToFit];
+    //[cell.textLabel sizeToFit];
     
     // Cell detail text
-    UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:12];
+    UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
     cell.detailTextLabel.font = cellDetailTextFont;
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.detailTextLabel.numberOfLines = 0;
@@ -281,7 +185,7 @@
     //cell.detailTextLabel.text = @"3:00";
     //CGSize size = [cell.detailTextLabel.text sizeWithFont:[UIFont systemFontOfSize:14.0]];
     //cell.detailTextLabel.frame = CGRectMake(cell.detailTextLabel.frame.origin.x, cell.detailTextLabel.frame.origin.y, size.width, size.height);
-    [cell.detailTextLabel sizeToFit];
+    //[cell.detailTextLabel sizeToFit];
     
     // Cell thumbnail
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
@@ -291,11 +195,11 @@
         NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
         //NSLog(@"%@", thumbnailUrl);
         //UIImage *thumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:thumbnailUrl]];
+
         UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
             cell.imageView.image = thumbnailImage;
-            [cell.textLabel sizeToFit];
-            [cell.detailTextLabel sizeToFit];
             [cell setNeedsLayout];
         });
     });
@@ -310,7 +214,7 @@
     CGFloat cellHeightFloat;
 
     if ([[cellHeights objectAtIndex:indexPath.row] isEqual:@"<null>"]) {
-        cellHeightFloat = 140;
+        cellHeightFloat = 160;
     } else {
         cellHeightFloat = [[cellHeights objectAtIndex:indexPath.row] floatValue];
     }

@@ -21,6 +21,5 @@
 @property (nonatomic, strong) __block NSMutableArray *videoThumbnails;
 
 - (void)callFetchMethod;
-- (void)fetchVideosFromPlaylist;
 
 @end

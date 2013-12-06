@@ -95,18 +95,6 @@
         //                [dayOfWeekProto updateCurrentUserLocationWithGeoPoint:geoPoint];
     }];
     
-    // TESTING
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *documentsPath = [resourcePath stringByAppendingPathComponent:@"Comics"];
-    NSError *error;
-    NSArray *comicThumbImages = [[NSArray alloc] init];
-    comicThumbImages = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsPath error:&error];
-    for (id obj in comicThumbImages) {
-        NSLog(@"File: %@", obj);
-    }
-    NSLog(@"IMG ARRAY: %@", [comicThumbImages objectAtIndex:0]);
-    // END OF TESTING
-    
     // Override point for customization after application launch.
     return YES;
 }

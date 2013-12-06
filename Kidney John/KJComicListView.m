@@ -26,25 +26,17 @@
 {
     if ([segue.identifier isEqualToString:@"comicDetailSegue"]) {
         NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
-        //NSIndexPath *indexPath = [self.collectionView indexPathForCell:sender];
         KJComicDetailView *destViewController = segue.destinationViewController;
-        destViewController.nameFromList = [self.comicImages objectAtIndex:selectedIndexPath.row];
-        //destViewController.nameFromList = @"baby.png";
+        destViewController.nameFromList = [self.comicThumbImages objectAtIndex:selectedIndexPath.row];
     }
 }
 
 #pragma mark UICollectionView delegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: select item
     NSLog(@"Selected item: %ld", (long)indexPath.row);
     [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
     
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    // TODO: deselect item
 }
 
 #pragma mark UICollectionViewDelegateFlowLayout
@@ -61,7 +53,7 @@
 #pragma mark UICollectionView datasource methods
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.comicImages count];
+    return [self.comicThumbImages count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -75,7 +67,6 @@
     KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicCell" forIndexPath:indexPath];
     
     //cell.backgroundColor = [UIColor darkGrayColor];
-    cell.backgroundColor = [UIColor whiteColor];
     
     //[cell setNumber:indexPath.row];
     
@@ -84,9 +75,30 @@
     
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        [cell setThumbImage:[self.comicImages objectAtIndex:indexPath.row]];
+        //NSString *thumbImageString = [NSString stringWithFormat:@"thumb-%@", [self.comicThumbImages objectAtIndex:indexPath.row]];
+        //NSURL *thumbImageUrl = [NSURL URLWithString:thumbImageString];
+        //NSURL *thumbImageUrl = [[NSURL alloc] init];
+        //thumbImageUrl = [self.comicThumbImages objectAtIndex:indexPath.row];
+        //NSLog(thumbImageUrl);
+        NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+        NSString *thumbnailsPath = [resourcePath stringByAppendingPathComponent:@"ComicThumbs"];
+        NSString *thumbImageString = [self.comicThumbImages objectAtIndex:indexPath.row];
+        NSString *thumbImagePath = [thumbnailsPath stringByAppendingPathComponent:thumbImageString];
+        //NSLog(@"THUMB IMAGE PATH: %@", thumbImagePath);
+        //NSLog(@"COMICS LIST: thumbImageString: %@", thumbImageString);
+        //NSData *thumbImageData = [[NSData alloc] init];
+        //thumbImageData = [NSData dataWithContentsOfFile:thumbImageUrl];
+        //NSData *thumbData = [NSData dataWithContentsOfFile:[self.comicThumbImages objectAtIndex:indexPath.row]];
+        //UIImage *thumbImage = [UIImage imageWithData:thumbData];
+        //UIImage *thumbImage = [[UIImage alloc] init];
+        //thumbImage = [UIImage imageWithContentsOfFile:thumbImagePath];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell setNeedsDisplay];
+            cell.backgroundColor = [UIColor whiteColor];
+            [cell setThumbImage:thumbImagePath];
+            //[cell setThumbImageWithUrl:thumbImageString];
+            //cell.comicImageView.image = thumbImage;
+            //[cell setNeedsDisplay];
         });
     });
     
@@ -102,7 +114,22 @@
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
     
     // Add comic thumbs to local array
-    self.comicImages = [NSMutableArray arrayWithObjects:@"aeroplane.png", @"arewethereyet.png", @"armymen.png", @"baby.png", @"bait.png", @"bath.png", @"beatbox.png", @"bird.png", @"blooddonor.png", @"boo.png", @"bride.png", @"cake.png", @"cave.png", @"celery.png", @"chimney.png", @"clothes.png", @"clouds.png", @"coffee.png", @"condom.png", @"confessional.png", @"corset.png", @"costume.png", @"customer.png", @"delivery.png", @"diarrhoea.png", @"director.png", @"dishes.png", @"dog.png", @"ear.png", @"earthquake.png", @"eggs.png", @"extinction.png", @"fathersday.png", @"feed.png", @"finger.png", @"flamingo.png", @"flies.png", @"frame.png", @"fries.png", @"genie.png", @"glasses.png", @"goingdown.png", @"goodtimes.png", @"graphics.png", @"guys.png", @"haircut.png", @"hangman.png", @"homeless.png", @"indian.png", @"inside.png", @"inspace.png", @"ispy.png", @"johnson.png", @"keyrings.png", @"kiss.png", @"knockknock.png", @"lightning.png", @"lumberjack.png", @"matress.png", @"microwave.png", @"mosquito.png", @"mothers.png", @"mousetrap.png", @"newyearsresolution.png", @"on.png", @"organised.png", @"paintings.png", @"phone.png", @"pick.png", @"pinata.png", @"poker.png", @"president.png", @"puppies.png", @"razor.png", @"redridinghood.png", @"refund.png", @"roadsigns.png", @"rooster.png", @"sandwich.png", @"santa.png", @"saveme.png", @"shark.png", @"smell.png", @"snowman.png", @"stpatricksday.png", @"surgeon.png", @"tampon.png", @"taste.png", @"text.png", @"topless.png", @"tupperware.png", @"tyrannosaurus.png", @"virus.png", @"water.png", @"weekend.png", @"windbreaker.png", @"wire.png", @"wolf.png", @"worm.png", @"zitpatrol.png", nil];
+    //self.comicImages = [NSMutableArray arrayWithObjects:@"aeroplane.png", @"arewethereyet.png", @"armymen.png", @"baby.png", @"bait.png", @"bath.png", @"beatbox.png", @"bird.png", @"blooddonor.png", @"boo.png", @"bride.png", @"cake.png", @"cave.png", @"celery.png", @"chimney.png", @"clothes.png", @"clouds.png", @"coffee.png", @"condom.png", @"confessional.png", @"corset.png", @"costume.png", @"customer.png", @"delivery.png", @"diarrhoea.png", @"director.png", @"dishes.png", @"dog.png", @"ear.png", @"earthquake.png", @"eggs.png", @"extinction.png", @"fathersday.png", @"feed.png", @"finger.png", @"flamingo.png", @"flies.png", @"frame.png", @"fries.png", @"genie.png", @"glasses.png", @"goingdown.png", @"goodtimes.png", @"graphics.png", @"guys.png", @"haircut.png", @"hangman.png", @"homeless.png", @"indian.png", @"inside.png", @"inspace.png", @"ispy.png", @"johnson.png", @"keyrings.png", @"kiss.png", @"knockknock.png", @"lightning.png", @"lumberjack.png", @"matress.png", @"microwave.png", @"mosquito.png", @"mothers.png", @"mousetrap.png", @"newyearsresolution.png", @"on.png", @"organised.png", @"paintings.png", @"phone.png", @"pick.png", @"pinata.png", @"poker.png", @"president.png", @"puppies.png", @"razor.png", @"redridinghood.png", @"refund.png", @"roadsigns.png", @"rooster.png", @"sandwich.png", @"santa.png", @"saveme.png", @"shark.png", @"smell.png", @"snowman.png", @"stpatricksday.png", @"surgeon.png", @"tampon.png", @"taste.png", @"text.png", @"topless.png", @"tupperware.png", @"tyrannosaurus.png", @"virus.png", @"water.png", @"weekend.png", @"windbreaker.png", @"wire.png", @"wolf.png", @"worm.png", @"zitpatrol.png", nil];
+    
+    
+    // TESTING
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *thumbnailsPath = [resourcePath stringByAppendingPathComponent:@"ComicThumbs"];
+    //NSString *comicsPath = [resourcePath stringByAppendingPathComponent:@"Comics"];
+    NSError *error;
+    self.comicThumbImages = [[NSArray alloc] init];
+    self.comicThumbImages = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:thumbnailsPath error:&error];
+    
+    //for (id obj in comicThumbImages) {
+    //NSLog(@"File: %@", obj);
+    //}
+    NSLog(@"IMG ARRAY: %@, COUNT: %lu", [[self.comicThumbImages objectAtIndex:0] description], (unsigned long)[self.comicThumbImages count]);
+    // END OF TESTING
     
     // TESTING
     //NSFileManager *fileManager = [NSFileManager defaultManager];

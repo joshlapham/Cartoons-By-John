@@ -7,6 +7,7 @@
 //
 
 #import "KJMoreListView.h"
+#import "KJMoreDetailView.h"
 
 @interface KJMoreListView ()
 
@@ -111,16 +112,14 @@
 }
 */
 
-/*
 #pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+     if ([segue.identifier isEqualToString:@"moreDetailSegue"]) {
+     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+     KJMoreDetailView *destViewController = segue.destinationViewController;
+     destViewController.nameFromList = [listItems objectAtIndex:indexPath.row];
+     }
+ }
 
 @end
