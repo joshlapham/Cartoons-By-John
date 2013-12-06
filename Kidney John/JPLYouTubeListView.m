@@ -17,7 +17,7 @@
 
 @implementation JPLYouTubeListView
 
-@synthesize videoIdResults, videoTitleResults, videoDurationResults, videoDescriptionResults, videoThumbnailUrlResults, videoThumbnails;
+@synthesize videoIdResults, videoTitleResults, videoDurationResults, videoDescriptionResults, videoThumbnailUrlResults, videoThumbnails, cellHeights;
 
 - (void)callFetchMethod
 {
@@ -53,6 +53,7 @@
         //videoDurationResults = [[NSMutableArray alloc] init];
         //videoThumbnailUrlResults = [[NSMutableArray alloc] init];
         videoThumbnails = [[NSMutableArray alloc] init];
+        cellHeights = [[NSMutableArray alloc] init];
         
         // Start query with block
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -61,22 +62,31 @@
                 //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
                 // Do something with the found objects
                 for (PFObject *object in objects) {
-                    NSString *videoNameString = [NSString stringWithFormat:@"%@", object[@"videoName"]];
-                    [videoTitleResults addObject:videoNameString];
-                    
-                    NSString *videoDescriptionString = [NSString stringWithFormat:@"%@", object[@"videoDescription"]];
-                    [videoDescriptionResults addObject:videoDescriptionString];
-                    
-                    NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoId"]];
-                    [videoIdResults addObject:videoIdString];
-                    
-                    NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", object[@"videoId"]];
-                    NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-                    
-                    //NSLog(@"%@", thumbnailUrl);
-                    NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-                    UIImage *thumbImage = [UIImage imageWithData:thumbData];
-                    [videoThumbnails addObject:thumbImage];
+                    if ([object[@"is_active"] isEqual:@"1"]) {
+                        NSString *videoNameString = [NSString stringWithFormat:@"%@", object[@"videoName"]];
+                        [videoTitleResults addObject:videoNameString];
+                        
+                        NSString *videoDescriptionString = [NSString stringWithFormat:@"%@", object[@"videoDescription"]];
+                        [videoDescriptionResults addObject:videoDescriptionString];
+                        
+                        NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoId"]];
+                        [videoIdResults addObject:videoIdString];
+                        
+                        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", object[@"videoId"]];
+                        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+                        
+                        //NSLog(@"%@", thumbnailUrl);
+                        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+                        UIImage *thumbImage = [UIImage imageWithData:thumbData];
+                        [videoThumbnails addObject:thumbImage];
+                        
+                        // TESTING - cellHeight
+                        [cellHeights addObject:object[@"cellHeight"]];
+                        
+                    } else {
+                        NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
+                    }
+                    // END OF TESTING
                 }
             } else {
                 // Log details of the failure
@@ -257,17 +267,21 @@
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     //cell.textLabel.lineBreakMode = YES;
     cell.textLabel.text = [videoTitleResults objectAtIndex:indexPath.row];
+    [cell.textLabel sizeToFit];
     
     // Cell detail text
     UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:12];
     cell.detailTextLabel.font = cellDetailTextFont;
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.detailTextLabel.numberOfLines = 0;
-    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
     cell.detailTextLabel.text = [videoDescriptionResults objectAtIndex:indexPath.row];
     //cell.detailTextLabel.text = [videoDurationResults objectAtIndex:indexPath.row];
     // Sample duration time for now ..
     //cell.detailTextLabel.text = @"3:00";
+    //CGSize size = [cell.detailTextLabel.text sizeWithFont:[UIFont systemFontOfSize:14.0]];
+    //cell.detailTextLabel.frame = CGRectMake(cell.detailTextLabel.frame.origin.x, cell.detailTextLabel.frame.origin.y, size.width, size.height);
+    [cell.detailTextLabel sizeToFit];
     
     // Cell thumbnail
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
@@ -280,6 +294,8 @@
         UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.imageView.image = thumbnailImage;
+            [cell.textLabel sizeToFit];
+            [cell.detailTextLabel sizeToFit];
             [cell setNeedsLayout];
         });
     });
@@ -291,7 +307,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 140;
+    CGFloat cellHeightFloat;
+
+    if ([[cellHeights objectAtIndex:indexPath.row] isEqual:@"<null>"]) {
+        cellHeightFloat = 140;
+    } else {
+        cellHeightFloat = [[cellHeights objectAtIndex:indexPath.row] floatValue];
+    }
+    
+    return cellHeightFloat;
 }
 
 #pragma mark - Prepare for segue

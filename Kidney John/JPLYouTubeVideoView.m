@@ -19,7 +19,7 @@
 
 @synthesize videoIdFromList, videoTitleFromList, videoDescriptionFromList, videoDurationFromList;
 
-static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 1, showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
+static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 1, showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
 - (void)playVideoWithId:(NSString *)videoId
 {
@@ -56,6 +56,8 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{mar
     //NSLog(@"VIDEO ID FROM LIST: %@", videoIdFromList);
     // Set to allow autoplay
     _videoView.mediaPlaybackRequiresUserAction = NO;
+    //_videoView.scalesPageToFit = YES;
+    _videoView.scrollView.scrollEnabled = NO;
     // Call play video method
     [self playVideoWithId:videoIdFromList];
     
