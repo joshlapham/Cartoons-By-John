@@ -23,13 +23,24 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{mar
 
 - (void)playVideoWithId:(NSString *)videoId
 {
-    NSString *html = [NSString stringWithFormat:youTubeVideoHTML, _videoView.frame.size.width, _videoView.frame.size.height-105, videoId];
+    //NSLog(@"VIDEO ID: %@", videoId);
+    
+    NSString *html = [NSString stringWithFormat:youTubeVideoHTML, _videoView.frame.size.width, _videoView.frame.size.height, videoId];
     
     [_videoView loadHTMLString:html baseURL:nil];
     
     // Hide progress
     //[MBProgressHUD hideHUDForView:self.view animated:YES];
 }
+
+//- (void)playVideoWithId:(NSString *)videoId
+//{
+//    NSString *YTAPIKey = @"AIzaSyDABsoA128lKxXQxrEY8M7QTzf7Vl3yQR0";
+//    NSString *urlString = [NSString stringWithFormat:@"http://www.youtube.com/watch?v=%@&key=%@", videoId, YTAPIKey];
+//    NSURL *url = [NSURL URLWithString:urlString];
+//    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+//    [_videoView loadRequest:request];
+//}
 
 - (void)viewDidLoad
 {
@@ -41,6 +52,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{mar
     //hud.labelText = @"Loading ...";
     
     // Play video
+    //NSLog(@"VIDEO ID FROM LIST: %@", videoIdFromList);
     [self playVideoWithId:videoIdFromList];
     
     // Set video title field

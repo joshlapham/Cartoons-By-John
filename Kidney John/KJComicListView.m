@@ -82,8 +82,13 @@
     //UIImage *cellImage = [UIImage imageNamed:@"baby.png"];
     //cell.comicImage = cellImage;
     
-    [cell setThumbImage:[self.comicImages objectAtIndex:indexPath.row]];
-    
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        [cell setThumbImage:[self.comicImages objectAtIndex:indexPath.row]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cell setNeedsDisplay];
+        });
+    });
     
     return cell;
 }

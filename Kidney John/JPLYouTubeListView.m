@@ -67,13 +67,13 @@
                     NSString *videoDescriptionString = [NSString stringWithFormat:@"%@", object[@"videoDescription"]];
                     [videoDescriptionResults addObject:videoDescriptionString];
                     
-                    NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoIdResults"]];
+                    NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoId"]];
                     [videoIdResults addObject:videoIdString];
                     
                     NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", object[@"videoId"]];
                     NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
                     
-                    NSLog(@"%@", thumbnailUrl);
+                    //NSLog(@"%@", thumbnailUrl);
                     NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
                     UIImage *thumbImage = [UIImage imageWithData:thumbData];
                     [videoThumbnails addObject:thumbImage];
@@ -273,9 +273,9 @@
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
     dispatch_async(queue, ^{
         NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", [self.videoIdResults objectAtIndex:indexPath.row]];
-        NSLog(@"%@", [self.videoIdResults objectAtIndex:indexPath.row]);
+        //NSLog(@"%@", [self.videoIdResults objectAtIndex:indexPath.row]);
         NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-        NSLog(@"%@", thumbnailUrl);
+        //NSLog(@"%@", thumbnailUrl);
         //UIImage *thumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:thumbnailUrl]];
         UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
         dispatch_async(dispatch_get_main_queue(), ^{
