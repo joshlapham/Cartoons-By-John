@@ -19,7 +19,7 @@
 
 @synthesize videoIdFromList, videoTitleFromList, videoDescriptionFromList, videoDurationFromList;
 
-static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
+static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 1, showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
 - (void)playVideoWithId:(NSString *)videoId
 {
@@ -27,7 +27,8 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{mar
     
     NSString *html = [NSString stringWithFormat:youTubeVideoHTML, _videoView.frame.size.width, _videoView.frame.size.height, videoId];
     
-    [_videoView loadHTMLString:html baseURL:nil];
+    // NOTE - must include NSBundle resourceURL otherwise video autoplay will not work
+    [_videoView loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
     
     // Hide progress
     //[MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -53,6 +54,9 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>body{mar
     
     // Play video
     //NSLog(@"VIDEO ID FROM LIST: %@", videoIdFromList);
+    // Set to allow autoplay
+    _videoView.mediaPlaybackRequiresUserAction = NO;
+    // Call play video method
     [self playVideoWithId:videoIdFromList];
     
     // Set video title field
