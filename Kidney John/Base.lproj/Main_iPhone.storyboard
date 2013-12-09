@@ -192,9 +192,18 @@
                     <view key="view" contentMode="scaleToFill" id="jb1-PE-cdv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cAc-P9-sj6">
+                                <rect key="frame" x="0.0" y="100" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Random" id="5kr-sc-8Nq"/>
+                    <connections>
+                        <outlet property="randomImage" destination="cAc-P9-sj6" id="9Qm-E6-EL1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YhP-xY-M7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -10,4 +10,14 @@
 
 @interface KJRandomView : UIViewController
 
+@property (weak, nonatomic) IBOutlet UIImageView *randomImage;
+
+@property (nonatomic, strong) __block NSMutableArray *randomImageArray;
+@property (nonatomic, strong) __block NSMutableArray *imageIdResults;
+@property (nonatomic, strong) __block NSMutableArray *imageUrlResults;
+@property (nonatomic, strong) __block NSMutableArray *imageDescriptionResults;
+@property (nonatomic, strong) __block NSMutableArray *imageDateResults;
+
+- (UIImage *)getRandomImageFromArray;
+
 @end
