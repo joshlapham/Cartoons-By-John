@@ -63,56 +63,38 @@
 
 }
 
-#pragma mark return a random number
-- (NSUInteger)generateRandomNumberFromArray:(NSMutableArray *)arrayToCount
+#pragma mark return random URL string from array
+- (NSString *)getRandomImageUrlFromGivenArray:(NSMutableArray *)arrayToCheck
 {
-    NSUInteger randomIndex = arc4random() % [arrayToCount count];
+    NSString *stringToReturn = [[NSString alloc] init];
     
-    return randomIndex;
+    // Get random URL if it wasn't just displayed
+    do {
+        NSUInteger randomIndex = arc4random() % [arrayToCheck count];
+        stringToReturn = [NSString stringWithFormat:@"%@", [arrayToCheck objectAtIndex:randomIndex]];
+    } while ([stringToReturn isEqualToString:self.currentRandomImageUrl]);
+    
+    // Set last URL variable to the URL string we're using
+    self.currentRandomImageUrl = stringToReturn;
+    
+    return stringToReturn;
 }
 
-#pragma mark get a random image from the array
+#pragma mark get a random image from array
 - (UIImage *)getRandomImageFromArray
 {
     // Show progress
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"";
     
-    //NSUInteger randomIndex = arc4random() % [imageUrlResults count];
-    //NSString *randomUrlString = [NSString stringWithFormat:@"%@", [imageUrlResults objectAtIndex:randomIndex]];
-    NSString *randomUrlString = [NSString stringWithFormat:@"%@", [imageUrlResults objectAtIndex:[self generateRandomNumberFromArray:imageUrlResults]]];
+    // Init URL string using method call to get random URL from array
+    NSString *randomUrlString = [NSString stringWithFormat:@"%@", [self getRandomImageUrlFromGivenArray:imageUrlResults]];
+    
     NSURL *url = [NSURL URLWithString:randomUrlString];
-    
-    UIImage *image = [[UIImage alloc] init];
-    
     NSLog(@"RANDOM: URL selected - %@", url);
+    UIImage *image = [[UIImage alloc] init];
     NSData *data = [NSData dataWithContentsOfURL:url];
     image = [UIImage imageWithData:data];
-    
-    if ([randomUrlString isEqualToString:self.currentRandomImageUrl]) {
-        NSLog(@"RANDOM: this image has just been displayed");
-    }
-    
-    self.currentRandomImageUrl = [NSString stringWithFormat:@"%@", randomUrlString];
-    NSLog(@"RANDOM: set currentRandomImageUrl to - %@", self.currentRandomImageUrl);
-    
-//    do {
-//        NSLog(@"RANDOM: URL selected - %@", url);
-//        NSData *data = [NSData dataWithContentsOfURL:url];
-//        image = [UIImage imageWithData:data];
-//        self.currentRandomImageUrl = randomUrlString;
-//    } while ([randomUrlString isEqualToString:self.currentRandomImageUrl]);
-    
-//    while ([randomUrlString isEqualToString:self.currentRandomImageUrl]) {
-//        randomIndex = arc4random() % [imageUrlResults count];
-//        randomUrlString = [NSString stringWithFormat:@"%@", [imageUrlResults objectAtIndex:randomIndex]];
-//        url = [NSURL URLWithString:randomUrlString];
-//        
-//        NSLog(@"RANDOM: URL selected - %@", url);
-//        NSData *data = [NSData dataWithContentsOfURL:url];
-//        image = [UIImage imageWithData:data];
-//        self.currentRandomImageUrl = [NSString stringWithFormat:@"%@", randomUrlString];
-//    }
     
     if (image != nil) {
         NSLog(@"RANDOM: image loaded from URL");
@@ -131,7 +113,7 @@
     }
 }
 
-#pragma mark UISwipeGesture methods
+#pragma mark UISwipeGesture method
 - (void)swipeHandler:(UISwipeGestureRecognizer *)recognizer
 {
     NSLog(@"RANDOM: swipe received");
@@ -150,9 +132,7 @@
     
     self.title = @"Random";
     
-    //randomImageArray = nil;
-    //randomImageArray = [NSMutableArray arrayWithObjects:@"http://distilleryimage4.ak.instagram.com/49b370cc5e6e11e3b8a7126a0592d374_8.jpg", @"http://distilleryimage9.ak.instagram.com/2c0c5672569111e3b7830afd819a2d90_8.jpg", @"http://distilleryimage6.ak.instagram.com/d6650f0a473d11e3ab0222000ab5be36_8.jpg", @"http://distilleryimage5.ak.instagram.com/3f3f05883ef811e3b93922000a1fb103_8.jpg", nil];
-    
+    // Fetch image URLs from Parse
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         self.currentRandomImageUrl = [[NSString alloc] init];
@@ -161,6 +141,7 @@
         [self fetchRandomImageUrls];
     });
     
+    // Init swipe gesture recognizer for image view
     self.gestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
     [self.gestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.randomImage addGestureRecognizer:self.gestureRecognizer];
