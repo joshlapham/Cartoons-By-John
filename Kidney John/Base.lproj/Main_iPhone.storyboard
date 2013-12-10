@@ -193,19 +193,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cAc-P9-sj6">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cAc-P9-sj6">
                                 <rect key="frame" x="0.0" y="100" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="m0b-Tt-FfO" appends="YES" id="MhW-aZ-ENh"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Random" id="5kr-sc-8Nq"/>
                     <connections>
+                        <outlet property="gestureRecognizer" destination="m0b-Tt-FfO" id="xiG-Hs-f1f"/>
                         <outlet property="randomImage" destination="cAc-P9-sj6" id="9Qm-E6-EL1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YhP-xY-M7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="m0b-Tt-FfO">
+                    <connections>
+                        <outlet property="delegate" destination="THX-4a-68b" id="npd-jg-War"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2136" y="1488"/>
         </scene>
