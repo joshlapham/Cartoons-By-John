@@ -17,10 +17,11 @@
 
 @implementation JPLYouTubeVideoView
 
-@synthesize videoIdFromList, videoTitleFromList, videoDescriptionFromList, videoDurationFromList;
+@synthesize videoIdFromList, videoTitleFromList;
 
 static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 1, showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
+#pragma mark Play video method
 - (void)playVideoWithId:(NSString *)videoId
 {
     //NSLog(@"VIDEO ID: %@", videoId);
@@ -34,19 +35,10 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     //[MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
-//- (void)playVideoWithId:(NSString *)videoId
-//{
-//    NSString *YTAPIKey = @"AIzaSyDABsoA128lKxXQxrEY8M7QTzf7Vl3yQR0";
-//    NSString *urlString = [NSString stringWithFormat:@"http://www.youtube.com/watch?v=%@&key=%@", videoId, YTAPIKey];
-//    NSURL *url = [NSURL URLWithString:urlString];
-//    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-//    [_videoView loadRequest:request];
-//}
-
+#pragma mark init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
     
     // Show progress
     //MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -54,23 +46,14 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     // Play video
     //NSLog(@"VIDEO ID FROM LIST: %@", videoIdFromList);
-    // Set to allow autoplay
+    
+    // Set to enable/disable autoplay
     _videoView.mediaPlaybackRequiresUserAction = NO;
     //_videoView.scalesPageToFit = YES;
     _videoView.scrollView.scrollEnabled = NO;
+    
     // Call play video method
     [self playVideoWithId:videoIdFromList];
-    
-    // Set video title field
-    self.videoTitleField.numberOfLines = 0;
-    self.videoTitleField.adjustsFontSizeToFitWidth = YES;
-    self.videoTitleField.text = videoTitleFromList;
-    // Set video description field
-    self.videoDescriptionField.numberOfLines = 0;
-    self.videoDescriptionField.adjustsFontSizeToFitWidth = YES;
-    self.videoDescriptionField.text = videoDescriptionFromList;
-    
-    // NOTE - videoDurationFromList variable is synthesized but not yet used in this detail view
 }
 
 - (void)viewDidDisappear:(BOOL)animated

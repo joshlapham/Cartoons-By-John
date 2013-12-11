@@ -13,10 +13,5 @@
 
 @property (nonatomic, strong) NSString *videoIdFromList;
 @property (nonatomic, strong) NSString *videoTitleFromList;
-@property (nonatomic, strong) NSString *videoDescriptionFromList;
-@property (nonatomic, strong) NSString *videoDurationFromList;
-
-@property (weak, nonatomic) IBOutlet UILabel *videoTitleField;
-@property (weak, nonatomic) IBOutlet UILabel *videoDescriptionField;
 
 @end
