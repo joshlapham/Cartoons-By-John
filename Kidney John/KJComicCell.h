@@ -12,12 +12,6 @@
 @interface KJComicCell : UICollectionViewCell
 
 @property (strong, nonatomic) UIImageView *comicImageView;
-@property (strong, nonatomic) UIImage *comicImage;
-@property (strong, nonatomic) UILabel *label;
-
-@property (strong, nonatomic) NSMutableArray *imagesArray;
-
-//- (void)setNumber:(NSInteger)number;
 
 - (void)setThumbImage:(NSString *)imageName;
 
