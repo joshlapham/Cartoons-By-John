@@ -159,6 +159,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     self.randomImage.image = nil;
+    
+    [super viewWillDisappear:YES];
 }
 
 - (void)didReceiveMemoryWarning

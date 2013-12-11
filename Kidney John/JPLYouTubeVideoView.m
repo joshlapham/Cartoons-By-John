@@ -73,6 +73,13 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     // NOTE - videoDurationFromList variable is synthesized but not yet used in this detail view
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.videoView = nil;
+    
+    [super viewDidDisappear:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

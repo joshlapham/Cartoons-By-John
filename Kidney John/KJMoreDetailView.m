@@ -57,6 +57,13 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.socialLinkView = nil;
+    
+    [super viewDidDisappear:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
