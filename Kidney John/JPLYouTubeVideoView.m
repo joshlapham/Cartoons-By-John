@@ -35,6 +35,31 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     //[MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
+#pragma mark Add video to Favourites method
+- (IBAction)addVideoToFavourites:(id)sender
+{
+    NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
+    
+    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]) {
+        // Get a mutable array of the favouritesArray from NSUserDefaults
+        favouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]];
+    }
+    
+    // Add videoId to array
+    [favouritesArray addObject:videoIdFromList];
+    
+    // DEBUGGING
+    NSLog(@"VIDEO VIEW: added videoId to favourites - %@", [favouritesArray lastObject]);
+    NSLog(@"VIDEO VIEW: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
+    
+    // NSUserDefaults likes immutable arrays, so convert back to an NSArray
+    NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
+    
+    // Save array to NSUserDefaults
+    [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 #pragma mark init methods
 - (void)viewDidLoad
 {
@@ -46,6 +71,9 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     // Play video
     //NSLog(@"VIDEO ID FROM LIST: %@", videoIdFromList);
+    
+    // Add button to add video to Favourites
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addVideoToFavourites:)];
     
     // Set to enable/disable autoplay
     _videoView.mediaPlaybackRequiresUserAction = NO;
