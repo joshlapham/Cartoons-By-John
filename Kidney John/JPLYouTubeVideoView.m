@@ -45,19 +45,53 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
         favouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]];
     }
     
-    // Add videoId to array
-    [favouritesArray addObject:videoIdFromList];
+    // Check if videoId has already been favourited, proceed if not
+    if ([favouritesArray containsObject:videoIdFromList]) {
+        NSLog(@"VIDEO DETAIL: error - video has already been favourited");
+    } else {
+        // Add videoId to array
+        [favouritesArray addObject:videoIdFromList];
+        
+        // DEBUGGING
+        NSLog(@"VIDEO DETAIL: added videoId to favourites - %@", [favouritesArray lastObject]);
+        NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
+        
+        // NSUserDefaults likes immutable arrays, so convert back to an NSArray
+        NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
+        
+        // Save array to NSUserDefaults
+        [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
+#pragma mark Remove video from Favourites method
+- (IBAction)removeVideoFromFavourites:(id)sender
+{
+    NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
     
-    // DEBUGGING
-    NSLog(@"VIDEO VIEW: added videoId to favourites - %@", [favouritesArray lastObject]);
-    NSLog(@"VIDEO VIEW: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
+    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]) {
+        // Get a mutable array of the favouritesArray from NSUserDefaults
+        favouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]];
+    }
     
-    // NSUserDefaults likes immutable arrays, so convert back to an NSArray
-    NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
-    
-    // Save array to NSUserDefaults
-    [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    // Check if videoId has already been favourited, remove if so
+    if ([favouritesArray containsObject:videoIdFromList]) {
+        [favouritesArray removeObject:videoIdFromList];
+        
+        // DEBUGGING
+        NSLog(@"VIDEO DETAIL: removed videoId from favourites - %@", [favouritesArray lastObject]);
+        NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
+        
+        // NSUserDefaults likes immutable arrays, so convert back to an NSArray
+        NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
+        
+        // Save array to NSUserDefaults
+        [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        NSLog(@"VIDEO DETAIL: error - cannot remove videoId from Favourites as it is not one");
+    }
 }
 
 #pragma mark init methods
@@ -72,8 +106,14 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     // Play video
     //NSLog(@"VIDEO ID FROM LIST: %@", videoIdFromList);
     
+    
     // Add button to add video to Favourites
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addVideoToFavourites:)];
+    // Show button if videoId hasn't already been favourited
+    if (![[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] containsObject:videoIdFromList]) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addVideoToFavourites:)];
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removeVideoFromFavourites:)];
+    }
     
     // Set to enable/disable autoplay
     _videoView.mediaPlaybackRequiresUserAction = NO;
