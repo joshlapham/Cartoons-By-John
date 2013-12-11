@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Comix";
+    //self.title = @"Comix";
     
     NSLog(@"COMIC DETAIL: name from list - %@", nameFromList);
     
