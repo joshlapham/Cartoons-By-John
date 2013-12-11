@@ -124,7 +124,7 @@
     }
 }
 
-#pragma mark view methods
+#pragma mark init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];

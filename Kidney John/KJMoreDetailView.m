@@ -16,13 +16,15 @@
 
 @synthesize nameFromList;
 
+#pragma mark Load URL in web view method
 - (void)loadSocialMediaLink:(NSURL *)linkToLoad
 {
-    NSLog(@"Requesting link: %@", linkToLoad);
+    NSLog(@"MORE DETAIL: requesting link - %@", linkToLoad);
     NSURLRequest *req = [NSURLRequest requestWithURL:linkToLoad];
     [self.socialLinkView loadRequest:req];
 }
 
+#pragma mark init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -31,27 +33,27 @@
     self.title = nameFromList;
     
     if ([nameFromList isEqualToString:@"Facebook"]) {
-        NSLog(@"Facebook");
+        NSLog(@"MORE DETAIL: Facebook");
         NSURL *url = [NSURL URLWithString:@"https://www.facebook.com/kidneyjohn"];
         [self loadSocialMediaLink:url];
     } else if ([nameFromList isEqualToString:@"Twitter"]) {
-        NSLog(@"Twitter");
+        NSLog(@"MORE DETAIL: Twitter");
         NSURL *url = [NSURL URLWithString:@"https://twitter.com/kidneyjohn"];
         [self loadSocialMediaLink:url];
     } else if ([nameFromList isEqualToString:@"Tumblr"]) {
-        NSLog(@"Tumblr");
+        NSLog(@"MORE DETAIL: Tumblr");
         NSURL *url = [NSURL URLWithString:@"http://johnroderickpaine.tumblr.com"];
         [self loadSocialMediaLink:url];
     } else if ([nameFromList isEqualToString:@"YouTube"]) {
-        NSLog(@"YouTube");
+        NSLog(@"MORE DETAIL: YouTube");
         NSURL *url = [NSURL URLWithString:@"https://www.youtube.com/user/kidneyjohn"];
         [self loadSocialMediaLink:url];
     } else if ([nameFromList isEqualToString:@"Vimeo"]) {
-        NSLog(@"Vimeo");
+        NSLog(@"MORE DETAIL: Vimeo");
         NSURL *url = [NSURL URLWithString:@"http://vimeo.com/johnroderickpaine"];
         [self loadSocialMediaLink:url];
     } else if ([nameFromList isEqualToString:@"Instagram"]) {
-        NSLog(@"Instagram");
+        NSLog(@"MORE DETAIL: Instagram");
         NSURL *url = [NSURL URLWithString:@"http://instagram.com/johnroderickpaine"];
         [self loadSocialMediaLink:url];
     }
@@ -67,7 +69,8 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    self.socialLinkView = nil;
 }
 
 @end
