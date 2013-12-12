@@ -35,8 +35,8 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     //[MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
-#pragma mark Add video to Favourites method
-- (IBAction)addVideoToFavourites:(id)sender
+#pragma mark Video Favourites methods
+- (void)addVideoToFavourites
 {
     NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
     
@@ -65,8 +65,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     }
 }
 
-#pragma mark Remove video from Favourites method
-- (IBAction)removeVideoFromFavourites:(id)sender
+- (void)removeVideoFromFavourites
 {
     NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
     
@@ -94,6 +93,48 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     }
 }
 
+#pragma mark Show UIActionSheet method
+- (void)showActionSheet:(id)sender
+{
+    // Init strings for buttons
+    NSString *favouritesString = @"";
+    NSString *other2 = @"Share";
+    NSString *cancelTitle = @"Cancel";
+    //NSString *actionSheetTitle = @"Action";
+    //NSString *destructiveTitle = @"Destructive button";
+    
+    // Set Favourites button text accordingly
+    if (![[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] containsObject:videoIdFromList]) {
+        // Add to favourites since this videoId isn't already favourited
+        favouritesString = @"Add to Favourites";
+    } else {
+        // Remove from favourites if videoId is favourited
+        favouritesString = @"Remove from Favourites";
+    }
+    
+    // Init action sheet with Favourites and Share buttons
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, other2, nil];
+    
+    // Add action sheet to view, taking in consideration the tab bar
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+#pragma mark UIActionSheet delegate methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonPressed = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if ([buttonPressed isEqualToString:@"Add to Favourites"]) {
+        NSLog(@"ACTION SHEET: add to favourites was pressed");
+        [self addVideoToFavourites];
+    } else if ([buttonPressed isEqualToString:@"Remove from Favourites"]) {
+        NSLog(@"ACTION SHEET: remove from favourites was pressed");
+        [self removeVideoFromFavourites];
+    } else if ([buttonPressed isEqualToString:@"Share"]) {
+        NSLog(@"ACTION SHEET: whoa! hold your horses. that ain't implemented yet");
+    }
+}
+
 #pragma mark init methods
 - (void)viewDidLoad
 {
@@ -106,13 +147,8 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     // Play video
     //NSLog(@"VIDEO DETAIL: videoId from list - %@", videoIdFromList);
     
-    // Add button to add video to Favourites
-    // Show button if videoId hasn't already been favourited
-    if (![[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] containsObject:videoIdFromList]) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addVideoToFavourites:)];
-    } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(removeVideoFromFavourites:)];
-    }
+    // Init action button in top right hand corner
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
     
     // Set to enable/disable autoplay
     _videoView.mediaPlaybackRequiresUserAction = NO;

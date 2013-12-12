@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JPLYouTubeListView.h"
 
-@interface JPLYouTubeVideoView : UIViewController
+@interface JPLYouTubeVideoView : UIViewController <UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSString *videoIdFromList;
 @property (nonatomic, strong) NSString *videoTitleFromList;
