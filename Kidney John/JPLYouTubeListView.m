@@ -40,12 +40,13 @@
         // Query all videos
         [query whereKey:@"videoName" notEqualTo:@"LOL"];
         
+        // Cache policy
+        query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
         // Init locations array
         videoIdResults = [[NSMutableArray alloc] init];
         videoTitleResults = [[NSMutableArray alloc] init];
         videoDescriptionResults = [[NSMutableArray alloc] init];
-        //videoDurationResults = [[NSMutableArray alloc] init];
-        //videoThumbnailUrlResults = [[NSMutableArray alloc] init];
         videoThumbnails = [[NSMutableArray alloc] init];
         cellHeights = [[NSMutableArray alloc] init];
         
@@ -96,21 +97,6 @@
         });
         
     });
-}
-
-#pragma mark init methods
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // Preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Set title
-    self.title = @"Videos";
-    
-    // Start fetching videos from playlist
-    [self callFetchMethod];
 }
 
 #pragma mark - UITableView delegate methods
@@ -190,6 +176,21 @@
         destViewController.videoIdFromList = [self.videoIdResults objectAtIndex:indexPath.row];
         destViewController.videoTitleFromList = [self.videoTitleResults objectAtIndex:indexPath.row];
     }
+}
+
+#pragma mark init methods
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Preserve selection between presentations.
+    self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Set title
+    self.title = @"Videos";
+    
+    // Start fetching videos from playlist
+    [self callFetchMethod];
 }
 
 @end

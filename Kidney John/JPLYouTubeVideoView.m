@@ -80,7 +80,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
         [favouritesArray removeObject:videoIdFromList];
         
         // DEBUGGING
-        NSLog(@"VIDEO DETAIL: removed videoId from favourites - %@", [favouritesArray lastObject]);
+        NSLog(@"VIDEO DETAIL: removed videoId from favourites - %@", videoIdFromList);
         NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
         
         // NSUserDefaults likes immutable arrays, so convert back to an NSArray
@@ -101,11 +101,10 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     // Show progress
     //MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //hud.labelText = @"Loading ...";
+    //hud.labelText = @"";
     
     // Play video
-    //NSLog(@"VIDEO ID FROM LIST: %@", videoIdFromList);
-    
+    //NSLog(@"VIDEO DETAIL: videoId from list - %@", videoIdFromList);
     
     // Add button to add video to Favourites
     // Show button if videoId hasn't already been favourited
@@ -126,15 +125,16 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    self.videoView = nil;
-    
     [super viewDidDisappear:YES];
+    
+    self.videoView = nil;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    self.videoView = nil;
 }
 
 @end

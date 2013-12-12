@@ -20,33 +20,6 @@
 
 @implementation KJComicListView
 
-#pragma mark init methods
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
-    
-    // TESTING
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *thumbnailsPath = [resourcePath stringByAppendingPathComponent:@"ComicThumbs"];
-    //NSString *comicsPath = [resourcePath stringByAppendingPathComponent:@"Comics"];
-    NSError *error;
-    self.comicThumbImages = [[NSArray alloc] init];
-    self.comicThumbImages = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:thumbnailsPath error:&error];
-    NSLog(@"COMIC LIST: thumbnail img array count - %lu", (unsigned long)[self.comicThumbImages count]);
-    // END OF TESTING
-    
-    self.title = @"Comix";
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-    self.comicThumbImages = nil;
-}
-
 #pragma mark UICollectionView delegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -97,6 +70,33 @@
         KJComicDetailView *destViewController = segue.destinationViewController;
         destViewController.nameFromList = [self.comicThumbImages objectAtIndex:selectedIndexPath.row];
     }
+}
+
+#pragma mark init methods
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
+    
+    // TESTING
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *thumbnailsPath = [resourcePath stringByAppendingPathComponent:@"ComicThumbs"];
+    //NSString *comicsPath = [resourcePath stringByAppendingPathComponent:@"Comics"];
+    NSError *error;
+    self.comicThumbImages = [[NSArray alloc] init];
+    self.comicThumbImages = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:thumbnailsPath error:&error];
+    NSLog(@"COMIC LIST: thumbnail img array count - %lu", (unsigned long)[self.comicThumbImages count]);
+    // END OF TESTING
+    
+    self.title = @"Comix";
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    
+    self.comicThumbImages = nil;
 }
 
 @end

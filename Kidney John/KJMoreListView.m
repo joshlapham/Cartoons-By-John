@@ -43,6 +43,16 @@
     return cell;
 }
 
+#pragma mark - Prepare for segue
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"moreDetailSegue"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        KJMoreDetailView *destViewController = segue.destinationViewController;
+        destViewController.nameFromList = [listItems objectAtIndex:indexPath.row];
+    }
+}
+
 #pragma mark init methods
 - (void)viewDidLoad
 {
@@ -64,15 +74,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-#pragma mark - Prepare for segue
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
-     if ([segue.identifier isEqualToString:@"moreDetailSegue"]) {
-     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-     KJMoreDetailView *destViewController = segue.destinationViewController;
-     destViewController.nameFromList = [listItems objectAtIndex:indexPath.row];
-     }
- }
 
 @end
