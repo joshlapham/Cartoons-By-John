@@ -175,6 +175,9 @@
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
         destViewController.videoIdFromList = [self.videoIdResults objectAtIndex:indexPath.row];
         destViewController.videoTitleFromList = [self.videoTitleResults objectAtIndex:indexPath.row];
+        
+        // Hide tabbar on detail view
+        //destViewController.hidesBottomBarWhenPushed = YES;
     }
 }
 

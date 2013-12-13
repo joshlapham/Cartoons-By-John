@@ -69,6 +69,9 @@
         NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
         KJComicDetailView *destViewController = segue.destinationViewController;
         destViewController.nameFromList = [self.comicThumbImages objectAtIndex:selectedIndexPath.row];
+        
+        // Hide tabbar on detail view
+        destViewController.hidesBottomBarWhenPushed = YES;
     }
 }
 
