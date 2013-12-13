@@ -50,6 +50,9 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         KJMoreDetailView *destViewController = segue.destinationViewController;
         destViewController.nameFromList = [listItems objectAtIndex:indexPath.row];
+        
+        // Hide tabbar on detail view
+        destViewController.hidesBottomBarWhenPushed = YES;
     }
 }
 
@@ -64,7 +67,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.title = @"More";
+    self.title = @"Like, Comment, Subscribe";
     
     listItems = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", nil];
 }

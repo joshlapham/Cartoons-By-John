@@ -133,7 +133,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.title = @"Random";
+    self.title = @"Doodles";
     
     // Fetch image URLs from Parse
     static dispatch_once_t once;

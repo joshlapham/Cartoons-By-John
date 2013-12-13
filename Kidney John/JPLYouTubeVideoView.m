@@ -8,6 +8,7 @@
 
 #import "JPLYouTubeVideoView.h"
 #import "MBProgressHUD.h"
+#import <Social/Social.h>
 
 @interface JPLYouTubeVideoView ()
 
@@ -19,9 +20,26 @@
 
 @synthesize videoIdFromList, videoTitleFromList;
 
-static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 1, showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
+static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 0, showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
-#pragma mark Play video method
+#pragma mark - Social media methods
+- (void)postToTwitter
+{
+    SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+    [tweetSheet setInitialText:[NSString stringWithFormat:@"%@ - Animation by Kidney John - https://www.youtube.com/watch?v=%@", videoTitleFromList, videoIdFromList]];
+    
+    [self presentViewController:tweetSheet animated:YES completion:nil];
+}
+
+- (void)postToFacebook
+{
+    SLComposeViewController *faceSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    [faceSheet setInitialText:[NSString stringWithFormat:@"%@ - Animation by Kidney John - https://www.youtube.com/watch?v=%@", videoTitleFromList, videoIdFromList]];
+    
+    [self presentViewController:faceSheet animated:YES completion:nil];
+}
+
+#pragma mark - Play video method
 - (void)playVideoWithId:(NSString *)videoId
 {
     //NSLog(@"VIDEO ID: %@", videoId);
@@ -35,7 +53,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     //[MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
-#pragma mark Video Favourites methods
+#pragma mark - Video Favourites methods
 - (void)addVideoToFavourites
 {
     NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
@@ -93,12 +111,13 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     }
 }
 
-#pragma mark Show UIActionSheet method
+#pragma mark - Show UIActionSheet method
 - (void)showActionSheet:(id)sender
 {
     // Init strings for buttons
     NSString *favouritesString = @"";
-    NSString *other2 = @"Share";
+    NSString *other2 = @"Share on Facebook";
+    NSString *other3 = @"Share on Twitter";
     NSString *cancelTitle = @"Cancel";
     //NSString *actionSheetTitle = @"Action";
     //NSString *destructiveTitle = @"Destructive button";
@@ -113,13 +132,13 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     }
     
     // Init action sheet with Favourites and Share buttons
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, other2, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, other2, other3, nil];
     
     // Add action sheet to view, taking in consideration the tab bar
     [actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 
-#pragma mark UIActionSheet delegate methods
+#pragma mark - UIActionSheet delegate methods
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonPressed = [actionSheet buttonTitleAtIndex:buttonIndex];
@@ -130,12 +149,16 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     } else if ([buttonPressed isEqualToString:@"Remove from Favourites"]) {
         NSLog(@"ACTION SHEET: remove from favourites was pressed");
         [self removeVideoFromFavourites];
-    } else if ([buttonPressed isEqualToString:@"Share"]) {
-        NSLog(@"ACTION SHEET: whoa! hold your horses. that ain't implemented yet");
+    } else if ([buttonPressed isEqualToString:@"Share on Twitter"]) {
+        NSLog(@"ACTION SHEET: share on twitter button pressed");
+        [self postToTwitter];
+    } else if ([buttonPressed isEqualToString:@"Share on Facebook"]) {
+        NSLog(@"ACTION SHEET: share on facebook button pressed");
+        [self postToFacebook];
     }
 }
 
-#pragma mark init methods
+#pragma mark - init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -146,6 +169,9 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     // Play video
     //NSLog(@"VIDEO DETAIL: videoId from list - %@", videoIdFromList);
+    
+    // Set title to video title
+    self.title = videoTitleFromList;
     
     // Init action button in top right hand corner
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
