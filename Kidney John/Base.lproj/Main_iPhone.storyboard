@@ -191,7 +191,7 @@
             </objects>
             <point key="canvasLocation" x="3038" y="791"/>
         </scene>
-        <!--Random View - Random-->
+        <!--Random View-->
         <scene sceneID="OZ8-4o-lV5">
             <objects>
                 <viewController id="THX-4a-68b" customClass="KJRandomView" sceneMemberID="viewController">
@@ -204,7 +204,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cAc-P9-sj6">
-                                <rect key="frame" x="0.0" y="100" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="130" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -214,7 +214,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Random" id="5kr-sc-8Nq"/>
+                    <navigationItem key="navigationItem" id="qtL-qt-bGu"/>
                     <connections>
                         <outlet property="gestureRecognizer" destination="m0b-Tt-FfO" id="xiG-Hs-f1f"/>
                         <outlet property="randomImage" destination="cAc-P9-sj6" id="9Qm-E6-EL1"/>
@@ -227,7 +227,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2136" y="1488"/>
+            <point key="canvasLocation" x="2587" y="1488"/>
         </scene>
         <!--More List View-->
         <scene sceneID="yEN-Pi-eRB">
@@ -303,7 +303,7 @@
                     <connections>
                         <segue destination="DAg-H2-wMn" kind="relationship" relationship="viewControllers" id="YPM-t3-Soj"/>
                         <segue destination="omK-4O-6RW" kind="relationship" relationship="viewControllers" id="uDD-Gx-awv"/>
-                        <segue destination="THX-4a-68b" kind="relationship" relationship="viewControllers" id="QPd-JO-GHS"/>
+                        <segue destination="naJ-Ph-eeK" kind="relationship" relationship="viewControllers" id="QPd-JO-GHS"/>
                         <segue destination="6Vf-Ck-0EN" kind="relationship" relationship="viewControllers" id="gRG-hG-hzo"/>
                     </connections>
                 </tabBarController>
@@ -348,6 +348,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="crO-ni-vYh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2137" y="791"/>
+        </scene>
+        <!--Navigation Controller - Random-->
+        <scene sceneID="9LD-zX-3HI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="naJ-Ph-eeK" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Random" id="5kr-sc-8Nq"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="KhS-tl-h1u">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="THX-4a-68b" kind="relationship" relationship="rootViewController" id="ZUx-I9-M53"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ji4-4G-9hk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2136" y="1488"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
