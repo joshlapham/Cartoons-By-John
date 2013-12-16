@@ -20,6 +20,7 @@
 
 @synthesize videoIdFromList, videoTitleFromList;
 
+// NOTE - autoplay is set in playerVars
 static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 0, showinfo: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
 #pragma mark - Social media methods
@@ -46,8 +47,10 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     NSString *html = [NSString stringWithFormat:youTubeVideoHTML, _videoView.frame.size.width, _videoView.frame.size.height, videoId];
     
-    // NOTE - must include NSBundle resourceURL otherwise video autoplay will not work
-    [_videoView loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+    [_videoView loadHTMLString:html baseURL:nil];
+    
+    // NOTE - must include NSBundle resourceURL otherwise video autoplay will not work (autoplay disabled for now)
+    //[_videoView loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
     
     // Hide progress
     //[MBProgressHUD hideHUDForView:self.view animated:YES];
