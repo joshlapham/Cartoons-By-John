@@ -8,31 +8,27 @@
 
 #import "KJFavouritesListView.h"
 #import "JPLYouTubeVideoView.h"
+#import "Models/KJVideo.h"
 
 @interface KJFavouritesListView ()
+
+@property (nonatomic, strong) NSArray *favouritesResults;
 
 @end
 
 @implementation KJFavouritesListView
 
-#pragma mark - Init methods
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+@synthesize favouritesResults;
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+#pragma mark - Core Data methods
+- (void)getVideoFavourites
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    self.title = @"Favourites List";
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // Find videos where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    favouritesResults = [KJVideo MR_findAllWithPredicate:predicate inContext:localContext];
 }
 
 #pragma mark - Table view data source
@@ -45,7 +41,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] count];
+    return [favouritesResults count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -58,9 +54,8 @@
     }
     
     // Configure the cell...
-    cell.textLabel.text = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] objectAtIndex:indexPath.row];
-    
-    //[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"favouritesDict"];
+    KJVideo *cellVideo = [favouritesResults objectAtIndex:indexPath.row];
+    cell.textLabel.text = cellVideo.videoName;
     
     return cell;
 }
@@ -71,12 +66,35 @@
     if ([segue.identifier isEqualToString:@"favouritesVideoSegue"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
-        destViewController.videoIdFromList = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] objectAtIndex:indexPath.row];
-        //destViewController.videoTitleFromList = [self.videoTitleResults objectAtIndex:indexPath.row];
+        KJVideo *cellVideo = [favouritesResults objectAtIndex:indexPath.row];
+        destViewController.videoIdFromList = cellVideo.videoId;
+        destViewController.videoTitleFromList = cellVideo.videoName;
         
         // Hide tabbar on detail view
         //destViewController.hidesBottomBarWhenPushed = YES;
     }
+}
+
+#pragma mark - Init methods
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    self.title = @"Favourites List";
+    
+    [self getVideoFavourites];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 /*
