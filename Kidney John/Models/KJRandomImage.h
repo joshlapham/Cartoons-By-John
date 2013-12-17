@@ -2,20 +2,20 @@
 //  KJRandomImage.h
 //  Kidney John
 //
-//  Created by jl on 9/12/13.
+//  Created by jl on 18/12/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "Parse.h"
+#import <CoreData/CoreData.h>
 
-@interface KJRandomImage : PFObject <PFSubclassing>
 
-+ (NSString *)parseClassName;
+@interface KJRandomImage : NSManagedObject
 
-@property (retain) NSString *imageId;
-@property (retain) NSString *imageUrl;
-@property (retain) NSString *imageDescription;
-@property (retain) NSDate *imageDate;
+@property (nonatomic, retain) NSString * imageId;
+@property (nonatomic, retain) NSString * imageUrl;
+@property (nonatomic, retain) NSString * imageDescription;
+@property (nonatomic, retain) NSString * imageDate;
+@property (nonatomic, retain) NSData * imageData;
 
 @end

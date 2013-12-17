@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="KJRandomImage" representedClassName="KJRandomImage" syncable="YES">
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="imageDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="KJVideo" representedClassName="KJVideo" syncable="YES">
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" defaultValueString="0.0" syncable="YES"/>
         <attribute name="orderingValue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -12,5 +19,6 @@
     </entity>
     <elements>
         <element name="KJVideo" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="KJRandomImage" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
