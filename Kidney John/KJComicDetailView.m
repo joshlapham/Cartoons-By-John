@@ -16,13 +16,13 @@
 
 @synthesize nameFromList, comicImage, comicScrollView;
 
-#pragma mark UIScrollView delegate methods
+#pragma mark - UIScrollView delegate methods
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.comicImage;
 }
 
-#pragma mark init methods
+#pragma mark - Init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];

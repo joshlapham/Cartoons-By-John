@@ -22,7 +22,7 @@
 
 @synthesize randomImageArray, randomImage, imageIdResults, imageUrlResults, imageDescriptionResults, imageDateResults;
 
-#pragma mark Fetch the random image URLs
+#pragma mark - Fetch the random image URLs
 - (void)fetchRandomImageUrls
 {
     // Fetch locations
@@ -66,7 +66,7 @@
 
 }
 
-#pragma mark Return random URL string from array
+#pragma mark - Return random URL string from array
 - (NSString *)getRandomImageUrlFromGivenArray:(NSMutableArray *)arrayToCheck
 {
     NSString *stringToReturn = [[NSString alloc] init];
@@ -83,7 +83,7 @@
     return stringToReturn;
 }
 
-#pragma mark Get a random image from array
+#pragma mark - Get a random image from array
 - (UIImage *)getRandomImageFromArray
 {
     // Show progress
@@ -116,7 +116,7 @@
     }
 }
 
-#pragma mark UISwipeGesture method
+#pragma mark - UISwipeGesture method
 - (void)swipeHandler:(UISwipeGestureRecognizer *)recognizer
 {
     NSLog(@"RANDOM: swipe received");
@@ -127,7 +127,7 @@
     }
 }
 
-#pragma mark init methods
+#pragma mark - Init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];

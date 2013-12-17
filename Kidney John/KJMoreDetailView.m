@@ -16,7 +16,7 @@
 
 @synthesize nameFromList;
 
-#pragma mark Load URL in web view method
+#pragma mark - Load URL in web view method
 - (void)loadSocialMediaLink:(NSURL *)linkToLoad
 {
     NSLog(@"MORE DETAIL: requesting link - %@", linkToLoad);
@@ -24,7 +24,7 @@
     [self.socialLinkView loadRequest:req];
 }
 
-#pragma mark init methods
+#pragma mark - Init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];

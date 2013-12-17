@@ -12,6 +12,4 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) __block NSMutableArray *videosArrayToSendToDelegate;
-
 @end

@@ -14,7 +14,6 @@
 		687BC44A1851FEDA00F45970 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 687BC4481851FEDA00F45970 /* Comics */; };
 		687BC44B1851FEDA00F45970 /* ComicThumbs in Resources */ = {isa = PBXBuildFile; fileRef = 687BC4491851FEDA00F45970 /* ComicThumbs */; };
 		68E461C21855478B008D3E36 /* KJRandomImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461C11855478B008D3E36 /* KJRandomImage.m */; };
-		68E461C518555F47008D3E36 /* KJRandomImageProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461C418555F47008D3E36 /* KJRandomImageProtocol.m */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
 		68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CD185B272A008D3E36 /* KJFavouritesListView.m */; };
 		68E461D0185B4BD5008D3E36 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E461CF185B4BD5008D3E36 /* Social.framework */; };
@@ -65,8 +64,6 @@
 		687BC4491851FEDA00F45970 /* ComicThumbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ComicThumbs; sourceTree = SOURCE_ROOT; };
 		68E461C01855478B008D3E36 /* KJRandomImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomImage.h; path = Models/KJRandomImage.h; sourceTree = "<group>"; };
 		68E461C11855478B008D3E36 /* KJRandomImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomImage.m; path = Models/KJRandomImage.m; sourceTree = "<group>"; };
-		68E461C318555F47008D3E36 /* KJRandomImageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJRandomImageProtocol.h; sourceTree = "<group>"; };
-		68E461C418555F47008D3E36 /* KJRandomImageProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJRandomImageProtocol.m; sourceTree = "<group>"; };
 		68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreInitialView.h; sourceTree = "<group>"; };
 		68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreInitialView.m; sourceTree = "<group>"; };
 		68E461CC185B272A008D3E36 /* KJFavouritesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJFavouritesListView.h; sourceTree = "<group>"; };
@@ -191,8 +188,6 @@
 				68E48D70184D876400600FA5 /* KJMoreListView.m */,
 				687BC4431851DBDF00F45970 /* KJMoreDetailView.h */,
 				687BC4441851DBDF00F45970 /* KJMoreDetailView.m */,
-				68E461C318555F47008D3E36 /* KJRandomImageProtocol.h */,
-				68E461C418555F47008D3E36 /* KJRandomImageProtocol.m */,
 				68E48D5F184C062F00600FA5 /* Models */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
 				68E48D22184A247D00600FA5 /* Supporting Files */,
@@ -385,7 +380,6 @@
 			files = (
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
 				687BC374184D9C8900F45970 /* KJComicCell.m in Sources */,
-				68E461C518555F47008D3E36 /* KJRandomImageProtocol.m in Sources */,
 				68E461C21855478B008D3E36 /* KJRandomImage.m in Sources */,
 				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,

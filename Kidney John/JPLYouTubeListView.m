@@ -22,7 +22,7 @@
 
 @implementation JPLYouTubeListView
 
-@synthesize videoIdResults, videoTitleResults, videoDescriptionResults, videoThumbnails, cellHeights, videoResults;
+@synthesize videoResults;
 
 #pragma mark - Core Data methods
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
@@ -56,44 +56,15 @@
         newVideo.videoDescription = videoDescription;
         newVideo.videoDate = videoDate;
         newVideo.videoCellHeight = videoCellHeight;
-        
+        // Thumbnails
         NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
         NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
         NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
         newVideo.videoThumb = thumbData;
         
-//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-//        dispatch_async(queue, ^{
-//            // CORE DATA
-//            //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
-//            //UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
-//            //UIImage *thumbnailImage = thumbnailUrl;
-//            NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
-//            NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-//            NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-//            
-//            dispatch_sync(dispatch_get_main_queue(), ^{
-//                //cell.imageView.image = thumbnailImage;
-//                //[cell setNeedsLayout];
-//                newVideo.videoThumb = thumbData;
-//            });
-//        });
-
-        
         // Save
         [localContext MR_saveToPersistentStoreAndWait];
     }
-}
-
-#pragma mark - Thumbnails methods
-- (void)fetchThumbnailForVideoId:(NSString *)videoIdThumbnailToFetch
-{
-    NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoIdThumbnailToFetch];
-    NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-    NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-    UIImage *thumbImage = [UIImage imageWithData:thumbData];
-    
-    [videoThumbnails addObject:thumbImage];
 }
 
 #pragma mark - Fetch videos method
@@ -105,27 +76,16 @@
     
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        NSLog(@"IN GCD DEFAULT QUEUE THREAD ...");
+        NSLog(@"PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
         
         // Setup query
         PFQuery *query = [KJVideoFromParse query];
-        
-        // DEBUGGING
-        //JPLYouTubeVideoProtocol *videoProtocol = [[JPLYouTubeVideoProtocol alloc] init];
-        //videoProtocol.delegate = self;
         
         // Query all videos
         [query whereKey:@"videoName" notEqualTo:@"LOL"];
         
         // Cache policy
-        query.cachePolicy = kPFCachePolicyCacheElseNetwork;
-        
-        // Init locations array
-        //videoIdResults = [[NSMutableArray alloc] init];
-        //videoTitleResults = [[NSMutableArray alloc] init];
-        //videoDescriptionResults = [[NSMutableArray alloc] init];
-        videoThumbnails = [[NSMutableArray alloc] init];
-        //cellHeights = [[NSMutableArray alloc] init];
+        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
         
         // Start query with block
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -135,28 +95,8 @@
                 // Do something with the found objects
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
-                        // CORE DATA
+                        // Save Parse object to Core Data
                         [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
-                        
-                        //NSString *videoNameString = [NSString stringWithFormat:@"%@", object[@"videoName"]];
-                        //[videoTitleResults addObject:videoNameString];
-                        
-                        //NSString *videoDescriptionString = [NSString stringWithFormat:@"%@", object[@"videoDescription"]];
-                        //[videoDescriptionResults addObject:videoDescriptionString];
-                        
-                        //NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoId"]];
-                        //[videoIdResults addObject:videoIdString];
-                        
-//                        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", object[@"videoId"]];
-//                        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-//                        
-//                        //NSLog(@"%@", thumbnailUrl);
-//                        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-//                        UIImage *thumbImage = [UIImage imageWithData:thumbData];
-//                        [videoThumbnails addObject:thumbImage];
-                        
-                        //[cellHeights addObject:object[@"cellHeight"]];
-                        
                     } else {
                         NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
                     }
@@ -170,7 +110,6 @@
             
             // CORE DATA
             videoResults = [[NSArray alloc] init];
-            //videoResults = [KJVideo MR_findAll];
             // Sort videos with newest at top
             videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
             
@@ -179,7 +118,7 @@
         }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"IN GCD MAIN QUEUE THREAD ...");
+            NSLog(@"PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
         });
         
     });
@@ -210,6 +149,7 @@
     }
     
     // Configure the cell...
+    KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
     
     // Cell text
     UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica" size:20];
@@ -217,12 +157,8 @@
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     //cell.textLabel.lineBreakMode = YES;
-    //cell.textLabel.text = [videoTitleResults objectAtIndex:indexPath.row];
-    //[cell.textLabel sizeToFit];
-    
-    // CORE DATA
-    KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
     cell.textLabel.text = cellVideo.videoName;
+    //[cell.textLabel sizeToFit];
     
     // Cell detail text
     UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
@@ -230,31 +166,12 @@
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.detailTextLabel.numberOfLines = 0;
     //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-    //cell.detailTextLabel.text = [videoDescriptionResults objectAtIndex:indexPath.row];
-    // CORE DATA
     cell.detailTextLabel.text = cellVideo.videoDescription;
     
     // Cell thumbnail
-//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-//    dispatch_async(queue, ^{
-//        // CORE DATA
-//        //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
-//        UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
-//        //UIImage *thumbnailImage = thumbnailUrl;
-//        
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//            cell.imageView.image = thumbnailImage;
-//            [cell setNeedsLayout];
-//        });
-//    });
-
-    // CORE DATA
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
-        // CORE DATA
-        //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
         UIImage *thumbnailImage = [UIImage imageWithData:cellVideo.videoThumb];
-        //UIImage *thumbnailImage = thumbnailUrl;
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             cell.imageView.image = thumbnailImage;
@@ -270,14 +187,7 @@
 {
     CGFloat cellHeightFloat;
     
-    // CORE DATA
     KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
-
-//    if ([[cellHeights objectAtIndex:indexPath.row] isEqual:@"<null>"]) {
-//        cellHeightFloat = 160;
-//    } else {
-//        cellHeightFloat = [[cellHeights objectAtIndex:indexPath.row] floatValue];
-//    }
 
     if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
         cellHeightFloat = 160;
@@ -294,10 +204,6 @@
     if ([segue.identifier isEqualToString:@"videoIdSegue"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
-        //destViewController.videoIdFromList = [self.videoIdResults objectAtIndex:indexPath.row];
-        //destViewController.videoTitleFromList = [self.videoTitleResults objectAtIndex:indexPath.row];
-        
-        // CORE DATA
         KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
 
         destViewController.videoIdFromList = cellVideo.videoId;

@@ -10,12 +10,4 @@
 
 @interface JPLYouTubeListView : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) __block NSMutableArray *videoIdResults;
-@property (nonatomic, strong) __block NSMutableArray *videoTitleResults;
-@property (nonatomic, strong) __block NSMutableArray *videoDescriptionResults;
-@property (nonatomic, strong) __block NSMutableArray *videoThumbnails;
-@property (nonatomic, strong) __block NSMutableArray *cellHeights;
-
-- (void)callFetchMethod;
-
 @end

@@ -20,7 +20,7 @@
 
 @implementation KJComicListView
 
-#pragma mark UICollectionView delegate methods
+#pragma mark - UICollectionView delegate methods
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"COMIC LIST: selected item - %ld", (long)indexPath.row);
@@ -75,7 +75,7 @@
     }
 }
 
-#pragma mark init methods
+#pragma mark - Init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];
