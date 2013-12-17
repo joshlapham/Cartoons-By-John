@@ -86,6 +86,54 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     }
 }
 
+// TESTING
+//- (void)addVideoToFavourites
+//{
+//    // Define keys
+//    NSString *videoName = @"videoName";
+//    NSString *videoId = @"videoId";
+//    
+//    // Create array to hold dicts
+//    NSMutableArray *arrayOfDicts = [NSMutableArray array];
+//    NSMutableArray *retrivedFavouritesArray = [[NSMutableArray alloc] init];
+//    
+//    // Create dict for new video favourite
+//    NSDictionary *newFavouriteVideoDict = [NSDictionary dictionaryWithObjectsAndKeys:videoTitleFromList, videoName, videoIdFromList, videoId, nil];
+//    
+//    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"videoFavourites"]) {
+//        // Get a mutable array of the favouritesArray from NSUserDefaults
+//        retrivedFavouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"videoFavourites"]];
+//        
+//        for (int i = 0; i < [retrivedFavouritesArray count]; i++) {
+//            // Temp dict variable to hold each retrived dict
+//            NSDictionary *tempDict = [retrivedFavouritesArray objectAtIndex:i];
+//            
+//            if ([tempDict isEqualToDictionary:newFavouriteVideoDict]) {
+//                NSLog(@"VIDEO DETAIL: FAV IS ALREADY SAVED!!");
+//            } else {
+//                // Add retrieved dict to array of dicts to be saved back to NSUserDefaults
+//                [arrayOfDicts addObject:tempDict];
+//            }
+//        }
+//    }
+//    
+//    // Add new video favourite dict to array
+//    [arrayOfDicts addObject:newFavouriteVideoDict];
+//    
+//    // Debugging
+//    //NSLog(@"Array of dicts: %@", arrayOfDicts);
+//    
+//    // Save to NSUserDefaults
+//    [[NSUserDefaults standardUserDefaults] setObject:arrayOfDicts forKey:@"videoFavourites"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
+//    
+//    // Debugging
+//    NSLog(@"USERDEFAULTS DEBUGGING: %@", [[NSUserDefaults standardUserDefaults] arrayForKey:@"videoFavourites"]);
+//    //NSLog(@"VIDEO DETAIL: added videoId to favourites - %@", [favouritesArray lastObject]);
+//    //NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
+//}
+// END OF TESTING
+
 - (void)removeVideoFromFavourites
 {
     NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];

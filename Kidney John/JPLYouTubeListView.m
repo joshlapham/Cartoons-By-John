@@ -10,16 +10,59 @@
 #import "GTLYouTube.h"
 #import "JPLYouTubeVideoView.h"
 #import "MBProgressHUD.h"
+#import "Models/KJVideo.h"
+#import "Models/KJVideoFromParse.h"
+#import "Parse.h"
 
 @interface JPLYouTubeListView ()
+
+@property (nonatomic, strong) __block NSArray *videoResults;
 
 @end
 
 @implementation JPLYouTubeListView
 
-@synthesize videoIdResults, videoTitleResults, videoDescriptionResults, videoThumbnails, cellHeights;
+@synthesize videoIdResults, videoTitleResults, videoDescriptionResults, videoThumbnails, cellHeights, videoResults;
 
-#pragma mark Fetch videos method
+#pragma mark - Core Data methods
+- (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
+{
+    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
+        NSLog(@"Yes, video does exist in database");
+        return TRUE;
+    } else {
+        NSLog(@"No, video does NOT exist in database");
+        return FALSE;
+    }
+}
+
+- (void)persistNewVideoWithId:(NSString *)videoId
+                         name:(NSString *)videoName
+                  description:(NSString *)videoDescription
+                         date:(NSString *)videoDate
+                   cellHeight:(NSString *)videoCellHeight
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If video does not exist in database then persist
+    if (![self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
+        // Create a new video in the current context
+        KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
+        
+        // Set attributes
+        newVideo.videoId = videoId;
+        newVideo.videoName = videoName;
+        newVideo.videoDescription = videoDescription;
+        newVideo.videoDate = videoDate;
+        newVideo.videoCellHeight = videoCellHeight;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    }
+}
+
+#pragma mark - Fetch videos method
 - (void)callFetchMethod
 {
     // Show progress
@@ -31,11 +74,11 @@
         NSLog(@"IN GCD DEFAULT QUEUE THREAD ...");
         
         // Setup query
-        PFQuery *query = [KJVideo query];
+        PFQuery *query = [KJVideoFromParse query];
         
         // DEBUGGING
-        JPLYouTubeVideoProtocol *videoProtocol = [[JPLYouTubeVideoProtocol alloc] init];
-        videoProtocol.delegate = self;
+        //JPLYouTubeVideoProtocol *videoProtocol = [[JPLYouTubeVideoProtocol alloc] init];
+        //videoProtocol.delegate = self;
         
         // Query all videos
         [query whereKey:@"videoName" notEqualTo:@"LOL"];
@@ -44,11 +87,11 @@
         query.cachePolicy = kPFCachePolicyCacheElseNetwork;
         
         // Init locations array
-        videoIdResults = [[NSMutableArray alloc] init];
-        videoTitleResults = [[NSMutableArray alloc] init];
-        videoDescriptionResults = [[NSMutableArray alloc] init];
+        //videoIdResults = [[NSMutableArray alloc] init];
+        //videoTitleResults = [[NSMutableArray alloc] init];
+        //videoDescriptionResults = [[NSMutableArray alloc] init];
         videoThumbnails = [[NSMutableArray alloc] init];
-        cellHeights = [[NSMutableArray alloc] init];
+        //cellHeights = [[NSMutableArray alloc] init];
         
         // Start query with block
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -58,14 +101,17 @@
                 // Do something with the found objects
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
-                        NSString *videoNameString = [NSString stringWithFormat:@"%@", object[@"videoName"]];
-                        [videoTitleResults addObject:videoNameString];
+                        // CORE DATA
+                        [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
                         
-                        NSString *videoDescriptionString = [NSString stringWithFormat:@"%@", object[@"videoDescription"]];
-                        [videoDescriptionResults addObject:videoDescriptionString];
+                        //NSString *videoNameString = [NSString stringWithFormat:@"%@", object[@"videoName"]];
+                        //[videoTitleResults addObject:videoNameString];
                         
-                        NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoId"]];
-                        [videoIdResults addObject:videoIdString];
+                        //NSString *videoDescriptionString = [NSString stringWithFormat:@"%@", object[@"videoDescription"]];
+                        //[videoDescriptionResults addObject:videoDescriptionString];
+                        
+                        //NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoId"]];
+                        //[videoIdResults addObject:videoIdString];
                         
                         NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", object[@"videoId"]];
                         NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
@@ -75,7 +121,7 @@
                         UIImage *thumbImage = [UIImage imageWithData:thumbData];
                         [videoThumbnails addObject:thumbImage];
                         
-                        [cellHeights addObject:object[@"cellHeight"]];
+                        //[cellHeights addObject:object[@"cellHeight"]];
                         
                     } else {
                         NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
@@ -87,6 +133,10 @@
             }
             // Hide progress
             [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            // CORE DATA
+            videoResults = [[NSArray alloc] init];
+            videoResults = [KJVideo MR_findAll];
             
             // Reload table data
             [[self tableView] reloadData];
@@ -109,7 +159,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [videoTitleResults count];
+    
+    // CORE DATA
+    return [videoResults count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -129,8 +181,12 @@
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     //cell.textLabel.lineBreakMode = YES;
-    cell.textLabel.text = [videoTitleResults objectAtIndex:indexPath.row];
+    //cell.textLabel.text = [videoTitleResults objectAtIndex:indexPath.row];
     //[cell.textLabel sizeToFit];
+    
+    // CORE DATA
+    KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
+    cell.textLabel.text = cellVideo.videoName;
     
     // Cell detail text
     UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
@@ -138,12 +194,17 @@
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.detailTextLabel.numberOfLines = 0;
     //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-    cell.detailTextLabel.text = [videoDescriptionResults objectAtIndex:indexPath.row];
+    //cell.detailTextLabel.text = [videoDescriptionResults objectAtIndex:indexPath.row];
+    // CORE DATA
+    cell.detailTextLabel.text = cellVideo.videoDescription;
     
     // Cell thumbnail
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
+        // CORE DATA
+        //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
         UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
+        //UIImage *thumbnailImage = thumbnailUrl;
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             cell.imageView.image = thumbnailImage;
@@ -157,11 +218,20 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat cellHeightFloat;
+    
+    // CORE DATA
+    KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
 
-    if ([[cellHeights objectAtIndex:indexPath.row] isEqual:@"<null>"]) {
+//    if ([[cellHeights objectAtIndex:indexPath.row] isEqual:@"<null>"]) {
+//        cellHeightFloat = 160;
+//    } else {
+//        cellHeightFloat = [[cellHeights objectAtIndex:indexPath.row] floatValue];
+//    }
+
+    if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
         cellHeightFloat = 160;
     } else {
-        cellHeightFloat = [[cellHeights objectAtIndex:indexPath.row] floatValue];
+        cellHeightFloat = [cellVideo.videoCellHeight floatValue];
     }
     
     return cellHeightFloat;
@@ -173,15 +243,21 @@
     if ([segue.identifier isEqualToString:@"videoIdSegue"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
-        destViewController.videoIdFromList = [self.videoIdResults objectAtIndex:indexPath.row];
-        destViewController.videoTitleFromList = [self.videoTitleResults objectAtIndex:indexPath.row];
+        //destViewController.videoIdFromList = [self.videoIdResults objectAtIndex:indexPath.row];
+        //destViewController.videoTitleFromList = [self.videoTitleResults objectAtIndex:indexPath.row];
+        
+        // CORE DATA
+        KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
+
+        destViewController.videoIdFromList = cellVideo.videoId;
+        destViewController.videoTitleFromList = cellVideo.videoName;
         
         // Hide tabbar on detail view
         //destViewController.hidesBottomBarWhenPushed = YES;
     }
 }
 
-#pragma mark init methods
+#pragma mark - Init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];

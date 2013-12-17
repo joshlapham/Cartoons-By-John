@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JPLYouTubeVideoProtocol.h"
 
-@interface KJAppDelegate : UIResponder <UIApplicationDelegate, JPLYouTubeVideoDelegate>
+@interface KJAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

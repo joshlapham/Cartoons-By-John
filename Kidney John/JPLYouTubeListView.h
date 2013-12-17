@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JPLYouTubeVideoProtocol.h"
 
-@interface JPLYouTubeListView : UITableViewController <UITableViewDataSource, UITableViewDelegate, JPLYouTubeVideoDelegate>
+@interface JPLYouTubeListView : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) __block NSMutableArray *videoIdResults;
 @property (nonatomic, strong) __block NSMutableArray *videoTitleResults;

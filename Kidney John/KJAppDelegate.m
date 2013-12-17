@@ -8,7 +8,7 @@
 
 #import "KJAppDelegate.h"
 #import "Parse.h"
-#import "KJVideo.h"
+#import "Models/KJVideoFromParse.h"
 #import "KJRandomImage.h"
 
 @implementation KJAppDelegate
@@ -17,9 +17,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // MAGICAL RECORD
+    [MagicalRecord setupCoreDataStackWithStoreNamed:@"kj.sqlite"];
+    
     // PARSE SETUP
     // Parse custom class setup
-    [KJVideo registerSubclass];
+    [KJVideoFromParse registerSubclass];
     [KJRandomImage registerSubclass];
     
     // Parse App ID:
@@ -146,6 +149,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [MagicalRecord cleanUp];
 }
 
 @end

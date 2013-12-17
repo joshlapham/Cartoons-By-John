@@ -2,20 +2,21 @@
 //  KJVideo.h
 //  Kidney John
 //
-//  Created by jl on 2/12/13.
+//  Created by jl on 17/12/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "Parse.h"
+#import <CoreData/CoreData.h>
 
-@interface KJVideo : PFObject <PFSubclassing>
 
-+ (NSString *)parseClassName;
+@interface KJVideo : NSManagedObject
 
-@property (retain) NSString *videoId;
-@property (retain) NSString *videoName;
-@property (retain) NSString *videoDescription;
-@property (retain) NSDate *videoDate;
+@property (nonatomic, retain) NSString * videoId;
+@property (nonatomic, retain) NSString * videoName;
+@property (nonatomic, retain) NSString * videoDescription;
+@property (nonatomic, retain) NSString * videoDate;
+@property (nonatomic, retain) NSString * videoCellHeight;
+@property (nonatomic) double orderingValue;
 
 @end
