@@ -24,104 +24,18 @@
 
 @synthesize videoResults;
 
-#pragma mark - Core Data methods
-- (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
+#pragma mark - Core Data did finish loading NSNotification
+- (void)dataFetchDidFinish
 {
-    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
-        NSLog(@"Yes, video does exist in database");
-        return TRUE;
-    } else {
-        NSLog(@"No, video does NOT exist in database");
-        return FALSE;
-    }
-}
-
-- (void)persistNewVideoWithId:(NSString *)videoId
-                         name:(NSString *)videoName
-                  description:(NSString *)videoDescription
-                         date:(NSString *)videoDate
-                   cellHeight:(NSString *)videoCellHeight
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    NSLog(@"DID RECEIVE NOTIFICATION THAT DATA FETCH IS DONE, RELOADING TABLE ..");
+    // Sort videos with newest at top
+    videoResults = [[NSArray alloc] init];
+    videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
-    // If video does not exist in database then persist
-    if (![self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
-        // Create a new video in the current context
-        KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
-        
-        // Set attributes
-        newVideo.videoId = videoId;
-        newVideo.videoName = videoName;
-        newVideo.videoDescription = videoDescription;
-        newVideo.videoDate = videoDate;
-        newVideo.videoCellHeight = videoCellHeight;
-        // Thumbnails
-        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
-        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-        newVideo.videoThumb = thumbData;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    }
-}
-
-#pragma mark - Fetch videos method
-- (void)callFetchMethod
-{
-    // Show progress
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading videos ...";
+    // Hide progress
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(defaultQueue, ^{
-        NSLog(@"PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
-        
-        // Setup query
-        PFQuery *query = [KJVideoFromParse query];
-        
-        // Query all videos
-        [query whereKey:@"videoName" notEqualTo:@"LOL"];
-        
-        // Cache policy
-        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
-        
-        // Start query with block
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                // The find succeeded.
-                //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
-                // Do something with the found objects
-                for (PFObject *object in objects) {
-                    if ([object[@"is_active"] isEqual:@"1"]) {
-                        // Save Parse object to Core Data
-                        [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
-                    } else {
-                        NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
-                    }
-                }
-            } else {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
-            }
-            // Hide progress
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            
-            // CORE DATA
-            videoResults = [[NSArray alloc] init];
-            // Sort videos with newest at top
-            videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
-            
-            // Reload table data
-            [[self tableView] reloadData];
-        }];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
-        });
-        
-    });
+    [[self tableView] reloadData];
 }
 
 #pragma mark - UITableView delegate methods
@@ -225,13 +139,21 @@
     // Set title
     self.title = @"Videos";
     
-    // CORE DATA
-    // Sort videos with newest at top
-    //videoResults = [[NSArray alloc] init];
-    //videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
+    // Set up NSNotification receiving
+    NSString *notificationName = @"KJDataFetchDidHappen";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataFetchDidFinish) name:notificationName object:nil];
     
-    // Start fetching videos from playlist
-    [self callFetchMethod];
+    // Check if app has been run before, if so then use local Core Data, if not then wait for NSNotification
+    // from the app delegate to inform us that data has been loaded locally into Core Data
+    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"firstLoadDone"] isEqualToString:@"1"]) {
+        // Sort videos with newest at top
+        videoResults = [[NSArray alloc] init];
+        videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
+    } else {
+        // Show progress
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Loading videos ...";
+    }
 }
 
 @end

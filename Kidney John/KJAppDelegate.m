@@ -10,9 +10,104 @@
 #import "Parse.h"
 #import "Models/KJVideoFromParse.h"
 #import "KJRandomImage.h"
+#import "Models/KJVideo.h"
 
 @implementation KJAppDelegate
 
+#pragma mark - Core Data methods
+- (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
+{
+    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
+        NSLog(@"Yes, video does exist in database");
+        return TRUE;
+    } else {
+        NSLog(@"No, video does NOT exist in database");
+        return FALSE;
+    }
+}
+
+- (void)persistNewVideoWithId:(NSString *)videoId
+                         name:(NSString *)videoName
+                  description:(NSString *)videoDescription
+                         date:(NSString *)videoDate
+                   cellHeight:(NSString *)videoCellHeight
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If video does not exist in database then persist
+    if (![self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
+        // Create a new video in the current context
+        KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
+        
+        // Set attributes
+        newVideo.videoId = videoId;
+        newVideo.videoName = videoName;
+        newVideo.videoDescription = videoDescription;
+        newVideo.videoDate = videoDate;
+        newVideo.videoCellHeight = videoCellHeight;
+        // Thumbnails
+        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
+        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+        newVideo.videoThumb = thumbData;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    }
+}
+
+#pragma mark - Fetch videos method
+- (void)callFetchMethod
+{
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        NSLog(@"PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
+        
+        // Setup query
+        PFQuery *query = [KJVideoFromParse query];
+        
+        // Query all videos
+        [query whereKey:@"videoName" notEqualTo:@"LOL"];
+        
+        // Cache policy
+        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        // Start query with block
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // The find succeeded.
+                //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
+                // Do something with the found objects
+                for (PFObject *object in objects) {
+                    if ([object[@"is_active"] isEqual:@"1"]) {
+                        // Save Parse object to Core Data
+                        [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
+                    } else {
+                        NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
+                    }
+                }
+            } else {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
+            }
+            
+            // Set firstLoad = YES in NSUserDefaults
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"firstLoadDone"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            NSString *notificationName = @"KJDataFetchDidHappen";
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
+        });
+        
+    });
+}
+
+#pragma mark - Init methods
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // MAGICAL RECORD
@@ -38,6 +133,13 @@
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
     // Parse analytics
     //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    // Fetch initial data from Parse.com and persist to Core Data if app hasn't been loaded before
+    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"firstLoadDone"] isEqualToString:@"1"]) {
+        NSLog(@"DELEGATE: firstLoad has already been completed, assuming data is in Core Data already");
+    } else {
+        [self callFetchMethod];
+    }
     
     // Override point for customization after application launch.
     return YES;
