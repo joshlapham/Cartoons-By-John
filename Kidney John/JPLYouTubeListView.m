@@ -57,6 +57,29 @@
         newVideo.videoDate = videoDate;
         newVideo.videoCellHeight = videoCellHeight;
         
+        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
+        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+        newVideo.videoThumb = thumbData;
+        
+//        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+//        dispatch_async(queue, ^{
+//            // CORE DATA
+//            //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
+//            //UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
+//            //UIImage *thumbnailImage = thumbnailUrl;
+//            NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
+//            NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+//            NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+//            
+//            dispatch_sync(dispatch_get_main_queue(), ^{
+//                //cell.imageView.image = thumbnailImage;
+//                //[cell setNeedsLayout];
+//                newVideo.videoThumb = thumbData;
+//            });
+//        });
+
+        
         // Save
         [localContext MR_saveToPersistentStoreAndWait];
     }
@@ -124,13 +147,13 @@
                         //NSString *videoIdString = [NSString stringWithFormat:@"%@", object[@"videoId"]];
                         //[videoIdResults addObject:videoIdString];
                         
-                        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", object[@"videoId"]];
-                        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-                        
-                        //NSLog(@"%@", thumbnailUrl);
-                        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-                        UIImage *thumbImage = [UIImage imageWithData:thumbData];
-                        [videoThumbnails addObject:thumbImage];
+//                        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", object[@"videoId"]];
+//                        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+//                        
+//                        //NSLog(@"%@", thumbnailUrl);
+//                        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+//                        UIImage *thumbImage = [UIImage imageWithData:thumbData];
+//                        [videoThumbnails addObject:thumbImage];
                         
                         //[cellHeights addObject:object[@"cellHeight"]];
                         
@@ -224,6 +247,21 @@
 //            [cell setNeedsLayout];
 //        });
 //    });
+
+    // CORE DATA
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
+        // CORE DATA
+        //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
+        UIImage *thumbnailImage = [UIImage imageWithData:cellVideo.videoThumb];
+        //UIImage *thumbnailImage = thumbnailUrl;
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            cell.imageView.image = thumbnailImage;
+            [cell setNeedsLayout];
+        });
+    });
+
     
     return cell;
 }
@@ -282,9 +320,8 @@
     self.title = @"Videos";
     
     // CORE DATA
-    //videoResults = [[NSArray alloc] init];
-    //videoResults = [KJVideo MR_findAll];
     // Sort videos with newest at top
+    //videoResults = [[NSArray alloc] init];
     //videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
     // Start fetching videos from playlist
