@@ -2,7 +2,7 @@
 //  KJVideo.m
 //  Kidney John
 //
-//  Created by jl on 17/12/13.
+//  Created by jl on 18/12/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
 //
 
@@ -17,5 +17,7 @@
 @dynamic videoDate;
 @dynamic videoCellHeight;
 @dynamic orderingValue;
+@dynamic videoThumb;
+@dynamic isFavourite;
 
 @end

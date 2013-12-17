@@ -62,6 +62,17 @@
     }
 }
 
+#pragma mark - Thumbnails methods
+- (void)fetchThumbnailForVideoId:(NSString *)videoIdThumbnailToFetch
+{
+    NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoIdThumbnailToFetch];
+    NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+    NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+    UIImage *thumbImage = [UIImage imageWithData:thumbData];
+    
+    [videoThumbnails addObject:thumbImage];
+}
+
 #pragma mark - Fetch videos method
 - (void)callFetchMethod
 {
@@ -136,7 +147,9 @@
             
             // CORE DATA
             videoResults = [[NSArray alloc] init];
-            videoResults = [KJVideo MR_findAll];
+            //videoResults = [KJVideo MR_findAll];
+            // Sort videos with newest at top
+            videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
             
             // Reload table data
             [[self tableView] reloadData];
@@ -199,18 +212,18 @@
     cell.detailTextLabel.text = cellVideo.videoDescription;
     
     // Cell thumbnail
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        // CORE DATA
-        //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
-        UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
-        //UIImage *thumbnailImage = thumbnailUrl;
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            cell.imageView.image = thumbnailImage;
-            [cell setNeedsLayout];
-        });
-    });
+//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+//    dispatch_async(queue, ^{
+//        // CORE DATA
+//        //NSString *thumbnailUrl = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
+//        UIImage *thumbnailImage = [videoThumbnails objectAtIndex:indexPath.row];
+//        //UIImage *thumbnailImage = thumbnailUrl;
+//        
+//        dispatch_sync(dispatch_get_main_queue(), ^{
+//            cell.imageView.image = thumbnailImage;
+//            [cell setNeedsLayout];
+//        });
+//    });
     
     return cell;
 }
@@ -267,6 +280,12 @@
     
     // Set title
     self.title = @"Videos";
+    
+    // CORE DATA
+    //videoResults = [[NSArray alloc] init];
+    //videoResults = [KJVideo MR_findAll];
+    // Sort videos with newest at top
+    //videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
     // Start fetching videos from playlist
     [self callFetchMethod];

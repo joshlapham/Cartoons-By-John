@@ -9,6 +9,7 @@
 #import "JPLYouTubeVideoView.h"
 #import "MBProgressHUD.h"
 #import <Social/Social.h>
+#import "Models/KJVideo.h"
 
 @interface JPLYouTubeVideoView ()
 
@@ -57,34 +58,77 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 }
 
 #pragma mark - Video Favourites methods
-- (void)addVideoToFavourites
+//- (void)addVideoToFavourites
+//{
+//    NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
+//    
+//    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]) {
+//        // Get a mutable array of the favouritesArray from NSUserDefaults
+//        favouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]];
+//    }
+//    
+//    // Check if videoId has already been favourited, proceed if not
+//    if ([favouritesArray containsObject:videoIdFromList]) {
+//        NSLog(@"VIDEO DETAIL: error - video has already been favourited");
+//    } else {
+//        // Add videoId to array
+//        [favouritesArray addObject:videoIdFromList];
+//        
+//        // DEBUGGING
+//        NSLog(@"VIDEO DETAIL: added videoId to favourites - %@", [favouritesArray lastObject]);
+//        NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
+//        
+//        // NSUserDefaults likes immutable arrays, so convert back to an NSArray
+//        NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
+//        
+//        // Save array to NSUserDefaults
+//        [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//    }
+//}
+
+// CORE DATA TESTING
+- (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot
 {
-    NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]) {
-        // Get a mutable array of the favouritesArray from NSUserDefaults
-        favouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]];
-    }
+    // Create a new video in the current context
+    //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
     
-    // Check if videoId has already been favourited, proceed if not
-    if ([favouritesArray containsObject:videoIdFromList]) {
-        NSLog(@"VIDEO DETAIL: error - video has already been favourited");
+    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
+        //NSLog(@"Video is NOT already a favourite, adding now ..");
+        
+        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+        videoToFavourite.isFavourite = isOrNot;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
     } else {
-        // Add videoId to array
-        [favouritesArray addObject:videoIdFromList];
-        
-        // DEBUGGING
-        NSLog(@"VIDEO DETAIL: added videoId to favourites - %@", [favouritesArray lastObject]);
-        NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
-        
-        // NSUserDefaults likes immutable arrays, so convert back to an NSArray
-        NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
-        
-        // Save array to NSUserDefaults
-        [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSLog(@"Video not found in database, not adding anything to favourites");
     }
 }
+
+- (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
+        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+        if (!videoToFavourite.isFavourite) {
+            NSLog(@"Video IS NOT a favourite");
+            return FALSE;
+        } else {
+            NSLog(@"Video IS a favourite");
+            return TRUE;
+        }
+    } else {
+        return FALSE;
+    }
+}
+
+// END OF CORE DATA TESTING
 
 // TESTING
 //- (void)addVideoToFavourites
@@ -134,33 +178,33 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 //}
 // END OF TESTING
 
-- (void)removeVideoFromFavourites
-{
-    NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
-    
-    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]) {
-        // Get a mutable array of the favouritesArray from NSUserDefaults
-        favouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]];
-    }
-    
-    // Check if videoId has already been favourited, remove if so
-    if ([favouritesArray containsObject:videoIdFromList]) {
-        [favouritesArray removeObject:videoIdFromList];
-        
-        // DEBUGGING
-        NSLog(@"VIDEO DETAIL: removed videoId from favourites - %@", videoIdFromList);
-        NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
-        
-        // NSUserDefaults likes immutable arrays, so convert back to an NSArray
-        NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
-        
-        // Save array to NSUserDefaults
-        [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    } else {
-        NSLog(@"VIDEO DETAIL: error - cannot remove videoId from Favourites as it is not one");
-    }
-}
+//- (void)removeVideoFromFavourites
+//{
+//    NSMutableArray *favouritesArray = [[NSMutableArray alloc] init];
+//    
+//    if ([[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]) {
+//        // Get a mutable array of the favouritesArray from NSUserDefaults
+//        favouritesArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"]];
+//    }
+//    
+//    // Check if videoId has already been favourited, remove if so
+//    if ([favouritesArray containsObject:videoIdFromList]) {
+//        [favouritesArray removeObject:videoIdFromList];
+//        
+//        // DEBUGGING
+//        NSLog(@"VIDEO DETAIL: removed videoId from favourites - %@", videoIdFromList);
+//        NSLog(@"VIDEO DETAIL: favouritesArray count - %lu", (unsigned long)[favouritesArray count]);
+//        
+//        // NSUserDefaults likes immutable arrays, so convert back to an NSArray
+//        NSArray *favouritesArrayToSave = [NSArray arrayWithArray:favouritesArray];
+//        
+//        // Save array to NSUserDefaults
+//        [[NSUserDefaults standardUserDefaults] setObject:favouritesArrayToSave forKey:@"favouritesArray"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//    } else {
+//        NSLog(@"VIDEO DETAIL: error - cannot remove videoId from Favourites as it is not one");
+//    }
+//}
 
 #pragma mark - Show UIActionSheet method
 - (void)showActionSheet:(id)sender
@@ -174,13 +218,21 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     //NSString *destructiveTitle = @"Destructive button";
     
     // Set Favourites button text accordingly
-    if (![[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] containsObject:videoIdFromList]) {
-        // Add to favourites since this videoId isn't already favourited
+//    if (![[[NSUserDefaults standardUserDefaults] arrayForKey:@"favouritesArray"] containsObject:videoIdFromList]) {
+//        // Add to favourites since this videoId isn't already favourited
+//        favouritesString = @"Add to Favourites";
+//    } else {
+//        // Remove from favourites if videoId is favourited
+//        favouritesString = @"Remove from Favourites";
+//    }
+
+    // CORE DATA
+    if (![self checkIfVideoIdIsAFavourite:videoIdFromList]) {
         favouritesString = @"Add to Favourites";
     } else {
-        // Remove from favourites if videoId is favourited
         favouritesString = @"Remove from Favourites";
     }
+    // END OF CORE DATA
     
     // Init action sheet with Favourites and Share buttons
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, other2, other3, nil];
@@ -196,10 +248,12 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     if ([buttonPressed isEqualToString:@"Add to Favourites"]) {
         NSLog(@"ACTION SHEET: add to favourites was pressed");
-        [self addVideoToFavourites];
+        //[self addVideoToFavourites];
+        [self updateVideoFavouriteStatus:videoIdFromList isFavourite:YES];
     } else if ([buttonPressed isEqualToString:@"Remove from Favourites"]) {
         NSLog(@"ACTION SHEET: remove from favourites was pressed");
-        [self removeVideoFromFavourites];
+        //[self removeVideoFromFavourites];
+        [self updateVideoFavouriteStatus:videoIdFromList isFavourite:NO];
     } else if ([buttonPressed isEqualToString:@"Share on Twitter"]) {
         NSLog(@"ACTION SHEET: share on twitter button pressed");
         [self postToTwitter];

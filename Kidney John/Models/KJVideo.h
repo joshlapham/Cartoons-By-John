@@ -2,7 +2,7 @@
 //  KJVideo.h
 //  Kidney John
 //
-//  Created by jl on 17/12/13.
+//  Created by jl on 18/12/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
 //
 
@@ -18,5 +18,7 @@
 @property (nonatomic, retain) NSString * videoDate;
 @property (nonatomic, retain) NSString * videoCellHeight;
 @property (nonatomic) double orderingValue;
+@property (nonatomic, retain) NSData * videoThumb;
+@property (nonatomic) BOOL isFavourite;
 
 @end
