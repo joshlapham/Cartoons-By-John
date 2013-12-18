@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3396" systemVersion="12F45" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="KJComic" representedClassName="KJComic" syncable="YES">
+        <attribute name="comicData" optional="YES" attributeType="String" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="comicFileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comicName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comicThumbData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+    </entity>
     <entity name="KJRandomImage" representedClassName="KJRandomImage" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="imageDate" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,5 +26,6 @@
     <elements>
         <element name="KJVideo" positionX="0" positionY="0" width="0" height="0"/>
         <element name="KJRandomImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="KJComic" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

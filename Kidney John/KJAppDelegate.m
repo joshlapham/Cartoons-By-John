@@ -11,6 +11,7 @@
 #import "Models/KJVideoFromParse.h"
 #import "Models/KJRandomImageFromParse.h"
 #import "Models/KJVideo.h"
+#import "Models/KJComicFromParse.h"
 
 @implementation KJAppDelegate
 
@@ -117,6 +118,7 @@
     // Parse custom class setup
     [KJVideoFromParse registerSubclass];
     [KJRandomImageFromParse registerSubclass];
+    [KJComicFromParse registerSubclass];
     
     // Parse App ID:
     // IDGldVVzggf7F2YBimgm7l9Cn1YOktzzy3BbNSkm

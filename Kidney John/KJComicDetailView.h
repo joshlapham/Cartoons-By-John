@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KJComicDetailView : UIViewController <UIScrollViewDelegate>
+@interface KJComicDetailView : UIViewController <UIScrollViewDelegate, NSURLConnectionDataDelegate>
 
 @property (nonatomic, weak) NSString *nameFromList;
+@property (nonatomic, weak) NSString *titleFromList;
+@property (nonatomic, weak) NSString *fileNameFromList;
 @property (weak, nonatomic) IBOutlet UIImageView *comicImage;
 @property (weak, nonatomic) IBOutlet UIScrollView *comicScrollView;
 
