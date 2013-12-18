@@ -11,8 +11,6 @@
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
 		687BC4451851DBDF00F45970 /* KJMoreDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC4441851DBDF00F45970 /* KJMoreDetailView.m */; };
-		687BC44A1851FEDA00F45970 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 687BC4481851FEDA00F45970 /* Comics */; };
-		687BC44B1851FEDA00F45970 /* ComicThumbs in Resources */ = {isa = PBXBuildFile; fileRef = 687BC4491851FEDA00F45970 /* ComicThumbs */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
 		68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CD185B272A008D3E36 /* KJFavouritesListView.m */; };
 		68E461D0185B4BD5008D3E36 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E461CF185B4BD5008D3E36 /* Social.framework */; };
@@ -63,8 +61,6 @@
 		687BC378184EB75500F45970 /* KJComicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicDetailView.m; sourceTree = "<group>"; };
 		687BC4431851DBDF00F45970 /* KJMoreDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreDetailView.h; sourceTree = "<group>"; };
 		687BC4441851DBDF00F45970 /* KJMoreDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreDetailView.m; sourceTree = "<group>"; };
-		687BC4481851FEDA00F45970 /* Comics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Comics; sourceTree = SOURCE_ROOT; };
-		687BC4491851FEDA00F45970 /* ComicThumbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ComicThumbs; sourceTree = SOURCE_ROOT; };
 		68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreInitialView.h; sourceTree = "<group>"; };
 		68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreInitialView.m; sourceTree = "<group>"; };
 		68E461CC185B272A008D3E36 /* KJFavouritesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJFavouritesListView.h; sourceTree = "<group>"; };
@@ -207,8 +203,6 @@
 		68E48D22184A247D00600FA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				687BC4481851FEDA00F45970 /* Comics */,
-				687BC4491851FEDA00F45970 /* ComicThumbs */,
 				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
 				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
 				68E48D23184A247D00600FA5 /* Kidney John-Info.plist */,
@@ -336,8 +330,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				687BC44A1851FEDA00F45970 /* Comics in Resources */,
-				687BC44B1851FEDA00F45970 /* ComicThumbs in Resources */,
 				68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */,
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
 				68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */,
