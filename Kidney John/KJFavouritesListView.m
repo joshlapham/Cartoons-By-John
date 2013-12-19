@@ -49,9 +49,15 @@
         NSLog(@"FAVOURITES: no favourites results found, setting areThereAnyFavourites to NO");
         self.areThereAnyFavourites = NO;
         [self thereAreNoFavourites];
+        
+        // Reload table data
+        [[self tableView] reloadData];
     } else {
         NSLog(@"FAVOURITES: results array has objects, setting areThereAnyFavourites to YES");
         self.areThereAnyFavourites = YES;
+        
+        // Reload table data
+        [[self tableView] reloadData];
     }
 }
 
@@ -172,13 +178,20 @@
     
     self.title = @"Favourites List";
     
-    [self getFavourites];
+    //[self getFavourites];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    
+    [self getFavourites];
 }
 
 /*
