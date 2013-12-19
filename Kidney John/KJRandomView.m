@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import "Models/KJRandomImage.h"
 
-@interface KJRandomView ()
+@interface KJRandomView () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSString *currentRandomImageUrl;
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *gestureRecognizer;
@@ -23,6 +23,15 @@
 @implementation KJRandomView
 
 @synthesize randomImage, randomImagesResults;
+
+#pragma mark - UIAlertView delegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    NSLog(@"RANDOM: did dismiss instructions alert view, setting user defaults accordingly");
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"doodleInstructionsShown"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 #pragma mark - Core Data did finish loading NSNotification
 - (void)randomImageFetchDidHappen
@@ -43,10 +52,10 @@
 - (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
 {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
-        NSLog(@"Yes, random image does exist in database");
+        NSLog(@"RANDOM: Yes, random image does exist in database");
         return TRUE;
     } else {
-        NSLog(@"No, random image does NOT exist in database");
+        NSLog(@"RANDOM: No, random image does NOT exist in database");
         return FALSE;
     }
 }
@@ -173,6 +182,19 @@
 	// Do any additional setup after loading the view.
     
     self.title = @"Doodles";
+    
+    // Display alert with instructions on how to use this screen on first load
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {
+        NSLog(@"RANDOM: instructions have not yet been shown to user; now displaying");
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Doodles"
+                                                     message:@"Swipe left to load a new random doodle."
+                                                    delegate:self
+                                           cancelButtonTitle:Nil
+                                           otherButtonTitles:@"OK", nil];
+        [av show];
+    } else {
+        NSLog(@"RANDOM: instructions HAVE been shown to user");
+    }
     
     // Init swipe gesture recognizer for image view
     self.gestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
