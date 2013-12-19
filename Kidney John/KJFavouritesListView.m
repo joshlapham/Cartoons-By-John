@@ -10,9 +10,10 @@
 #import "JPLYouTubeVideoView.h"
 #import "Models/KJVideo.h"
 
-@interface KJFavouritesListView ()
+@interface KJFavouritesListView () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSArray *favouritesResults;
+@property (nonatomic) BOOL areThereAnyFavourites;
 
 @end
 
@@ -29,6 +30,34 @@
     // Find videos where isFavourite is TRUE
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
     favouritesResults = [KJVideo MR_findAllWithPredicate:predicate inContext:localContext];
+    
+    // Check count of faveResults array and set areThereAnyFavourites bool accordingly
+    if ([[self favouritesResults] count] == 0) {
+        NSLog(@"FAVOURITES: results array is zero, setting areThereAnyFavourites to NO");
+        self.areThereAnyFavourites = NO;
+        [self thereAreNoFavourites];
+    } else {
+        NSLog(@"FAVOURITES: results array has objects, setting areThereAnyFavourites to YES");
+        self.areThereAnyFavourites = YES;
+    }
+}
+
+#pragma mark - No Favourites method
+- (void)thereAreNoFavourites
+{
+    if (self.areThereAnyFavourites == NO) {
+        //NSLog(@"FAVOURITES: in thereAreNoFavourites method");
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites" message:@"You haven't set any Favourites." delegate:self cancelButtonTitle:Nil otherButtonTitles:@"OK", nil];
+        [av show];
+    }
+}
+
+#pragma mark - UIAlertView delegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"FAVOURITES: did dismiss no favourites alert view, popping Favourites List view");
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source
