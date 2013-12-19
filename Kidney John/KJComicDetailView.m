@@ -8,8 +8,9 @@
 
 #import "KJComicDetailView.h"
 #import "MBProgressHUD.h"
+#import "Models/KJComic.h"
 
-@interface KJComicDetailView ()
+@interface KJComicDetailView () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSMutableData *fileData;
 @property (nonatomic, strong) NSURL *fileUrl;
@@ -21,6 +22,94 @@
 @implementation KJComicDetailView
 
 @synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView;
+
+#pragma mark - Comic Favourites methods
+- (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Create a new video in the current context
+    //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
+    
+    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
+        //NSLog(@"Video is NOT already a favourite, adding now ..");
+        
+        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+        comicToFavourite.isFavourite = isOrNot;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    } else {
+        NSLog(@"Video not found in database, not adding anything to favourites");
+    }
+}
+
+- (BOOL)checkIfComicIsAFavourite:(NSString *)comicName
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
+        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+        if (!comicToFavourite.isFavourite) {
+            NSLog(@"Comic IS NOT a favourite");
+            return FALSE;
+        } else {
+            NSLog(@"Comic IS a favourite");
+            return TRUE;
+        }
+    } else {
+        return FALSE;
+    }
+}
+
+#pragma mark - Show UIActionSheet method
+- (void)showActionSheet:(id)sender
+{
+    // Init strings for buttons
+    NSString *favouritesString = @"";
+    //NSString *other2 = @"Share on Facebook";
+    //NSString *other3 = @"Share on Twitter";
+    NSString *cancelTitle = @"Cancel";
+    //NSString *actionSheetTitle = @"Action";
+    //NSString *destructiveTitle = @"Destructive button";
+    
+    // Set Favourites button text accordingly
+    if (![self checkIfComicIsAFavourite:titleFromList]) {
+        favouritesString = @"Add to Favourites";
+    } else {
+        favouritesString = @"Remove from Favourites";
+    }
+    
+    // Init action sheet with Favourites and Share buttons
+    // NOTE - no FB/Twitter share is enabled for Comics right now
+    //UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, other2, other3, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, nil];
+    
+    // Add action sheet to view, taking in consideration the tab bar
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+#pragma mark - UIActionSheet delegate methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonPressed = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if ([buttonPressed isEqualToString:@"Add to Favourites"]) {
+        NSLog(@"ACTION SHEET: add to favourites was pressed");
+        [self updateComicFavouriteStatus:titleFromList isFavourite:YES];
+    } else if ([buttonPressed isEqualToString:@"Remove from Favourites"]) {
+        NSLog(@"ACTION SHEET: remove from favourites was pressed");
+        [self updateComicFavouriteStatus:titleFromList isFavourite:NO];
+    } else if ([buttonPressed isEqualToString:@"Share on Twitter"]) {
+        NSLog(@"ACTION SHEET: share on twitter button pressed");
+        //[self postToTwitter];
+    } else if ([buttonPressed isEqualToString:@"Share on Facebook"]) {
+        NSLog(@"ACTION SHEET: share on facebook button pressed");
+        //[self postToFacebook];
+    }
+}
 
 #pragma mark - UIScrollView delegate methods
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
@@ -71,6 +160,9 @@
     [super viewDidLoad];
     
     self.title = titleFromList;
+    
+    // Init action button in top right hand corner
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
     
     //NSLog(@"COMIC DETAIL: name from list - %@", nameFromList);
     

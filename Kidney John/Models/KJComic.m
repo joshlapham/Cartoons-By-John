@@ -15,5 +15,6 @@
 @dynamic comicData;
 @dynamic comicThumbData;
 @dynamic comicFileName;
+@dynamic isFavourite;
 
 @end

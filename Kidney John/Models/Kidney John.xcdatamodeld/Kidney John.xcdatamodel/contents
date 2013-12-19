@@ -5,6 +5,7 @@
         <attribute name="comicFileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comicName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comicThumbData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="isFavourite" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="KJRandomImage" representedClassName="KJRandomImage" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>

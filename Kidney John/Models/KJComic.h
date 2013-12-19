@@ -16,5 +16,6 @@
 @property (nonatomic, retain) NSString * comicData;
 @property (nonatomic, retain) NSData * comicThumbData;
 @property (nonatomic, retain) NSString * comicFileName;
+@property (nonatomic) BOOL isFavourite;
 
 @end
