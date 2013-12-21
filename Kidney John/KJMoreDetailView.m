@@ -8,13 +8,13 @@
 
 #import "KJMoreDetailView.h"
 
-@interface KJMoreDetailView ()
+@interface KJMoreDetailView () <UIWebViewDelegate>
 
 @end
 
 @implementation KJMoreDetailView
 
-@synthesize nameFromList;
+@synthesize nameFromList, socialLinkView;
 
 #pragma mark - Load URL in web view method
 - (void)loadSocialMediaLink:(NSURL *)linkToLoad
@@ -24,13 +24,48 @@
     [self.socialLinkView loadRequest:req];
 }
 
+#pragma mark - UIWebView delegate methods
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    NSLog(@"MORE DETAIL: in webViewDidStart method");
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
 #pragma mark - Init methods
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.title = nameFromList;
+    //self.title = nameFromList;
+    
+    // TESTING - navbar title
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor blackColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = nameFromList;
+    self.navigationItem.titleView = navLabel;
+    // END OF TESTING
+    
+    // TESTING - webview delegate
+    socialLinkView.delegate = self;
+    // END OF TESTING
     
     if ([nameFromList isEqualToString:@"Facebook"]) {
         NSLog(@"MORE DETAIL: Facebook");

@@ -21,6 +21,8 @@
 		68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461F21860BD94008D3E36 /* KJRandomImage.m */; };
 		68E461F91860D2EF008D3E36 /* KJComicFromParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461F81860D2EF008D3E36 /* KJComicFromParse.m */; };
 		68E461FC1860D35F008D3E36 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461FB1860D35F008D3E36 /* KJComic.m */; };
+		68E461FE1865CA87008D3E36 /* JohnRoderickPaine.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */; };
+		68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E462001865CCC1008D3E36 /* KJTabBarController.m */; };
 		68E48D1C184A247D00600FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1B184A247D00600FA5 /* Foundation.framework */; };
 		68E48D1E184A247D00600FA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1D184A247D00600FA5 /* CoreGraphics.framework */; };
 		68E48D20184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
@@ -79,6 +81,9 @@
 		68E461F81860D2EF008D3E36 /* KJComicFromParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicFromParse.m; path = Models/KJComicFromParse.m; sourceTree = "<group>"; };
 		68E461FA1860D35F008D3E36 /* KJComic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComic.h; path = Models/KJComic.h; sourceTree = "<group>"; };
 		68E461FB1860D35F008D3E36 /* KJComic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComic.m; path = Models/KJComic.m; sourceTree = "<group>"; };
+		68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = JohnRoderickPaine.ttf; sourceTree = "<group>"; };
+		68E461FF1865CCC1008D3E36 /* KJTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJTabBarController.h; sourceTree = "<group>"; };
+		68E462001865CCC1008D3E36 /* KJTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJTabBarController.m; sourceTree = "<group>"; };
 		68E48D18184A247D00600FA5 /* Kidney John.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kidney John.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E48D1B184A247D00600FA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		68E48D1D184A247D00600FA5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -193,6 +198,8 @@
 				68E48D70184D876400600FA5 /* KJMoreListView.m */,
 				687BC4431851DBDF00F45970 /* KJMoreDetailView.h */,
 				687BC4441851DBDF00F45970 /* KJMoreDetailView.m */,
+				68E461FF1865CCC1008D3E36 /* KJTabBarController.h */,
+				68E462001865CCC1008D3E36 /* KJTabBarController.m */,
 				68E48D5F184C062F00600FA5 /* Models */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
 				68E48D22184A247D00600FA5 /* Supporting Files */,
@@ -203,6 +210,7 @@
 		68E48D22184A247D00600FA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */,
 				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
 				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
 				68E48D23184A247D00600FA5 /* Kidney John-Info.plist */,
@@ -334,6 +342,7 @@
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
 				68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */,
 				68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */,
+				68E461FE1865CA87008D3E36 /* JohnRoderickPaine.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +398,7 @@
 				687BC374184D9C8900F45970 /* KJComicCell.m in Sources */,
 				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
+				68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */,
 				68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */,
 				687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */,
 				68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */,

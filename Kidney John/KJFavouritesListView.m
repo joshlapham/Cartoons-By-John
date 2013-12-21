@@ -83,15 +83,22 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableView - section methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
     //return 1;
-    
-    NSInteger sections = [[self allFavouritesResults] count];
-    
-    return sections;
+    if ([self areThereAnyFavourites]) {
+        
+        
+        NSInteger sections = [[self allFavouritesResults] count];
+        // DEBUGGING
+        NSLog(@"FAVOURITES: sections count: %lu", (unsigned long)[[self allFavouritesResults] count]);
+        
+        return sections;
+    } else {
+        return 1;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -99,12 +106,70 @@
     // Return the number of rows in the section.
     //return [self.videoFavouritesResults count];
     
-    NSArray *sectionContents = [[self allFavouritesResults] objectAtIndex:section];
-    NSInteger rows = [sectionContents count];
-    
-    return rows;
+    if ([self areThereAnyFavourites]) {
+        
+        NSArray *sectionContents = [[self allFavouritesResults] objectAtIndex:section];
+        NSInteger rows = [sectionContents count];
+        
+        return rows;
+    } else {
+        return 1;
+    }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if ([self areThereAnyFavourites]) {
+        NSLog(@"FAVOURITES: in titleForHeaderSection method");
+        NSLog(@"FAVOURITES: header to return: %@", [[self allFavouritesResults] objectAtIndex:section]);
+        //NSString *sectionHeader = [[self allFavouritesResults] objectAtIndex:section];
+        NSString *sectionHeader = [[NSString alloc] init];
+        
+//        // TESTING
+//        if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
+//            NSLog(@"is video");
+//            UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
+//            if (!videoCell) {
+//                videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
+//            }
+//            KJVideo *cellVideo = [sectionContents objectAtIndex:indexPath.row];
+//            videoCell.textLabel.text = cellVideo.videoName;
+//            //videoCell.detailTextLabel.text = @"Video";
+//            return videoCell;
+//        } else if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
+//            NSLog(@"is comic");
+//            UITableViewCell *comicCell = [tableView dequeueReusableCellWithIdentifier:comicCellIdentifier forIndexPath:indexPath];
+//            if (!comicCell) {
+//                comicCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
+//            }
+//            KJComic *cellComic = [sectionContents objectAtIndex:indexPath.row];
+//            comicCell.textLabel.text = cellComic.comicName;
+//            //comicCell.detailTextLabel.text = @"Comic";
+//            return comicCell;
+//        } else {
+//            // Change this 'cause it's bad code
+//            UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
+//            if (!videoCell) {
+//                videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
+//            }
+//            return videoCell;
+//        }
+//        //END OF TESTING
+        
+        
+        
+        if (section == 0) {
+            sectionHeader = @"Videos";
+        } else if (section == 1) {
+            sectionHeader = @"Comics";
+        }
+        return sectionHeader;
+    } else {
+        return nil;
+    }
+}
+
+#pragma mark - UITableView - cell delegate methods
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *sectionContents = [[self allFavouritesResults] objectAtIndex:[indexPath section]];
@@ -115,6 +180,9 @@
     // Configure the cell...
     
     // TESTING
+    // Custom font
+    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    
     if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
         NSLog(@"is video");
         UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
@@ -123,7 +191,9 @@
         }
         KJVideo *cellVideo = [sectionContents objectAtIndex:indexPath.row];
         videoCell.textLabel.text = cellVideo.videoName;
-        videoCell.detailTextLabel.text = @"Video";
+        // Custom font
+        videoCell.textLabel.font = kjCustomFont;
+        //videoCell.detailTextLabel.text = @"Video";
         return videoCell;
     } else if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
         NSLog(@"is comic");
@@ -133,10 +203,17 @@
         }
         KJComic *cellComic = [sectionContents objectAtIndex:indexPath.row];
         comicCell.textLabel.text = cellComic.comicName;
-        comicCell.detailTextLabel.text = @"Comic";
+        // Custom font
+        comicCell.textLabel.font = kjCustomFont;
+        //comicCell.detailTextLabel.text = @"Comic";
         return comicCell;
     } else {
-        return nil;
+        // Change this 'cause it's bad code
+        UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
+        if (!videoCell) {
+            videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
+        }
+        return videoCell;
     }
     //END OF TESTING
 }
@@ -176,7 +253,21 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.title = @"Favourites List";
+    //self.title = @"Favourites List";
+    
+    // TESTING - navbar title
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor blackColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = @"Favourites List";
+    self.navigationItem.titleView = navLabel;
+    // END OF TESTING
     
     //[self getFavourites];
 }

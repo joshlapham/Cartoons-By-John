@@ -39,6 +39,9 @@
     
     // Configure the cell...
     cell.textLabel.text = [listItems objectAtIndex:indexPath.row];
+    // Custom font
+    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    cell.textLabel.font = kjCustomFont;
     
     return cell;
 }
@@ -67,7 +70,21 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    self.title = @"Like, Comment, Subscribe";
+    //self.title = @"Like, Comment, Subscribe";
+    
+    // TESTING - navbar title
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor blackColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = @"Like, Comment, Subscribe";
+    self.navigationItem.titleView = navLabel;
+    // END OF TESTING
     
     listItems = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", nil];
 }

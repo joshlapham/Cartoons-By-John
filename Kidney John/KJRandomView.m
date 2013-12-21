@@ -181,7 +181,21 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.title = @"Doodles";
+    //self.title = @"Doodles";
+    
+    // TESTING - navbar title
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor blackColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = @"Doodles";
+    self.navigationItem.titleView = navLabel;
+    // END OF TESTING
     
     // Display alert with instructions on how to use this screen on first load
     if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {

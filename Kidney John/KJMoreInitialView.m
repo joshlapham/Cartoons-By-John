@@ -42,6 +42,9 @@
     
     // Configure the cell...
     cell.textLabel.text = [[self cellArray] objectAtIndex:indexPath.row];
+    // Custom font
+    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    cell.textLabel.font = kjCustomFont;
     
     return cell;
 }
@@ -70,7 +73,21 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
-    self.title = @"More";
+    //self.title = @"More";
+    
+    // TESTING - navbar title
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor blackColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = @"More";
+    self.navigationItem.titleView = navLabel;
+    // END OF TESTING
     
     self.cellArray = [NSArray arrayWithObjects:@"Favourites List", @"Like, Comment, Subscribe", nil];
 }

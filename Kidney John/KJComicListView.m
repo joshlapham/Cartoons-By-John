@@ -14,7 +14,7 @@
 #import "Models/KJComicFromParse.h"
 #import "MBProgressHUD.h"
 
-@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *comicImages;
@@ -153,6 +153,7 @@
     [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
     
 }
+
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake(20, 20, 20, 20);
@@ -188,6 +189,21 @@
     return cell;
 }
 
+#pragma mark - TESTING - swipe to next comic methods
+- (void)setupCollectionView
+{
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [flowLayout setMinimumInteritemSpacing:0.0f];
+    [flowLayout setMinimumLineSpacing:0.0f];
+    [self.collectionView setPagingEnabled:YES];
+    [self.collectionView setCollectionViewLayout:flowLayout];
+}
+
+//-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    return self.collectionView.frame.size;
+//}
+
 #pragma mark - Prepare for segue
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -210,10 +226,28 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Comix";
+    //self.title = @"Comix";
+    
+    // TESTING - navbar title
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor blackColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = @"Comix";
+    self.navigationItem.titleView = navLabel;
+    // END OF TESTING
     
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
-
+    
+    // TESTING - swipe to next comic
+    //[self setupCollectionView];
+    // END OF TESTING
+    
     // Register for notification when data fetch to Core Data has completed
     NSString *notificationName = @"KJComicDataFetchDidHappen";
     [[NSNotificationCenter defaultCenter] addObserver:self

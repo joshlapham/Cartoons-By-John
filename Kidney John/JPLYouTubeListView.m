@@ -66,8 +66,9 @@
     KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
     
     // Cell text
-    UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica" size:20];
-    cell.textLabel.font = cellTextFont;
+    //UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica" size:20];
+    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:22];
+    cell.textLabel.font = kjCustomFont;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     //cell.textLabel.lineBreakMode = YES;
@@ -75,8 +76,9 @@
     //[cell.textLabel sizeToFit];
     
     // Cell detail text
-    UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
-    cell.detailTextLabel.font = cellDetailTextFont;
+    //UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
+    UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
+    cell.detailTextLabel.font = kjCustomFontDetailText;
     cell.detailTextLabel.textColor = [UIColor grayColor];
     cell.detailTextLabel.numberOfLines = 0;
     //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
@@ -137,7 +139,31 @@
     self.clearsSelectionOnViewWillAppear = NO;
     
     // Set title
-    self.title = @"Videos";
+    //self.title = @"Videos";
+    
+    // TESTING - navbar title
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor blackColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = @"Videos";
+    self.navigationItem.titleView = navLabel;
+    // END OF TESTING
+    
+    // TESTING - tabbar font
+    for(UIViewController *tab in  self.tabBarController.viewControllers)
+        
+    {
+        [tab.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                [UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, nil]
+                                      forState:UIControlStateNormal];
+    }
+    // END OF TESTING
     
     // Set up NSNotification receiving
     NSString *notificationName = @"KJDataFetchDidHappen";
