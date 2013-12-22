@@ -133,6 +133,9 @@
         // Set image to be displayed
         self.comicImage.image = [UIImage imageWithContentsOfFile:self.filePath];
     }
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
@@ -151,7 +154,10 @@
     
     // Start progress
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"";
+    hud.labelText = @"Loading comic ...";
+    
+    // Show network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 #pragma mark - Init methods

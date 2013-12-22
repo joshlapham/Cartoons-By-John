@@ -41,6 +41,9 @@
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - Core Data methods
@@ -261,9 +264,12 @@
         comicResults = [[NSArray alloc] init];
         comicResults = [KJComic MR_findAll];
     } else {
+        // Show network activity monitor
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
         // Start progress
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"";
+        hud.labelText = @"Loading comix ...";
         
         [self callFetchMethod];
     }

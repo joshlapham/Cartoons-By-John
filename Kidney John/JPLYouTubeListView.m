@@ -36,6 +36,9 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     [[self tableView] reloadData];
+    
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - UITableView delegate methods

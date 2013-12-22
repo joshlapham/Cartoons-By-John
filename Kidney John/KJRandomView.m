@@ -46,6 +46,9 @@
     self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
     
     //[[self tableView] reloadData];
+    
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - Core Data methods
@@ -227,9 +230,12 @@
         
         self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
     } else {
+        // Show network activity monitor
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
         // Start progress
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"";
+        hud.labelText = @"Loading doodles ...";
         
         [self callFetchMethod];
     }
