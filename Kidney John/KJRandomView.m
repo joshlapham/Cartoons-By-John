@@ -49,6 +49,19 @@
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    // Display alert with instructions on how to use this screen on first load
+    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {
+        NSLog(@"RANDOM: instructions have not yet been shown to user; now displaying");
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Doodles"
+                                                     message:@"Swipe left to load a new random doodle."
+                                                    delegate:self
+                                           cancelButtonTitle:Nil
+                                           otherButtonTitles:@"OK", nil];
+        [av show];
+    } else {
+        NSLog(@"RANDOM: instructions HAVE been shown to user");
+    }
 }
 
 #pragma mark - Core Data methods
@@ -199,19 +212,6 @@
     navLabel.text = @"Doodles";
     self.navigationItem.titleView = navLabel;
     // END OF TESTING
-    
-    // Display alert with instructions on how to use this screen on first load
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {
-        NSLog(@"RANDOM: instructions have not yet been shown to user; now displaying");
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Doodles"
-                                                     message:@"Swipe left to load a new random doodle."
-                                                    delegate:self
-                                           cancelButtonTitle:Nil
-                                           otherButtonTitles:@"OK", nil];
-        [av show];
-    } else {
-        NSLog(@"RANDOM: instructions HAVE been shown to user");
-    }
     
     // Init swipe gesture recognizer for image view
     self.gestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
