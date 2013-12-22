@@ -370,7 +370,7 @@
         <scene sceneID="OAl-8g-JyG">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="crO-ni-vYh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="omK-4O-6RW" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" id="omK-4O-6RW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Comix" id="voB-Ex-cDg"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="S4J-fi-pnh">
@@ -378,6 +378,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="lcz-K4-TwN">
+                        <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="kRQ-jH-7Ji" kind="relationship" relationship="rootViewController" id="nWH-ql-3Cl"/>
                     </connections>

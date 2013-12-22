@@ -50,6 +50,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"moreDetailSegue"]) {
+        // Set this in every view controller so that the back button displays back instead of the root view controller name
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         KJMoreDetailView *destViewController = segue.destinationViewController;
         destViewController.nameFromList = [listItems objectAtIndex:indexPath.row];

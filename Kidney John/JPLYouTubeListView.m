@@ -121,6 +121,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"videoIdSegue"]) {
+        // Set this in every view controller so that the back button displays back instead of the root view controller name
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
         KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
