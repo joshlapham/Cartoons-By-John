@@ -65,6 +65,9 @@
     dispatch_async(defaultQueue, ^{
         NSLog(@"PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
         
+        // Show network activity monitor
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
         // Setup query
         PFQuery *query = [KJVideoFromParse query];
         
@@ -103,6 +106,9 @@
             
             NSString *notificationName = @"KJDataFetchDidHappen";
             [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+            
+            // Hide network activity monitor
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -141,11 +147,15 @@
     //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     // Fetch initial data from Parse.com and persist to Core Data if app hasn't been loaded before
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"firstLoadDone"] isEqualToString:@"1"]) {
-        NSLog(@"DELEGATE: firstLoad has already been completed, assuming data is in Core Data already");
-    } else {
-        [self callFetchMethod];
-    }
+    // NOTE - disabled
+//    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"firstLoadDone"] isEqualToString:@"1"]) {
+//        NSLog(@"DELEGATE: firstLoad has already been completed, assuming data is in Core Data already");
+//    } else {
+//        [self callFetchMethod];
+//    }
+    
+    // Fetch data on every app launch
+    [self callFetchMethod];
     
     // Override point for customization after application launch.
     return YES;
