@@ -16,12 +16,15 @@
 @property (nonatomic, strong) NSURL *fileUrl;
 @property (nonatomic, strong) NSArray *dirArray;
 @property (nonatomic, strong) NSString *filePath;
+@property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic) float expectedLength;
+@property (nonatomic) float currentLength;
 
 @end
 
 @implementation KJComicDetailView
 
-@synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView;
+@synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView, hud, expectedLength, currentLength;
 
 #pragma mark - Comic Favourites methods
 - (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
@@ -122,6 +125,17 @@
 {
     //NSLog(@"COMIC DETAIL: did start receiving data");
     [self.fileData appendData:data];
+    
+    // Set HUD progress as data is received
+    currentLength += [data length];
+    hud.progress = currentLength / expectedLength;
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    // Init variables used to track comic download progress for HUD
+    expectedLength = [response expectedContentLength];
+    currentLength = 0;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -153,7 +167,8 @@
     [conn start];
     
     // Start progress
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeDeterminate;
     hud.labelText = @"Loading comic ...";
     
     // Show network activity monitor
