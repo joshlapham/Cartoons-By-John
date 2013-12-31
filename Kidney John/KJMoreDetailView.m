@@ -19,6 +19,7 @@
 @synthesize nameFromList, socialLinkView;
 
 #pragma mark - Load URL in web view method
+
 - (void)loadSocialMediaLink:(NSURL *)linkToLoad
 {
     NSLog(@"MORE DETAIL: requesting link - %@", linkToLoad);
@@ -27,6 +28,7 @@
 }
 
 #pragma mark - UIWebView delegate methods
+
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
     NSLog(@"MORE DETAIL: in webViewDidStart method");
@@ -44,6 +46,7 @@
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

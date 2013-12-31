@@ -11,7 +11,7 @@
 #import <Social/Social.h>
 #import "Models/KJVideo.h"
 
-@interface JPLYouTubeVideoView ()
+@interface JPLYouTubeVideoView () <UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *videoView;
 
@@ -21,10 +21,13 @@
 
 @synthesize videoIdFromList, videoTitleFromList;
 
+#pragma mark - HTML for YouTube webview
+
 // NOTE - autoplay is set in playerVars
 static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 0, showinfo: 0, rel: 0, modestbranding: 1, controls: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
 #pragma mark - Social media methods
+
 - (void)postToTwitter
 {
     SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
@@ -42,6 +45,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 }
 
 #pragma mark - Play video method
+
 - (void)playVideoWithId:(NSString *)videoId
 {
     //NSLog(@"VIDEO ID: %@", videoId);
@@ -58,6 +62,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 }
 
 #pragma mark - Video Favourites methods
+
 - (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot
 {
     // Get the local context
@@ -99,6 +104,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 }
 
 #pragma mark - Show UIActionSheet method
+
 - (void)showActionSheet:(id)sender
 {
     // Init strings for buttons
@@ -124,6 +130,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 }
 
 #pragma mark - UIActionSheet delegate methods
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonPressed = [actionSheet buttonTitleAtIndex:buttonIndex];
@@ -144,6 +151,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

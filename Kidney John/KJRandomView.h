@@ -10,6 +10,4 @@
 
 @interface KJRandomView : UIViewController
 
-@property (weak, nonatomic) IBOutlet UIImageView *randomImage;
-
 @end

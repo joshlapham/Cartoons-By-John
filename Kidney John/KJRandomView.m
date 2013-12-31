@@ -14,17 +14,20 @@
 
 @interface KJRandomView () <UIAlertViewDelegate>
 
-@property (nonatomic, strong) NSString *currentRandomImageUrl;
+@property (weak, nonatomic) IBOutlet UIImageView *randomImage;
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *gestureRecognizer;
-@property (nonatomic, strong) __block NSArray *randomImagesResults;
 
 @end
 
-@implementation KJRandomView
+@implementation KJRandomView {
+    __block NSArray *randomImagesResults;
+    NSString *currentRandomImageUrl;
+}
 
-@synthesize randomImage, randomImagesResults;
+@synthesize randomImage;
 
 #pragma mark - UIAlertView delegate methods
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
@@ -34,6 +37,7 @@
 }
 
 #pragma mark - Core Data did finish loading NSNotification
+
 - (void)randomImageFetchDidHappen
 {
     NSLog(@"DID RECEIVE NOTIFICATION THAT RANDOM IMAGE FETCH IS DONE");
@@ -65,6 +69,7 @@
 }
 
 #pragma mark - Core Data methods
+
 - (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
 {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
@@ -106,6 +111,7 @@
 }
 
 #pragma mark - Parse.com fetch method
+
 - (void)callFetchMethod
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -160,6 +166,7 @@
 }
 
 #pragma mark - Return random image from an array
+
 - (UIImage *)getRandomImageFromArray:(NSArray *)arrayToCheck
 {
     NSString *stringToReturn = [[NSString alloc] init];
@@ -172,15 +179,16 @@
         KJRandomImage *returnedRandomImage = [arrayToCheck objectAtIndex:randomIndex];
         stringToReturn = returnedRandomImage.imageUrl;
         imageToReturn = [UIImage imageWithData:returnedRandomImage.imageData];
-    } while ([stringToReturn isEqualToString:self.currentRandomImageUrl]);
+    } while ([stringToReturn isEqualToString:currentRandomImageUrl]);
     
     // Set last URL variable to the URL string we're using
-    self.currentRandomImageUrl = stringToReturn;
+    currentRandomImageUrl = stringToReturn;
     
     return imageToReturn;
 }
 
 #pragma mark - UISwipeGesture method
+
 - (void)swipeHandler:(UISwipeGestureRecognizer *)recognizer
 {
     NSLog(@"RANDOM: swipe received");
@@ -192,6 +200,7 @@
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

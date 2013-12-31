@@ -17,22 +17,22 @@
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, strong) NSMutableArray *comicImages;
-@property (nonatomic, strong) NSArray *comicThumbImages;
-@property (nonatomic, strong) NSArray *comicResults;
-@property (nonatomic, strong) NSMutableData *fileData;
-@property (nonatomic, strong) NSURL *fileUrl;
 
 @end
 
-@implementation KJComicListView
-
-@synthesize comicResults;
+@implementation KJComicListView {
+    NSMutableArray *comicImages;
+    NSArray *comicThumbImages;
+    NSArray *comicResults;
+    NSMutableData *fileData;
+    NSURL *fileUrl;
+}
 
 #pragma mark - Core Data did finish loading NSNotification
+
 - (void)comicDataFetchDidHappen
 {
-    NSLog(@"DID RECEIVE NOTIFICATION THAT COMIC THUMBNAIL FETCH IS DONE");
+    NSLog(@"COMICS LIST: did receive notification that comic thumbnail fetch is done, reloading view ..");
     comicResults = [[NSArray alloc] init];
     comicResults = [KJComic MR_findAll];
     
@@ -47,13 +47,14 @@
 }
 
 #pragma mark - Core Data methods
+
 - (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
 {
     if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:context]) {
-        NSLog(@"Yes, comic does exist in database");
+        NSLog(@"COMICS LIST: yes, comic does exist in database");
         return TRUE;
     } else {
-        NSLog(@"No, comic does NOT exist in database");
+        NSLog(@"COMICS LIST: no, comic does NOT exist in database");
         return FALSE;
     }
 }
@@ -86,6 +87,7 @@
 }
 
 #pragma mark - Fetch videos method
+
 - (void)callFetchMethod
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -150,6 +152,7 @@
 }
 
 #pragma mark - UICollectionView delegate methods
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"COMIC LIST: selected item - %ld", (long)indexPath.row);
@@ -164,7 +167,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [[self comicResults] count];
+    return [comicResults count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -193,6 +196,7 @@
 }
 
 #pragma mark - TESTING - swipe to next comic methods
+
 - (void)setupCollectionView
 {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -208,6 +212,7 @@
 //}
 
 #pragma mark - Prepare for segue
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"comicDetailSegue"]) {
@@ -228,6 +233,7 @@
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -282,7 +288,7 @@
 {
     [super didReceiveMemoryWarning];
     
-    self.comicThumbImages = nil;
+    comicThumbImages = nil;
 }
 
 @end

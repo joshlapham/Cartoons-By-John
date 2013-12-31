@@ -13,12 +13,14 @@
 @synthesize comicImageView;
 
 #pragma mark - Set thumbnail method
+
 - (void)setThumbImage:(NSString *)imageName
 {
     self.comicImageView.image = [UIImage imageWithContentsOfFile:imageName];
 }
 
 #pragma mark - Init methods
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

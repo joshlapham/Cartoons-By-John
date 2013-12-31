@@ -11,7 +11,6 @@
 @interface KJMoreDetailView : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIWebView *socialLinkView;
-
 @property (nonatomic, strong) NSString *nameFromList;
 
 @end

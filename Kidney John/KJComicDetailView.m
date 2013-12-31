@@ -10,23 +10,25 @@
 #import "MBProgressHUD.h"
 #import "Models/KJComic.h"
 
-@interface KJComicDetailView () <UIActionSheetDelegate>
+@interface KJComicDetailView () <UIActionSheetDelegate, UIScrollViewDelegate, NSURLConnectionDataDelegate>
 
-@property (nonatomic, strong) NSMutableData *fileData;
-@property (nonatomic, strong) NSURL *fileUrl;
-@property (nonatomic, strong) NSArray *dirArray;
-@property (nonatomic, strong) NSString *filePath;
 @property (nonatomic, strong) MBProgressHUD *hud;
-@property (nonatomic) float expectedLength;
-@property (nonatomic) float currentLength;
 
 @end
 
-@implementation KJComicDetailView
+@implementation KJComicDetailView {
+    NSMutableData *fileData;
+    NSURL *fileUrl;
+    NSArray *dirArray;
+    NSString *filePath;
+    float expectedLength;
+    float currentLength;
+}
 
-@synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView, hud, expectedLength, currentLength;
+@synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView, hud;
 
 #pragma mark - Comic Favourites methods
+
 - (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
 {
     // Get the local context
@@ -68,6 +70,7 @@
 }
 
 #pragma mark - Show UIActionSheet method
+
 - (void)showActionSheet:(id)sender
 {
     // Init strings for buttons
@@ -95,6 +98,7 @@
 }
 
 #pragma mark - UIActionSheet delegate methods
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonPressed = [actionSheet buttonTitleAtIndex:buttonIndex];
@@ -115,16 +119,18 @@
 }
 
 #pragma mark - UIScrollView delegate methods
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.comicImage;
 }
 
 #pragma mark - NSURLConnection Data delegate methods
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     //NSLog(@"COMIC DETAIL: did start receiving data");
-    [self.fileData appendData:data];
+    [fileData appendData:data];
     
     // Set HUD progress as data is received
     currentLength += [data length];
@@ -140,12 +146,12 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    if ([self.fileData writeToFile:self.filePath options:NSAtomicWrite error:Nil] == NO) {
+    if ([fileData writeToFile:filePath options:NSAtomicWrite error:Nil] == NO) {
         NSLog(@"COMIC DETAIL: WRITE TO FILE ERROR");
     } else {
         NSLog(@"COMIC DETAIL: FILE WRITTEN");
         // Set image to be displayed
-        self.comicImage.image = [UIImage imageWithContentsOfFile:self.filePath];
+        comicImage.image = [UIImage imageWithContentsOfFile:filePath];
     }
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -155,13 +161,14 @@
 }
 
 #pragma mark - Fetch comic image method
+
 - (void)fetchComicImage
 {
-    self.fileUrl = [NSURL URLWithString:nameFromList];
+    fileUrl = [NSURL URLWithString:nameFromList];
     
-    self.fileData = [NSMutableData data];
+    fileData = [NSMutableData data];
     
-    NSURLRequest *req = [NSURLRequest requestWithURL:[self fileUrl]];
+    NSURLRequest *req = [NSURLRequest requestWithURL:fileUrl];
     NSURLConnection *conn = [NSURLConnection connectionWithRequest:req delegate:self];
     [conn scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     [conn start];
@@ -176,6 +183,7 @@
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -209,16 +217,16 @@
     self.comicImage.frame = CGRectMake(0, 0, self.comicImage.image.size.width, self.comicImage.image.size.height);
     
     // Documents folder path
-    self.dirArray = [NSArray array];
-    self.dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    self.filePath = [NSString stringWithFormat:@"%@/%@.png", [self.dirArray objectAtIndex:0], fileNameFromList];
+    dirArray = [NSArray array];
+    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    filePath = [NSString stringWithFormat:@"%@/%@.png", [dirArray objectAtIndex:0], fileNameFromList];
     //NSLog(@"%@", [self.dirArray objectAtIndex:0]);
     
     // Check if comic file exists, if not then fetch
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:self.filePath];
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     if (fileExists) {
         NSLog(@"COMIC DETAIL: comic image file already found, using that");
-        self.comicImage.image = [UIImage imageWithContentsOfFile:self.filePath];
+        self.comicImage.image = [UIImage imageWithContentsOfFile:filePath];
     } else {
         NSLog(@"COMIC DETAIL: comic image file NOT found, fetching ..");
         [self fetchComicImage];

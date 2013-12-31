@@ -14,6 +14,8 @@
 
 @implementation KJTabBarController
 
+#pragma mark - Init methods
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

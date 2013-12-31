@@ -10,15 +10,16 @@
 #import "KJFavouritesListView.h"
 #import "KJMoreListView.h"
 
-@interface KJMoreInitialView ()
-
-@property (nonatomic, strong) NSArray *cellArray;
+@interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 
 @end
 
-@implementation KJMoreInitialView
+@implementation KJMoreInitialView {
+    NSArray *cellArray;
+}
 
 #pragma mark - Table view data source
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -28,7 +29,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [[self cellArray] count];
+    return [cellArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -41,7 +42,7 @@
     }
     
     // Configure the cell...
-    cell.textLabel.text = [[self cellArray] objectAtIndex:indexPath.row];
+    cell.textLabel.text = [cellArray objectAtIndex:indexPath.row];
     // Custom font
     UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     cell.textLabel.font = kjCustomFont;
@@ -66,6 +67,7 @@
 }
 
 #pragma mark - Prepare for segue
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Set this in every view controller so that the back button displays back instead of the root view controller name
@@ -73,6 +75,7 @@
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -96,7 +99,7 @@
     self.navigationItem.titleView = navLabel;
     // END OF TESTING
     
-    self.cellArray = [NSArray arrayWithObjects:@"Favourites List", @"Like, Comment, Subscribe", nil];
+    cellArray = [NSArray arrayWithObjects:@"Favourites List", @"Like, Comment, Subscribe", nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,7 +107,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     
-    self.cellArray = nil;
+    cellArray = nil;
 }
 
 @end

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KJFavouritesListView : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+@interface KJFavouritesListView : UITableViewController
 
 @end

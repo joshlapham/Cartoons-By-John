@@ -12,16 +12,14 @@
 
 @interface KJComicGalleryView () <MWPhotoBrowserDelegate>
 
-@property (nonatomic, strong) NSArray *comicResults;
-@property (nonatomic, strong) NSMutableArray *comicThumbResults;
-@property (nonatomic, strong) NSMutableArray *comicsForBrowser;
-@property (nonatomic, strong) MWPhotoBrowser *browser;
-
 @end
 
-@implementation KJComicGalleryView
-
-@synthesize comicResults, comicThumbResults, comicsForBrowser, browser;
+@implementation KJComicGalleryView {
+    NSArray *comicResults;
+    NSMutableArray *comicThumbResults;
+    NSMutableArray *comicsForBrowser;
+    MWPhotoBrowser *browser;
+}
 
 #pragma mark Set up browser methods
 
@@ -62,9 +60,9 @@
     [browser reloadData];
     
     // Present
-    [self addChildViewController:self.browser];
-    [[self view] addSubview:[self.browser view]];
-    [self.browser didMoveToParentViewController:self];
+    [self addChildViewController:browser];
+    [[self view] addSubview:[browser view]];
+    [browser didMoveToParentViewController:self];
 }
 
 #pragma mark MWPhotoBrowser delegate methods

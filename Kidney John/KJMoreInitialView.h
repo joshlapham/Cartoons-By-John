@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KJMoreInitialView : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface KJMoreInitialView : UITableViewController
 
 @end

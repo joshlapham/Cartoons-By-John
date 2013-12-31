@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JPLYouTubeListView : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface JPLYouTubeListView : UITableViewController
 
 @end

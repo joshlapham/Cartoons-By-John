@@ -13,17 +13,14 @@
 #import "Models/KJVideoFromParse.h"
 #import "Parse.h"
 
-@interface JPLYouTubeListView () <UISearchDisplayDelegate>
-
-@property (nonatomic, strong) __block NSArray *videoResults;
+@interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end
 
 @implementation JPLYouTubeListView {
+    __block NSArray *videoResults;
     NSArray *searchResults;
 }
-
-@synthesize videoResults;
 
 #pragma mark - UISearchBar methods
 

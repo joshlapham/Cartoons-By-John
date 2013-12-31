@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KJComicDetailView : UIViewController <UIScrollViewDelegate, NSURLConnectionDataDelegate>
+@interface KJComicDetailView : UIViewController
 
 @property (nonatomic, weak) NSString *nameFromList;
 @property (nonatomic, weak) NSString *titleFromList;

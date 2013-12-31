@@ -11,15 +11,14 @@
 
 @interface KJMoreListView ()
 
-@property (nonatomic, strong) NSArray *listItems;
-
 @end
 
-@implementation KJMoreListView
-
-@synthesize listItems;
+@implementation KJMoreListView {
+    NSArray *listItems;
+}
 
 #pragma mark - UITableView delegate methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -47,6 +46,7 @@
 }
 
 #pragma mark - Prepare for segue
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"moreDetailSegue"]) {
@@ -63,15 +63,13 @@
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // Preserve selection between presentations.
+    self.clearsSelectionOnViewWillAppear = NO;
     
     //self.title = @"Like, Comment, Subscribe";
     
