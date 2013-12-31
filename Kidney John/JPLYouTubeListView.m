@@ -1,6 +1,6 @@
 //
 //  JPLYouTubeListView.m
-//  YOUR_APP_NAME_HERE
+//  Kidney John
 //
 //  Created by jl on 16/11/13.
 //  Copyright (c) 2013 Josh Lapham. All rights reserved.
@@ -143,6 +143,11 @@
     }
     
     return cellHeightFloat;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 160;
 }
 
 #pragma mark - Prepare for segue
