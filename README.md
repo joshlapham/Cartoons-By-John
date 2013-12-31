@@ -16,17 +16,3 @@ An iOS app for animator [John Paine](http://kidneyjohn.com) that showcases his a
 * [Parse-iOS-SDK](https://parse.com)
 * [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
 * [MWPhotoBrowser](https://github.com/mwaterfall/MWPhotoBrowser)
-
-## Release Notes
-
-### Version 0.1.0
-
-- Added search to videos list
-- Fixed bug when viewing social media links that caused network activity monitor to remain displayed
-- Added README.md in preparation for GitHub
-- Misc. code cleanup on all files
-
-#### Known Bugs
-
-- App will crash if Favourites list is empty
-- Favourites button title does not update after clicking when viewing a comic
