@@ -11,6 +11,7 @@
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
 		687BC4451851DBDF00F45970 /* KJMoreDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC4441851DBDF00F45970 /* KJMoreDetailView.m */; };
+		688C3A75186FBD4F00E6B45C /* KJComicGalleryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688C3A74186FBD4F00E6B45C /* KJComicGalleryView.m */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
 		68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CD185B272A008D3E36 /* KJFavouritesListView.m */; };
 		68E461D0185B4BD5008D3E36 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E461CF185B4BD5008D3E36 /* Social.framework */; };
@@ -63,6 +64,8 @@
 		687BC378184EB75500F45970 /* KJComicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicDetailView.m; sourceTree = "<group>"; };
 		687BC4431851DBDF00F45970 /* KJMoreDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreDetailView.h; sourceTree = "<group>"; };
 		687BC4441851DBDF00F45970 /* KJMoreDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreDetailView.m; sourceTree = "<group>"; };
+		688C3A73186FBD4F00E6B45C /* KJComicGalleryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicGalleryView.h; sourceTree = "<group>"; };
+		688C3A74186FBD4F00E6B45C /* KJComicGalleryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicGalleryView.m; sourceTree = "<group>"; };
 		68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreInitialView.h; sourceTree = "<group>"; };
 		68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreInitialView.m; sourceTree = "<group>"; };
 		68E461CC185B272A008D3E36 /* KJFavouritesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJFavouritesListView.h; sourceTree = "<group>"; };
@@ -184,6 +187,8 @@
 				68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */,
 				68E48D66184C20A500600FA5 /* KJComicListView.h */,
 				68E48D67184C20A500600FA5 /* KJComicListView.m */,
+				688C3A73186FBD4F00E6B45C /* KJComicGalleryView.h */,
+				688C3A74186FBD4F00E6B45C /* KJComicGalleryView.m */,
 				687BC372184D9C8900F45970 /* KJComicCell.h */,
 				687BC373184D9C8900F45970 /* KJComicCell.m */,
 				687BC377184EB75500F45970 /* KJComicDetailView.h */,
@@ -242,13 +247,13 @@
 		68E48D5F184C062F00600FA5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */,
 				68E461EE1860BCEA008D3E36 /* KJRandomImageFromParse.h */,
 				68E461EF1860BCEA008D3E36 /* KJRandomImageFromParse.m */,
 				68E461E8186078CA008D3E36 /* KJVideoFromParse.h */,
 				68E461E9186078CA008D3E36 /* KJVideoFromParse.m */,
 				68E461F71860D2EF008D3E36 /* KJComicFromParse.h */,
 				68E461F81860D2EF008D3E36 /* KJComicFromParse.m */,
-				68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */,
 				68E461FA1860D35F008D3E36 /* KJComic.h */,
 				68E461FB1860D35F008D3E36 /* KJComic.m */,
 				68E461F11860BD94008D3E36 /* KJRandomImage.h */,
@@ -396,6 +401,7 @@
 			files = (
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
 				687BC374184D9C8900F45970 /* KJComicCell.m in Sources */,
+				688C3A75186FBD4F00E6B45C /* KJComicGalleryView.m in Sources */,
 				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
 				68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */,

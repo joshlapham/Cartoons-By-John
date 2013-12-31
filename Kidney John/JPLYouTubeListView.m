@@ -7,27 +7,45 @@
 //
 
 #import "JPLYouTubeListView.h"
-#import "GTLYouTube.h"
 #import "JPLYouTubeVideoView.h"
 #import "MBProgressHUD.h"
 #import "Models/KJVideo.h"
 #import "Models/KJVideoFromParse.h"
 #import "Parse.h"
 
-@interface JPLYouTubeListView ()
+@interface JPLYouTubeListView () <UISearchDisplayDelegate>
 
 @property (nonatomic, strong) __block NSArray *videoResults;
 
 @end
 
-@implementation JPLYouTubeListView
+@implementation JPLYouTubeListView {
+    NSArray *searchResults;
+}
 
 @synthesize videoResults;
 
+#pragma mark - UISearchBar methods
+
+- (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope
+{
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"self.videoName CONTAINS[cd] %@", searchText];
+    
+    searchResults = [videoResults filteredArrayUsingPredicate:resultPredicate];
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString scope:[[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+    
+    return YES;
+}
+
 #pragma mark - Core Data did finish loading NSNotification
+
 - (void)dataFetchDidFinish
 {
-    NSLog(@"DID RECEIVE NOTIFICATION THAT DATA FETCH IS DONE, RELOADING TABLE ..");
+    NSLog(@"VIDEO LIST: did receive notification that data fetch is complete, reloading table ..");
     // Sort videos with newest at top
     videoResults = [[NSArray alloc] init];
     videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
@@ -42,6 +60,7 @@
 }
 
 #pragma mark - UITableView delegate methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -50,23 +69,32 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    
-    // CORE DATA
-    return [videoResults count];
+    // Check if this is the video list or the search list
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [searchResults count];
+    } else {
+        return [videoResults count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"videoResultCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    // Configure the cell...
-    KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
+    // Init the cell
+    KJVideo *cellVideo;
+    
+    // Check if this is the video list or the search results list
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        cellVideo = [searchResults objectAtIndex:indexPath.row];
+    } else {
+        cellVideo = [videoResults objectAtIndex:indexPath.row];
+    }
     
     // Cell text
     //UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica" size:20];
@@ -118,25 +146,33 @@
 }
 
 #pragma mark - Prepare for segue
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"videoIdSegue"]) {
         // Set this in every view controller so that the back button displays back instead of the root view controller name
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSIndexPath *indexPath;
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
-        KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
-
-        destViewController.videoIdFromList = cellVideo.videoId;
-        destViewController.videoTitleFromList = cellVideo.videoName;
+        KJVideo *cellVideo;
         
-        // Hide tabbar on detail view
-        //destViewController.hidesBottomBarWhenPushed = YES;
+        if ([self.searchDisplayController isActive]) {
+            indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+            cellVideo = [searchResults objectAtIndex:indexPath.row];
+            destViewController.videoIdFromList = cellVideo.videoId;
+            destViewController.videoTitleFromList = cellVideo.videoName;
+        } else {
+            indexPath = [self.tableView indexPathForSelectedRow];
+            cellVideo = [videoResults objectAtIndex:indexPath.row];
+            destViewController.videoIdFromList = cellVideo.videoId;
+            destViewController.videoTitleFromList = cellVideo.videoName;
+        }
     }
 }
 
 #pragma mark - Init methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -147,7 +183,7 @@
     // Set title
     //self.title = @"Videos";
     
-    // TESTING - navbar title
+    // Set navbar title
     int height = self.navigationController.navigationBar.frame.size.height;
     int width = self.navigationController.navigationBar.frame.size.width;
     
@@ -159,9 +195,8 @@
     navLabel.textAlignment = NSTextAlignmentCenter;
     navLabel.text = @"Videos";
     self.navigationItem.titleView = navLabel;
-    // END OF TESTING
     
-    // TESTING - tabbar font
+    // Set font on tabbar
     for(UIViewController *tab in  self.tabBarController.viewControllers)
         
     {
@@ -169,7 +204,6 @@
                                                 [UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, nil]
                                       forState:UIControlStateNormal];
     }
-    // END OF TESTING
     
     // Set up NSNotification receiving
     NSString *notificationName = @"KJDataFetchDidHappen";
