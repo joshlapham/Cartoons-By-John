@@ -12,7 +12,9 @@
 
 @end
 
-@implementation KJMoreDetailView
+@implementation KJMoreDetailView {
+    NSURLRequest *req;
+}
 
 @synthesize nameFromList, socialLinkView;
 
@@ -20,7 +22,7 @@
 - (void)loadSocialMediaLink:(NSURL *)linkToLoad
 {
     NSLog(@"MORE DETAIL: requesting link - %@", linkToLoad);
-    NSURLRequest *req = [NSURLRequest requestWithURL:linkToLoad];
+    req = [NSURLRequest requestWithURL:linkToLoad];
     [self.socialLinkView loadRequest:req];
 }
 
@@ -96,9 +98,13 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [super viewDidDisappear:YES];
+    
     self.socialLinkView = nil;
     
-    [super viewDidDisappear:YES];
+    // Cancel URL request and stop network activity monitor
+    req = nil;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)didReceiveMemoryWarning
