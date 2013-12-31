@@ -7,6 +7,7 @@
 //
 
 #import "JPLYouTubeVideoView.h"
+#import "JPLYouTubeListView.h"
 #import "MBProgressHUD.h"
 #import <Social/Social.h>
 #import "Models/KJVideo.h"

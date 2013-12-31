@@ -10,8 +10,6 @@
 #import "JPLYouTubeVideoView.h"
 #import "MBProgressHUD.h"
 #import "Models/KJVideo.h"
-#import "Models/KJVideoFromParse.h"
-#import "Parse.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 

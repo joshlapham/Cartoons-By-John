@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JPLYouTubeListView.h"
 
 @interface JPLYouTubeVideoView : UIViewController
 

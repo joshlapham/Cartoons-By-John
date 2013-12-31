@@ -16,6 +16,7 @@
 @implementation KJAppDelegate
 
 #pragma mark - Core Data methods
+
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
@@ -59,6 +60,7 @@
 }
 
 #pragma mark - Fetch videos method
+
 - (void)callFetchMethod
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -119,6 +121,7 @@
 }
 
 #pragma mark - Init methods
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // MAGICAL RECORD
