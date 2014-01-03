@@ -129,39 +129,6 @@
         //NSString *sectionHeader = [[self allFavouritesResults] objectAtIndex:section];
         NSString *sectionHeader = [[NSString alloc] init];
         
-//        // TESTING
-//        if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-//            NSLog(@"is video");
-//            UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
-//            if (!videoCell) {
-//                videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
-//            }
-//            KJVideo *cellVideo = [sectionContents objectAtIndex:indexPath.row];
-//            videoCell.textLabel.text = cellVideo.videoName;
-//            //videoCell.detailTextLabel.text = @"Video";
-//            return videoCell;
-//        } else if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
-//            NSLog(@"is comic");
-//            UITableViewCell *comicCell = [tableView dequeueReusableCellWithIdentifier:comicCellIdentifier forIndexPath:indexPath];
-//            if (!comicCell) {
-//                comicCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
-//            }
-//            KJComic *cellComic = [sectionContents objectAtIndex:indexPath.row];
-//            comicCell.textLabel.text = cellComic.comicName;
-//            //comicCell.detailTextLabel.text = @"Comic";
-//            return comicCell;
-//        } else {
-//            // Change this 'cause it's bad code
-//            UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
-//            if (!videoCell) {
-//                videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
-//            }
-//            return videoCell;
-//        }
-//        //END OF TESTING
-        
-        
-        
         if (section == 0) {
             sectionHeader = @"Videos";
         } else if (section == 1) {
@@ -183,44 +150,52 @@
     static NSString *comicCellIdentifier = @"comicCell";
     
     // Configure the cell...
-    
-    // TESTING
     // Custom font
     UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     
-    if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-        NSLog(@"is video");
-        UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
-        if (!videoCell) {
-            videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
-        }
-        KJVideo *cellVideo = [sectionContents objectAtIndex:indexPath.row];
-        videoCell.textLabel.text = cellVideo.videoName;
-        // Custom font
-        videoCell.textLabel.font = kjCustomFont;
-        //videoCell.detailTextLabel.text = @"Video";
-        return videoCell;
-    } else if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
-        NSLog(@"is comic");
-        UITableViewCell *comicCell = [tableView dequeueReusableCellWithIdentifier:comicCellIdentifier forIndexPath:indexPath];
-        if (!comicCell) {
-            comicCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
-        }
-        KJComic *cellComic = [sectionContents objectAtIndex:indexPath.row];
-        comicCell.textLabel.text = cellComic.comicName;
-        // Custom font
-        comicCell.textLabel.font = kjCustomFont;
-        //comicCell.detailTextLabel.text = @"Comic";
-        return comicCell;
-    } else {
+    // Check sectionContents array and if there is no count, then create a videoCell
+    // This if statement will fire if there are no Favourited items
+    if (![sectionContents count]) {
         // Change this 'cause it's bad code
         UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
         if (!videoCell) {
             videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
         }
         return videoCell;
+    } else {
+        if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
+            NSLog(@"is video");
+            UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
+            if (!videoCell) {
+                videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
+            }
+            KJVideo *cellVideo = [sectionContents objectAtIndex:indexPath.row];
+            videoCell.textLabel.text = cellVideo.videoName;
+            // Custom font
+            videoCell.textLabel.font = kjCustomFont;
+            //videoCell.detailTextLabel.text = @"Video";
+            return videoCell;
+        } else if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
+            NSLog(@"is comic");
+            UITableViewCell *comicCell = [tableView dequeueReusableCellWithIdentifier:comicCellIdentifier forIndexPath:indexPath];
+            if (!comicCell) {
+                comicCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
+            }
+            KJComic *cellComic = [sectionContents objectAtIndex:indexPath.row];
+            comicCell.textLabel.text = cellComic.comicName;
+            // Custom font
+            comicCell.textLabel.font = kjCustomFont;
+            //comicCell.detailTextLabel.text = @"Comic";
+            return comicCell;
+        } else {
+            // Change this 'cause it's bad code
+            UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
+            if (!videoCell) {
+                videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
+            }
+            return videoCell;
+        }
     }
-    //END OF TESTING
 }
 
 #pragma mark - Prepare for segue
@@ -278,12 +253,6 @@
     // END OF TESTING
     
     //[self getFavourites];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewWillAppear:(BOOL)animated
