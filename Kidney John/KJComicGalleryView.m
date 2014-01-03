@@ -106,9 +106,17 @@
 
 #pragma mark Init methods
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Hide the status bar
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
     [self setupComicsBrowser];
 }
