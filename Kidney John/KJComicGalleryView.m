@@ -10,7 +10,7 @@
 #import "MWPhotoBrowser.h"
 #import "Models/KJComic.h"
 
-@interface KJComicGalleryView () <MWPhotoBrowserDelegate>
+@interface KJComicGalleryView () <MWPhotoBrowserDelegate, UIActionSheetDelegate>
 
 @end
 
@@ -101,6 +101,58 @@
         return [comicsForBrowser objectAtIndex:index];
     } else {
         return nil;
+    }
+}
+
+- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index
+{
+    // Init strings for buttons
+    NSString *favouritesString = @"";
+    //NSString *other2 = @"Share on Facebook";
+    //NSString *other3 = @"Share on Twitter";
+    NSString *cancelTitle = @"Cancel";
+    //NSString *actionSheetTitle = @"Action";
+    //NSString *destructiveTitle = @"Destructive button";
+    
+    // Set Favourites button text accordingly
+    // NOTE - this needs to be reviewed
+    // Current just setting this to 'Add to Favourites' for testing purposes
+//    if (![self checkIfComicIsAFavourite:titleFromList]) {
+//        favouritesString = @"Add to Favourites";
+//    } else {
+//        favouritesString = @"Remove from Favourites";
+//    }
+    favouritesString = @"Add to Favourites";
+    
+    // Init action sheet with Favourites and Share buttons
+    // NOTE - no FB/Twitter share is enabled for Comics right now
+    //UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, other2, other3, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:favouritesString, nil];
+    
+    // Add action sheet to view, taking in consideration the tab bar
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+#pragma mark - UIActionSheet delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonPressed = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    // NOTE - to be reviewed
+    // reused code from another class
+    if ([buttonPressed isEqualToString:@"Add to Favourites"]) {
+        NSLog(@"ACTION SHEET: add to favourites was pressed");
+        //[self updateComicFavouriteStatus:titleFromList isFavourite:YES];
+    } else if ([buttonPressed isEqualToString:@"Remove from Favourites"]) {
+        NSLog(@"ACTION SHEET: remove from favourites was pressed");
+        //[self updateComicFavouriteStatus:titleFromList isFavourite:NO];
+    } else if ([buttonPressed isEqualToString:@"Share on Twitter"]) {
+        NSLog(@"ACTION SHEET: share on twitter button pressed");
+        //[self postToTwitter];
+    } else if ([buttonPressed isEqualToString:@"Share on Facebook"]) {
+        NSLog(@"ACTION SHEET: share on facebook button pressed");
+        //[self postToFacebook];
     }
 }
 
