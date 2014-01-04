@@ -232,7 +232,7 @@
                                 </connections>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                        <color key="backgroundColor" red="0.0" green="0.14117647707462311" blue="0.32156863808631897" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="qtL-qt-bGu"/>
                     <connections>
@@ -472,7 +472,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="4AY-m0-ka1">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="dlh-uY-0Ak" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="dlh-uY-0Ak" customClass="KJTabBarController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="TQU-zQ-cwd">

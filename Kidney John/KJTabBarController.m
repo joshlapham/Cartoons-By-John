@@ -8,33 +8,29 @@
 
 #import "KJTabBarController.h"
 
-@interface KJTabBarController ()
+@interface KJTabBarController () <UITabBarControllerDelegate>
 
 @end
 
 @implementation KJTabBarController
 
-#pragma mark - Init methods
+#pragma mark - UITabBarController delegate methods
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    NSLog(@"TABBAR: did select view: %@", [viewController class]);
 }
+
+#pragma mark - Init methods
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    self.delegate = self;
+    
+    // Set tabbar font
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
 
 @end
