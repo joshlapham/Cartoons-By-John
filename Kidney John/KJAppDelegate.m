@@ -15,6 +15,14 @@
 
 @implementation KJAppDelegate
 
+#pragma mark - UI methods
+
+- (void)setupUI
+{
+    // Set navbar colour
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
+}
+
 #pragma mark - Core Data methods
 
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
@@ -124,6 +132,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Customize UI
+    [self setupUI];
+    
     // MAGICAL RECORD
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"kj.sqlite"];
     

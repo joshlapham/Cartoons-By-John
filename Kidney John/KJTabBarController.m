@@ -29,6 +29,9 @@
     
     self.delegate = self;
     
+    // Set tabbar background colour to #003366
+    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
+    
     // Set tabbar font
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
