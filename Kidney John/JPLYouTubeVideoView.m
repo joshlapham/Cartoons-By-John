@@ -198,6 +198,9 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     [super viewDidDisappear:YES];
     
     self.videoView = nil;
+    
+    // Go back to video list if changing views
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)didReceiveMemoryWarning
