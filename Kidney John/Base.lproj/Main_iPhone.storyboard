@@ -308,9 +308,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="suh-0V-dCd" kind="push" identifier="moreDetailSegue" id="0un-Um-IyH"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -366,11 +363,11 @@
                         <viewControllerLayoutGuide type="bottom" id="UAN-Pd-bKM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="iEn-bj-F2j">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Lf-mu-f2t">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
