@@ -15,6 +15,15 @@
 
 @implementation KJAppDelegate
 
+#pragma mark - UI methods
+
+- (void)setupUI
+{
+    // Customize tabbar
+    //[[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, nil] forState:UIControlStateNormal];
+}
+
 #pragma mark - Core Data methods
 
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
@@ -124,6 +133,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Call setup UI method for UI customization
+    [self setupUI];
+    
     // MAGICAL RECORD
     [MagicalRecord setupCoreDataStackWithStoreNamed:@"kj.sqlite"];
     

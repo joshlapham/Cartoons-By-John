@@ -196,15 +196,6 @@
     navLabel.text = @"Videos";
     self.navigationItem.titleView = navLabel;
     
-    // Set font on tabbar
-    for(UIViewController *tab in  self.tabBarController.viewControllers)
-        
-    {
-        [tab.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                [UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, nil]
-                                      forState:UIControlStateNormal];
-    }
-    
     // Set up NSNotification receiving
     NSString *notificationName = @"KJDataFetchDidHappen";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataFetchDidFinish) name:notificationName object:nil];
