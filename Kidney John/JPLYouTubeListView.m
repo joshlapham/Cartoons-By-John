@@ -79,6 +79,11 @@
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        // Extend line seperator between list items to edge of screen
+        if ([cell respondsToSelector:@selector(separatorInset)]) {
+            cell.separatorInset = UIEdgeInsetsZero;
+        }
     }
     
     // Init the cell
@@ -182,6 +187,11 @@
     
     // Set title
     //self.title = @"Videos";
+    
+    // Extend line seperator between list items to edge of screen
+    if ([self.tableView respondsToSelector:@selector(separatorInset)]) {
+        self.tableView.separatorInset = UIEdgeInsetsZero;
+    }
     
     // Set navbar title
     int height = self.navigationController.navigationBar.frame.size.height;

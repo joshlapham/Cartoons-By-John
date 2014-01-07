@@ -2,5 +2,5 @@
 *.swp
 Pods/
 Podfile.lock
-Kidney John.xcworkspace/xcuserdata/jl.xcuserdatad/UserInterfaceState.xcuserstate
 kjconfig.json
+Kidney John.xcworkspace
