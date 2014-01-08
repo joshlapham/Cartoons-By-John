@@ -221,6 +221,10 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = @"Loading videos ...";
     }
+    
+    // Set prompt text for UISearchBar
+    // NOTE: disabled for now, as the prompt has since been setup in Storyboard
+    //self.searchDisplayController.searchBar.prompt = @"Type a video name";
 }
 
 @end
