@@ -14,6 +14,7 @@
 #import "Models/KJRandomImageFromParse.h"
 #import "Models/KJRandomImage.h"
 #import "Models/KJComic.h"
+#import "MBProgressHUD.h"
 
 @implementation KJAppDelegate
 
@@ -143,6 +144,10 @@
         newComic.comicData = comicData;
         newComic.comicThumbData = comicThumbData;
         newComic.comicFileName = comicFileName;
+        
+        // Set comic file data from comicData string
+        NSURL *comicDataUrl = [NSURL URLWithString:comicData];
+        newComic.comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
         
         // DEBUGGING
         NSLog(@"CORE DATA: %@", newComic.comicData);
@@ -330,6 +335,13 @@
 {
     // Show network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    // Show progress
+    // NOTE - not working
+    // Review which view to add this to since it's called from the app delegate
+//    UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:window animated:YES];
+//    hud.labelText = @"Loading new stuff ...";
     
     // Call data fetch methods for video and doodles
     [self callVideoFetchMethod];

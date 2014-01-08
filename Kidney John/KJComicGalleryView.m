@@ -56,7 +56,10 @@
         // NOTE - using thumbnails for now
         // would have to check filepath for full-size comics
         // refer to KJComicListView for filepath checking
-        [comicsForBrowser addObject:[MWPhoto photoWithImage:[UIImage imageWithData:comic.comicThumbData]]];
+        
+        //NSURL *comicDataUrl = [NSURL URLWithString:comic.comicData];
+        //NSData *comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
+        [comicsForBrowser addObject:[MWPhoto photoWithImage:[UIImage imageWithData:comic.comicFileData]]];
         NSLog(@"comic file name: %@", comic.comicFileName);
     }
     

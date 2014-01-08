@@ -219,8 +219,9 @@
         videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     } else {
         // Show progress
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"Loading videos ...";
+        // DISABLED - moved to app delegate data fetch method
+        //MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        //hud.labelText = @"Loading videos ...";
     }
     
     // Set prompt text for UISearchBar
