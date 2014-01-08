@@ -30,6 +30,9 @@
     // Create browser
     browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
     
+    // TESTING - navbar colour
+    //browser.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
+    
     // Set options
     browser.displayActionButton = YES;
     browser.displayNavArrows = YES;
@@ -169,15 +172,33 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    // Navbar title label init
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    //self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    // Set title text colour
+    navLabel.textColor = [UIColor whiteColor];
+    // Set title
+    navLabel.text = @"Comix";
+    self.navigationItem.titleView = navLabel;
+    
     // Hide the status bar
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    // TESTING
+    [[self navigationController] setHidesBottomBarWhenPushed:YES];
     
     [self setupComicsBrowser];
 }

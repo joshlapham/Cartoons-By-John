@@ -41,11 +41,27 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    // Configure the cell...
+    // Set the cell text
     cell.textLabel.text = [cellArray objectAtIndex:indexPath.row];
-    // Custom font
+    
+    // Set custom font
     UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     cell.textLabel.font = kjCustomFont;
+    
+    // Set image to show next to item
+    switch (indexPath.row) {
+        case 0:
+            // set Favourites icon here
+            //cell.imageView.image = something something
+            break;
+            
+        case 1:
+            // set Social Media icon here
+            break;
+            
+        default:
+            break;
+    }
     
     return cell;
 }
@@ -85,19 +101,17 @@
     
     //self.title = @"More";
     
-    // TESTING - navbar title
+    // Init navbar title label
     int height = self.navigationController.navigationBar.frame.size.height;
     int width = self.navigationController.navigationBar.frame.size.width;
-    
     UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.textColor = [UIColor blackColor];
+    navLabel.textColor = [UIColor whiteColor];
     navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
     navLabel.textAlignment = NSTextAlignmentCenter;
     navLabel.text = @"More";
     self.navigationItem.titleView = navLabel;
-    // END OF TESTING
     
     cellArray = [NSArray arrayWithObjects:@"Favourites List", @"Like, Comment, Subscribe", nil];
 }

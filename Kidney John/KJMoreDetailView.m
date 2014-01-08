@@ -54,23 +54,20 @@
     
     //self.title = nameFromList;
     
-    // TESTING - navbar title
+    // Init navbar title label
     int height = self.navigationController.navigationBar.frame.size.height;
     int width = self.navigationController.navigationBar.frame.size.width;
-    
     UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.textColor = [UIColor blackColor];
+    navLabel.textColor = [UIColor whiteColor];
     navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
     navLabel.textAlignment = NSTextAlignmentCenter;
     navLabel.text = nameFromList;
     self.navigationItem.titleView = navLabel;
-    // END OF TESTING
     
-    // TESTING - webview delegate
+    // Set webview delegate
     socialLinkView.delegate = self;
-    // END OF TESTING
     
     if ([nameFromList isEqualToString:@"Facebook"]) {
         NSLog(@"MORE DETAIL: Facebook");

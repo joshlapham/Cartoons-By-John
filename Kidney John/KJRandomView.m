@@ -16,6 +16,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *randomImage;
 @property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *gestureRecognizer;
+@property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
 
 @end
 
@@ -24,7 +25,7 @@
     NSString *currentRandomImageUrl;
 }
 
-@synthesize randomImage;
+@synthesize randomImage, instructionLabel;
 
 #pragma mark - UIAlertView delegate methods
 
@@ -208,19 +209,22 @@
     
     //self.title = @"Doodles";
     
-    // TESTING - navbar title
+    // Init navbar title label
     int height = self.navigationController.navigationBar.frame.size.height;
     int width = self.navigationController.navigationBar.frame.size.width;
-    
     UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.textColor = [UIColor blackColor];
+    navLabel.textColor = [UIColor whiteColor];
     navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
     navLabel.textAlignment = NSTextAlignmentCenter;
     navLabel.text = @"Doodles";
     self.navigationItem.titleView = navLabel;
-    // END OF TESTING
+    
+    // Instruction label init
+    instructionLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:16];
+    instructionLabel.textColor = [UIColor lightGrayColor];
+    instructionLabel.text = @"Swipe To Load a Random Doodle";
     
     // Init swipe gesture recognizer for image view
     self.gestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
