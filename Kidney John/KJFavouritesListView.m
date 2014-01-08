@@ -21,6 +21,9 @@
     NSArray *videoFavouritesResults;
     NSArray *comicFavouritesResults;
     BOOL areThereAnyFavourites;
+    BOOL videoSectionHeaderToShow;
+    BOOL comicsSectionHeaderToShow;
+    BOOL bothSectionHeadersToShow;
 }
 
 @synthesize allFavouritesResults;
@@ -74,6 +77,13 @@
                                            cancelButtonTitle:Nil
                                            otherButtonTitles:@"OK", nil];
         [av show];
+        
+        // Just for fun
+        // Be sure to include AVFoundation framework in project and import in this file
+        //NSString *say = @"There are no favorites.";
+        //AVSpeechSynthesizer *synth = [[AVSpeechSynthesizer alloc] init];
+        //AVSpeechUtterance *utter = [AVSpeechUtterance speechUtteranceWithString:say];
+        //[synth speakUtterance:utter];
     }
 }
 
@@ -90,16 +100,31 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    //return 1;
     if (areThereAnyFavourites) {
+        NSInteger videoSection = [videoFavouritesResults count];
+        NSInteger comicsSection = [comicFavouritesResults count];
         
+        // Return the appropriate amount of sections depending on video or comic results
+        // REVIEW: this if statement could be better
+        if (videoSection > 0 && comicsSection > 0) {
+            NSLog(@"FAVOURITES: there are two sections to show");
+            bothSectionHeadersToShow = YES;
+            return 2;
+        } else if (videoSection > 0 && comicsSection == 0) {
+            NSLog(@"FAVOURITES: video section to show");
+            videoSectionHeaderToShow = YES;
+            return 1;
+        } else if (videoSection == 0 && comicsSection > 0) {
+            NSLog(@"FAVOURITES: comics section to show");
+            comicsSectionHeaderToShow = YES;
+            return 1;
+        } else {
+            NSLog(@"FAVOURITES: no sections to show? setting to 1");
+            // REVIEW: setting this BOOL
+            bothSectionHeadersToShow = YES;
+            return 1;
+        }
         
-        NSInteger sections = [[self allFavouritesResults] count];
-        // DEBUGGING
-        NSLog(@"FAVOURITES: sections count: %lu", (unsigned long)[[self allFavouritesResults] count]);
-        
-        return sections;
     } else {
         return 1;
     }
@@ -126,15 +151,26 @@
     if (areThereAnyFavourites) {
         NSLog(@"FAVOURITES: in titleForHeaderSection method");
         NSLog(@"FAVOURITES: header to return: %@", [[self allFavouritesResults] objectAtIndex:section]);
-        //NSString *sectionHeader = [[self allFavouritesResults] objectAtIndex:section];
+        
         NSString *sectionHeader = [[NSString alloc] init];
         
-        if (section == 0) {
+        if (bothSectionHeadersToShow) {
+            if (section == 0) {
+                sectionHeader = @"Videos";
+            } else if (section == 1) {
+                sectionHeader = @"Comics";
+            }
+            return sectionHeader;
+        } else if (videoSectionHeaderToShow) {
             sectionHeader = @"Videos";
-        } else if (section == 1) {
+            return sectionHeader;
+        } else if (comicsSectionHeaderToShow) {
             sectionHeader = @"Comics";
+            return sectionHeader;
+        } else {
+            return nil;
         }
-        return sectionHeader;
+
     } else {
         return nil;
     }

@@ -21,7 +21,7 @@
     MWPhotoBrowser *browser;
 }
 
-#pragma mark Set up browser methods
+#pragma mark - Set up browser methods
 
 - (void)setupComicsBrowser
 {
@@ -74,11 +74,12 @@
     
     // Present browser
     [self addChildViewController:browser];
+    //self.tabBarController.tabBar.hidden = YES;
     [[self view] addSubview:[browser view]];
     [browser didMoveToParentViewController:self];
 }
 
-#pragma mark MWPhotoBrowser delegate methods
+#pragma mark - MWPhotoBrowser delegate methods
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
 {
@@ -102,6 +103,14 @@
     } else {
         return nil;
     }
+}
+
+- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index
+{
+    //[self.tabBarController.tabBar setHidden:YES];
+    //self.tabBarController.hidesBottomBarWhenPushed = YES;
+    
+    //NSLog(@"DEBUG: my view controller is: %@", [[self view] class]);
 }
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index
@@ -156,7 +165,7 @@
     }
 }
 
-#pragma mark Init methods
+#pragma mark - Init methods
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -171,6 +180,13 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
     [self setupComicsBrowser];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    
+    //[self.tabBarController.tabBar setHidden:NO];
 }
 
 @end
