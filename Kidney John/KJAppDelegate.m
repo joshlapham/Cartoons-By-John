@@ -9,9 +9,10 @@
 #import "KJAppDelegate.h"
 #import "Parse.h"
 #import "Models/KJVideoFromParse.h"
-#import "Models/KJRandomImageFromParse.h"
 #import "Models/KJVideo.h"
 #import "Models/KJComicFromParse.h"
+#import "Models/KJRandomImageFromParse.h"
+#import "Models/KJRandomImage.h"
 
 @implementation KJAppDelegate
 
@@ -28,10 +29,10 @@
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
-        NSLog(@"Yes, video does exist in database");
+        //NSLog(@"Yes, video does exist in database");
         return TRUE;
     } else {
-        NSLog(@"No, video does NOT exist in database");
+        //NSLog(@"No, video does NOT exist in database");
         return FALSE;
     }
 }
@@ -67,16 +68,102 @@
     }
 }
 
-#pragma mark - Fetch videos method
+- (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
+{
+    if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
+        //NSLog(@"RANDOM: Yes, random image does exist in database");
+        return TRUE;
+    } else {
+        //NSLog(@"RANDOM: No, random image does NOT exist in database");
+        return FALSE;
+    }
+}
 
-- (void)callFetchMethod
+- (void)persistNewRandomImageWithId:(NSString *)imageId
+                        description:(NSString *)imageDescription
+                                url:(NSString *)imageUrl
+                               date:(NSString *)imageDate
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If doodle does not exist in database then persist
+    if (![self checkIfRandomImageIsInDatabaseWithImageUrl:imageUrl context:localContext]) {
+        // Create a new doodle in the current context
+        KJRandomImage *newRandomImage = [KJRandomImage MR_createInContext:localContext];
+        
+        // Set attributes
+        newRandomImage.imageId = imageId;
+        newRandomImage.imageDescription = imageDescription;
+        newRandomImage.imageUrl = imageUrl;
+        //newRandomImage.imageDate = imageDate;
+        // Thumbnails
+        NSURL *imageUrlToFetch = [NSURL URLWithString:imageUrl];
+        NSData *imageData = [NSData dataWithContentsOfURL:imageUrlToFetch];
+        newRandomImage.imageData = imageData;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    }
+}
+
+#pragma mark - random image fetch method
+
+- (void)callDoodleFetchMethod
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        NSLog(@"PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
+        NSLog(@"DOODLE PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
         
-        // Show network activity monitor
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        // Setup query
+        PFQuery *randomQuery = [KJRandomImageFromParse query];
+        
+        // Query all random image urls
+        [randomQuery whereKey:@"imageUrl" notEqualTo:@"LOL"];
+        
+        // Cache policy
+        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        // Start query with block
+        [randomQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // The find succeeded.
+                //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
+                // Do something with the found objects
+                for (PFObject *object in objects) {
+                    if ([object[@"is_active"] isEqual:@"1"]) {
+                        // Save Parse object to Core Data
+                        //[self persis:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
+                        [self persistNewRandomImageWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
+                    } else {
+                        NSLog(@"RANDOM: image not active: %@", object[@"imageUrl"]);
+                    }
+                }
+            } else {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
+            }
+            
+            // Set randomImagesFetchDone = YES in NSUserDefaults
+            // NOTE - set to NO by default for debugging purposes
+            //[[NSUserDefaults standardUserDefaults] setObject:Nil forKey:@"randomImagesFetchDone"];
+            //[[NSUserDefaults standardUserDefaults] synchronize];
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"RANDOM PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
+        });
+        
+    });
+}
+
+#pragma mark - video fetch method
+
+- (void)callVideoFetchMethod
+{
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        NSLog(@"VIDEO PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
         
         // Setup query
         PFQuery *query = [KJVideoFromParse query];
@@ -116,16 +203,26 @@
             
             NSString *notificationName = @"KJDataFetchDidHappen";
             [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-            
-            // Hide network activity monitor
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
+            NSLog(@"VIDEO PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
         });
         
     });
+}
+
+- (void)fetchAllData
+{
+    // Show network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    // Call data fetch methods for video and doodles
+    [self callVideoFetchMethod];
+    [self callDoodleFetchMethod];
+    
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - Init methods
@@ -168,8 +265,8 @@
 //        [self callFetchMethod];
 //    }
     
-    // Fetch data on every app launch
-    [self callFetchMethod];
+    // Fetch all data from Parse and persist to Core Data
+    [self fetchAllData];
     
     // Override point for customization after application launch.
     return YES;

@@ -37,23 +37,22 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-#pragma mark - Core Data did finish loading NSNotification
+#pragma mark - Load Doodles method
 
-- (void)randomImageFetchDidHappen
+- (void)loadRandomImages
 {
-    NSLog(@"DID RECEIVE NOTIFICATION THAT RANDOM IMAGE FETCH IS DONE");
+    NSLog(@"RANDOM: in loadRandomImages method ...");
     randomImagesResults = [[NSArray alloc] init];
     randomImagesResults = [KJRandomImage MR_findAll];
     
     // Hide progress
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    //[MBProgressHUD hideHUDForView:self.view animated:YES];
     
+    // Set the random image
     self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
     
-    //[[self tableView] reloadData];
-    
     // Hide network activity monitor
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    //[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Display alert with instructions on how to use this screen on first load
     if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {
@@ -67,103 +66,6 @@
     } else {
         NSLog(@"RANDOM: instructions HAVE been shown to user");
     }
-}
-
-#pragma mark - Core Data methods
-
-- (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
-{
-    if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
-        NSLog(@"RANDOM: Yes, random image does exist in database");
-        return TRUE;
-    } else {
-        NSLog(@"RANDOM: No, random image does NOT exist in database");
-        return FALSE;
-    }
-}
-
-- (void)persistNewRandomImageWithId:(NSString *)imageId
-                  description:(NSString *)imageDescription
-                         url:(NSString *)imageUrl
-                   date:(NSString *)imageDate
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // If video does not exist in database then persist
-    if (![self checkIfRandomImageIsInDatabaseWithImageUrl:imageUrl context:localContext]) {
-        // Create a new video in the current context
-        KJRandomImage *newRandomImage = [KJRandomImage MR_createInContext:localContext];
-        
-        // Set attributes
-        newRandomImage.imageId = imageId;
-        newRandomImage.imageDescription = imageDescription;
-        newRandomImage.imageUrl = imageUrl;
-        //newRandomImage.imageDate = imageDate;
-        // Thumbnails
-        //NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
-        NSURL *imageUrlToFetch = [NSURL URLWithString:imageUrl];
-        NSData *imageData = [NSData dataWithContentsOfURL:imageUrlToFetch];
-        newRandomImage.imageData = imageData;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    }
-}
-
-#pragma mark - Parse.com fetch method
-
-- (void)callFetchMethod
-{
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(defaultQueue, ^{
-        NSLog(@"PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
-        
-        // Setup query
-        PFQuery *query = [KJRandomImageFromParse query];
-        
-        // Query all videos
-        [query whereKey:@"imageUrl" notEqualTo:@"LOL"];
-        
-        // Cache policy
-        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
-        
-        // Start query with block
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                // The find succeeded.
-                //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
-                // Do something with the found objects
-                for (PFObject *object in objects) {
-                    if ([object[@"is_active"] isEqual:@"1"]) {
-                        // Save Parse object to Core Data
-                        //[self persis:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
-                        [self persistNewRandomImageWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
-                    } else {
-                        NSLog(@"RANDOM IMAGES: image not active: %@", object[@"imageUrl"]);
-                    }
-                }
-            } else {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
-            }
-            
-            // Set randomImagesFetchDone = YES in NSUserDefaults
-            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"randomImagesFetchDone"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            NSString *notificationName = @"KJRandomImageFetchDidHappen";
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-            
-            // set imageview here
-            //self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
-        }];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
-        });
-        
-    });
 }
 
 #pragma mark - Return random image from an array
@@ -231,27 +133,26 @@
     [self.gestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.randomImage addGestureRecognizer:self.gestureRecognizer];
     
-    // Register for notification when data fetch to Core Data has completed
-    NSString *notificationName = @"KJRandomImageFetchDidHappen";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(randomImageFetchDidHappen) name:notificationName object:nil];
-    
     // If data fetch hasn't happened then proceed
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"randomImagesFetchDone"] isEqualToString:@"1"]) {
-        NSLog(@"RANDOM: data fetch has already happened, assuming data is local in Core Data");
-        randomImagesResults = [[NSArray alloc] init];
-        randomImagesResults = [KJRandomImage MR_findAll];
-        
-        self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
-    } else {
-        // Show network activity monitor
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-        
-        // Start progress
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = @"Loading doodles ...";
-        
-        [self callFetchMethod];
-    }
+    // NOTE - disabled for now for debugging purposes
+//    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"initialRandomImageFetchDone"] isEqualToString:@"1"]) {
+//        NSLog(@"RANDOM: data fetch has already happened, assuming data is local in Core Data");
+//        randomImagesResults = [[NSArray alloc] init];
+//        randomImagesResults = [KJRandomImage MR_findAll];
+//        
+//        self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
+//    } else {
+//        // Show network activity monitor
+//        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//        
+//        // Start progress
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//        hud.labelText = @"Loading doodles ...";
+//        
+//        //[self callFetchMethod];
+//    }
+    
+    [self loadRandomImages];
 }
 
 - (void)viewWillAppear:(BOOL)animated
