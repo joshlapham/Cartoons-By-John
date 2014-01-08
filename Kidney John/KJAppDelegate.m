@@ -13,6 +13,7 @@
 #import "Models/KJComicFromParse.h"
 #import "Models/KJRandomImageFromParse.h"
 #import "Models/KJRandomImage.h"
+#import "Models/KJComic.h"
 
 @implementation KJAppDelegate
 
@@ -25,6 +26,8 @@
 }
 
 #pragma mark - Core Data methods
+
+#pragma mark Videos
 
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
@@ -68,6 +71,8 @@
     }
 }
 
+#pragma mark Doodles
+
 - (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
 {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
@@ -107,7 +112,49 @@
     }
 }
 
-#pragma mark - random image fetch method
+#pragma mark Comics
+
+- (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
+{
+    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:context]) {
+        //NSLog(@"COMICS LIST: yes, comic does exist in database");
+        return TRUE;
+    } else {
+        //NSLog(@"COMICS LIST: no, comic does NOT exist in database");
+        return FALSE;
+    }
+}
+
+- (void)persistNewComicWithName:(NSString *)comicName
+                      comicData:(NSString *)comicData
+                 comicThumbData:(NSData *)comicThumbData
+                  comicFileName:(NSString *)comicFileName
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If comic does not exist in database then persist
+    if (![self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
+        // Create a new comic in the current context
+        KJComic *newComic = [KJComic MR_createInContext:localContext];
+        
+        // Set attributes
+        newComic.comicName = comicName;
+        newComic.comicData = comicData;
+        newComic.comicThumbData = comicThumbData;
+        newComic.comicFileName = comicFileName;
+        
+        // DEBUGGING
+        NSLog(@"CORE DATA: %@", newComic.comicData);
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    }
+}
+
+#pragma mark - Fetch data methods
+
+#pragma mark random image fetch method
 
 - (void)callDoodleFetchMethod
 {
@@ -157,7 +204,7 @@
     });
 }
 
-#pragma mark - video fetch method
+#pragma mark fetch videos method
 
 - (void)callVideoFetchMethod
 {
@@ -212,6 +259,73 @@
     });
 }
 
+#pragma mark Fetch comics method
+
+- (void)callComicsFetchMethod
+{
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        NSLog(@"COMICS PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
+        
+        // Setup query
+        PFQuery *comicsQuery = [KJComicFromParse query];
+        
+        // Query all videos
+        [comicsQuery whereKey:@"comicName" notEqualTo:@"LOL"];
+        
+        // Cache policy
+        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        // Start query with block
+        [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // The find succeeded.
+                //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
+                // Do something with the found objects
+                for (PFObject *object in objects) {
+                    if ([object[@"is_active"] isEqual:@"1"]) {
+                        // Save Parse object to Core Data
+                        //[self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
+                        PFFile *thumbImageFile = [object objectForKey:@"comicThumb"];
+                        PFFile *comicImageFile = [object objectForKey:@"comicFile"];
+                        
+                        //NSLog(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
+                        [thumbImageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+                            if (!error) {
+                                [self persistNewComicWithName:object[@"comicName"]
+                                                    comicData:comicImageFile.url
+                                               comicThumbData:data
+                                                comicFileName:object[@"comicFileName"]];
+                            }
+                            //[self.collectionView reloadData];
+                            
+                            //NSString *notificationName = @"KJComicDataFetchDidHappen";
+                            //[[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+                        }];
+                        
+                    } else {
+                        NSLog(@"COMIC LIST: comic not active: %@", object[@"comicName"]);
+                    }
+                }
+            } else {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
+            }
+            
+            // Set firstLoad = YES in NSUserDefaults
+            //[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"comicLoadDone"];
+            //[[NSUserDefaults standardUserDefaults] synchronize];
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"COMICS PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
+        });
+        
+    });
+}
+
+#pragma mark fetch all data method
+
 - (void)fetchAllData
 {
     // Show network activity monitor
@@ -220,6 +334,7 @@
     // Call data fetch methods for video and doodles
     [self callVideoFetchMethod];
     [self callDoodleFetchMethod];
+    [self callComicsFetchMethod];
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
