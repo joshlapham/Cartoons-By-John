@@ -90,6 +90,21 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
+- (void)setNavLabelWithTitle:(NSString *)title
+{
+    // Init navbar title label
+    int height = self.navigationController.navigationBar.frame.size.height;
+    int width = self.navigationController.navigationBar.frame.size.width;
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = [UIColor whiteColor];
+    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.text = title;
+    self.navigationItem.titleView = navLabel;
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -101,19 +116,23 @@
     
     //self.title = @"More";
     
-    // Init navbar title label
-    int height = self.navigationController.navigationBar.frame.size.height;
-    int width = self.navigationController.navigationBar.frame.size.width;
-    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.textColor = [UIColor whiteColor];
-    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
-    navLabel.textAlignment = NSTextAlignmentCenter;
-    navLabel.text = @"More";
-    self.navigationItem.titleView = navLabel;
-    
     cellArray = [NSArray arrayWithObjects:@"Favourites List", @"Like, Comment, Subscribe", nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:NO];
+    
+    // dealloc navbar label here
+    self.navigationItem.titleView = nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:NO];
+    
+    // Set navbar title
+    [self setNavLabelWithTitle:@"More"];
 }
 
 - (void)didReceiveMemoryWarning
