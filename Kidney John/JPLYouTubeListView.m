@@ -10,6 +10,8 @@
 #import "JPLYouTubeVideoView.h"
 #import "MBProgressHUD.h"
 #import "Models/KJVideo.h"
+#import "Parse.h"
+#import "Models/KJVideoFromParse.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -135,7 +137,8 @@
     CGFloat cellHeightFloat;
     
     KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
-
+    
+    // If no cell height value is found, then use default of 160
     if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
         cellHeightFloat = 160;
     } else {
@@ -220,13 +223,112 @@
     } else {
         // Show progress
         // DISABLED - moved to app delegate data fetch method
-        //MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        //hud.labelText = @"Loading videos ...";
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Loading videos ...";
+        
+        [self callVideoFetchMethod];
     }
     
     // Set prompt text for UISearchBar
     // NOTE: disabled for now, as the prompt has since been setup in Storyboard
     //self.searchDisplayController.searchBar.prompt = @"Type a video name";
+}
+
+#pragma mark - Fetch videos for Core Data methods
+
+- (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
+{
+    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
+        //NSLog(@"Yes, video does exist in database");
+        return TRUE;
+    } else {
+        //NSLog(@"No, video does NOT exist in database");
+        return FALSE;
+    }
+}
+
+- (void)persistNewVideoWithId:(NSString *)videoId
+                         name:(NSString *)videoName
+                  description:(NSString *)videoDescription
+                         date:(NSString *)videoDate
+                   cellHeight:(NSString *)videoCellHeight
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If video does not exist in database then persist
+    if (![self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
+        // Create a new video in the current context
+        KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
+        
+        // Set attributes
+        newVideo.videoId = videoId;
+        newVideo.videoName = videoName;
+        newVideo.videoDescription = videoDescription;
+        newVideo.videoDate = videoDate;
+        newVideo.videoCellHeight = videoCellHeight;
+        // Thumbnails
+        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
+        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+        newVideo.videoThumb = thumbData;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    }
+}
+
+- (void)callVideoFetchMethod
+{
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        NSLog(@"VIDEO PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
+        
+        // Setup query
+        PFQuery *query = [KJVideoFromParse query];
+        
+        // Query all videos
+        [query whereKey:@"videoName" notEqualTo:@"LOL"];
+        
+        // Cache policy
+        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        
+        // Start query with block
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error) {
+                // The find succeeded.
+                //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
+                // Do something with the found objects
+                
+                // Show network activity monitor
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                
+                for (PFObject *object in objects) {
+                    if ([object[@"is_active"] isEqual:@"1"]) {
+                        // Save Parse object to Core Data
+                        [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
+                    } else {
+                        NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
+                    }
+                }
+            } else {
+                // Log details of the failure
+                NSLog(@"Error: %@ %@", error, [error userInfo]);
+            }
+            
+            // Set firstLoad = YES in NSUserDefaults
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"firstLoadDone"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            NSString *notificationName = @"KJDataFetchDidHappen";
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"VIDEO PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
+        });
+        
+    });
 }
 
 @end
