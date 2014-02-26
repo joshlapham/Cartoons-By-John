@@ -151,13 +151,37 @@
     } else {
         NSLog(@"COMIC DETAIL: FILE WRITTEN");
         // Set image to be displayed
+        //comicImage.frame = self.comicScrollView.bounds;
         comicImage.image = [UIImage imageWithContentsOfFile:filePath];
+        [self.comicScrollView addSubview:self.comicImage];
+        [self centerScrollViewContents];
     }
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
+#pragma mark - ScrollView methods
+
+- (void)centerScrollViewContents {
+    CGSize boundsSize = self.comicScrollView.bounds.size;
+    CGRect contentsFrame = self.comicImage.frame;
+    
+    if (contentsFrame.size.width < boundsSize.width) {
+        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
+    } else {
+        contentsFrame.origin.x = 0.0f;
+    }
+    
+    if (contentsFrame.size.height < boundsSize.height) {
+        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
+    } else {
+        contentsFrame.origin.y = 0.0f;
+    }
+    
+    self.comicImage.frame = contentsFrame;
 }
 
 #pragma mark - Fetch comic image method
@@ -212,6 +236,13 @@
     self.comicScrollView.minimumZoomScale = 1.0;
     self.comicScrollView.maximumZoomScale = 3.0;
     self.comicScrollView.contentSize = self.comicImage.image.size;
+    
+//    CGRect contentRect = CGRectZero;
+//    for (UIView *view in self.comicScrollView.subviews) {
+//        contentRect = CGRectUnion(contentRect, view.frame);
+//    }
+//    self.comicScrollView.contentSize = contentRect.size;
+    
     self.comicImage.frame = CGRectMake(0, 0, self.comicImage.image.size.width, self.comicImage.image.size.height);
     
     // Documents folder path

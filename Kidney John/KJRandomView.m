@@ -7,8 +7,6 @@
 //
 
 #import "KJRandomView.h"
-#import "Parse.h"
-#import "Models/KJRandomImageFromParse.h"
 #import "MBProgressHUD.h"
 #import "Models/KJRandomImage.h"
 #import "KJDoodleStore.h"

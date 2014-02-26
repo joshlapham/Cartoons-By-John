@@ -20,8 +20,8 @@
 - (void)setupUI
 {
     // Set navbar colour
-    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.000 green:0.400 blue:0.808 alpha:1.000]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
+    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.000 green:0.400 blue:0.808 alpha:1.000]];
 }
 
 #pragma mark - Init methods

@@ -9,10 +9,9 @@
 #import "KJComicListView.h"
 #import "KJComicCell.h"
 #import "KJComicDetailView.h"
-#import "Parse.h"
 #import "Models/KJComic.h"
-#import "Models/KJComicFromParse.h"
 #import "MBProgressHUD.h"
+#import "KJComicStore.h"
 
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
 
@@ -28,134 +27,11 @@
     NSURL *fileUrl;
 }
 
-#pragma mark - Core Data did finish loading NSNotification
-
-- (void)fetchComics
-{
-    NSLog(@"COMICS LIST: fetching comics from Core Data and reloading view ..");
-    comicResults = [[NSArray alloc] init];
-    comicResults = [KJComic MR_findAll];
-    
-    // Reload collectionview with data just fetched
-    [[self collectionView] reloadData];
-    
-    // Hide progress
-    //[MBProgressHUD hideHUDForView:self.view animated:YES];
-    
-    // Hide network activity monitor
-    //[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
-//
-//#pragma mark - Core Data methods
-//
-//- (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
-//{
-//    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:context]) {
-//        NSLog(@"COMICS LIST: yes, comic does exist in database");
-//        return TRUE;
-//    } else {
-//        NSLog(@"COMICS LIST: no, comic does NOT exist in database");
-//        return FALSE;
-//    }
-//}
-//
-//- (void)persistNewComicWithName:(NSString *)comicName
-//                         comicData:(NSString *)comicData
-//                 comicThumbData:(NSData *)comicThumbData
-//                  comicFileName:(NSString *)comicFileName
-//{
-//    // Get the local context
-//    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-//    
-//    // If comic does not exist in database then persist
-//    if (![self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
-//        // Create a new comic in the current context
-//        KJComic *newComic = [KJComic MR_createInContext:localContext];
-//        
-//        // Set attributes
-//        newComic.comicName = comicName;
-//        newComic.comicData = comicData;
-//        newComic.comicThumbData = comicThumbData;
-//        newComic.comicFileName = comicFileName;
-//        
-//        // DEBUGGING
-//        NSLog(@"CORE DATA: %@", newComic.comicData);
-//        
-//        // Save
-//        [localContext MR_saveToPersistentStoreAndWait];
-//    }
-//}
-//
-//#pragma mark - Fetch videos method
-//
-//- (void)callFetchMethod
-//{
-//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//    dispatch_async(defaultQueue, ^{
-//        NSLog(@"PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
-//        
-//        // Setup query
-//        PFQuery *query = [KJComicFromParse query];
-//        
-//        // Query all videos
-//        [query whereKey:@"comicName" notEqualTo:@"LOL"];
-//        
-//        // Cache policy
-//        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
-//        
-//        // Start query with block
-//        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//            if (!error) {
-//                // The find succeeded.
-//                //NSLog(@"Successfully retrieved %d locations", (unsigned long)objects.count);
-//                // Do something with the found objects
-//                for (PFObject *object in objects) {
-//                    if ([object[@"is_active"] isEqual:@"1"]) {
-//                        // Save Parse object to Core Data
-//                        //[self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
-//                        PFFile *thumbImageFile = [object objectForKey:@"comicThumb"];
-//                        PFFile *comicImageFile = [object objectForKey:@"comicFile"];
-//                        
-//                        //NSLog(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
-//                        [thumbImageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-//                            if (!error) {
-//                                [self persistNewComicWithName:object[@"comicName"]
-//                                                    comicData:comicImageFile.url
-//                                               comicThumbData:data
-//                                                comicFileName:object[@"comicFileName"]];
-//                            }
-//                            //[self.collectionView reloadData];
-//                            
-//                            NSString *notificationName = @"KJComicDataFetchDidHappen";
-//                            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-//                        }];
-//                        
-//                    } else {
-//                        NSLog(@"COMIC LIST: comic not active: %@", object[@"comicName"]);
-//                    }
-//                }
-//            } else {
-//                // Log details of the failure
-//                NSLog(@"Error: %@ %@", error, [error userInfo]);
-//            }
-//            
-//            // Set firstLoad = YES in NSUserDefaults
-//            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"comicLoadDone"];
-//            [[NSUserDefaults standardUserDefaults] synchronize];
-//        }];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSLog(@"PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
-//        });
-//        
-//    });
-//}
-
 #pragma mark - UICollectionView delegate methods
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"COMIC LIST: selected item - %ld", (long)indexPath.row);
+    NSLog(@"COMIX: selected item - %ld", (long)indexPath.row);
     [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
     
 }
@@ -232,6 +108,22 @@
     }
 }
 
+#pragma mark - NSNotification methods
+
+- (void)comicFetchDidHappen
+{
+    //NSLog(@"comic fetch did happen ..");
+    
+    comicResults = [[NSArray alloc] init];
+    comicResults = [KJComic MR_findAll];
+    
+    // Reload collectionview with data just fetched
+    [[self collectionView] reloadData];
+    
+    // Hide progress
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -254,31 +146,16 @@
     
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
     
-    // If data fetch hasn't happened then proceed
-    // DISABLED
-//    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"comicLoadDone"] isEqualToString:@"1"]) {
-//        NSLog(@"COMIC LIST: data fetch has already happened, assuming data is local in Core Data");
-//        comicResults = [[NSArray alloc] init];
-//        comicResults = [KJComic MR_findAll];
-//    } else {
-//        // Show network activity monitor
-//        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//        
-//        // Start progress
-//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        hud.labelText = @"Loading comix ...";
+    // Show progress
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading comix ...";
     
-//        [self callFetchMethod];
-//    }
+    // NSNotifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(comicFetchDidHappen) name:@"KJComicDataFetchDidHappen" object:nil];
     
-    [self fetchComics];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-    comicThumbImages = nil;
+    // Use the DoodleStore to fetch doodle data
+    KJComicStore *store = [[KJComicStore alloc] init];
+    [store fetchComicData];
 }
 
 @end
