@@ -112,16 +112,19 @@
 
 - (void)comicFetchDidHappen
 {
-    //NSLog(@"comic fetch did happen ..");
+    NSLog(@"comic fetch did happen ..");
     
     comicResults = [[NSArray alloc] init];
     comicResults = [KJComic MR_findAll];
     
-    // Reload collectionview with data just fetched
-    [[self collectionView] reloadData];
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+    // Reload collectionview with data just fetched
+    [[self collectionView] reloadData];
 }
 
 #pragma mark - Init methods

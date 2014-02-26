@@ -14,6 +14,7 @@
 		687BC4451851DBDF00F45970 /* KJMoreDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC4441851DBDF00F45970 /* KJMoreDetailView.m */; };
 		688C3A75186FBD4F00E6B45C /* KJComicGalleryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688C3A74186FBD4F00E6B45C /* KJComicGalleryView.m */; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
+		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
 		68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CD185B272A008D3E36 /* KJFavouritesListView.m */; };
 		68E461D0185B4BD5008D3E36 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E461CF185B4BD5008D3E36 /* Social.framework */; };
@@ -72,6 +73,8 @@
 		688C3A74186FBD4F00E6B45C /* KJComicGalleryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicGalleryView.m; sourceTree = "<group>"; };
 		68CE160118BDDAF300127AA7 /* KJComicStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicStore.h; sourceTree = "<group>"; };
 		68CE160218BDDAF300127AA7 /* KJComicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicStore.m; sourceTree = "<group>"; };
+		68CE160418BEAF7800127AA7 /* KJVideoStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJVideoStore.h; sourceTree = "<group>"; };
+		68CE160518BEAF7800127AA7 /* KJVideoStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJVideoStore.m; sourceTree = "<group>"; };
 		68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreInitialView.h; sourceTree = "<group>"; };
 		68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreInitialView.m; sourceTree = "<group>"; };
 		68E461CC185B272A008D3E36 /* KJFavouritesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJFavouritesListView.h; sourceTree = "<group>"; };
@@ -220,6 +223,8 @@
 				687BC378184EB75500F45970 /* KJComicDetailView.m */,
 				68E461FF1865CCC1008D3E36 /* KJTabBarController.h */,
 				68E462001865CCC1008D3E36 /* KJTabBarController.m */,
+				68CE160418BEAF7800127AA7 /* KJVideoStore.h */,
+				68CE160518BEAF7800127AA7 /* KJVideoStore.m */,
 				68CE160118BDDAF300127AA7 /* KJComicStore.h */,
 				68CE160218BDDAF300127AA7 /* KJComicStore.m */,
 				68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */,
@@ -419,6 +424,7 @@
 			files = (
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
 				687BC374184D9C8900F45970 /* KJComicCell.m in Sources */,
+				68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */,
 				688C3A75186FBD4F00E6B45C /* KJComicGalleryView.m in Sources */,
 				68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */,
 				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,

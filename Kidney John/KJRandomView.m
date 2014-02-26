@@ -35,6 +35,9 @@
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
     // Load a random image
     [self loadRandomImages];
 }

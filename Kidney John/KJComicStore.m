@@ -77,6 +77,10 @@
             if (!error) {
                 // The find succeeded.
                 // Do something with the found objects
+                
+                // Show network activity monitor
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // Save Parse object to Core Data
