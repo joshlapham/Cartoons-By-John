@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		05DBFDFE16B54DF8ADCB2816 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52795D1CEF6142A9BA845EF1 /* libPods.a */; };
+		68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */; };
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
 		687BC4451851DBDF00F45970 /* KJMoreDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC4441851DBDF00F45970 /* KJMoreDetailView.m */; };
@@ -58,6 +59,8 @@
 /* Begin PBXFileReference section */
 		3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		52795D1CEF6142A9BA845EF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJDoodleStore.h; sourceTree = "<group>"; };
+		68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJDoodleStore.m; sourceTree = "<group>"; };
 		687BC372184D9C8900F45970 /* KJComicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicCell.h; sourceTree = "<group>"; };
 		687BC373184D9C8900F45970 /* KJComicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicCell.m; sourceTree = "<group>"; };
 		687BC377184EB75500F45970 /* KJComicDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicDetailView.h; sourceTree = "<group>"; };
@@ -214,6 +217,8 @@
 				687BC378184EB75500F45970 /* KJComicDetailView.m */,
 				68E461FF1865CCC1008D3E36 /* KJTabBarController.h */,
 				68E462001865CCC1008D3E36 /* KJTabBarController.m */,
+				68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */,
+				68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
 				68E48D22184A247D00600FA5 /* Supporting Files */,
 			);
@@ -410,6 +415,7 @@
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
 				687BC374184D9C8900F45970 /* KJComicCell.m in Sources */,
 				688C3A75186FBD4F00E6B45C /* KJComicGalleryView.m in Sources */,
+				68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */,
 				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
 				68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */,
