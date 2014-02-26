@@ -143,6 +143,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		68A7920A18BD58FE009F9CC7 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */,
+				68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */,
+				68E48D56184BE89300600FA5 /* JPLYouTubeVideoView.h */,
+				68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */,
+				688C3A73186FBD4F00E6B45C /* KJComicGalleryView.h */,
+				688C3A74186FBD4F00E6B45C /* KJComicGalleryView.m */,
+				68E48D6C184D874500600FA5 /* KJRandomView.h */,
+				68E48D6D184D874500600FA5 /* KJRandomView.m */,
+				68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */,
+				68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */,
+				68E461CC185B272A008D3E36 /* KJFavouritesListView.h */,
+				68E461CD185B272A008D3E36 /* KJFavouritesListView.m */,
+				68E48D6F184D876400600FA5 /* KJMoreListView.h */,
+				68E48D70184D876400600FA5 /* KJMoreListView.m */,
+				687BC4431851DBDF00F45970 /* KJMoreDetailView.h */,
+				687BC4441851DBDF00F45970 /* KJMoreDetailView.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
 		68E48D0F184A247D00600FA5 = {
 			isa = PBXGroup;
 			children = (
@@ -181,31 +204,16 @@
 			children = (
 				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
 				68E48D30184A247D00600FA5 /* Main_iPad.storyboard */,
-				68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */,
-				68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */,
-				68E48D56184BE89300600FA5 /* JPLYouTubeVideoView.h */,
-				68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */,
+				68E48D5F184C062F00600FA5 /* Models */,
+				68A7920A18BD58FE009F9CC7 /* View Controllers */,
 				68E48D66184C20A500600FA5 /* KJComicListView.h */,
 				68E48D67184C20A500600FA5 /* KJComicListView.m */,
-				688C3A73186FBD4F00E6B45C /* KJComicGalleryView.h */,
-				688C3A74186FBD4F00E6B45C /* KJComicGalleryView.m */,
 				687BC372184D9C8900F45970 /* KJComicCell.h */,
 				687BC373184D9C8900F45970 /* KJComicCell.m */,
 				687BC377184EB75500F45970 /* KJComicDetailView.h */,
 				687BC378184EB75500F45970 /* KJComicDetailView.m */,
-				68E48D6C184D874500600FA5 /* KJRandomView.h */,
-				68E48D6D184D874500600FA5 /* KJRandomView.m */,
-				68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */,
-				68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */,
-				68E461CC185B272A008D3E36 /* KJFavouritesListView.h */,
-				68E461CD185B272A008D3E36 /* KJFavouritesListView.m */,
-				68E48D6F184D876400600FA5 /* KJMoreListView.h */,
-				68E48D70184D876400600FA5 /* KJMoreListView.m */,
-				687BC4431851DBDF00F45970 /* KJMoreDetailView.h */,
-				687BC4441851DBDF00F45970 /* KJMoreDetailView.m */,
 				68E461FF1865CCC1008D3E36 /* KJTabBarController.h */,
 				68E462001865CCC1008D3E36 /* KJTabBarController.m */,
-				68E48D5F184C062F00600FA5 /* Models */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
 				68E48D22184A247D00600FA5 /* Supporting Files */,
 			);
