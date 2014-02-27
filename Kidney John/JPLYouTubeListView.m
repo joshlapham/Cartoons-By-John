@@ -110,12 +110,12 @@
     
     // Cell detail text
     //UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
-    UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
-    cell.detailTextLabel.font = kjCustomFontDetailText;
-    cell.detailTextLabel.textColor = [UIColor grayColor];
-    cell.detailTextLabel.numberOfLines = 0;
-    //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-    cell.detailTextLabel.text = cellVideo.videoDescription;
+//    UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
+//    cell.detailTextLabel.font = kjCustomFontDetailText;
+//    cell.detailTextLabel.textColor = [UIColor grayColor];
+//    cell.detailTextLabel.numberOfLines = 0;
+//    //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+//    cell.detailTextLabel.text = cellVideo.videoDescription;
     
     // Cell thumbnail
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
@@ -136,14 +136,17 @@
 {
     CGFloat cellHeightFloat;
     
-    KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
+    //KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
     
     // If no cell height value is found, then use default of 160
-    if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
-        cellHeightFloat = 160;
-    } else {
-        cellHeightFloat = [cellVideo.videoCellHeight floatValue];
-    }
+    // DISABLED for now. Not needed as we aren't using a video description
+//    if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
+//        cellHeightFloat = 160;
+//    } else {
+//        cellHeightFloat = [cellVideo.videoCellHeight floatValue];
+//    }
+    
+    cellHeightFloat = 120;
     
     return cellHeightFloat;
 }
@@ -201,7 +204,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFetchDidFinish) name:notificationName object:nil];
     
     // Show progress
-    // DISABLED - moved to app delegate data fetch method
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Loading videos ...";
     
