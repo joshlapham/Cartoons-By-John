@@ -72,7 +72,7 @@
     if (areThereAnyFavourites == NO) {
         //NSLog(@"FAVOURITES: in thereAreNoFavourites method");
         UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites"
-                                                     message:@"You haven't set any Favourites."
+                                                     message:@"You haven't set any favourites"
                                                     delegate:self
                                            cancelButtonTitle:Nil
                                            otherButtonTitles:@"OK", nil];

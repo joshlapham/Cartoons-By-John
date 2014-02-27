@@ -16,6 +16,7 @@
 
 @implementation KJMoreInitialView {
     NSArray *cellArray;
+    NSArray *socialCellArray;
 }
 
 #pragma mark - Table view data source
@@ -23,13 +24,32 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [cellArray count];
+    return 1;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            //NSLog(@"section 0");
+            return [NSString stringWithFormat:@"Favourites"];
+            break;
+            
+        case 1:
+            //NSLog(@"section 1");
+            return [NSString stringWithFormat:@"Social Media"];
+            break;
+            
+        default:
+            return [NSString stringWithFormat:@"LOL error"];
+            break;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -41,22 +61,23 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    // Set the cell text
-    cell.textLabel.text = [cellArray objectAtIndex:indexPath.row];
-    
     // Set custom font
     UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     cell.textLabel.font = kjCustomFont;
     
     // Set image to show next to item
-    switch (indexPath.row) {
+    switch (indexPath.section) {
         case 0:
             // set Favourites icon here
             //cell.imageView.image = something something
+            // Set the cell text
+            cell.textLabel.text = [cellArray objectAtIndex:indexPath.row];
             break;
             
         case 1:
             // set Social Media icon here
+            // Set the cell text
+            cell.textLabel.text = [socialCellArray objectAtIndex:indexPath.row];
             break;
             
         default:
@@ -68,7 +89,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.row) {
+    switch (indexPath.section) {
         case 0:
             [self performSegueWithIdentifier:@"favouritesSegue" sender:self];
             break;
@@ -101,7 +122,8 @@
     
     //self.title = @"More";
     
-    cellArray = [NSArray arrayWithObjects:@"Favourites List", @"Like, Comment, Subscribe", nil];
+    cellArray = [NSArray arrayWithObjects:@"Favourites List", nil];
+    socialCellArray = [NSArray arrayWithObjects:@"Like, Comment, Subscribe", nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
