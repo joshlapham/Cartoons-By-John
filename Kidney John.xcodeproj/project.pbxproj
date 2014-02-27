@@ -175,6 +175,19 @@
 			name = "View Controllers";
 			sourceTree = "<group>";
 		};
+		68CE160718BEB6B600127AA7 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				68CE160418BEAF7800127AA7 /* KJVideoStore.h */,
+				68CE160518BEAF7800127AA7 /* KJVideoStore.m */,
+				68CE160118BDDAF300127AA7 /* KJComicStore.h */,
+				68CE160218BDDAF300127AA7 /* KJComicStore.m */,
+				68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */,
+				68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */,
+			);
+			name = Stores;
+			sourceTree = "<group>";
+		};
 		68E48D0F184A247D00600FA5 = {
 			isa = PBXGroup;
 			children = (
@@ -211,24 +224,19 @@
 		68E48D21184A247D00600FA5 /* Kidney John */ = {
 			isa = PBXGroup;
 			children = (
-				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
-				68E48D30184A247D00600FA5 /* Main_iPad.storyboard */,
 				68E48D5F184C062F00600FA5 /* Models */,
+				68CE160718BEB6B600127AA7 /* Stores */,
 				68A7920A18BD58FE009F9CC7 /* View Controllers */,
 				68E48D66184C20A500600FA5 /* KJComicListView.h */,
 				68E48D67184C20A500600FA5 /* KJComicListView.m */,
-				687BC372184D9C8900F45970 /* KJComicCell.h */,
-				687BC373184D9C8900F45970 /* KJComicCell.m */,
 				687BC377184EB75500F45970 /* KJComicDetailView.h */,
 				687BC378184EB75500F45970 /* KJComicDetailView.m */,
+				687BC372184D9C8900F45970 /* KJComicCell.h */,
+				687BC373184D9C8900F45970 /* KJComicCell.m */,
 				68E461FF1865CCC1008D3E36 /* KJTabBarController.h */,
 				68E462001865CCC1008D3E36 /* KJTabBarController.m */,
-				68CE160418BEAF7800127AA7 /* KJVideoStore.h */,
-				68CE160518BEAF7800127AA7 /* KJVideoStore.m */,
-				68CE160118BDDAF300127AA7 /* KJComicStore.h */,
-				68CE160218BDDAF300127AA7 /* KJComicStore.m */,
-				68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */,
-				68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */,
+				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
+				68E48D30184A247D00600FA5 /* Main_iPad.storyboard */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
 				68E48D22184A247D00600FA5 /* Supporting Files */,
 			);
