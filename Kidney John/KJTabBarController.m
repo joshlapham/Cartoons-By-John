@@ -35,7 +35,7 @@
     // Set tabbar font and colour
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
     
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1], NSForegroundColorAttributeName, nil] forState:UIControlStateHighlighted];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"JohnRoderickPaine" size:20.0], NSFontAttributeName, [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1], NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
     
     // Set colour of button icon when highlighted
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1]];
