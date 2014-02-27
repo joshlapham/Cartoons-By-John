@@ -135,7 +135,7 @@
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="m5u-lS-Tdn">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.1411764771" blue="0.32156863810000003" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iLW-Ym-rjH">
                                     <size key="itemSize" width="86" height="89"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -199,7 +199,7 @@
                                 </connections>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.1411764771" blue="0.32156863810000003" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="yTD-3r-UXG"/>
                     <connections>
@@ -239,7 +239,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.14117647707462311" blue="0.32156863808631897" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="qtL-qt-bGu"/>
                     <connections>
@@ -521,7 +521,7 @@
     <resources>
         <image name="comic-tab-icon" width="27" height="27"/>
         <image name="doodle-tab-icon" width="27" height="27"/>
-        <image name="video-tab-icon" width="27" height="27"/>
+        <image name="video-tab-icon" width="24" height="12"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -529,7 +529,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LFv-zC-XD2"/>
+        <segue reference="GK9-vj-efI"/>
         <segue reference="g7e-E4-nJu"/>
     </inferredMetricsTieBreakers>
 </document>
