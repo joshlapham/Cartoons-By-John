@@ -216,7 +216,7 @@
                                 </connections>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygC-SS-syh">
-                                <rect key="frame" x="20" y="87" width="280" height="21"/>
+                                <rect key="frame" x="20" y="75" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -505,7 +505,7 @@
     <resources>
         <image name="comic-tab-icon" width="27" height="27"/>
         <image name="doodle-tab-icon" width="27" height="27"/>
-        <image name="video-tab-icon" width="24" height="12"/>
+        <image name="video-tab-icon" width="32" height="21"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
