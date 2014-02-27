@@ -30,6 +30,12 @@
                                                            [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
                                                            shadow, NSShadowAttributeName,
                                                            [UIFont fontWithName:@"JohnRoderickPaine" size:21.0], NSFontAttributeName, nil]];
+    
+    // Set navbar items to white
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    
+    // Change status bar text to white
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 #pragma mark - Init methods
