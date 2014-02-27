@@ -75,12 +75,12 @@
 
 - (void)setupCollectionView
 {
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    [flowLayout setMinimumInteritemSpacing:0.0f];
-    [flowLayout setMinimumLineSpacing:0.0f];
+    //UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    //[flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    //[flowLayout setMinimumInteritemSpacing:0.0f];
+    //[flowLayout setMinimumLineSpacing:0.0f];
     [self.collectionView setPagingEnabled:YES];
-    [self.collectionView setCollectionViewLayout:flowLayout];
+    //[self.collectionView setCollectionViewLayout:flowLayout];
 }
 
 //-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -123,6 +123,9 @@
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
+    // Setup collectionView
+    [self setupCollectionView];
+    
     // Reload collectionview with data just fetched
     [[self collectionView] reloadData];
 }
@@ -133,19 +136,7 @@
 {
     [super viewDidLoad];
     
-    //self.title = @"Comix";
-    
-    // Init navbar title label
-    int height = self.navigationController.navigationBar.frame.size.height;
-    int width = self.navigationController.navigationBar.frame.size.width;
-    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.textColor = [UIColor whiteColor];
-    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
-    navLabel.textAlignment = NSTextAlignmentCenter;
-    navLabel.text = @"Comix";
-    self.navigationItem.titleView = navLabel;
+    self.title = @"Comix";
     
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
     

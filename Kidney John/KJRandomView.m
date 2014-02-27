@@ -122,19 +122,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    //self.title = @"Doodles";
-    
-    // Init navbar title label
-    int height = self.navigationController.navigationBar.frame.size.height;
-    int width = self.navigationController.navigationBar.frame.size.width;
-    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.textColor = [UIColor whiteColor];
-    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
-    navLabel.textAlignment = NSTextAlignmentCenter;
-    navLabel.text = @"Doodles";
-    self.navigationItem.titleView = navLabel;
+    self.title = @"Doodles";
     
     // Instruction label init
     instructionLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:16];

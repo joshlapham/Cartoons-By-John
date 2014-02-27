@@ -135,19 +135,7 @@
     // Preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;
     
-    //self.title = @"Like, Comment, Subscribe";
-    
-    // Init navbar title label
-    int height = self.navigationController.navigationBar.frame.size.height;
-    int width = self.navigationController.navigationBar.frame.size.width;
-    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.textColor = [UIColor whiteColor];
-    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
-    navLabel.textAlignment = NSTextAlignmentCenter;
-    navLabel.text = @"Like, Comment, Subscribe";
-    self.navigationItem.titleView = navLabel;
+    self.title = @"Like, Comment, Subscribe";
     
     listItems = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", nil];
 }

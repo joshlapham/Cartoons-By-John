@@ -18,7 +18,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    NSLog(@"TABBAR: did select view: %@", [viewController class]);
+    //NSLog(@"TABBAR: did select view: %@", [viewController class]);
 }
 
 #pragma mark - Init methods

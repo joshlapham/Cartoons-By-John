@@ -189,26 +189,12 @@
     self.clearsSelectionOnViewWillAppear = NO;
     
     // Set title
-    //self.title = @"Videos";
+    self.title = @"Videos";
     
     // Extend line seperator between list items to edge of screen
     if ([self.tableView respondsToSelector:@selector(separatorInset)]) {
         self.tableView.separatorInset = UIEdgeInsetsZero;
     }
-    
-    // Navbar title label init
-    int height = self.navigationController.navigationBar.frame.size.height;
-    int width = self.navigationController.navigationBar.frame.size.width;
-    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    navLabel.backgroundColor = [UIColor clearColor];
-    navLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    navLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:24];
-    navLabel.textAlignment = NSTextAlignmentCenter;
-    // Set title text colour
-    navLabel.textColor = [UIColor whiteColor];
-    // Set title
-    navLabel.text = @"Videos";
-    self.navigationItem.titleView = navLabel;
     
     // Set up NSNotification receiving
     NSString *notificationName = @"KJVideoDataFetchDidHappen";

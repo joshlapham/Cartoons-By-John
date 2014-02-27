@@ -21,7 +21,15 @@
 {
     // Set navbar colour
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
-    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.000 green:0.400 blue:0.808 alpha:1.000]];
+    
+    // Set navbar font
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                                                           shadow, NSShadowAttributeName,
+                                                           [UIFont fontWithName:@"JohnRoderickPaine" size:21.0], NSFontAttributeName, nil]];
 }
 
 #pragma mark - Init methods
