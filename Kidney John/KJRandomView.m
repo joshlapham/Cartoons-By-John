@@ -10,12 +10,11 @@
 #import "MBProgressHUD.h"
 #import "Models/KJRandomImage.h"
 #import "KJDoodleStore.h"
+#import "KJDoodleCell.h"
 
-@interface KJRandomView () <UIAlertViewDelegate>
+@interface KJRandomView () <UIAlertViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (weak, nonatomic) IBOutlet UIImageView *randomImage;
-@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *gestureRecognizer;
-@property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -24,7 +23,55 @@
     NSString *currentRandomImageUrl;
 }
 
-@synthesize randomImage, instructionLabel;
+#pragma mark - setup collection view method
+
+- (void)setupCollectionView
+{
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [flowLayout setMinimumInteritemSpacing:0.0f];
+    [flowLayout setMinimumLineSpacing:0.0f];
+    
+    // use up whole screen (or frame)
+    [flowLayout setItemSize:self.collectionView.frame.size];
+    
+    [self.collectionView setPagingEnabled:YES];
+    [self.collectionView setCollectionViewLayout:flowLayout];
+    
+    [self.collectionView reloadData];
+}
+
+#pragma mark - collection view delegate methods
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [randomImagesResults count];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"doodleCell" forIndexPath:indexPath];
+    
+    KJRandomImage *cellData = [randomImagesResults objectAtIndex:indexPath.row];
+    
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        UIImage *thumbImage = [UIImage imageWithData:cellData.imageData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.backgroundColor = [UIColor whiteColor];
+            cell.doodleImageView.image = thumbImage;
+        });
+    });
+    
+    return cell;
+
+}
 
 #pragma mark - NSNotification methods
 
@@ -60,9 +107,6 @@
     randomImagesResults = [[NSArray alloc] init];
     randomImagesResults = [KJRandomImage MR_findAll];
     
-    // Set the random image
-    self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
-    
     // Hide network activity monitor
     //[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
@@ -78,6 +122,9 @@
     } else {
         NSLog(@"RANDOM: instructions HAVE been shown to user");
     }
+    
+    // setup collection view
+    [self setupCollectionView];
 }
 
 #pragma mark - Return random image from an array
@@ -103,36 +150,16 @@
     return imageToReturn;
 }
 
-#pragma mark - UISwipeGesture method
-
-- (void)swipeHandler:(UISwipeGestureRecognizer *)recognizer
-{
-    NSLog(@"RANDOM: swipe received");
-    if ([randomImagesResults count] != 0) {
-        self.randomImage.image = [self getRandomImageFromArray:randomImagesResults];
-    } else {
-        NSLog(@"RANDOM: error - swipeHandler could not load an image due to an empty image URL array");
-    }
-}
-
 #pragma mark - Init methods
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
     
     self.title = @"Doodles";
     
-    // Instruction label init
-    instructionLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:16];
-    instructionLabel.textColor = [UIColor lightGrayColor];
-    instructionLabel.text = @"Swipe To Load a Random Doodle";
-    
-    // Init swipe gesture recognizer for image view
-    self.gestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandler:)];
-    [self.gestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.randomImage addGestureRecognizer:self.gestureRecognizer];
+    // Register custom UICollectionViewCell
+    [self.collectionView registerClass:[KJDoodleCell class] forCellWithReuseIdentifier:@"doodleCell"];
     
     // Show progress
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
