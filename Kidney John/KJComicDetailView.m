@@ -9,10 +9,12 @@
 #import "KJComicDetailView.h"
 #import "MBProgressHUD.h"
 #import "Models/KJComic.h"
+#import "KJComicCell.h"
 
-@interface KJComicDetailView () <UIActionSheetDelegate, UIScrollViewDelegate, NSURLConnectionDataDelegate>
+@interface KJComicDetailView () <UIActionSheetDelegate, UIScrollViewDelegate, NSURLConnectionDataDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) MBProgressHUD *hud;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -25,7 +27,78 @@
     float currentLength;
 }
 
-@synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView, hud;
+@synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView, hud, resultsArray;
+
+#pragma mark - UICollectionView methods
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    NSLog(@"count for coll. view - %d", [self.resultsArray count]);
+    return [[self resultsArray] count];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicDetailCell" forIndexPath:indexPath];
+    
+    KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
+    
+    // set title to comic
+    // TODO: title to be set only after cell has finished loading
+    //self.title = cellData.comicName;
+    
+    NSLog(@"comic name: %@", cellData.comicName);
+    NSLog(@"cell for item results array count: %d", [self.resultsArray count]);
+    
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        UIImage *thumbImage = [UIImage imageWithData:cellData.comicThumbData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.backgroundColor = [UIColor whiteColor];
+            cell.comicImageView.image = thumbImage;
+        });
+    });
+    
+    
+    return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.collectionView.frame.size;
+}
+
+#pragma mark - setup collection view method
+
+- (void)setupCollectionView
+{
+    [self.collectionView setBounds:self.view.frame];
+    
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [flowLayout setMinimumInteritemSpacing:0.0f];
+    [flowLayout setMinimumLineSpacing:0.0f];
+    
+    // use up whole screen (or frame)
+    //[flowLayout setItemSize:self.collectionView.frame.size];
+    
+    [self.collectionView setPagingEnabled:YES];
+    [self.collectionView setCollectionViewLayout:flowLayout];
+    
+    // scroll to same position in the collectionView
+    // as we were on the previous view controller
+    if (self.collectionViewIndexFromList != nil) {
+        [self.collectionView scrollToItemAtIndexPath:self.collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    }
+    
+    [self.collectionView reloadData];
+}
 
 #pragma mark - Comic Favourites methods
 
@@ -212,7 +285,14 @@
 {
     [super viewDidLoad];
     
+    NSLog(@"results array count: %d", [self.resultsArray count]);
+    
     self.title = titleFromList;
+    
+    // Register custom UICollectionViewCell
+    [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicDetailCell"];
+    
+    [self setupCollectionView];
     
     // Init action button in top right hand corner
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
@@ -220,34 +300,34 @@
     //NSLog(@"COMIC DETAIL: name from list - %@", nameFromList);
     
     // Setup scrollview
-    self.comicScrollView.delegate = self;
-    self.comicScrollView.minimumZoomScale = 1.0;
-    self.comicScrollView.maximumZoomScale = 3.0;
-    self.comicScrollView.contentSize = self.comicImage.image.size;
-    
-//    CGRect contentRect = CGRectZero;
-//    for (UIView *view in self.comicScrollView.subviews) {
-//        contentRect = CGRectUnion(contentRect, view.frame);
+//    self.comicScrollView.delegate = self;
+//    self.comicScrollView.minimumZoomScale = 1.0;
+//    self.comicScrollView.maximumZoomScale = 3.0;
+//    self.comicScrollView.contentSize = self.comicImage.image.size;
+//    
+////    CGRect contentRect = CGRectZero;
+////    for (UIView *view in self.comicScrollView.subviews) {
+////        contentRect = CGRectUnion(contentRect, view.frame);
+////    }
+////    self.comicScrollView.contentSize = contentRect.size;
+//    
+//    self.comicImage.frame = CGRectMake(0, 0, self.comicImage.image.size.width, self.comicImage.image.size.height);
+//    
+//    // Documents folder path
+//    dirArray = [NSArray array];
+//    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    filePath = [NSString stringWithFormat:@"%@/%@.png", [dirArray objectAtIndex:0], fileNameFromList];
+//    //NSLog(@"%@", [self.dirArray objectAtIndex:0]);
+//    
+//    // Check if comic file exists, if not then fetch
+//    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
+//    if (fileExists) {
+//        NSLog(@"COMIC DETAIL: comic image file already found, using that");
+//        self.comicImage.image = [UIImage imageWithContentsOfFile:filePath];
+//    } else {
+//        NSLog(@"COMIC DETAIL: comic image file NOT found, fetching ..");
+//        [self fetchComicImage];
 //    }
-//    self.comicScrollView.contentSize = contentRect.size;
-    
-    self.comicImage.frame = CGRectMake(0, 0, self.comicImage.image.size.width, self.comicImage.image.size.height);
-    
-    // Documents folder path
-    dirArray = [NSArray array];
-    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    filePath = [NSString stringWithFormat:@"%@/%@.png", [dirArray objectAtIndex:0], fileNameFromList];
-    //NSLog(@"%@", [self.dirArray objectAtIndex:0]);
-    
-    // Check if comic file exists, if not then fetch
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-    if (fileExists) {
-        NSLog(@"COMIC DETAIL: comic image file already found, using that");
-        self.comicImage.image = [UIImage imageWithContentsOfFile:filePath];
-    } else {
-        NSLog(@"COMIC DETAIL: comic image file NOT found, fetching ..");
-        [self fetchComicImage];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -263,6 +343,11 @@
     [super didReceiveMemoryWarning];
     
     self.comicImage = nil;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    //[self.collectionView reloadData];
 }
 
 @end

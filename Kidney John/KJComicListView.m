@@ -102,6 +102,8 @@
         destViewController.nameFromList = comicCell.comicData;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
+        destViewController.resultsArray = [NSArray arrayWithArray:comicResults];
+        destViewController.collectionViewIndexFromList = selectedIndexPath;
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
