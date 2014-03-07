@@ -52,20 +52,18 @@
     // TODO: title to be set only after cell has finished loading
     //self.title = cellData.comicName;
     
-    NSLog(@"comic name: %@", cellData.comicName);
-    NSLog(@"cell for item results array count: %d", [self.resultsArray count]);
+    //NSLog(@"comic name: %@", cellData.comicName);
+    //NSLog(@"cell for item results array count: %d", [self.resultsArray count]);
     
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        UIImage *thumbImage = [UIImage imageWithData:cellData.comicThumbData];
+        UIImage *thumbImage = [UIImage imageWithData:cellData.comicFileData];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.backgroundColor = [UIColor whiteColor];
             cell.comicImageView.image = thumbImage;
         });
     });
-    
-    
     return cell;
 }
 
@@ -279,6 +277,19 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
+#pragma mark - Gesture recognizer methods
+
+- (void)comicWasDoubleTapped
+{
+    NSLog(@"comic was double tapped");
+    
+    // Navbar
+    [self.navigationController setNavigationBarHidden:!self.navigationController.isNavigationBarHidden animated:YES];
+    
+    // Status bar
+    [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -287,7 +298,7 @@
     
     NSLog(@"results array count: %d", [self.resultsArray count]);
     
-    self.title = titleFromList;
+    //self.title = titleFromList;
     
     // Register custom UICollectionViewCell
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicDetailCell"];
@@ -297,22 +308,20 @@
     // Init action button in top right hand corner
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
     
-    //NSLog(@"COMIC DETAIL: name from list - %@", nameFromList);
+    // Hide navbar
+    self.navigationController.navigationBarHidden = YES;
+    //[self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    // Setup scrollview
-//    self.comicScrollView.delegate = self;
-//    self.comicScrollView.minimumZoomScale = 1.0;
-//    self.comicScrollView.maximumZoomScale = 3.0;
-//    self.comicScrollView.contentSize = self.comicImage.image.size;
-//    
-////    CGRect contentRect = CGRectZero;
-////    for (UIView *view in self.comicScrollView.subviews) {
-////        contentRect = CGRectUnion(contentRect, view.frame);
-////    }
-////    self.comicScrollView.contentSize = contentRect.size;
-//    
-//    self.comicImage.frame = CGRectMake(0, 0, self.comicImage.image.size.width, self.comicImage.image.size.height);
-//    
+    // Hide status bar
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    
+    // Gesture recognizer to show navbar when comic is double tapped
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(comicWasDoubleTapped)];
+    tapRecognizer.numberOfTapsRequired = 2;
+    //tapRecognizer.numberOfTouchesRequired = 1;
+    [self.collectionView addGestureRecognizer:tapRecognizer];
+    
 //    // Documents folder path
 //    dirArray = [NSArray array];
 //    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
