@@ -265,6 +265,7 @@
     
     NSURLRequest *req = [NSURLRequest requestWithURL:fileUrl];
     NSURLConnection *conn = [NSURLConnection connectionWithRequest:req delegate:self];
+    // TODO: run on background thread?
     [conn scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     [conn start];
     
@@ -288,6 +289,24 @@
     
     // Status bar
     [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
+}
+
+#pragma mark - image download and caching method
+
+- (void)downloadImageWithURL:(NSURL *)url completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               if ( !error )
+                               {
+                                   UIImage *image = [[UIImage alloc] initWithData:data];
+                                   completionBlock(YES,image);
+                               } else{
+                                   completionBlock(NO,nil);
+                               }
+                           }];
 }
 
 #pragma mark - Init methods

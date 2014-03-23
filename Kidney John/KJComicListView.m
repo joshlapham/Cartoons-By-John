@@ -99,6 +99,7 @@
         KJComicDetailView *destViewController = segue.destinationViewController;
         
         KJComic *comicCell = [comicResults objectAtIndex:selectedIndexPath.row];
+        // TODO: comicData is a string; use less misleading ivar names
         destViewController.nameFromList = comicCell.comicData;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
@@ -116,9 +117,11 @@
 {
     NSLog(@"comic fetch did happen ..");
     
+    // TODO: init array here every time?
     comicResults = [[NSArray alloc] init];
     comicResults = [KJComic MR_findAll];
     
+    // TODO: when to disable activity monitor and progress?
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     

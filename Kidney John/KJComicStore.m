@@ -31,30 +31,41 @@
                  comicThumbData:(NSData *)comicThumbData
                   comicFileName:(NSString *)comicFileName
 {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // If comic does not exist in database then persist
-    if (![self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
-        // Create a new comic in the current context
-        KJComic *newComic = [KJComic MR_createInContext:localContext];
+    [MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+        NSLog(@"in comic store save with block method ..");
         
-        // Set attributes
-        newComic.comicName = comicName;
-        newComic.comicData = comicData;
-        newComic.comicThumbData = comicThumbData;
-        newComic.comicFileName = comicFileName;
+        // Get the local context
+        //localContext = [NSManagedObjectContext MR_contextForCurrentThread];
         
-        // Set comic file data from comicData string
-        NSURL *comicDataUrl = [NSURL URLWithString:comicData];
-        newComic.comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
+        // If comic does not exist in database then persist
+        if (![self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
+            // Create a new comic in the current context
+            KJComic *newComic = [KJComic MR_createInContext:localContext];
+            
+            // Set attributes
+            newComic.comicName = comicName;
+            newComic.comicData = comicData;
+            newComic.comicThumbData = comicThumbData;
+            newComic.comicFileName = comicFileName;
+            
+            // Set comic file data from comicData string
+            NSURL *comicDataUrl = [NSURL URLWithString:comicData];
+            newComic.comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
+            
+            // DEBUGGING
+            //NSLog(@"CORE DATA: %@", newComic.comicData);
+            
+            // Save
+            [localContext MR_saveToPersistentStoreAndWait];
+        }
+    } completion:^(BOOL success, NSError *error) {
+        NSLog(@"in comic store completion block");
         
-        // DEBUGGING
-        //NSLog(@"CORE DATA: %@", newComic.comicData);
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    }
+        // Send NSNotification to comix view
+        // to say that data fetch is done
+        NSString *notificationName = @"KJComicDataFetchDidHappen";
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+    }];
 }
 
 - (void)fetchComicData
@@ -109,11 +120,6 @@
             // Set firstLoad = YES in NSUserDefaults
             //[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"comicLoadDone"];
             //[[NSUserDefaults standardUserDefaults] synchronize];
-            
-            // Send NSNotification to comix view
-            // to say that data fetch is done
-            NSString *notificationName = @"KJComicDataFetchDidHappen";
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
         }];
     });
 }

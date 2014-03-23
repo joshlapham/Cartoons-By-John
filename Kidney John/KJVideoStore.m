@@ -46,10 +46,11 @@
         newVideo.videoDate = videoDate;
         newVideo.videoCellHeight = videoCellHeight;
         // Thumbnails
-        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
-        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-        newVideo.videoThumb = thumbData;
+        // DISABLED for now, as we are using SDWebImage to cache the YouTube thumbnails
+//        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
+//        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
+//        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
+//        newVideo.videoThumb = thumbData;
         
         // Save
         [localContext MR_saveToPersistentStoreAndWait];

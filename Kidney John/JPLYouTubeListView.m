@@ -11,6 +11,7 @@
 #import "MBProgressHUD.h"
 #import "Models/KJVideo.h"
 #import "KJVideoStore.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -19,6 +20,7 @@
 @implementation JPLYouTubeListView {
     __block NSArray *videoResults;
     NSArray *searchResults;
+    SDWebImageManager *webImageManager;
 }
 
 #pragma mark - UISearchBar methods
@@ -118,16 +120,41 @@
 //    cell.detailTextLabel.text = cellVideo.videoDescription;
     
     // Cell thumbnail
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        UIImage *thumbnailImage = [UIImage imageWithData:cellVideo.videoThumb];
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            cell.imageView.image = thumbnailImage;
-            [cell setNeedsLayout];
-        });
-    });
-
+//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+//    dispatch_async(queue, ^{
+//        UIImage *thumbnailImage = [UIImage imageWithData:cellVideo.videoThumb];
+//        
+//        dispatch_sync(dispatch_get_main_queue(), ^{
+//            cell.imageView.image = thumbnailImage;
+//            [cell setNeedsLayout];
+//        });
+//    });
+    
+    // SDWebImage
+    NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
+    
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
+        //NSLog(@"found image in cache");
+    } else {
+        //NSLog(@"no image in cache");
+    }
+    
+    [webImageManager downloadWithURL:[NSURL URLWithString:urlString]
+                             options:0
+                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+                            }
+                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                               if (cellImage && finished) {
+                                   cell.imageView.image = cellImage;
+                               } else {
+                                   NSLog(@"video thumbnail download error");
+                               }
+                           }];
+    
+    //[cell.imageView setImageWithURL:[NSURL URLWithString:urlString]];
+    //[cell.imageView setImageWithURL:[NSURL URLWithString:urlString] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     return cell;
 }
@@ -195,9 +222,12 @@
     self.title = @"Videos";
     
     // Extend line seperator between list items to edge of screen
-    if ([self.tableView respondsToSelector:@selector(separatorInset)]) {
-        self.tableView.separatorInset = UIEdgeInsetsZero;
-    }
+//    if ([self.tableView respondsToSelector:@selector(separatorInset)]) {
+//        self.tableView.separatorInset = UIEdgeInsetsZero;
+//    }
+    
+    // init SDWebImage cache manager
+    webImageManager = [SDWebImageManager sharedManager];
     
     // Set up NSNotification receiving
     NSString *notificationName = @"KJVideoDataFetchDidHappen";
