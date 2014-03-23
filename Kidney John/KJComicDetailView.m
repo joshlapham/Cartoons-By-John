@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import "Models/KJComic.h"
 #import "KJComicCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface KJComicDetailView () <UIActionSheetDelegate, UIScrollViewDelegate, NSURLConnectionDataDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -25,6 +26,7 @@
     NSString *filePath;
     float expectedLength;
     float currentLength;
+    SDWebImageManager *webImageManager;
 }
 
 @synthesize nameFromList, titleFromList, fileNameFromList, comicImage, comicScrollView, hud, resultsArray;
@@ -50,20 +52,42 @@
     
     // set title to comic
     // TODO: title to be set only after cell has finished loading
-    //self.title = cellData.comicName;
+    self.title = cellData.comicName;
     
     //NSLog(@"comic name: %@", cellData.comicName);
     //NSLog(@"cell for item results array count: %d", [self.resultsArray count]);
     
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(defaultQueue, ^{
-        UIImage *thumbImage = [UIImage imageWithData:cellData.comicFileData];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.backgroundColor = [UIColor whiteColor];
-            cell.comicImageView.image = thumbImage;
-        });
-    });
+    // SDWebImage
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.comicData]) {
+        //NSLog(@"found image in cache");
+    } else {
+        //NSLog(@"no image in cache");
+    }
+    
+    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.comicData]
+                             options:0
+                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+                            }
+                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                               if (cellImage && finished) {
+                                   cell.comicImageView.image = cellImage;
+                               } else {
+                                   NSLog(@"comic download error");
+                               }
+                           }];
+    
+//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//    dispatch_async(defaultQueue, ^{
+//        UIImage *thumbImage = [UIImage imageWithData:cellData.comicFileData];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            cell.backgroundColor = [UIColor whiteColor];
+//            cell.comicImageView.image = thumbImage;
+//        });
+//    });
+//    
     return cell;
 }
 
@@ -317,7 +341,12 @@
     
     NSLog(@"results array count: %d", [self.resultsArray count]);
     
+    // Set title
+    // DISABLED as we set the title in cellAtIndexPath method
     //self.title = titleFromList;
+    
+    // init SDWebImage cache manager
+    webImageManager = [SDWebImageManager sharedManager];
     
     // Register custom UICollectionViewCell
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicDetailCell"];

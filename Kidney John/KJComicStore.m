@@ -49,8 +49,9 @@
             newComic.comicFileName = comicFileName;
             
             // Set comic file data from comicData string
-            NSURL *comicDataUrl = [NSURL URLWithString:comicData];
-            newComic.comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
+            // DISABLED as we are using SDWebImage for comic image caching
+//            NSURL *comicDataUrl = [NSURL URLWithString:comicData];
+//            newComic.comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
             
             // DEBUGGING
             //NSLog(@"CORE DATA: %@", newComic.comicData);

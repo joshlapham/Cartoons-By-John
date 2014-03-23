@@ -12,6 +12,7 @@
 #import "Models/KJComic.h"
 #import "MBProgressHUD.h"
 #import "KJComicStore.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
 
@@ -25,6 +26,7 @@
     NSArray *comicResults;
     NSMutableData *fileData;
     NSURL *fileUrl;
+    SDWebImageManager *webImageManager;
 }
 
 #pragma mark - UICollectionView delegate methods
@@ -57,16 +59,37 @@
     
     KJComic *comicCell = [comicResults objectAtIndex:indexPath.row];
     
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(defaultQueue, ^{
-        UIImage *thumbImage = [UIImage imageWithData:comicCell.comicThumbData];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.backgroundColor = [UIColor whiteColor];
-//            [cell setThumbImage:thumbImagePath];
-            cell.comicImageView.image = thumbImage;
-        });
-    });
+    // SDWebImage
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:comicCell.comicData]) {
+        //NSLog(@"found image in cache");
+    } else {
+        //NSLog(@"no image in cache");
+    }
+    
+    [webImageManager downloadWithURL:[NSURL URLWithString:comicCell.comicData]
+                             options:0
+                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+                            }
+                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                               if (cellImage && finished) {
+                                   cell.comicImageView.image = cellImage;
+                               } else {
+                                   NSLog(@"comic download error");
+                               }
+                           }];
+    
+//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//    dispatch_async(defaultQueue, ^{
+//        UIImage *thumbImage = [UIImage imageWithData:comicCell.comicThumbData];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            cell.backgroundColor = [UIColor whiteColor];
+////            [cell setThumbImage:thumbImagePath];
+//            cell.comicImageView.image = thumbImage;
+//        });
+//    });
     
     return cell;
 }
@@ -143,6 +166,10 @@
     
     self.title = @"Comix";
     
+    // init SDWebImage cache manager
+    webImageManager = [SDWebImageManager sharedManager];
+    
+    // init collection view cell
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
     
     // Show progress
