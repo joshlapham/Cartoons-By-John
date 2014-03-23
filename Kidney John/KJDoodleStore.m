@@ -45,9 +45,10 @@
         newRandomImage.imageUrl = imageUrl;
         //newRandomImage.imageDate = imageDate;
         // Thumbnails
-        NSURL *imageUrlToFetch = [NSURL URLWithString:imageUrl];
-        NSData *imageData = [NSData dataWithContentsOfURL:imageUrlToFetch];
-        newRandomImage.imageData = imageData;
+        // DISABLED as we are using SDWebImage for caching
+//        NSURL *imageUrlToFetch = [NSURL URLWithString:imageUrl];
+//        NSData *imageData = [NSData dataWithContentsOfURL:imageUrlToFetch];
+//        newRandomImage.imageData = imageData;
         
         // Save
         [localContext MR_saveToPersistentStoreAndWait];

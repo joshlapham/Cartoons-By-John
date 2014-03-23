@@ -11,6 +11,7 @@
 #import "Models/KJRandomImage.h"
 #import "KJDoodleStore.h"
 #import "KJDoodleCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface KJRandomView () <UIAlertViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -21,6 +22,7 @@
 @implementation KJRandomView {
     __block NSArray *randomImagesResults;
     NSString *currentRandomImageUrl;
+    SDWebImageManager *webImageManager;
 }
 
 #pragma mark - setup collection view method
@@ -59,15 +61,36 @@
     
     KJRandomImage *cellData = [randomImagesResults objectAtIndex:indexPath.row];
     
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(defaultQueue, ^{
-        UIImage *thumbImage = [UIImage imageWithData:cellData.imageData];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.backgroundColor = [UIColor whiteColor];
-            cell.doodleImageView.image = thumbImage;
-        });
-    });
+    // SDWebImage
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
+        //NSLog(@"found image in cache");
+    } else {
+        //NSLog(@"no image in cache");
+    }
+    
+    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.imageUrl]
+                             options:0
+                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+                            }
+                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                               if (cellImage && finished) {
+                                   cell.doodleImageView.image = cellImage;
+                               } else {
+                                   NSLog(@"doodle download error");
+                               }
+                           }];
+    
+//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//    dispatch_async(defaultQueue, ^{
+//        UIImage *thumbImage = [UIImage imageWithData:cellData.imageData];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            cell.backgroundColor = [UIColor whiteColor];
+//            cell.doodleImageView.image = thumbImage;
+//        });
+//    });
     
     return cell;
 
@@ -157,6 +180,9 @@
     [super viewDidLoad];
     
     self.title = @"Doodles";
+    
+    // init SDWebImage cache manager
+    webImageManager = [SDWebImageManager sharedManager];
     
     // Register custom UICollectionViewCell
     [self.collectionView registerClass:[KJDoodleCell class] forCellWithReuseIdentifier:@"doodleCell"];
