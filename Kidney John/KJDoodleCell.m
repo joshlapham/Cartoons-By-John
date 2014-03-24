@@ -14,9 +14,13 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        // Init image view
         self.doodleImageView = [[UIImageView alloc] init];
+        // scale image to fit
+        [self.doodleImageView setContentMode:UIViewContentModeScaleAspectFit];
+        // set frame to entire screen
         self.doodleImageView.frame = self.bounds;
+        // add image view to cell's view
         [self addSubview:self.doodleImageView];
     }
     return self;
