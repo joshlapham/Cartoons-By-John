@@ -12,6 +12,48 @@
 
 @implementation KJComicStore
 
+#pragma mark - Comic Favourites methods
+
+- (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Create a new video in the current context
+    //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
+    
+    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
+        //NSLog(@"Video is NOT already a favourite, adding now ..");
+        
+        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+        comicToFavourite.isFavourite = isOrNot;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    } else {
+        NSLog(@"Video not found in database, not adding anything to favourites");
+    }
+}
+
+- (BOOL)checkIfComicIsAFavourite:(NSString *)comicName
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
+        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+        if (!comicToFavourite.isFavourite) {
+            NSLog(@"Comic IS NOT a favourite");
+            return FALSE;
+        } else {
+            NSLog(@"Comic IS a favourite");
+            return TRUE;
+        }
+    } else {
+        return FALSE;
+    }
+}
+
 #pragma mark - return comic with comic name method
 
 - (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind

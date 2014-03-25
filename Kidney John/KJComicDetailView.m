@@ -11,6 +11,7 @@
 #import "KJComicCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJComicDetailFlowLayout.h"
+#import "KJComicStore.h"
 
 @interface KJComicDetailView () <UIActionSheetDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -23,6 +24,7 @@
     float expectedLength;
     float currentLength;
     SDWebImageManager *webImageManager;
+    KJComicStore *comicStore;
 }
 
 @synthesize nameFromList, titleFromList, fileNameFromList, hud, resultsArray, collectionViewIndexFromList, isComingFromFavouritesList;
@@ -113,48 +115,6 @@
     //[self.collectionView reloadData];
 }
 
-#pragma mark - Comic Favourites methods
-
-- (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // Create a new video in the current context
-    //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
-    
-    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
-        //NSLog(@"Video is NOT already a favourite, adding now ..");
-        
-        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
-        comicToFavourite.isFavourite = isOrNot;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    } else {
-        NSLog(@"Video not found in database, not adding anything to favourites");
-    }
-}
-
-- (BOOL)checkIfComicIsAFavourite:(NSString *)comicName
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
-        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
-        if (!comicToFavourite.isFavourite) {
-            NSLog(@"Comic IS NOT a favourite");
-            return FALSE;
-        } else {
-            NSLog(@"Comic IS a favourite");
-            return TRUE;
-        }
-    } else {
-        return FALSE;
-    }
-}
-
 #pragma mark - UIActionSheet delegate methods
 
 - (void)showActionSheet:(id)sender
@@ -169,7 +129,7 @@
     
     // Set Favourites button text accordingly
     // TODO: use better ivar name for titleFromList
-    if (![self checkIfComicIsAFavourite:titleFromList]) {
+    if (![comicStore checkIfComicIsAFavourite:titleFromList]) {
         favouritesString = @"Add to Favourites";
     } else {
         favouritesString = @"Remove from Favourites";
@@ -190,10 +150,10 @@
     
     if ([buttonPressed isEqualToString:@"Add to Favourites"]) {
         NSLog(@"ACTION SHEET: add to favourites was pressed");
-        [self updateComicFavouriteStatus:titleFromList isFavourite:YES];
+        [comicStore updateComicFavouriteStatus:titleFromList isFavourite:YES];
     } else if ([buttonPressed isEqualToString:@"Remove from Favourites"]) {
         NSLog(@"ACTION SHEET: remove from favourites was pressed");
-        [self updateComicFavouriteStatus:titleFromList isFavourite:NO];
+        [comicStore updateComicFavouriteStatus:titleFromList isFavourite:NO];
     } else if ([buttonPressed isEqualToString:@"Share on Twitter"]) {
         NSLog(@"ACTION SHEET: share on twitter button pressed");
         //[self postToTwitter];
@@ -269,6 +229,9 @@
     // DISABLED as we set the title in cellAtIndexPath method
     //self.title = titleFromList;
     
+    // init comic store
+    comicStore = [[KJComicStore alloc] init];
+    
     // init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];
     
@@ -291,29 +254,13 @@
     tapRecognizer.numberOfTapsRequired = 2;
     //tapRecognizer.numberOfTouchesRequired = 1;
     [self.collectionView addGestureRecognizer:tapRecognizer];
-    
-    // setup collection view and flow layout
-    [self setupCollectionView];
-    
-//    // Documents folder path
-//    dirArray = [NSArray array];
-//    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    filePath = [NSString stringWithFormat:@"%@/%@.png", [dirArray objectAtIndex:0], fileNameFromList];
-//    //NSLog(@"%@", [self.dirArray objectAtIndex:0]);
-//    
-//    // Check if comic file exists, if not then fetch
-//    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-//    if (fileExists) {
-//        NSLog(@"COMIC DETAIL: comic image file already found, using that");
-//        self.comicImage.image = [UIImage imageWithContentsOfFile:filePath];
-//    } else {
-//        NSLog(@"COMIC DETAIL: comic image file NOT found, fetching ..");
-//        [self fetchComicImage];
-//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    // setup collection view and flow layout
+    [self setupCollectionView];
+    
     // scroll to same position in the collectionView
     // as we were on the previous view controller
     // TODO: write else statement for this

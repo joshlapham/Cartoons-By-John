@@ -13,5 +13,7 @@
 
 - (void)fetchComicData;
 - (KJComic *)returnComicWithComicName:(NSString *)comicName;
+- (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot;
+- (BOOL)checkIfComicIsAFavourite:(NSString *)comicName;
 
 @end
