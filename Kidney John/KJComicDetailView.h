@@ -13,8 +13,6 @@
 @property (nonatomic, weak) NSString *nameFromList;
 @property (nonatomic, weak) NSString *titleFromList;
 @property (nonatomic, weak) NSString *fileNameFromList;
-@property (weak, nonatomic) IBOutlet UIImageView *comicImage;
-@property (weak, nonatomic) IBOutlet UIScrollView *comicScrollView;
 @property (nonatomic, strong) NSArray *resultsArray;
 @property (nonatomic, strong) NSIndexPath *collectionViewIndexFromList;
 @end
