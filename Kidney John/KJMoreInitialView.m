@@ -10,8 +10,9 @@
 #import "KJFavouritesListView.h"
 #import "KJMoreListView.h"
 #import "PBWebViewController.h"
+#import <MessageUI/MessageUI.h>
 
-@interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
+@interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
 
 @end
 
@@ -25,7 +26,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -42,6 +43,12 @@
             {
                 return [socialCellArray count];
             }
+            break;
+            
+        case 2:
+        {
+            return 1;
+        }
             break;
             
         default:
@@ -61,6 +68,11 @@
         case 1:
             //NSLog(@"section 1");
             return [NSString stringWithFormat:@"Like, Comment, Subscribe"];
+            break;
+            
+        case 2:
+            // NOTE: this is for beta testing ONLY
+            return [NSString stringWithFormat:@"Beta Testing"];
             break;
             
         default:
@@ -95,6 +107,10 @@
             // set Social Media icon here
             // Set the cell text
             cell.textLabel.text = [socialCellArray objectAtIndex:indexPath.row];
+            break;
+            
+        case 2:
+            cell.textLabel.text = @"Provide Feedback on the App";
             break;
             
         default:
@@ -141,9 +157,45 @@
             }
             break;
             
+        case 2:
+        {
+            // init mail composer view
+            if ([MFMailComposeViewController canSendMail]) {
+                MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
+                mailVC.mailComposeDelegate = self;
+                [mailVC setToRecipients:[NSArray arrayWithObject:@"josh@joshlapham.com"]];
+                [mailVC setSubject:@"Kidney John App Feedback"];
+                [self presentViewController:mailVC animated:YES completion:nil];
+            } else {
+                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email"
+                                                             message:@"This device is unable to send email to provide feedback"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
+                [av show];
+            }
+        }
+            break;
+            
         default:
             break;
     }
+}
+
+#pragma mark - MFMailComposeController delegate method
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    if (result == MFMailComposeResultSent) {
+        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Feedback Sent"
+                                                     message:@"Thank you!"
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles:nil];
+        [av show];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Prepare for segue
