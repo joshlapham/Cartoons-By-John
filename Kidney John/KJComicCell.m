@@ -10,7 +10,7 @@
 
 @implementation KJComicCell
 
-@synthesize comicImageView;
+@synthesize comicImageView, comicScrollView;
 
 #pragma mark - Set thumbnail method
 
@@ -25,11 +25,25 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.comicImageView = [[UIImageView alloc] init];
-        self.comicImageView.frame = self.bounds;
-        [self addSubview:self.comicImageView];
+        // init scroll view
+//        comicScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+//        comicScrollView.delegate = self;
+//        comicScrollView.minimumZoomScale = 1.0;
+//        comicScrollView.maximumZoomScale = 3.0;
+//        [self addSubview:comicScrollView];
+//        
+//        comicImageView = [[UIImageView alloc] initWithFrame:comicScrollView.bounds];
+//        [comicScrollView addSubview:comicImageView];
+        
+        comicImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        [self addSubview:comicImageView];
     }
     return self;
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return comicImageView;
 }
 
 @end

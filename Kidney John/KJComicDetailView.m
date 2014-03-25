@@ -25,6 +25,7 @@
     float currentLength;
     SDWebImageManager *webImageManager;
     KJComicStore *comicStore;
+    UIScrollView *comicScrollView;
 }
 
 @synthesize nameFromList, titleFromList, fileNameFromList, hud, resultsArray, collectionViewIndexFromList, isComingFromFavouritesList;
@@ -75,6 +76,7 @@
                            completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
                                if (cellImage && finished) {
                                    cell.comicImageView.image = cellImage;
+                                   cell.comicImageView.tag = 101;
                                } else {
                                    NSLog(@"comic download error");
                                }
@@ -163,33 +165,34 @@
     }
 }
 
-//#pragma mark - UIScrollView delegate methods
-//
-//- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-//{
-//    return self.comicImage;
-//}
-//
-//#pragma mark - ScrollView methods
-//
-//- (void)centerScrollViewContents {
-//    CGSize boundsSize = self.comicScrollView.bounds.size;
-//    CGRect contentsFrame = self.comicImage.frame;
-//    
-//    if (contentsFrame.size.width < boundsSize.width) {
-//        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
-//    } else {
-//        contentsFrame.origin.x = 0.0f;
-//    }
-//    
-//    if (contentsFrame.size.height < boundsSize.height) {
-//        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
-//    } else {
-//        contentsFrame.origin.y = 0.0f;
-//    }
-//    
-//    self.comicImage.frame = contentsFrame;
-//}
+#pragma mark - UIScrollView delegate methods
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    // comicImageView tag is 101
+    return [self.collectionView viewWithTag:101];
+}
+
+#pragma mark - ScrollView methods
+
+- (void)centerScrollViewContents {
+    CGSize boundsSize = comicScrollView.bounds.size;
+    CGRect contentsFrame = [[self.collectionView viewWithTag:101] frame];
+    
+    if (contentsFrame.size.width < boundsSize.width) {
+        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
+    } else {
+        contentsFrame.origin.x = 0.0f;
+    }
+    
+    if (contentsFrame.size.height < boundsSize.height) {
+        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
+    } else {
+        contentsFrame.origin.y = 0.0f;
+    }
+    
+    [[self.collectionView viewWithTag:101] setFrame:contentsFrame];
+}
 
 #pragma mark - Gesture recognizer methods
 
@@ -212,6 +215,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // init scroll view
+    comicScrollView = [[UIScrollView alloc] initWithFrame:self.collectionView.frame];
+    comicScrollView.delegate = self;
+    //[self centerScrollViewContents];
+    comicScrollView.minimumZoomScale = 1.0;
+    comicScrollView.maximumZoomScale = 3.0;
+    //comicScrollView.contentSize = self.collectionView.bounds.size;
+    [self.view addSubview:comicScrollView];
+    [comicScrollView addSubview:self.collectionView];
     
     // DEBUGGING
     NSLog(@"CDV: row: %d", collectionViewIndexFromList.row);
