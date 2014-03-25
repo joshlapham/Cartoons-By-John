@@ -122,7 +122,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="m5u-lS-Tdn">
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="m5u-lS-Tdn">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -153,6 +153,12 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="m5u-lS-Tdn" firstAttribute="top" secondItem="BVq-wj-Wl9" secondAttribute="top" id="0Eg-Qx-xdP"/>
+                            <constraint firstItem="m5u-lS-Tdn" firstAttribute="leading" secondItem="BVq-wj-Wl9" secondAttribute="leading" id="S4Q-ly-dAA"/>
+                            <constraint firstAttribute="centerX" secondItem="m5u-lS-Tdn" secondAttribute="centerX" id="fI2-N0-iNI"/>
+                            <constraint firstAttribute="centerY" secondItem="m5u-lS-Tdn" secondAttribute="centerY" id="hr1-d4-Cb9"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fuY-tw-fxw"/>
                     <connections>
@@ -175,7 +181,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dm8-tm-IlR">
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dm8-tm-IlR">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -203,6 +209,12 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="dm8-tm-IlR" secondAttribute="centerY" constant="-24.5" id="5GM-wM-9ev"/>
+                            <constraint firstItem="dm8-tm-IlR" firstAttribute="top" secondItem="eea-s3-kDS" secondAttribute="top" id="dMD-l1-FZe"/>
+                            <constraint firstAttribute="centerX" secondItem="dm8-tm-IlR" secondAttribute="centerX" id="foF-qc-1S6"/>
+                            <constraint firstItem="dm8-tm-IlR" firstAttribute="leading" secondItem="eea-s3-kDS" secondAttribute="leading" id="ngT-e9-h8c"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="yTD-3r-UXG"/>
                     <connections>
