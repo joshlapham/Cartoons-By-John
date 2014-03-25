@@ -77,6 +77,8 @@
                            completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
                                if (cellImage && finished) {
                                    cell.doodleImageView.image = cellImage;
+                                   // preload next image in array to the cache
+                                   [self preloadCacheUsingIndexPath:indexPath];
                                } else {
                                    NSLog(@"doodle download error");
                                }
@@ -93,6 +95,39 @@
 //    });
     
     return cell;
+
+}
+
+#pragma mark - preload cache method
+
+- (void)preloadCacheUsingIndexPath:(NSIndexPath *)currentIndexPath
+{
+    // add 1 to current index path row to get next object in randomImagesResults array
+    // so that we can preload images before we swipe
+    KJRandomImage *doodleToCache = [randomImagesResults objectAtIndex:currentIndexPath.row+1];
+    
+    // SDWebImage
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleToCache.imageUrl]) {
+        //NSLog(@"found image in cache");
+    } else {
+        //NSLog(@"no image in cache");
+    }
+    
+    [webImageManager downloadWithURL:[NSURL URLWithString:doodleToCache.imageUrl]
+                             options:0
+                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+                            }
+                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                               if (cellImage && finished) {
+                                   // NOTE we are not doing anything here, just loading into the cache
+                                   //cell.doodleImageView.image = cellImage;
+                                   NSLog(@"preloaded doodle: %@", doodleToCache.imageId);
+                               } else {
+                                   NSLog(@"doodle download error");
+                               }
+                           }];
 
 }
 
