@@ -25,7 +25,8 @@
 #pragma mark - HTML for YouTube webview
 
 // NOTE - autoplay is set in playerVars
-static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 0, showinfo: 0, rel: 0, modestbranding: 1, controls: 0 }, width:'%0.0f', height:'%0.0f', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
+// TODO: look at width and height variables in this string for auto layout issues
+static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 0, showinfo: 0, rel: 0, modestbranding: 1, controls: 0 }, width:'1024', height:'704', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
 #pragma mark - Social media methods
 
@@ -51,9 +52,16 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 {
     //NSLog(@"VIDEO ID: %@", videoId);
     
-    NSString *html = [NSString stringWithFormat:youTubeVideoHTML, _videoView.frame.size.width, _videoView.frame.size.height, videoId];
+    NSString *html = [NSString stringWithFormat:youTubeVideoHTML, videoId];
+    
+    //NSLog(@"video width: %f, video height: %f", _videoView.frame.size.width, _videoView.frame.size.height);
     
     [_videoView loadHTMLString:html baseURL:nil];
+    
+    // TODO: review these settings for auto layout issues
+    //_videoView.contentMode = UIViewContentModeScaleAspectFill;
+    _videoView.scalesPageToFit = YES;
+    _videoView.autoresizesSubviews = YES;
     
     // NOTE - must include NSBundle resourceURL otherwise video autoplay will not work (autoplay disabled for now)
     //[_videoView loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];

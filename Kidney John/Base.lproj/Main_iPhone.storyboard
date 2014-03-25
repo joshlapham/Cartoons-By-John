@@ -68,13 +68,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wv9-CY-yb4">
-                                <rect key="frame" x="0.0" y="65" width="320" height="343"/>
+                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wv9-CY-yb4">
+                                <rect key="frame" x="0.0" y="100" width="320" height="319"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="wv9-CY-yb4" secondAttribute="centerY" id="8Nk-ek-JQp"/>
+                            <constraint firstAttribute="centerX" secondItem="wv9-CY-yb4" secondAttribute="centerX" id="W74-48-aNg"/>
+                            <constraint firstItem="wv9-CY-yb4" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="ga8-4R-ocp"/>
+                            <constraint firstItem="wv9-CY-yb4" firstAttribute="top" secondItem="jpe-PW-cw6" secondAttribute="bottom" constant="36" id="ltC-r5-CSN"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Kvq-dN-KYn"/>
                     <connections>
