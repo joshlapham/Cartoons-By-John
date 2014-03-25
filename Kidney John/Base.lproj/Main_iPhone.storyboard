@@ -219,14 +219,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygC-SS-syh">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ygC-SS-syh">
                                 <rect key="frame" x="20" y="75" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dLP-Ah-7Ik">
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dLP-Ah-7Ik">
                                 <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -254,6 +254,17 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="dLP-Ah-7Ik" secondAttribute="bottom" id="9d4-3R-N9q"/>
+                            <constraint firstAttribute="centerY" secondItem="dLP-Ah-7Ik" secondAttribute="centerY" constant="-32" id="Bl1-7z-5Du"/>
+                            <constraint firstItem="ygC-SS-syh" firstAttribute="leading" secondItem="jb1-PE-cdv" secondAttribute="leading" constant="20" symbolic="YES" id="OfC-Vp-dD1"/>
+                            <constraint firstAttribute="centerX" secondItem="dLP-Ah-7Ik" secondAttribute="centerX" id="YRg-dO-icH"/>
+                            <constraint firstItem="ygC-SS-syh" firstAttribute="top" secondItem="1NU-A7-cPB" secondAttribute="bottom" constant="11" id="anf-83-WGb"/>
+                            <constraint firstItem="dLP-Ah-7Ik" firstAttribute="centerX" secondItem="ygC-SS-syh" secondAttribute="centerX" id="bNc-31-2us"/>
+                            <constraint firstItem="dLP-Ah-7Ik" firstAttribute="leading" secondItem="jb1-PE-cdv" secondAttribute="leading" id="grv-by-D54"/>
+                            <constraint firstItem="HOn-9z-9eM" firstAttribute="top" secondItem="ygC-SS-syh" secondAttribute="bottom" constant="423" id="p3e-pT-Wii"/>
+                            <constraint firstAttribute="trailing" secondItem="dLP-Ah-7Ik" secondAttribute="trailing" id="v3e-tL-TbR"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qtL-qt-bGu"/>
                     <connections>
