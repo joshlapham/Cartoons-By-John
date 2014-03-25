@@ -8,7 +8,6 @@
 
 #import "KJComicDetailView.h"
 #import "MBProgressHUD.h"
-#import "Models/KJComic.h"
 #import "KJComicCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJComicDetailFlowLayout.h"
@@ -21,16 +20,12 @@
 @end
 
 @implementation KJComicDetailView {
-    NSMutableData *fileData;
-    NSURL *fileUrl;
-    NSArray *dirArray;
-    NSString *filePath;
     float expectedLength;
     float currentLength;
     SDWebImageManager *webImageManager;
 }
 
-@synthesize nameFromList, titleFromList, fileNameFromList, hud, resultsArray;
+@synthesize nameFromList, titleFromList, fileNameFromList, hud, resultsArray, collectionViewIndexFromList, isComingFromFavouritesList;
 
 #pragma mark - UICollectionView methods
 
@@ -54,6 +49,10 @@
     // set title to comic
     // TODO: title to be set only after cell has finished loading
     self.title = cellData.comicName;
+    
+    // update titleFromList so that Favourites will function correctly,
+    // as our Favourites methods use this ivar
+    titleFromList = cellData.comicName;
     
     //NSLog(@"comic name: %@", cellData.comicName);
     //NSLog(@"cell for item results array count: %d", [self.resultsArray count]);
@@ -109,15 +108,9 @@
     [self.collectionView setClipsToBounds:YES];
     [self.collectionView setCollectionViewLayout:flowLayout];
     
-    // scroll to same position in the collectionView
-    // as we were on the previous view controller
-    if (self.collectionViewIndexFromList != nil) {
-        [self.collectionView scrollToItemAtIndexPath:self.collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    }
-    
     //[self.collectionView.collectionViewLayout invalidateLayout];
     
-    [self.collectionView reloadData];
+    //[self.collectionView reloadData];
 }
 
 #pragma mark - Comic Favourites methods
@@ -162,7 +155,7 @@
     }
 }
 
-#pragma mark - Show UIActionSheet method
+#pragma mark - UIActionSheet delegate methods
 
 - (void)showActionSheet:(id)sender
 {
@@ -175,6 +168,7 @@
     //NSString *destructiveTitle = @"Destructive button";
     
     // Set Favourites button text accordingly
+    // TODO: use better ivar name for titleFromList
     if (![self checkIfComicIsAFavourite:titleFromList]) {
         favouritesString = @"Add to Favourites";
     } else {
@@ -189,8 +183,6 @@
     // Add action sheet to view, taking in consideration the tab bar
     [actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
-
-#pragma mark - UIActionSheet delegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -218,44 +210,6 @@
 //    return self.comicImage;
 //}
 //
-//#pragma mark - NSURLConnection Data delegate methods
-//
-//- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-//{
-//    //NSLog(@"COMIC DETAIL: did start receiving data");
-//    [fileData appendData:data];
-//    
-//    // Set HUD progress as data is received
-//    currentLength += [data length];
-//    hud.progress = currentLength / expectedLength;
-//}
-//
-//- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-//{
-//    // Init variables used to track comic download progress for HUD
-//    expectedLength = [response expectedContentLength];
-//    currentLength = 0;
-//}
-//
-//- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-//{
-//    if ([fileData writeToFile:filePath options:NSAtomicWrite error:Nil] == NO) {
-//        NSLog(@"COMIC DETAIL: WRITE TO FILE ERROR");
-//    } else {
-//        NSLog(@"COMIC DETAIL: FILE WRITTEN");
-//        // Set image to be displayed
-//        //comicImage.frame = self.comicScrollView.bounds;
-//        comicImage.image = [UIImage imageWithContentsOfFile:filePath];
-//        [self.comicScrollView addSubview:self.comicImage];
-//        [self centerScrollViewContents];
-//    }
-//    // Hide network activity monitor
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//    
-//    // Hide progress
-//    [MBProgressHUD hideHUDForView:self.view animated:YES];
-//}
-//
 //#pragma mark - ScrollView methods
 //
 //- (void)centerScrollViewContents {
@@ -276,29 +230,6 @@
 //    
 //    self.comicImage.frame = contentsFrame;
 //}
-//
-//#pragma mark - Fetch comic image method
-//
-//- (void)fetchComicImage
-//{
-//    fileUrl = [NSURL URLWithString:nameFromList];
-//    
-//    fileData = [NSMutableData data];
-//    
-//    NSURLRequest *req = [NSURLRequest requestWithURL:fileUrl];
-//    NSURLConnection *conn = [NSURLConnection connectionWithRequest:req delegate:self];
-//    // TODO: run on background thread?
-//    [conn scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-//    [conn start];
-//    
-//    // Start progress
-//    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    hud.mode = MBProgressHUDModeDeterminate;
-//    hud.labelText = @"Loading comic ...";
-//    
-//    // Show network activity monitor
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//}
 
 #pragma mark - Gesture recognizer methods
 
@@ -316,29 +247,15 @@
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
-//#pragma mark - image download and caching method
-//
-//- (void)downloadImageWithURL:(NSURL *)url completionBlock:(void (^)(BOOL succeeded, UIImage *image))completionBlock
-//{
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    [NSURLConnection sendAsynchronousRequest:request
-//                                       queue:[NSOperationQueue mainQueue]
-//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                               if ( !error )
-//                               {
-//                                   UIImage *image = [[UIImage alloc] initWithData:data];
-//                                   completionBlock(YES,image);
-//                               } else{
-//                                   completionBlock(NO,nil);
-//                               }
-//                           }];
-//}
-
 #pragma mark - Init methods
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // DEBUGGING
+    NSLog(@"CDV: row: %d", collectionViewIndexFromList.row);
+    // END OF DEBUGGING
     
     //float topMargin = self.navigationController.navigationBar.frame.size.height;
     //[self.collectionView setContentInset:UIEdgeInsetsMake(topMargin, 0, 0, 0)];
@@ -393,6 +310,25 @@
 //        NSLog(@"COMIC DETAIL: comic image file NOT found, fetching ..");
 //        [self fetchComicImage];
 //    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    // scroll to same position in the collectionView
+    // as we were on the previous view controller
+    // TODO: write else statement for this
+    // TODO: figure out why moving this screws the comic image bounds?
+    // this might have something to do with incorrent image showing when a cell is tapped
+    if (self.collectionViewIndexFromList != nil) {
+        NSLog(@"scrolling to: %d", self.collectionViewIndexFromList.row);
+        [self.collectionView scrollToItemAtIndexPath:self.collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // reset isComingFromFavourites ivar
+    isComingFromFavouritesList = NO;
 }
 
 @end

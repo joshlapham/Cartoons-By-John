@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KJComic.h"
 
 @interface KJComicStore : NSObject
 
 - (void)fetchComicData;
+- (KJComic *)returnComicWithComicName:(NSString *)comicName;
 
 @end

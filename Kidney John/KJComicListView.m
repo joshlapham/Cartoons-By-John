@@ -126,8 +126,12 @@
         destViewController.nameFromList = comicCell.comicData;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
+        // TODO: figure out a better way to pass data to dest VC rather than an array,
+        // as this screws up segue from Favourites list
         destViewController.resultsArray = [NSArray arrayWithArray:comicResults];
         destViewController.collectionViewIndexFromList = selectedIndexPath;
+        
+        NSLog(@"selected comic row: %d", selectedIndexPath.row);
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
@@ -182,6 +186,9 @@
     // Use the DoodleStore to fetch doodle data
     KJComicStore *store = [[KJComicStore alloc] init];
     [store fetchComicData];
+    
+    // TESTING
+    //[store returnComicWithComicName:@"Army Men"];
 }
 
 @end

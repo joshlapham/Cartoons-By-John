@@ -11,6 +11,7 @@
 #import "Models/KJVideo.h"
 #import "Models/KJComic.h"
 #import "KJComicDetailView.h"
+#import "KJComicStore.h"
 
 @interface KJFavouritesListView () <UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -24,6 +25,7 @@
     BOOL videoSectionHeaderToShow;
     BOOL comicsSectionHeaderToShow;
     BOOL bothSectionHeadersToShow;
+    KJComicStore *comicStore;
 }
 
 @synthesize allFavouritesResults;
@@ -57,7 +59,7 @@
         // Reload table data
         [[self tableView] reloadData];
     } else {
-        NSLog(@"FAVOURITES: results array has objects, setting areThereAnyFavourites to YES");
+        //NSLog(@"FAVOURITES: results array has objects, setting areThereAnyFavourites to YES");
         areThereAnyFavourites = YES;
         
         // Reload table data
@@ -107,19 +109,19 @@
         // Return the appropriate amount of sections depending on video or comic results
         // REVIEW: this if statement could be better
         if (videoSection > 0 && comicsSection > 0) {
-            NSLog(@"FAVOURITES: there are two sections to show");
+            //NSLog(@"FAVOURITES: there are two sections to show");
             bothSectionHeadersToShow = YES;
             return 2;
         } else if (videoSection > 0 && comicsSection == 0) {
-            NSLog(@"FAVOURITES: video section to show");
+            //NSLog(@"FAVOURITES: video section to show");
             videoSectionHeaderToShow = YES;
             return 1;
         } else if (videoSection == 0 && comicsSection > 0) {
-            NSLog(@"FAVOURITES: comics section to show");
+            //NSLog(@"FAVOURITES: comics section to show");
             comicsSectionHeaderToShow = YES;
             return 1;
         } else {
-            NSLog(@"FAVOURITES: no sections to show? setting to 1");
+            //NSLog(@"FAVOURITES: no sections to show? setting to 1");
             // REVIEW: setting this BOOL
             bothSectionHeadersToShow = YES;
             return 1;
@@ -149,8 +151,8 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (areThereAnyFavourites) {
-        NSLog(@"FAVOURITES: in titleForHeaderSection method");
-        NSLog(@"FAVOURITES: header to return: %@", [[self allFavouritesResults] objectAtIndex:section]);
+        //NSLog(@"FAVOURITES: in titleForHeaderSection method");
+        //NSLog(@"FAVOURITES: header to return: %@", [[self allFavouritesResults] objectAtIndex:section]);
         
         NSString *sectionHeader = [[NSString alloc] init];
         
@@ -200,7 +202,7 @@
         return videoCell;
     } else {
         if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-            NSLog(@"is video");
+            //NSLog(@"is video");
             UITableViewCell *videoCell = [tableView dequeueReusableCellWithIdentifier:videoCellIdentifier forIndexPath:indexPath];
             if (!videoCell) {
                 videoCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
@@ -212,7 +214,7 @@
             //videoCell.detailTextLabel.text = @"Video";
             return videoCell;
         } else if ([[sectionContents objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
-            NSLog(@"is comic");
+            //NSLog(@"is comic");
             UITableViewCell *comicCell = [tableView dequeueReusableCellWithIdentifier:comicCellIdentifier forIndexPath:indexPath];
             if (!comicCell) {
                 comicCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:videoCellIdentifier];
@@ -257,6 +259,14 @@
         destViewController.nameFromList = comicCell.comicData;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
+        // TODO: need to pass a results array here
+        // or comics favourites will not work.
+        // may have to pass a whole KJComic object?
+        destViewController.isComingFromFavouritesList = YES;
+        // pass a results array to dest VC containing only one object, our chosen one
+        if ([comicStore returnComicWithComicName:comicCell.comicName] != nil) {
+            destViewController.resultsArray = [NSArray arrayWithObject:[comicStore returnComicWithComicName:comicCell.comicName]];
+        }
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
@@ -268,6 +278,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    comicStore = [[KJComicStore alloc] init];
     
     // Preserve selection between presentations.
     self.clearsSelectionOnViewWillAppear = NO;

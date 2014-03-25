@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJComic.h"
 
 @interface KJComicDetailView : UIViewController
 
@@ -14,5 +15,7 @@
 @property (nonatomic, weak) NSString *titleFromList;
 @property (nonatomic, weak) NSString *fileNameFromList;
 @property (nonatomic, strong) NSArray *resultsArray;
-@property (nonatomic, strong) NSIndexPath *collectionViewIndexFromList;
+@property (nonatomic, weak) NSIndexPath *collectionViewIndexFromList;
+@property (nonatomic) BOOL isComingFromFavouritesList;
+
 @end

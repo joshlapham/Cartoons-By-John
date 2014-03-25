@@ -7,11 +7,26 @@
 //
 
 #import "KJComicStore.h"
-#import "KJComic.h"
 #import "KJComicFromParse.h"
 #import "Parse.h"
 
 @implementation KJComicStore
+
+#pragma mark - return comic with comic name method
+
+- (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Find comic where comicNameToFind matches
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicNameToFind];
+    KJComic *comicToReturn = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
+    
+    //NSLog(@"comic store: comic to return: %@", comicToReturn.comicName);
+    
+    return comicToReturn;
+}
 
 #pragma mark - Core Data methods
 
