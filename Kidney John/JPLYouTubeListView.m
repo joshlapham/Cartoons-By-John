@@ -111,6 +111,7 @@
     //[cell.textLabel sizeToFit];
     
     // Cell detail text
+    // DISABLED as we're not using video descriptions
     //UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
 //    UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
 //    cell.detailTextLabel.font = kjCustomFontDetailText;
@@ -118,17 +119,6 @@
 //    cell.detailTextLabel.numberOfLines = 0;
 //    //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
 //    cell.detailTextLabel.text = cellVideo.videoDescription;
-    
-    // Cell thumbnail
-//    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-//    dispatch_async(queue, ^{
-//        UIImage *thumbnailImage = [UIImage imageWithData:cellVideo.videoThumb];
-//        
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//            cell.imageView.image = thumbnailImage;
-//            [cell setNeedsLayout];
-//        });
-//    });
     
     // SDWebImage
     NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
@@ -148,13 +138,12 @@
                            completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
                                if (cellImage && finished) {
                                    cell.imageView.image = cellImage;
+                                   // call setNeedsLayout so thumbnails are shown immediately
+                                   [cell setNeedsLayout];
                                } else {
                                    NSLog(@"video thumbnail download error");
                                }
                            }];
-    
-    //[cell.imageView setImageWithURL:[NSURL URLWithString:urlString]];
-    //[cell.imageView setImageWithURL:[NSURL URLWithString:urlString] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     return cell;
 }
@@ -244,6 +233,12 @@
     // Set prompt text for UISearchBar
     // NOTE: disabled for now, as the prompt has since been setup in Storyboard
     //self.searchDisplayController.searchBar.prompt = @"Type a video name";
+}
+
+- (void)dealloc
+{
+    // remove observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJVideoDataFetchDidHappen" object:nil];
 }
 
 @end
