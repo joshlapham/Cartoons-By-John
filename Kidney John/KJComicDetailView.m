@@ -104,6 +104,7 @@
     //[self.collectionView.collectionViewLayout invalidateLayout];
     //[self.collectionView setBounds:self.view.bounds];
     [self.collectionView setFrame:self.view.bounds];
+    //[self.collectionView setContentSize:self.view.bounds.size];
     
     KJComicDetailFlowLayout *flowLayout = [[KJComicDetailFlowLayout alloc] init];
     //UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -111,6 +112,7 @@
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [flowLayout setMinimumInteritemSpacing:0.0f];
     [flowLayout setMinimumLineSpacing:0.0f];
+    //[flowLayout setSectionInset:UIEdgeInsetsMake(2, 2, 10, 10)];
     
     // use up whole screen (or frame)
     [flowLayout setItemSize:self.collectionView.bounds.size];
