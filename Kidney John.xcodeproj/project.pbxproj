@@ -620,7 +620,7 @@
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "66D7B342-3A6F-4F98-AAF7-000E6AE26A5B";
+				PROVISIONING_PROFILE = "4C4BB7BD-1FAA-456C-9C31-0905AB98789E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -637,7 +637,7 @@
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "66D7B342-3A6F-4F98-AAF7-000E6AE26A5B";
+				PROVISIONING_PROFILE = "4C4BB7BD-1FAA-456C-9C31-0905AB98789E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
