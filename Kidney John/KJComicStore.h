@@ -15,5 +15,9 @@
 - (KJComic *)returnComicWithComicName:(NSString *)comicName;
 - (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot;
 - (BOOL)checkIfComicIsAFavourite:(NSString *)comicName;
+- (NSArray *)returnArrayOfComicFiles;
+- (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;
+- (NSString *)returnFilepathForComicObject:(KJComic *)comicObject;
+- (void)loadInitialComicData;
 
 @end

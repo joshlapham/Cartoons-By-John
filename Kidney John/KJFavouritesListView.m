@@ -9,7 +9,7 @@
 #import "KJFavouritesListView.h"
 #import "JPLYouTubeVideoView.h"
 #import "Models/KJVideo.h"
-#import "Models/KJComic.h"
+#import "KJComic.h"
 #import "KJComicDetailView.h"
 #import "KJComicStore.h"
 
@@ -256,7 +256,7 @@
     } else if ([segue.identifier isEqualToString:@"comicDetailSegueFromFavourites"]) {
         KJComicDetailView *destViewController = segue.destinationViewController;
         KJComic *comicCell = [comicFavouritesResults objectAtIndex:indexPath.row];
-        destViewController.nameFromList = comicCell.comicData;
+        destViewController.nameFromList = comicCell.comicName;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
         // TODO: need to pass a results array here

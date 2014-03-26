@@ -13,6 +13,6 @@
 @property (strong, nonatomic) UIImageView *comicImageView;
 @property (strong, nonatomic) UIScrollView *comicScrollView;
 
-- (void)setThumbImage:(NSString *)imageName;
+//- (void)setThumbImage:(NSString *)imageName;
 
 @end

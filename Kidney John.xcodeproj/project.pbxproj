@@ -11,6 +11,8 @@
 		683CAE5918C77DF2006173FA /* KJDoodleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683CAE5818C77DF2006173FA /* KJDoodleCell.m */; };
 		68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */; };
 		685C164618E21A4900088D26 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685C164518E21A4900088D26 /* MessageUI.framework */; };
+		685C171118E2745A00088D26 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 685C171018E2745A00088D26 /* Comics */; };
+		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
 		687BC4451851DBDF00F45970 /* KJMoreDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC4441851DBDF00F45970 /* KJMoreDetailView.m */; };
@@ -26,7 +28,6 @@
 		68E461F01860BCEA008D3E36 /* KJRandomImageFromParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461EF1860BCEA008D3E36 /* KJRandomImageFromParse.m */; };
 		68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461F21860BD94008D3E36 /* KJRandomImage.m */; };
 		68E461F91860D2EF008D3E36 /* KJComicFromParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461F81860D2EF008D3E36 /* KJComicFromParse.m */; };
-		68E461FC1860D35F008D3E36 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461FB1860D35F008D3E36 /* KJComic.m */; };
 		68E461FE1865CA87008D3E36 /* JohnRoderickPaine.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */; };
 		68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E462001865CCC1008D3E36 /* KJTabBarController.m */; };
 		68E48D1C184A247D00600FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1B184A247D00600FA5 /* Foundation.framework */; };
@@ -68,6 +69,9 @@
 		68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJDoodleStore.h; sourceTree = "<group>"; };
 		68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJDoodleStore.m; sourceTree = "<group>"; };
 		685C164518E21A4900088D26 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		685C171018E2745A00088D26 /* Comics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Comics; sourceTree = "<group>"; };
+		685C171518E29B5300088D26 /* KJComic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComic.h; sourceTree = "<group>"; };
+		685C171618E29B5300088D26 /* KJComic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComic.m; sourceTree = "<group>"; };
 		687BC372184D9C8900F45970 /* KJComicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicCell.h; sourceTree = "<group>"; };
 		687BC373184D9C8900F45970 /* KJComicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicCell.m; sourceTree = "<group>"; };
 		687BC377184EB75500F45970 /* KJComicDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicDetailView.h; sourceTree = "<group>"; };
@@ -96,8 +100,6 @@
 		68E461F21860BD94008D3E36 /* KJRandomImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomImage.m; path = Models/KJRandomImage.m; sourceTree = "<group>"; };
 		68E461F71860D2EF008D3E36 /* KJComicFromParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicFromParse.h; path = Models/KJComicFromParse.h; sourceTree = "<group>"; };
 		68E461F81860D2EF008D3E36 /* KJComicFromParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicFromParse.m; path = Models/KJComicFromParse.m; sourceTree = "<group>"; };
-		68E461FA1860D35F008D3E36 /* KJComic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComic.h; path = Models/KJComic.h; sourceTree = "<group>"; };
-		68E461FB1860D35F008D3E36 /* KJComic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComic.m; path = Models/KJComic.m; sourceTree = "<group>"; };
 		68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = JohnRoderickPaine.ttf; sourceTree = "<group>"; };
 		68E461FF1865CCC1008D3E36 /* KJTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJTabBarController.h; sourceTree = "<group>"; };
 		68E462001865CCC1008D3E36 /* KJTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJTabBarController.m; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 		68E48D22184A247D00600FA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				685C171018E2745A00088D26 /* Comics */,
 				68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */,
 				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
 				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
@@ -296,14 +299,14 @@
 			isa = PBXGroup;
 			children = (
 				68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */,
+				685C171518E29B5300088D26 /* KJComic.h */,
+				685C171618E29B5300088D26 /* KJComic.m */,
 				68E461EE1860BCEA008D3E36 /* KJRandomImageFromParse.h */,
 				68E461EF1860BCEA008D3E36 /* KJRandomImageFromParse.m */,
 				68E461E8186078CA008D3E36 /* KJVideoFromParse.h */,
 				68E461E9186078CA008D3E36 /* KJVideoFromParse.m */,
 				68E461F71860D2EF008D3E36 /* KJComicFromParse.h */,
 				68E461F81860D2EF008D3E36 /* KJComicFromParse.m */,
-				68E461FA1860D35F008D3E36 /* KJComic.h */,
-				68E461FB1860D35F008D3E36 /* KJComic.m */,
 				68E461F11860BD94008D3E36 /* KJRandomImage.h */,
 				68E461F21860BD94008D3E36 /* KJRandomImage.m */,
 				68E461EB18609897008D3E36 /* KJVideo.h */,
@@ -398,6 +401,7 @@
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
 				68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */,
 				68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */,
+				685C171118E2745A00088D26 /* Comics in Resources */,
 				68E461FE1865CA87008D3E36 /* JohnRoderickPaine.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,10 +468,10 @@
 				68E461F91860D2EF008D3E36 /* KJComicFromParse.m in Sources */,
 				68E461EA186078CA008D3E36 /* KJVideoFromParse.m in Sources */,
 				687BC4451851DBDF00F45970 /* KJMoreDetailView.m in Sources */,
+				685C171718E29B5300088D26 /* KJComic.m in Sources */,
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
 				68E48D71184D876400600FA5 /* KJMoreListView.m in Sources */,
 				68E48D28184A247D00600FA5 /* main.m in Sources */,
-				68E461FC1860D35F008D3E36 /* KJComic.m in Sources */,
 				68E461F01860BCEA008D3E36 /* KJRandomImageFromParse.m in Sources */,
 				68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */,
 				68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */,

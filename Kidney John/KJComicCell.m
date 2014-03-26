@@ -12,12 +12,12 @@
 
 @synthesize comicImageView, comicScrollView;
 
-#pragma mark - Set thumbnail method
-
-- (void)setThumbImage:(NSString *)imageName
-{
-    self.comicImageView.image = [UIImage imageWithContentsOfFile:imageName];
-}
+//#pragma mark - Set thumbnail method
+//
+//- (void)setThumbImage:(NSString *)imageName
+//{
+//    self.comicImageView.image = [UIImage imageWithContentsOfFile:imageName];
+//}
 
 #pragma mark - Init methods
 

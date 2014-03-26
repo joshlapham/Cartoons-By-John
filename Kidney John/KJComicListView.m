@@ -9,12 +9,12 @@
 #import "KJComicListView.h"
 #import "KJComicCell.h"
 #import "KJComicDetailView.h"
-#import "Models/KJComic.h"
+#import "KJComic.h"
 #import "MBProgressHUD.h"
 #import "KJComicStore.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate>
+@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, SDWebImageManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
@@ -27,6 +27,9 @@
     NSMutableData *fileData;
     NSURL *fileUrl;
     SDWebImageManager *webImageManager;
+    NSArray *comicFileResults;
+    KJComicStore *comicStore;
+    NSArray *dirArray;
 }
 
 #pragma mark - UICollectionView delegate methods
@@ -46,6 +49,8 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [comicResults count];
+    // loading from filesystem
+    //return [comicFileResults count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -58,53 +63,66 @@
     KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicCell" forIndexPath:indexPath];
     
     KJComic *comicCell = [comicResults objectAtIndex:indexPath.row];
+    // loading from filesystem
+    //NSString *comicFileName = [comicFileResults objectAtIndex:indexPath.row];
     
     // SDWebImage
     // check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:comicCell.comicData]) {
-        //NSLog(@"found image in cache");
-    } else {
-        //NSLog(@"no image in cache");
-    }
+    // DISABLED - loading from filesystem
+//    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:comicCell.comicData]) {
+//        //NSLog(@"found image in cache");
+//    } else {
+//        //NSLog(@"no image in cache");
+//    }
     
-    [webImageManager downloadWithURL:[NSURL URLWithString:comicCell.comicData]
-                             options:0
-                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
-                            }
-                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                               if (cellImage && finished) {
-                                   cell.comicImageView.image = cellImage;
-                               } else {
-                                   NSLog(@"comic download error");
-                               }
-                           }];
+//    otherHud = [MBProgressHUD showHUDAddedTo:cell animated:YES];
+//    otherHud.mode = MBProgressHUDModeAnnularDeterminate;
+//    otherHud.backgroundColor = [UIColor clearColor];
     
-//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//    dispatch_async(defaultQueue, ^{
-//        UIImage *thumbImage = [UIImage imageWithData:comicCell.comicThumbData];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            cell.backgroundColor = [UIColor whiteColor];
-////            [cell setThumbImage:thumbImagePath];
-//            cell.comicImageView.image = thumbImage;
-//        });
-//    });
+//    [webImageManager downloadWithURL:[NSURL URLWithString:comicCell.comicData]
+//                             options:0
+//                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+//                                //otherHud = [MBProgressHUD showHUDAddedTo:cell animated:YES];
+//                                //otherHud.progress = receivedSize / expectedSize;
+//                            }
+//                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+//                               if (cellImage && finished) {
+//                                   cell.comicImageView.image = cellImage;
+//                                   [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+//                                   //[otherHud hide:YES];
+//                               } else {
+//                                   NSLog(@"comic download error");
+//                               }
+//                           }];
+    
+    // end of loading from filesystem
+    
+    
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(defaultQueue, ^{
+        //UIImage *comicImage = [comicStore returnComicImageFromComicObject:comicCell];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.backgroundColor = [UIColor whiteColor];
+            cell.comicImageView.image = [comicStore returnComicImageFromComicObject:comicCell];
+        });
+    });
     
     return cell;
 }
 
-#pragma mark - TESTING - swipe to next comic methods
-
-- (void)setupCollectionView
-{
-    //UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    //[flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    //[flowLayout setMinimumInteritemSpacing:0.0f];
-    //[flowLayout setMinimumLineSpacing:0.0f];
-    [self.collectionView setPagingEnabled:YES];
-    //[self.collectionView setCollectionViewLayout:flowLayout];
-}
+//#pragma mark - TESTING - swipe to next comic methods
+//
+//- (void)setupCollectionView
+//{
+//    //UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+//    //[flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+//    //[flowLayout setMinimumInteritemSpacing:0.0f];
+//    //[flowLayout setMinimumLineSpacing:0.0f];
+//    [self.collectionView setPagingEnabled:YES];
+//    //[self.collectionView setCollectionViewLayout:flowLayout];
+//}
 
 //-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
 //    return self.collectionView.frame.size;
@@ -123,11 +141,12 @@
         
         KJComic *comicCell = [comicResults objectAtIndex:selectedIndexPath.row];
         // TODO: comicData is a string; use less misleading ivar names
-        destViewController.nameFromList = comicCell.comicData;
+        destViewController.nameFromList = comicCell.comicName;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
         // TODO: figure out a better way to pass data to dest VC rather than an array,
         // as this screws up segue from Favourites list
+        // TODO: change this resultsArray for loading from filesystem
         destViewController.resultsArray = [NSArray arrayWithArray:comicResults];
         destViewController.collectionViewIndexFromList = selectedIndexPath;
         
@@ -156,10 +175,12 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     // Setup collectionView
-    [self setupCollectionView];
+    //[self setupCollectionView];
     
     // Reload collectionview with data just fetched
+    //[self.collectionView.collectionViewLayout invalidateLayout];
     [[self collectionView] reloadData];
+    //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
 }
 
 #pragma mark - Init methods
@@ -172,6 +193,7 @@
     
     // init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];
+    webImageManager.delegate = self;
     
     // init collection view cell
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
@@ -180,15 +202,55 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Loading comix ...";
     
-    // NSNotifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(comicFetchDidHappen) name:@"KJComicDataFetchDidHappen" object:nil];
+    // Show network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    // Register NSNotifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(comicFetchDidHappen)
+                                                 name:@"KJComicDataFetchDidHappen"
+                                               object:nil];
     
     // Use the DoodleStore to fetch doodle data
-    KJComicStore *store = [[KJComicStore alloc] init];
-    [store fetchComicData];
+    comicStore = [[KJComicStore alloc] init];
+    //[comicStore loadInitialComicData];
+    [comicStore fetchComicData];
     
-    // TESTING
-    //[store returnComicWithComicName:@"Army Men"];
+//    // Documents folder path
+//    dirArray = [NSArray array];
+//    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    filePath = [NSString stringWithFormat:@"%@/%@.png", [dirArray objectAtIndex:0], fileNameFromList];
+//    
+//    [[NSBundle mainBundle] ]
+//    //NSLog(@"%@", [self.dirArray objectAtIndex:0]);
+//    
+//    // Check if comic file exists, if not then fetch
+//    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
+//    if (fileExists) {
+//        NSLog(@"COMIC DETAIL: comic image file already found, using that");
+//        self.comicImage.image = [UIImage imageWithContentsOfFile:filePath];
+//    } else {
+//        NSLog(@"COMIC DETAIL: comic image file NOT found, fetching ..");
+//        [self fetchComicImage];
+//    }
+    
+    
+    
+    
+//    // load from resources path
+    //comicStore = [[KJComicStore alloc] init];
+    //comicFileResults = [NSArray arrayWithArray:[comicStore returnArrayOfComicFiles]];
+    
+    //[self.collectionView reloadData];
+    
+    //NSArray *fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSBundle mainBundle] resourcePath] error: nil];
+    //NSLog(@"the fileList is %d",[fileList count]);
+}
+
+- (void)dealloc
+{
+    // remove NSNotificationCenter observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJComicDataFetchDidHappen" object:nil];
 }
 
 @end

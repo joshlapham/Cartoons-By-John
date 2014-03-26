@@ -59,28 +59,31 @@
     
     //NSLog(@"comic name: %@", cellData.comicName);
     //NSLog(@"cell for item results array count: %d", [self.resultsArray count]);
+
+    // DISABLED cache for local filesystem loading
+//    // SDWebImage
+//    // check if image is in cache
+//    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.comicData]) {
+//        //NSLog(@"found image in cache");
+//    } else {
+//        //NSLog(@"no image in cache");
+//    }
+//    
+//    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.comicData]
+//                             options:0
+//                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+//                            }
+//                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+//                               if (cellImage && finished) {
+//                                   cell.comicImageView.image = cellImage;
+//                                   cell.comicImageView.tag = 101;
+//                               } else {
+//                                   NSLog(@"comic download error");
+//                               }
+//                           }];
     
-    // SDWebImage
-    // check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.comicData]) {
-        //NSLog(@"found image in cache");
-    } else {
-        //NSLog(@"no image in cache");
-    }
-    
-    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.comicData]
-                             options:0
-                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
-                            }
-                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                               if (cellImage && finished) {
-                                   cell.comicImageView.image = cellImage;
-                                   cell.comicImageView.tag = 101;
-                               } else {
-                                   NSLog(@"comic download error");
-                               }
-                           }];
+    cell.comicImageView.image = [comicStore returnComicImageFromComicObject:cellData];
     
     return cell;
 }
