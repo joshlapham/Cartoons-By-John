@@ -77,25 +77,16 @@
                            completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
                                if (cellImage && finished) {
                                    cell.doodleImageView.image = cellImage;
+                                   [cell setNeedsLayout];
                                    // preload next image in array to the cache
-                                   [self preloadCacheUsingIndexPath:indexPath];
+                                   // DISABLED - crashes app when array goes out of bounds
+                                   //[self preloadCacheUsingIndexPath:indexPath];
                                } else {
                                    NSLog(@"doodle download error");
                                }
                            }];
     
-//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//    dispatch_async(defaultQueue, ^{
-//        UIImage *thumbImage = [UIImage imageWithData:cellData.imageData];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            cell.backgroundColor = [UIColor whiteColor];
-//            cell.doodleImageView.image = thumbImage;
-//        });
-//    });
-    
     return cell;
-
 }
 
 #pragma mark - preload cache method
@@ -104,6 +95,7 @@
 {
     // add 1 to current index path row to get next object in randomImagesResults array
     // so that we can preload images before we swipe
+    // TODO: change this so app doesn't crash when array goes out of bounds on last swipe
     KJRandomImage *doodleToCache = [randomImagesResults objectAtIndex:currentIndexPath.row+1];
     
     // SDWebImage
@@ -135,7 +127,7 @@
 
 - (void)doodleFetchDidHappen
 {
-    //NSLog(@"== doodle fetch did happen ==");
+    //NSLog(@"Doodles: data fetch did happen");
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -147,15 +139,15 @@
     [self loadRandomImages];
 }
 
-#pragma mark - UIAlertView delegate methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    NSLog(@"RANDOM: did dismiss instructions alert view, setting user defaults accordingly");
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"doodleInstructionsShown"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
+//#pragma mark - UIAlertView delegate methods
+//
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+//    NSLog(@"RANDOM: did dismiss instructions alert view, setting user defaults accordingly");
+//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"doodleInstructionsShown"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
+//}
 
 #pragma mark - Load Doodles method
 
@@ -168,18 +160,18 @@
     // Hide network activity monitor
     //[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    // Display alert with instructions on how to use this screen on first load
-    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {
-        NSLog(@"RANDOM: instructions have not yet been shown to user; now displaying");
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Doodles"
-                                                     message:@"Swipe left to load a new random doodle."
-                                                    delegate:self
-                                           cancelButtonTitle:Nil
-                                           otherButtonTitles:@"OK", nil];
-        [av show];
-    } else {
-        NSLog(@"RANDOM: instructions HAVE been shown to user");
-    }
+//    // Display alert with instructions on how to use this screen on first load
+//    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {
+//        NSLog(@"RANDOM: instructions have not yet been shown to user; now displaying");
+//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Doodles"
+//                                                     message:@"Swipe left to load a new random doodle."
+//                                                    delegate:self
+//                                           cancelButtonTitle:Nil
+//                                           otherButtonTitles:@"OK", nil];
+//        [av show];
+//    } else {
+//        NSLog(@"RANDOM: instructions HAVE been shown to user");
+//    }
     
     // setup collection view
     [self setupCollectionView];
@@ -232,6 +224,12 @@
     // Use the DoodleStore to fetch doodle data
     KJDoodleStore *store = [[KJDoodleStore alloc] init];
     [store fetchDoodleData];
+}
+
+- (void)dealloc
+{
+    // remove NSNotification observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJDoodleDataFetchDidHappen" object:nil];
 }
 
 @end
