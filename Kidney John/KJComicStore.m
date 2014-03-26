@@ -218,25 +218,31 @@
         NSLog(@"CORE DATA: %@", newComic);
         
         // Save
-        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            if (success) {
-                NSLog(@"saved successfully");
-                
-                // Send NSNotification to comix view
-                // to say that data fetch is done
-                NSString *notificationName = @"KJComicDataFetchDidHappen";
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-            } else {
-                NSLog(@"Error saving %@: %@", newComic.comicFileName, error);
-            }
-        }];
-    // if comic already exists in database, then send notification
-    } else {
-        // Send NSNotification to comix view
-        // to say that data fetch is done
-        NSString *notificationName = @"KJComicDataFetchDidHappen";
-        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+        [localContext MR_saveToPersistentStoreAndWait];
+        
+//        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+//            if (success) {
+//                NSLog(@"saved successfully");
+//                
+//                // Send NSNotification to comix view
+//                // to say that data fetch is done
+//                NSString *notificationName = @"KJComicDataFetchDidHappen";
+//                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+//            } else {
+//                NSLog(@"Error saving %@: %@", newComic.comicFileName, error);
+//            }
+//        }];
+//    // if comic already exists in database, then send notification
+//    } else {
+//        // Send NSNotification to comix view
+//        // to say that data fetch is done
+//        NSString *notificationName = @"KJComicDataFetchDidHappen";
+//        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
     }
+    // Send NSNotification to comix view
+    // to say that data fetch is done
+    NSString *notificationName = @"KJComicDataFetchDidHappen";
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
 }
 
 - (void)fetchComicData

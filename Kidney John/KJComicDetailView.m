@@ -34,8 +34,8 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    //NSLog(@"count for coll. view - %d", [self.resultsArray count]);
-    return [[self resultsArray] count];
+    NSLog(@"count for coll. view - %d", [self.resultsArray count]);
+    return [self.resultsArray count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -48,6 +48,8 @@
     KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicDetailCell" forIndexPath:indexPath];
     
     KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
+    
+    NSLog(@"cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
     
     // set title to comic
     // TODO: title to be set only after cell has finished loading
@@ -85,6 +87,8 @@
     
     cell.comicImageView.image = [comicStore returnComicImageFromComicObject:cellData];
     
+    NSLog(@"image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
+    
     return cell;
 }
 
@@ -115,9 +119,19 @@
     [self.collectionView setClipsToBounds:YES];
     [self.collectionView setCollectionViewLayout:flowLayout];
     
+    // scroll to same position in the collectionView
+    // as we were on the previous view controller
+    // TODO: write else statement for this
+    // TODO: figure out why moving this screws the comic image bounds?
+    // this might have something to do with incorrent image showing when a cell is tapped
+    NSLog(@"collection view index from list: %@", collectionViewIndexFromList);
+    
+    [self.collectionView scrollToItemAtIndexPath:collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    [self.collectionView layoutSubviews];
+    
     //[self.collectionView.collectionViewLayout invalidateLayout];
     
-    //[self.collectionView reloadData];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UIActionSheet delegate methods
@@ -168,34 +182,34 @@
     }
 }
 
-#pragma mark - UIScrollView delegate methods
+//#pragma mark - UIScrollView delegate methods
+//
+//- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+//{
+//    // comicImageView tag is 101
+//    return [self.collectionView viewWithTag:101];
+//}
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
-    // comicImageView tag is 101
-    return [self.collectionView viewWithTag:101];
-}
-
-#pragma mark - ScrollView methods
-
-- (void)centerScrollViewContents {
-    CGSize boundsSize = comicScrollView.bounds.size;
-    CGRect contentsFrame = [[self.collectionView viewWithTag:101] frame];
-    
-    if (contentsFrame.size.width < boundsSize.width) {
-        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
-    } else {
-        contentsFrame.origin.x = 0.0f;
-    }
-    
-    if (contentsFrame.size.height < boundsSize.height) {
-        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
-    } else {
-        contentsFrame.origin.y = 0.0f;
-    }
-    
-    [[self.collectionView viewWithTag:101] setFrame:contentsFrame];
-}
+//#pragma mark - ScrollView methods
+//
+//- (void)centerScrollViewContents {
+//    CGSize boundsSize = comicScrollView.bounds.size;
+//    CGRect contentsFrame = [[self.collectionView viewWithTag:101] frame];
+//    
+//    if (contentsFrame.size.width < boundsSize.width) {
+//        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
+//    } else {
+//        contentsFrame.origin.x = 0.0f;
+//    }
+//    
+//    if (contentsFrame.size.height < boundsSize.height) {
+//        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
+//    } else {
+//        contentsFrame.origin.y = 0.0f;
+//    }
+//    
+//    [[self.collectionView viewWithTag:101] setFrame:contentsFrame];
+//}
 
 #pragma mark - Gesture recognizer methods
 
@@ -276,16 +290,6 @@
 {
     // setup collection view and flow layout
     [self setupCollectionView];
-    
-    // scroll to same position in the collectionView
-    // as we were on the previous view controller
-    // TODO: write else statement for this
-    // TODO: figure out why moving this screws the comic image bounds?
-    // this might have something to do with incorrent image showing when a cell is tapped
-    if (self.collectionViewIndexFromList != nil) {
-        NSLog(@"scrolling to: %d", self.collectionViewIndexFromList.row);
-        [self.collectionView scrollToItemAtIndexPath:self.collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
