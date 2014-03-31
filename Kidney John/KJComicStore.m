@@ -239,10 +239,6 @@
 //        NSString *notificationName = @"KJComicDataFetchDidHappen";
 //        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
     }
-    // Send NSNotification to comix view
-    // to say that data fetch is done
-    NSString *notificationName = @"KJComicDataFetchDidHappen";
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
 }
 
 - (void)fetchComicData
@@ -278,7 +274,10 @@
                         //PFFile *thumbImageFile = [object objectForKey:@"comicThumb"];
                         PFFile *comicImageFile = [object objectForKey:@"comicFile"];
                         
-                        [self persistNewComicWithName:object[@"comicName"] comicFileData:nil comicFileName:object[@"comicFileName"] comicFileUrl:comicImageFile.url];
+                        [self persistNewComicWithName:object[@"comicName"]
+                                        comicFileData:nil
+                                        comicFileName:object[@"comicFileName"]
+                                         comicFileUrl:comicImageFile.url];
                         
                         //NSLog(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
 //                        [comicImageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
@@ -298,6 +297,11 @@
                 // Log details of the failure
                 NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
+            
+            // Send NSNotification to comix view
+            // to say that data fetch is done
+            NSString *notificationName = @"KJComicDataFetchDidHappen";
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
             
             // Set firstLoad = YES in NSUserDefaults
             //[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"comicLoadDone"];
