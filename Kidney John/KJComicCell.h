@@ -11,8 +11,5 @@
 @interface KJComicCell : UICollectionViewCell <UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIImageView *comicImageView;
-@property (strong, nonatomic) UIScrollView *comicScrollView;
-
-//- (void)setThumbImage:(NSString *)imageName;
 
 @end

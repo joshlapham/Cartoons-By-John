@@ -8,7 +8,7 @@
 
 #import "KJComicDetailView.h"
 #import "MBProgressHUD.h"
-#import "KJComicCell.h"
+#import "KJComicDetailCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJComicStore.h"
 
@@ -24,7 +24,6 @@
     float currentLength;
     SDWebImageManager *webImageManager;
     KJComicStore *comicStore;
-    UIScrollView *comicScrollView;
 }
 
 @synthesize nameFromList, titleFromList, fileNameFromList, hud, resultsArray, collectionViewIndexFromList, isComingFromFavouritesList;
@@ -44,7 +43,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicDetailCell" forIndexPath:indexPath];
+    KJComicDetailCell *cell = (KJComicDetailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicDetailCell" forIndexPath:indexPath];
     
     KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
     
@@ -185,26 +184,23 @@
     webImageManager = [SDWebImageManager sharedManager];
     
     // Register custom UICollectionViewCell
-    [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicDetailCell"];
+    [self.collectionView registerClass:[KJComicDetailCell class] forCellWithReuseIdentifier:@"comicDetailCell"];
     
     // Init action button in top right hand corner of navbar
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
     
     // Gesture recognizer to show navbar when comic is single tapped
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(comicWasTapped)];
-    tapRecognizer.numberOfTapsRequired = 1;
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(comicWasTapped)];
+    singleTap.numberOfTapsRequired = 1;
     //tapRecognizer.numberOfTouchesRequired = 1;
-    [self.collectionView addGestureRecognizer:tapRecognizer];
+    [self.collectionView addGestureRecognizer:singleTap];
     
-    // Init scroll view
-    //    comicScrollView = [[UIScrollView alloc] initWithFrame:self.collectionView.frame];
-    //    comicScrollView.delegate = self;
-    //    //[self centerScrollViewContents];
-    //    comicScrollView.minimumZoomScale = 1.0;
-    //    comicScrollView.maximumZoomScale = 3.0;
-    //    //comicScrollView.contentSize = self.collectionView.bounds.size;
-    //    [self.view addSubview:comicScrollView];
-    //    [comicScrollView addSubview:self.collectionView];
+    // Gesture recognizer to zoom comicScrollView on cell when double tapped
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(notifyThatComicWasDoubleTapped)];
+    [doubleTap setNumberOfTapsRequired:2];
+    [self.collectionView addGestureRecognizer:doubleTap];
+    
+    [singleTap requireGestureRecognizerToFail:doubleTap];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -226,16 +222,17 @@
     [self.collectionView reloadData];
 }
 
-//#pragma mark - UIScrollView delegate methods
-//
-//- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-//{
-//    // comicImageView tag is 101
-//    return [self.collectionView viewWithTag:101];
-//}
+#pragma mark - NSNotification methods
+
+- (void)notifyThatComicWasDoubleTapped
+{
+    // Post NSNotification that comic was double tapped
+    NSString *notificationName = @"KJComicWasDoubleTapped";
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+}
 
 //#pragma mark - ScrollView methods
-//
+
 //- (void)centerScrollViewContents {
 //    CGSize boundsSize = comicScrollView.bounds.size;
 //    CGRect contentsFrame = [[self.collectionView viewWithTag:101] frame];
@@ -252,6 +249,7 @@
 //        contentsFrame.origin.y = 0.0f;
 //    }
 //
+//    // TODO: check this
 //    [[self.collectionView viewWithTag:101] setFrame:contentsFrame];
 //}
 
