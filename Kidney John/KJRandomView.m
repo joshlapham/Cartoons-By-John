@@ -35,10 +35,11 @@
     [flowLayout setMinimumLineSpacing:0.0f];
     
     // use up whole screen (or frame)
-    [flowLayout setItemSize:self.collectionView.frame.size];
+    [flowLayout setItemSize:self.collectionView.bounds.size];
     
     [self.collectionView setPagingEnabled:YES];
     [self.collectionView setCollectionViewLayout:flowLayout];
+    [self.collectionView setFrame:self.view.frame];
     
     [self.collectionView reloadData];
 }
@@ -127,7 +128,9 @@
 
 - (void)doodleFetchDidHappen
 {
-    //NSLog(@"Doodles: data fetch did happen");
+    NSLog(@"Doodles: data fetch did happen");
+    randomImagesResults = [[NSArray alloc] init];
+    randomImagesResults = [KJRandomImage MR_findAll];
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -135,8 +138,8 @@
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    // Load a random image
-    [self loadRandomImages];
+    // Reload collectionView data
+    [self.collectionView reloadData];
 }
 
 //#pragma mark - UIAlertView delegate methods
@@ -148,34 +151,6 @@
 //    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"doodleInstructionsShown"];
 //    [[NSUserDefaults standardUserDefaults] synchronize];
 //}
-
-#pragma mark - Load Doodles method
-
-- (void)loadRandomImages
-{
-    NSLog(@"RANDOM: in loadRandomImages method ...");
-    randomImagesResults = [[NSArray alloc] init];
-    randomImagesResults = [KJRandomImage MR_findAll];
-    
-    // Hide network activity monitor
-    //[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-//    // Display alert with instructions on how to use this screen on first load
-//    if (![[NSUserDefaults standardUserDefaults] valueForKey:@"doodleInstructionsShown"]) {
-//        NSLog(@"RANDOM: instructions have not yet been shown to user; now displaying");
-//        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Doodles"
-//                                                     message:@"Swipe left to load a new random doodle."
-//                                                    delegate:self
-//                                           cancelButtonTitle:Nil
-//                                           otherButtonTitles:@"OK", nil];
-//        [av show];
-//    } else {
-//        NSLog(@"RANDOM: instructions HAVE been shown to user");
-//    }
-    
-    // setup collection view
-    [self setupCollectionView];
-}
 
 #pragma mark - Return random image from an array
 
@@ -224,12 +199,20 @@
     // Use the DoodleStore to fetch doodle data
     KJDoodleStore *store = [[KJDoodleStore alloc] init];
     [store fetchDoodleData];
+    
+    // Setup collection view
+    [self setupCollectionView];
 }
 
 - (void)dealloc
 {
     // remove NSNotification observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJDoodleDataFetchDidHappen" object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.collectionView reloadData];
 }
 
 @end

@@ -112,6 +112,9 @@
     for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"]) {
         //NSLog(@"%@", fileName);
         [comicFileResults addObject:fileName];
+        
+        // MWPhotoBrowser
+        //[comicFileResults addObject:[MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:fileName ofType:@"png"]]]];
     }
     
     return [NSArray arrayWithArray:comicFileResults];

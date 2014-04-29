@@ -10,7 +10,6 @@
 #import "MBProgressHUD.h"
 #import "KJComicCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "KJComicDetailFlowLayout.h"
 #import "KJComicStore.h"
 
 @interface KJComicDetailView () <UIActionSheetDelegate, UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
@@ -51,40 +50,6 @@
     
     NSLog(@"cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
     
-    // set title to comic
-    // TODO: title to be set only after cell has finished loading
-    self.title = cellData.comicName;
-    
-    // update titleFromList so that Favourites will function correctly,
-    // as our Favourites methods use this ivar
-    titleFromList = cellData.comicName;
-    
-    //NSLog(@"comic name: %@", cellData.comicName);
-    //NSLog(@"cell for item results array count: %d", [self.resultsArray count]);
-
-    // DISABLED cache for local filesystem loading
-//    // SDWebImage
-//    // check if image is in cache
-//    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.comicData]) {
-//        //NSLog(@"found image in cache");
-//    } else {
-//        //NSLog(@"no image in cache");
-//    }
-//    
-//    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.comicData]
-//                             options:0
-//                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
-//                            }
-//                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-//                               if (cellImage && finished) {
-//                                   cell.comicImageView.image = cellImage;
-//                                   cell.comicImageView.tag = 101;
-//                               } else {
-//                                   NSLog(@"comic download error");
-//                               }
-//                           }];
-    
     cell.comicImageView.image = [comicStore returnComicImageFromComicObject:cellData];
     
     NSLog(@"image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
@@ -97,42 +62,46 @@
     return self.collectionView.bounds.size;
 }
 
-#pragma mark - setup collection view method
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
+    
+    KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
+    
+    // set title to comic after scroll has finished
+    self.title = cellData.comicName;
+    
+    // update titleFromList so that Favourites will function correctly,
+    // as our Favourites methods use this ivar
+    titleFromList = cellData.comicName;
+}
+
+#pragma mark - Setup collectionView method
 
 - (void)setupCollectionView
 {
-    //[self.collectionView.collectionViewLayout invalidateLayout];
-    //[self.collectionView setBounds:self.view.bounds];
-    [self.collectionView setFrame:self.view.bounds];
-    //[self.collectionView setContentSize:self.view.bounds.size];
-    
-    KJComicDetailFlowLayout *flowLayout = [[KJComicDetailFlowLayout alloc] init];
-    //UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    
+    // Init flow layout with options
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [flowLayout setMinimumInteritemSpacing:0.0f];
     [flowLayout setMinimumLineSpacing:0.0f];
-    //[flowLayout setSectionInset:UIEdgeInsetsMake(2, 2, 10, 10)];
-    
-    // use up whole screen (or frame)
     [flowLayout setItemSize:self.collectionView.bounds.size];
     
-    [self.collectionView setPagingEnabled:YES];
-    [self.collectionView setClipsToBounds:YES];
+    // Set collectionView flow layout
     [self.collectionView setCollectionViewLayout:flowLayout];
-    
-    // scroll to same position in the collectionView
-    // as we were on the previous view controller
-    // TODO: write else statement for this
-    // TODO: figure out why moving this screws the comic image bounds?
-    // this might have something to do with incorrent image showing when a cell is tapped
-    NSLog(@"collection view index from list: %@", collectionViewIndexFromList);
-    
-    [self.collectionView scrollToItemAtIndexPath:collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    [self.collectionView layoutSubviews];
     
     //[self.collectionView.collectionViewLayout invalidateLayout];
     
+    // Set collectionView options
+    [self.collectionView setPagingEnabled:YES];
+    [self.collectionView setFrame:self.view.frame];
+    
+    NSLog(@"collection view index from list: %@", collectionViewIndexFromList);
+    
+    // Scroll to comic that was selected in previous view controller
+    [self.collectionView scrollToItemAtIndexPath:collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    
+    // Reload collectionView
     [self.collectionView reloadData];
 }
 
@@ -145,8 +114,6 @@
     //NSString *other2 = @"Share on Facebook";
     //NSString *other3 = @"Share on Twitter";
     NSString *cancelTitle = @"Cancel";
-    //NSString *actionSheetTitle = @"Action";
-    //NSString *destructiveTitle = @"Destructive button";
     
     // Set Favourites button text accordingly
     // TODO: use better ivar name for titleFromList
@@ -184,6 +151,81 @@
     }
 }
 
+#pragma mark - Gesture recognizer methods
+
+- (void)comicWasTapped
+{
+    NSLog(@"Comic was tapped");
+    
+    // Toggle navbar
+    [self.navigationController setNavigationBarHidden:!self.navigationController.isNavigationBarHidden animated:YES];
+    
+    // Toggle status bar
+    [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
+}
+
+#pragma mark - Init methods
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    NSLog(@"CDV: row: %d", collectionViewIndexFromList.row);
+    
+    // Set title
+    self.title = titleFromList;
+    
+    // Call method to setup collectionView and flow layout
+    [self setupCollectionView];
+    
+    // Init comic store
+    comicStore = [[KJComicStore alloc] init];
+    
+    // Init SDWebImage cache manager
+    webImageManager = [SDWebImageManager sharedManager];
+    
+    // Register custom UICollectionViewCell
+    [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicDetailCell"];
+    
+    // Init action button in top right hand corner of navbar
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
+    
+    // Gesture recognizer to show navbar when comic is single tapped
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(comicWasTapped)];
+    tapRecognizer.numberOfTapsRequired = 1;
+    //tapRecognizer.numberOfTouchesRequired = 1;
+    [self.collectionView addGestureRecognizer:tapRecognizer];
+    
+    // Init scroll view
+    //    comicScrollView = [[UIScrollView alloc] initWithFrame:self.collectionView.frame];
+    //    comicScrollView.delegate = self;
+    //    //[self centerScrollViewContents];
+    //    comicScrollView.minimumZoomScale = 1.0;
+    //    comicScrollView.maximumZoomScale = 3.0;
+    //    //comicScrollView.contentSize = self.collectionView.bounds.size;
+    //    [self.view addSubview:comicScrollView];
+    //    [comicScrollView addSubview:self.collectionView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // reset isComingFromFavourites ivar
+    isComingFromFavouritesList = NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    // Hide navbar
+    self.navigationController.navigationBarHidden = YES;
+    //[self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    // Hide status bar
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
+    // Reload collectionView
+    [self.collectionView reloadData];
+}
+
 //#pragma mark - UIScrollView delegate methods
 //
 //- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
@@ -197,107 +239,20 @@
 //- (void)centerScrollViewContents {
 //    CGSize boundsSize = comicScrollView.bounds.size;
 //    CGRect contentsFrame = [[self.collectionView viewWithTag:101] frame];
-//    
+//
 //    if (contentsFrame.size.width < boundsSize.width) {
 //        contentsFrame.origin.x = (boundsSize.width - contentsFrame.size.width) / 2.0f;
 //    } else {
 //        contentsFrame.origin.x = 0.0f;
 //    }
-//    
+//
 //    if (contentsFrame.size.height < boundsSize.height) {
 //        contentsFrame.origin.y = (boundsSize.height - contentsFrame.size.height) / 2.0f;
 //    } else {
 //        contentsFrame.origin.y = 0.0f;
 //    }
-//    
+//
 //    [[self.collectionView viewWithTag:101] setFrame:contentsFrame];
 //}
-
-#pragma mark - Gesture recognizer methods
-
-- (void)comicWasDoubleTapped
-{
-    NSLog(@"comic was double tapped");
-    
-    // Navbar
-    [self.navigationController setNavigationBarHidden:!self.navigationController.isNavigationBarHidden animated:YES];
-    
-    // Status bar
-    [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
-    
-    // refresh collection view cell bounds
-    [self.collectionView.collectionViewLayout invalidateLayout];
-}
-
-#pragma mark - Init methods
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    // init scroll view
-    comicScrollView = [[UIScrollView alloc] initWithFrame:self.collectionView.frame];
-    comicScrollView.delegate = self;
-    //[self centerScrollViewContents];
-    comicScrollView.minimumZoomScale = 1.0;
-    comicScrollView.maximumZoomScale = 3.0;
-    //comicScrollView.contentSize = self.collectionView.bounds.size;
-    [self.view addSubview:comicScrollView];
-    [comicScrollView addSubview:self.collectionView];
-    
-    // DEBUGGING
-    NSLog(@"CDV: row: %d", collectionViewIndexFromList.row);
-    // END OF DEBUGGING
-    
-    //float topMargin = self.navigationController.navigationBar.frame.size.height;
-    //[self.collectionView setContentInset:UIEdgeInsetsMake(topMargin, 0, 0, 0)];
-    
-    // stop nav bar from resizing collection view cell when showing/hiding
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    //NSLog(@"results array count: %d", [self.resultsArray count]);
-    
-    // Set title
-    // DISABLED as we set the title in cellAtIndexPath method
-    //self.title = titleFromList;
-    
-    // init comic store
-    comicStore = [[KJComicStore alloc] init];
-    
-    // init SDWebImage cache manager
-    webImageManager = [SDWebImageManager sharedManager];
-    
-    // Register custom UICollectionViewCell
-    [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicDetailCell"];
-    
-    // Init action button in top right hand corner
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActionSheet:)];
-    
-    // Hide navbar
-    self.navigationController.navigationBarHidden = YES;
-    //[self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    // Hide status bar
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    //[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    
-    // Gesture recognizer to show navbar when comic is double tapped
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(comicWasDoubleTapped)];
-    tapRecognizer.numberOfTapsRequired = 2;
-    //tapRecognizer.numberOfTouchesRequired = 1;
-    [self.collectionView addGestureRecognizer:tapRecognizer];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    // setup collection view and flow layout
-    [self setupCollectionView];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    // reset isComingFromFavourites ivar
-    isComingFromFavouritesList = NO;
-}
 
 @end

@@ -16,7 +16,6 @@
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
 		687BC4451851DBDF00F45970 /* KJMoreDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC4441851DBDF00F45970 /* KJMoreDetailView.m */; };
-		68B69AE218E1FAB600D27AA2 /* KJComicDetailFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B69AE118E1FAB600D27AA2 /* KJComicDetailFlowLayout.m */; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
 		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
@@ -78,8 +77,6 @@
 		687BC378184EB75500F45970 /* KJComicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicDetailView.m; sourceTree = "<group>"; };
 		687BC4431851DBDF00F45970 /* KJMoreDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreDetailView.h; sourceTree = "<group>"; };
 		687BC4441851DBDF00F45970 /* KJMoreDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreDetailView.m; sourceTree = "<group>"; };
-		68B69AE018E1FAB600D27AA2 /* KJComicDetailFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicDetailFlowLayout.h; sourceTree = "<group>"; };
-		68B69AE118E1FAB600D27AA2 /* KJComicDetailFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicDetailFlowLayout.m; sourceTree = "<group>"; };
 		68CE160118BDDAF300127AA7 /* KJComicStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicStore.h; sourceTree = "<group>"; };
 		68CE160218BDDAF300127AA7 /* KJComicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicStore.m; sourceTree = "<group>"; };
 		68CE160418BEAF7800127AA7 /* KJVideoStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJVideoStore.h; sourceTree = "<group>"; };
@@ -205,8 +202,6 @@
 			children = (
 				687BC372184D9C8900F45970 /* KJComicCell.h */,
 				687BC373184D9C8900F45970 /* KJComicCell.m */,
-				68B69AE018E1FAB600D27AA2 /* KJComicDetailFlowLayout.h */,
-				68B69AE118E1FAB600D27AA2 /* KJComicDetailFlowLayout.m */,
 				683CAE5718C77DF2006173FA /* KJDoodleCell.h */,
 				683CAE5818C77DF2006173FA /* KJDoodleCell.m */,
 			);
@@ -365,6 +360,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Josh Lapham";
 				TargetAttributes = {
+					68E48D17184A247D00600FA5 = {
+						DevelopmentTeam = 7HSH26BZGU;
+					};
 					68E48D3B184A247D00600FA5 = {
 						TestTargetID = 68E48D17184A247D00600FA5;
 					};
@@ -456,7 +454,6 @@
 				68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */,
 				68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */,
 				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,
-				68B69AE218E1FAB600D27AA2 /* KJComicDetailFlowLayout.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
 				68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */,
 				68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */,
@@ -619,7 +616,7 @@
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A2D4690A-BF6D-4D62-A237-8A68D6984F36";
+				PROVISIONING_PROFILE = "57E16CA4-C0C9-4EF9-8FB1-F26468D06AA9";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -636,7 +633,7 @@
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A2D4690A-BF6D-4D62-A237-8A68D6984F36";
+				PROVISIONING_PROFILE = "57E16CA4-C0C9-4EF9-8FB1-F26468D06AA9";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

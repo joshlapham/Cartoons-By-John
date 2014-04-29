@@ -36,6 +36,9 @@
 //        [comicScrollView addSubview:comicImageView];
         
         comicImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        // NOTE: change this, for testing only
+        comicImageView.contentMode = UIViewContentModeScaleToFill;
+        
         [self addSubview:comicImageView];
     }
     return self;
