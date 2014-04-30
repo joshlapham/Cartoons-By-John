@@ -19,5 +19,6 @@
 @dynamic orderingValue;
 @dynamic videoThumb;
 @dynamic isFavourite;
+@dynamic videoDuration;
 
 @end

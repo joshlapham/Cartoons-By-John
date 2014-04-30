@@ -30,6 +30,7 @@
                   description:(NSString *)videoDescription
                          date:(NSString *)videoDate
                    cellHeight:(NSString *)videoCellHeight
+                videoDuration:(NSString *)videoDuration
 {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
@@ -45,6 +46,7 @@
         newVideo.videoDescription = videoDescription;
         newVideo.videoDate = videoDate;
         newVideo.videoCellHeight = videoCellHeight;
+        newVideo.videoDuration = videoDuration;
         // Thumbnails
         // DISABLED for now, as we are using SDWebImage to cache the YouTube thumbnails
 //        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
@@ -84,7 +86,7 @@
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // Save Parse object to Core Data
-                        [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"]];
+                        [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"] videoDuration:object[@"videoDuration"]];
                     } else {
                         NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
                     }

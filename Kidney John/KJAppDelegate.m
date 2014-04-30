@@ -46,7 +46,8 @@
     [self setupUI];
     
     // MAGICAL RECORD
-    [MagicalRecord setupCoreDataStackWithStoreNamed:@"kj.sqlite"];
+    //[MagicalRecord setupCoreDataStackWithStoreNamed:@"kj.sqlite"];
+    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"kj.sqlite"];
     
     // PARSE SETUP
     // Parse custom class setup

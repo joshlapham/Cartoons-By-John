@@ -21,6 +21,7 @@
         <attribute name="videoCellHeight" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoDuration" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoThumb" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
@@ -28,6 +29,6 @@
     <elements>
         <element name="KJComic" positionX="0" positionY="0" width="128" height="135"/>
         <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="KJVideo" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="KJVideo" positionX="0" positionY="0" width="128" height="180"/>
     </elements>
 </model>

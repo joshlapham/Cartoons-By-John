@@ -20,5 +20,6 @@
 @property (nonatomic) double orderingValue;
 @property (nonatomic, retain) NSData * videoThumb;
 @property (nonatomic) BOOL isFavourite;
+@property (nonatomic, retain) NSString * videoDuration;
 
 @end

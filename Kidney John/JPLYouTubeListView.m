@@ -83,11 +83,6 @@
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        // Extend line seperator between list items to edge of screen
-        if ([cell respondsToSelector:@selector(separatorInset)]) {
-            cell.separatorInset = UIEdgeInsetsZero;
-        }
     }
     
     // Init the cell
@@ -100,25 +95,29 @@
         cellVideo = [videoResults objectAtIndex:indexPath.row];
     }
     
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
+    UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
+    UIImageView *thumbnailImageView = (UIImageView *)[cell viewWithTag:102];
+    
     // Cell text
-    //UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica" size:20];
     UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:22];
-    cell.textLabel.font = kjCustomFont;
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.adjustsFontSizeToFitWidth = YES;
-    //cell.textLabel.lineBreakMode = YES;
-    cell.textLabel.text = cellVideo.videoName;
-    //[cell.textLabel sizeToFit];
+    titleLabel.font = kjCustomFont;
+    titleLabel.numberOfLines = 0;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    titleLabel.text = cellVideo.videoName;
     
     // Cell detail text
-    // DISABLED as we're not using video descriptions
-    //UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:16];
-//    UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
-//    cell.detailTextLabel.font = kjCustomFontDetailText;
-//    cell.detailTextLabel.textColor = [UIColor grayColor];
-//    cell.detailTextLabel.numberOfLines = 0;
-//    //cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
-//    cell.detailTextLabel.text = cellVideo.videoDescription;
+    UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
+    durationLabel.font = kjCustomFontDetailText;
+    durationLabel.textColor = [UIColor grayColor];
+    durationLabel.numberOfLines = 0;
+    
+    // Placeholder duration
+    if (cellVideo.videoDuration == nil) {
+        durationLabel.text = @"0:30";
+    } else {
+        durationLabel.text = cellVideo.videoDuration;
+    }
     
     // SDWebImage
     NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
@@ -137,7 +136,7 @@
                             }
                            completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
                                if (cellImage && finished) {
-                                   cell.imageView.image = cellImage;
+                                   thumbnailImageView.image = cellImage;
                                    // call setNeedsLayout so thumbnails are shown immediately
                                    [cell setNeedsLayout];
                                } else {
