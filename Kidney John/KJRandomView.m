@@ -70,22 +70,33 @@
         //NSLog(@"no image in cache");
     }
     
-    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.imageUrl]
-                             options:0
-                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
-                            }
-                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                               if (cellImage && finished) {
-                                   cell.doodleImageView.image = cellImage;
-                                   [cell setNeedsLayout];
-                                   // preload next image in array to the cache
-                                   // DISABLED - crashes app when array goes out of bounds
-                                   //[self preloadCacheUsingIndexPath:indexPath];
-                               } else {
-                                   NSLog(@"doodle download error");
-                               }
-                           }];
+    [cell.doodleImageView setImageWithURL:[NSURL URLWithString:cellData.imageUrl]
+                         placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
+                                    if (cellImage && !error) {
+                                        NSLog(@"Doodles: fetched image");
+                                    } else {
+                                        NSLog(@"Doodles: error fetching image: %@", [error localizedDescription]);
+                                    }
+    }];
+    
+    // Old way of loading (without placeholder image)
+//    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.imageUrl]
+//                             options:0
+//                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+//                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+//                            }
+//                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+//                               if (cellImage && finished) {
+//                                   cell.doodleImageView.image = cellImage;
+//                                   [cell setNeedsLayout];
+//                                   // preload next image in array to the cache
+//                                   // DISABLED - crashes app when array goes out of bounds
+//                                   //[self preloadCacheUsingIndexPath:indexPath];
+//                               } else {
+//                                   NSLog(@"doodle download error");
+//                               }
+//                           }];
     
     return cell;
 }
