@@ -17,6 +17,8 @@
 - (BOOL)checkIfComicIsAFavourite:(NSString *)comicName;
 - (NSArray *)returnArrayOfComicFiles;
 - (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;
+- (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject;
 - (NSString *)returnFilepathForComicObject:(KJComic *)comicObject;
+- (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject;
 
 @end

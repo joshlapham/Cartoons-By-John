@@ -21,12 +21,28 @@
     return [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"];
 }
 
+- (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject
+{
+    NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"ComicThumbs"];
+    
+    // Filepath for jpeg comic thumbs
+    filePath = [NSString stringWithFormat:@"%@/%@.jpg", comicsFolderPath, comicObject.comicNumber];
+    
+    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
+    
+    // TODO: make this better, return nil if none found
+    if (fileExists) {
+        NSLog(@"comicStore: comic thumb file exists");
+    } else {
+        NSLog(@"comicStore: comic thumb file does not exist");
+    }
+    
+    return filePath;
+}
+
 - (NSString *)returnFilepathForComicObject:(KJComic *)comicObject
 {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Comics"];
-    
-    // Filepath for png comics
-    //filePath = [NSString stringWithFormat:@"%@/%@.png", comicsFolderPath, comicObject.comicFileName];
     
     // Filepath for jpeg comics
     filePath = [NSString stringWithFormat:@"%@/%@%@.jpg", comicsFolderPath, comicObject.comicNumber, comicObject.comicFileName];
@@ -49,7 +65,18 @@
     
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
     
-    NSLog(@"image: %@", imageToReturn);
+    NSLog(@"comicStore: comic image: %@", imageToReturn);
+    
+    return imageToReturn;
+}
+
+- (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject
+{
+    // TODO: handle if filepath is nil
+    
+    UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnThumbnailFilepathForComicObject:comicObject]];
+    
+    NSLog(@"comicStore: thumb image: %@", imageToReturn);
     
     return imageToReturn;
 }

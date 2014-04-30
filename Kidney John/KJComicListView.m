@@ -103,7 +103,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.backgroundColor = [UIColor whiteColor];
-            cell.comicImageView.image = [comicStore returnComicImageFromComicObject:comicCell];
+            cell.comicImageView.image = [comicStore returnComicThumbImageFromComicObject:comicCell];
         });
     });
     
