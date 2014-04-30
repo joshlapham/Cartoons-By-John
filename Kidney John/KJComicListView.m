@@ -49,8 +49,6 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [comicResults count];
-    // loading from filesystem
-    //return [comicFileResults count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -112,22 +110,6 @@
     return cell;
 }
 
-//#pragma mark - TESTING - swipe to next comic methods
-//
-//- (void)setupCollectionView
-//{
-//    //UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-//    //[flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-//    //[flowLayout setMinimumInteritemSpacing:0.0f];
-//    //[flowLayout setMinimumLineSpacing:0.0f];
-//    [self.collectionView setPagingEnabled:YES];
-//    //[self.collectionView setCollectionViewLayout:flowLayout];
-//}
-
-//-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    return self.collectionView.frame.size;
-//}
-
 #pragma mark - Prepare for segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -161,11 +143,13 @@
 
 - (void)comicFetchDidHappen
 {
-    NSLog(@"comic fetch did happen ..");
+    NSLog(@"Comic fetch did happen ..");
     
     // TODO: init array here every time?
     comicResults = [[NSArray alloc] init];
     comicResults = [KJComic MR_findAll];
+    
+    // TODO: add NSUserDefault here to say that first data fetch has completed
     
     // TODO: when to disable activity monitor and progress?
     // Hide network activity monitor
@@ -174,11 +158,7 @@
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    // Setup collectionView
-    //[self setupCollectionView];
-    
     // Reload collectionview with data just fetched
-    //[self.collectionView.collectionViewLayout invalidateLayout];
     [[self collectionView] reloadData];
     //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
 }
@@ -191,11 +171,11 @@
     
     self.title = @"Comix";
     
-    // init SDWebImage cache manager
+    // Init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];
     webImageManager.delegate = self;
     
-    // init collection view cell
+    // Init collection view cell
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
     
     // Show progress
@@ -211,45 +191,14 @@
                                                  name:@"KJComicDataFetchDidHappen"
                                                object:nil];
     
-    // Use the DoodleStore to fetch doodle data
+    // Init comicStore and fetch comic data
     comicStore = [[KJComicStore alloc] init];
-    //[comicStore loadInitialComicData];
     [comicStore fetchComicData];
-    
-//    // Documents folder path
-//    dirArray = [NSArray array];
-//    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    filePath = [NSString stringWithFormat:@"%@/%@.png", [dirArray objectAtIndex:0], fileNameFromList];
-//    
-//    [[NSBundle mainBundle] ]
-//    //NSLog(@"%@", [self.dirArray objectAtIndex:0]);
-//    
-//    // Check if comic file exists, if not then fetch
-//    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-//    if (fileExists) {
-//        NSLog(@"COMIC DETAIL: comic image file already found, using that");
-//        self.comicImage.image = [UIImage imageWithContentsOfFile:filePath];
-//    } else {
-//        NSLog(@"COMIC DETAIL: comic image file NOT found, fetching ..");
-//        [self fetchComicImage];
-//    }
-    
-    
-    
-    
-//    // load from resources path
-    //comicStore = [[KJComicStore alloc] init];
-    //comicFileResults = [NSArray arrayWithArray:[comicStore returnArrayOfComicFiles]];
-    
-    //[self.collectionView reloadData];
-    
-    //NSArray *fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[NSBundle mainBundle] resourcePath] error: nil];
-    //NSLog(@"the fileList is %d",[fileList count]);
 }
 
 - (void)dealloc
 {
-    // remove NSNotificationCenter observer
+    // Remove NSNotificationCenter observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJComicDataFetchDidHappen" object:nil];
 }
 

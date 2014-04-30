@@ -18,6 +18,5 @@
 - (NSArray *)returnArrayOfComicFiles;
 - (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;
 - (NSString *)returnFilepathForComicObject:(KJComic *)comicObject;
-- (void)loadInitialComicData;
 
 @end

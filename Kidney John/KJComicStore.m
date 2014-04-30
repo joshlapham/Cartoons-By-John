@@ -14,26 +14,6 @@
     NSString *filePath;
 }
 
-#pragma mark - load initial comic data
-
-- (void)loadInitialComicData
-{
-    // this method will load all comics into core data
-    // if this is the first time the app has been run
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"appHasCompletedFirstLaunch"] != NO) {
-        // app has already been launched, no need to load initial data
-    } else {
-        // app has never been launched, load initial comic data
-        [self persistNewComicWithName:@"Aeroplane" comicFileData:nil comicFileName:@"aeroplane" comicFileUrl:nil];
-        [self persistNewComicWithName:@"Army Men" comicFileData:nil comicFileName:@"armymen" comicFileUrl:nil];
-        [self persistNewComicWithName:@"Are We There Yet?" comicFileData:nil comicFileName:@"arewethereyet" comicFileUrl:nil];
-        
-        // set NSUserDefaults to indicate that we have launched app
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"appHasCompletedFirstLaunch"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-}
-
 #pragma mark - Comic files on filesystem methods
 
 - (NSArray *)returnComicsFolderAsArray
@@ -43,56 +23,27 @@
 
 - (NSString *)returnFilepathForComicObject:(KJComic *)comicObject
 {
-    //NSString *fileNameToReturn = [[NSString alloc] init];
-    
-    //NSLog(@"type: %@", [[[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"] class]);
-    
-    // Documents folder path
-//    dirArray = [NSArray array];
-//    dirArray = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    filePath = [NSString stringWithFormat:@"%@/%@.png", [dirArray objectAtIndex:0], comicObject.comicFileName];
-    
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Comics"];
     
     filePath = [NSString stringWithFormat:@"%@/%@.png", comicsFolderPath, comicObject.comicFileName];
     
-    //NSLog(@"%@", filePath);
-    
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-        if (fileExists) {
-            NSLog(@"comic file exists!");
-        } else {
-            NSLog(@"comic file does not exist");
-        }
     
-//    // TODO: make this better
-//    for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"]) {
-//        //NSLog(@"%@", fileName);
-//        if ([fileName isEqualToString:comicObject.comicFileName]) {
-//            fileNameToReturn = fileName;
-//        } else {
-//            fileNameToReturn = nil;
-//        }
-//    }
-//    
-//    NSLog(@"%@", fileNameToReturn);
+    // TODO: make this better, return nil if none found
+    if (fileExists) {
+        NSLog(@"comic file exists!");
+    } else {
+        NSLog(@"comic file does not exist");
+    }
     
     return filePath;
 }
 
 - (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject
 {
-    UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
+    // TODO: handle if filepath is nil
     
-//    // TODO: make this better
-//    for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"]) {
-//        //NSLog(@"%@", fileName);
-//        if ([fileName isEqualToString:comicObject.comicFileName]) {
-//            imageToReturn = [[UIImage alloc] initWithContentsOfFile:comicObject.comicFileName];
-//        } else {
-//            return nil;
-//        }
-//    }
+    UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
     
     NSLog(@"image: %@", imageToReturn);
     
@@ -104,17 +55,12 @@
     // load from resources path
     NSMutableArray *comicFileResults = [[NSMutableArray alloc] init];
     
-    //NSBundle *comicBundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Comics" ofType:@"png"]];
-    //NSLog(@"bundle: %@", comicBundle);
     NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"] count];
     NSLog(@"bundle count: %d", pngCount);
     
     for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"]) {
         //NSLog(@"%@", fileName);
         [comicFileResults addObject:fileName];
-        
-        // MWPhotoBrowser
-        //[comicFileResults addObject:[MWPhoto photoWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:fileName ofType:@"png"]]]];
     }
     
     return [NSArray arrayWithArray:comicFileResults];
@@ -246,43 +192,39 @@
 
 - (void)fetchComicData
 {
-//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//    dispatch_async(defaultQueue, ^{
-//        NSLog(@"COMIX: in GCD default queue thread ..");
+    // Setup query
+    PFQuery *comicsQuery = [KJComicFromParse query];
     
-        // Setup query
-        PFQuery *comicsQuery = [KJComicFromParse query];
-        
-        // Query all videos
-        [comicsQuery whereKey:@"comicName" notEqualTo:@"LOL"];
-        
-        // Cache policy
-        //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
-        
-        // Start query with block
-        [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                // The find succeeded.
-                // Do something with the found objects
-                
-                // Show network activity monitor
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-                
-                for (PFObject *object in objects) {
-                    if ([object[@"is_active"] isEqual:@"1"]) {
-                        // TODO:
-                        // - check if PFFile is already saved on filesystem
-                        
-                        // Save Parse object to Core Data
-                        //PFFile *thumbImageFile = [object objectForKey:@"comicThumb"];
-                        PFFile *comicImageFile = [object objectForKey:@"comicFile"];
-                        
-                        [self persistNewComicWithName:object[@"comicName"]
-                                        comicFileData:nil
-                                        comicFileName:object[@"comicFileName"]
-                                         comicFileUrl:comicImageFile.url];
-                        
-                        //NSLog(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
+    // Query all comics
+    [comicsQuery whereKey:@"comicName" notEqualTo:@"LOL"];
+    
+    // Cache policy
+    //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+    
+    // Start query with block
+    [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            // Do something with the found objects
+            
+            // Show network activity monitor
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+            
+            for (PFObject *object in objects) {
+                if ([object[@"is_active"] isEqual:@"1"]) {
+                    // TODO:
+                    // - check if PFFile is already saved on filesystem
+                    
+                    // Save Parse object to Core Data
+                    //PFFile *thumbImageFile = [object objectForKey:@"comicThumb"];
+                    PFFile *comicImageFile = [object objectForKey:@"comicFile"];
+                    
+                    [self persistNewComicWithName:object[@"comicName"]
+                                    comicFileData:nil
+                                    comicFileName:object[@"comicFileName"]
+                                     comicFileUrl:comicImageFile.url];
+                    
+                    //NSLog(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
 //                        [comicImageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
 //                            if (!error) {
 //                                [self persistNewComicWithName:object[@"comicName"]
@@ -291,26 +233,25 @@
 //                                                 comicFileUrl:comicImageFile.url];
 //                            }
 //                        }];
-                        
-                    } else {
-                        NSLog(@"COMIX: comic not active: %@", object[@"comicName"]);
-                    }
+                    
+                } else {
+                    NSLog(@"COMIX: comic not active: %@", object[@"comicName"]);
                 }
-            } else {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
             }
-            
-            // Send NSNotification to comix view
-            // to say that data fetch is done
-            NSString *notificationName = @"KJComicDataFetchDidHappen";
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-            
-            // Set firstLoad = YES in NSUserDefaults
-            //[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"comicLoadDone"];
-            //[[NSUserDefaults standardUserDefaults] synchronize];
-        }];
-    //});
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+        
+        // Send NSNotification to comix view
+        // to say that data fetch is done
+        NSString *notificationName = @"KJComicDataFetchDidHappen";
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+        
+        // Set firstLoad = YES in NSUserDefaults
+        //[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"comicLoadDone"];
+        //[[NSUserDefaults standardUserDefaults] synchronize];
+    }];
 }
 
 @end
