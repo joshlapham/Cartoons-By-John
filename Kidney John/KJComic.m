@@ -16,5 +16,6 @@
 @dynamic comicName;
 @dynamic isFavourite;
 @dynamic comicFileUrl;
+@dynamic comicNumber;
 
 @end

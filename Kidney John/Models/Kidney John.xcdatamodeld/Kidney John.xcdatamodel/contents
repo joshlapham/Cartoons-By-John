@@ -5,6 +5,7 @@
         <attribute name="comicFileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comicFileUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comicName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comicNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="KJRandomImage" representedClassName="KJRandomImage" syncable="YES">
@@ -25,7 +26,7 @@
         <attribute name="videoThumb" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="KJComic" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="KJComic" positionX="0" positionY="0" width="128" height="135"/>
         <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="120"/>
         <element name="KJVideo" positionX="0" positionY="0" width="128" height="165"/>
     </elements>

@@ -147,7 +147,7 @@
     
     // TODO: init array here every time?
     comicResults = [[NSArray alloc] init];
-    comicResults = [KJComic MR_findAll];
+    comicResults = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
     
     // TODO: add NSUserDefault here to say that first data fetch has completed
     

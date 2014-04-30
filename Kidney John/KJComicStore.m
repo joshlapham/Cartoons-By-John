@@ -25,7 +25,11 @@
 {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Comics"];
     
-    filePath = [NSString stringWithFormat:@"%@/%@.png", comicsFolderPath, comicObject.comicFileName];
+    // Filepath for png comics
+    //filePath = [NSString stringWithFormat:@"%@/%@.png", comicsFolderPath, comicObject.comicFileName];
+    
+    // Filepath for jpeg comics
+    filePath = [NSString stringWithFormat:@"%@/%@%@.jpg", comicsFolderPath, comicObject.comicNumber, comicObject.comicFileName];
     
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     
@@ -141,6 +145,7 @@
                  comicFileData:(NSData *)comicFileData
                   comicFileName:(NSString *)comicFileName
                    comicFileUrl:(NSString *)comicFileUrl
+                    comicNumber:(NSString *)comicNumber
 {
     NSLog(@"in comic store save with block method ..");
     
@@ -157,6 +162,7 @@
         //newComic.comicFileData = comicFileData;
         newComic.comicFileName = comicFileName;
         newComic.comicFileUrl = comicFileUrl;
+        newComic.comicNumber = comicNumber;
         
         // Set comic file data from comicData string
         // DISABLED as we are using SDWebImage for comic image caching
@@ -222,7 +228,8 @@
                     [self persistNewComicWithName:object[@"comicName"]
                                     comicFileData:nil
                                     comicFileName:object[@"comicFileName"]
-                                     comicFileUrl:comicImageFile.url];
+                                     comicFileUrl:comicImageFile.url
+                                      comicNumber:object[@"comicNumber"]];
                     
                     //NSLog(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
 //                        [comicImageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
