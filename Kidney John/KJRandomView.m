@@ -8,24 +8,24 @@
 
 #import "KJRandomView.h"
 #import "MBProgressHUD.h"
-#import "Models/KJRandomImage.h"
+#import "KJRandomImage.h"
 #import "KJDoodleStore.h"
 #import "KJDoodleCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface KJRandomView () <UIAlertViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
 @implementation KJRandomView {
-    __block NSArray *randomImagesResults;
+    NSArray *randomImagesResults;
     NSString *currentRandomImageUrl;
     SDWebImageManager *webImageManager;
 }
 
-#pragma mark - setup collection view method
+#pragma mark - Setup collectionView method
 
 - (void)setupCollectionView
 {
@@ -34,7 +34,7 @@
     [flowLayout setMinimumInteritemSpacing:0.0f];
     [flowLayout setMinimumLineSpacing:0.0f];
     
-    // use up whole screen (or frame)
+    // Use up whole screen (or frame)
     [flowLayout setItemSize:self.collectionView.bounds.size];
     
     [self.collectionView setPagingEnabled:YES];
@@ -44,7 +44,7 @@
     [self.collectionView reloadData];
 }
 
-#pragma mark - collection view delegate methods
+#pragma mark - UICollectionView delegate methods
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -63,7 +63,7 @@
     KJRandomImage *cellData = [randomImagesResults objectAtIndex:indexPath.row];
     
     // SDWebImage
-    // check if image is in cache
+    // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
         //NSLog(@"found image in cache");
     } else {
@@ -80,28 +80,10 @@
                                     }
     }];
     
-    // Old way of loading (without placeholder image)
-//    [webImageManager downloadWithURL:[NSURL URLWithString:cellData.imageUrl]
-//                             options:0
-//                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
-//                            }
-//                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-//                               if (cellImage && finished) {
-//                                   cell.doodleImageView.image = cellImage;
-//                                   [cell setNeedsLayout];
-//                                   // preload next image in array to the cache
-//                                   // DISABLED - crashes app when array goes out of bounds
-//                                   //[self preloadCacheUsingIndexPath:indexPath];
-//                               } else {
-//                                   NSLog(@"doodle download error");
-//                               }
-//                           }];
-    
     return cell;
 }
 
-#pragma mark - preload cache method
+#pragma mark - Preload image cache method
 
 - (void)preloadCacheUsingIndexPath:(NSIndexPath *)currentIndexPath
 {
@@ -135,13 +117,13 @@
 
 }
 
-#pragma mark - NSNotification methods
+#pragma mark - NSNotification method
 
 - (void)doodleFetchDidHappen
 {
     NSLog(@"Doodles: data fetch did happen");
     randomImagesResults = [[NSArray alloc] init];
-    randomImagesResults = [KJRandomImage MR_findAll];
+    randomImagesResults = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -152,16 +134,6 @@
     // Reload collectionView data
     [self.collectionView reloadData];
 }
-
-//#pragma mark - UIAlertView delegate methods
-//
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-//    NSLog(@"RANDOM: did dismiss instructions alert view, setting user defaults accordingly");
-//    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"doodleInstructionsShown"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-//}
 
 #pragma mark - Return random image from an array
 
@@ -194,7 +166,7 @@
     
     self.title = @"Doodles";
     
-    // init SDWebImage cache manager
+    // Init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];
     
     // Register custom UICollectionViewCell
@@ -204,10 +176,13 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Loading doodles ...";
     
-    // NSNotifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doodleFetchDidHappen) name:@"KJDoodleDataFetchDidHappen" object:nil];
+    // Register for NSNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(doodleFetchDidHappen)
+                                                 name:@"KJDoodleDataFetchDidHappen"
+                                               object:nil];
     
-    // Use the DoodleStore to fetch doodle data
+    // Use the doodleStore to fetch doodle data
     KJDoodleStore *store = [[KJDoodleStore alloc] init];
     [store fetchDoodleData];
     
@@ -217,12 +192,13 @@
 
 - (void)dealloc
 {
-    // remove NSNotification observer
+    // Remove NSNotification observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJDoodleDataFetchDidHappen" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    // Reload collectionView
     [self.collectionView reloadData];
 }
 
