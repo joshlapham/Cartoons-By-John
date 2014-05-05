@@ -55,6 +55,41 @@
     }
 }
 
+- (void)checkIfImageNeedsUpdateWithId:(NSString *)imageId
+                               description:(NSString *)imageDescription
+                                url:(NSString *)imageUrl
+                                 date:(NSString *)imageDate
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If image is in database ..
+    if ([self checkIfRandomImageIsInDatabaseWithImageUrl:imageUrl context:localContext]) {
+        KJRandomImage *imageToCheck = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:localContext];
+        
+        // Check if imageToCheck needs updating
+        if (![imageToCheck.imageId isEqualToString:imageId] || ![imageToCheck.imageDescription isEqualToString:imageDescription] || ![imageToCheck.imageUrl isEqualToString:imageUrl] || ![imageToCheck.imageDate isEqualToString:imageDate]) {
+            // Comic needs updating
+            NSLog(@"doodleStore: doodle needs update: %@", imageUrl);
+            
+            imageToCheck.imageId = imageId;
+            imageToCheck.imageDescription = imageDescription;
+            imageToCheck.imageUrl = imageUrl;
+            imageToCheck.imageDate = imageDate;
+            
+            // Save
+            //[localContext MR_saveToPersistentStoreAndWait];
+            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"doodleStore: updated doodle: %@", imageUrl);
+                } else if (error) {
+                    NSLog(@"doodleStore: error updating doodle: %@ - %@", imageUrl, [error localizedDescription]);
+                }
+            }];
+        }
+    }
+}
+
 - (void)fetchDoodleData
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -85,6 +120,9 @@
                 
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
+                        // Check if image needs updating
+                        [self checkIfImageNeedsUpdateWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
+                        
                         // Save Parse object to Core Data
                         [self persistNewRandomImageWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
                     } else {

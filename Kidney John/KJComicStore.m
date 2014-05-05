@@ -223,6 +223,41 @@
     }
 }
 
+- (void)checkIfComicNeedsUpdateWithComicName:(NSString *)comicName
+                               comicFileName:(NSString *)comicFileName
+                                comicFileUrl:(NSString *)comicFileUrl
+                                 comicNumber:(NSString *)comicNumber
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If comic is in database ..
+    if ([self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
+        KJComic *comicToCheck = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+        
+        // Check if comicToCheck needs updating
+        if (![comicToCheck.comicName isEqualToString:comicName] || ![comicToCheck.comicFileName isEqualToString:comicFileName] || ![comicToCheck.comicFileUrl isEqualToString:comicFileUrl] || ![comicToCheck.comicNumber isEqualToString:comicNumber]) {
+            // Comic needs updating
+            NSLog(@"comicStore: comic needs update: %@", comicName);
+            
+            comicToCheck.comicName = comicName;
+            comicToCheck.comicFileName = comicFileName;
+            comicToCheck.comicFileUrl = comicFileUrl;
+            comicToCheck.comicNumber = comicNumber;
+            
+            // Save
+            //[localContext MR_saveToPersistentStoreAndWait];
+            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"comicStore: updated comic: %@", comicName);
+                } else if (error) {
+                    NSLog(@"comicStore: error updating comic: %@ - %@", comicName, [error localizedDescription]);
+                }
+            }];
+        }
+    }
+}
+
 - (void)fetchComicData
 {
     // Setup query
@@ -252,6 +287,11 @@
                     //PFFile *thumbImageFile = [object objectForKey:@"comicThumb"];
                     PFFile *comicImageFile = [object objectForKey:@"comicFile"];
                     
+                    // Check if comic needs updating
+                    // NOTE: disabled as app will break if comics are updated
+                    //[self checkIfComicNeedsUpdateWithComicName:object[@"comicName"] comicFileName:object[@"comicFileName"] comicFileUrl:comicImageFile.url comicNumber:object[@"comicNumber"]];
+                    
+                    // Save
                     [self persistNewComicWithName:object[@"comicName"]
                                     comicFileData:nil
                                     comicFileName:object[@"comicFileName"]
