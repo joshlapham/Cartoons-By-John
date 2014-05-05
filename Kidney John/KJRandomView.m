@@ -191,7 +191,7 @@
     KJRandomFavouriteActivity *favouriteActivity = [[KJRandomFavouriteActivity alloc] initWithActivityTitle:titleString andImageUrl:cellData.imageUrl];
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[doodleImageToShare] applicationActivities:@[favouriteActivity]];
-    activityVC.excludedActivityTypes = @[UIActivityTypeAssignToContact, UIActivityTypeAddToReadingList];
+    activityVC.excludedActivityTypes = @[UIActivityTypeAddToReadingList];
     
     // Present UIActivityController
     [self.navigationController presentViewController:activityVC animated:YES completion:nil];
