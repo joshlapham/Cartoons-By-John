@@ -7,10 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KJRandomImage.h"
 
 @interface KJDoodleStore : NSObject
 
 - (void)fetchDoodleData;
 - (NSArray *)getRandomImagesArray;
++ (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl;
++ (void)updateDoodleFavouriteStatus:(NSString *)doodleUrl isFavourite:(BOOL)isOrNot;
++ (BOOL)checkIfDoodleIsAFavourite:(NSString *)doodleUrl;
 
 @end

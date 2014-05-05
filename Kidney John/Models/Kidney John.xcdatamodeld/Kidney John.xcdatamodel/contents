@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="KJComic" representedClassName="KJComic" syncable="YES">
         <attribute name="comicFileData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="comicFileName" optional="YES" attributeType="String" syncable="YES"/>
@@ -14,6 +14,7 @@
         <attribute name="imageDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isFavourite" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="KJVideo" representedClassName="KJVideo" syncable="YES">
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" defaultValueString="0.0" syncable="YES"/>
@@ -28,7 +29,7 @@
     </entity>
     <elements>
         <element name="KJComic" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="133"/>
         <element name="KJVideo" positionX="0" positionY="0" width="128" height="180"/>
     </elements>
 </model>

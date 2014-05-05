@@ -11,7 +11,8 @@
 #import "KJRandomImage.h"
 #import "KJDoodleStore.h"
 #import "KJDoodleCell.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/UIImageView+WebCache.h>"
+#import "KJRandomFavouriteActivity.h"
 
 @interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
@@ -158,6 +159,44 @@
     return imageToReturn;
 }
 
+#pragma mark - UIActivityView methods
+
+- (void)showActivityView
+{
+    // Get data for doodle currently on screen
+    NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
+    KJRandomImage *cellData = [randomImagesResults objectAtIndex:currentCellIndex.row];
+    
+    // Image to share
+    UIImage *doodleImageToShare;
+    
+    // SDWebImage
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
+        //NSLog(@"found image in cache");
+        doodleImageToShare = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl];
+    } else {
+        //NSLog(@"no image in cache");
+    }
+    
+    // Init UIActivity
+    NSString *titleString;
+    
+    if (![KJDoodleStore checkIfDoodleIsAFavourite:cellData.imageUrl]) {
+        titleString = @"Add To Favourites";
+    } else {
+        titleString = @"Remove From Favourites";
+    }
+    
+    KJRandomFavouriteActivity *favouriteActivity = [[KJRandomFavouriteActivity alloc] initWithActivityTitle:titleString andImageUrl:cellData.imageUrl];
+    
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[doodleImageToShare] applicationActivities:@[favouriteActivity]];
+    activityVC.excludedActivityTypes = @[UIActivityTypeAssignToContact, UIActivityTypeAddToReadingList];
+    
+    // Present UIActivityController
+    [self.navigationController presentViewController:activityVC animated:YES completion:nil];
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -171,6 +210,9 @@
     
     // Register custom UICollectionViewCell
     [self.collectionView registerClass:[KJDoodleCell class] forCellWithReuseIdentifier:@"doodleCell"];
+    
+    // Init action button in top right hand corner of navbar
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActivityView)];
     
     // Show progress
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

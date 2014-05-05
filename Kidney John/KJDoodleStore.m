@@ -9,9 +9,61 @@
 #import "KJDoodleStore.h"
 #import "Parse.h"
 #import "KJRandomImageFromParse.h"
-#import "KJRandomImage.h"
 
 @implementation KJDoodleStore
+
+#pragma mark - Favourite methods
+
++ (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Find comic where comicNameToFind matches
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"imageUrl == %@", doodleUrl];
+    KJRandomImage *doodleToReturn = [KJRandomImage MR_findFirstWithPredicate:predicate inContext:localContext];
+    
+    //NSLog(@"comic store: comic to return: %@", comicToReturn.comicName);
+    
+    return doodleToReturn;
+}
+
++ (void)updateDoodleFavouriteStatus:(NSString *)doodleUrl isFavourite:(BOOL)isOrNot
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext]) {
+        //NSLog(@"doodleStore: doodle is NOT already a favourite, adding now ..");
+        
+        KJRandomImage *doodleToFavourite = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext];
+        doodleToFavourite.isFavourite = isOrNot;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    } else {
+        NSLog(@"doodleStore: doodle not found in database, not adding anything to favourites");
+    }
+}
+
++ (BOOL)checkIfDoodleIsAFavourite:(NSString *)doodleUrl
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext]) {
+        KJRandomImage *doodleToFavourite = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext];
+        if (!doodleToFavourite.isFavourite) {
+            NSLog(@"doodleStore: doodle IS NOT a favourite");
+            return FALSE;
+        } else {
+            NSLog(@"doodleStore: doodle IS a favourite");
+            return TRUE;
+        }
+    } else {
+        return FALSE;
+    }
+}
 
 #pragma mark - Core Data methods
 
