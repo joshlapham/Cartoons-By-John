@@ -13,6 +13,49 @@
 
 @implementation KJVideoStore
 
+#pragma mark - Favourites methods
+
++ (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Create a new video in the current context
+    //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
+    
+    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
+        //NSLog(@"Video is NOT already a favourite, adding now ..");
+        
+        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+        videoToFavourite.isFavourite = isOrNot;
+        
+        // Save
+        [localContext MR_saveToPersistentStoreAndWait];
+    } else {
+        NSLog(@"videoStore: video not found in database, not adding anything to favourites");
+    }
+}
+
++ (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
+        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+        if (!videoToFavourite.isFavourite) {
+            NSLog(@"videoStore: video IS NOT a favourite");
+            return FALSE;
+        } else {
+            NSLog(@"videoStore: video IS a favourite");
+            return TRUE;
+        }
+    } else {
+        return FALSE;
+    }
+}
+
+#pragma mark - Methods
 
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
