@@ -12,9 +12,9 @@
 @interface KJComicStore : NSObject
 
 - (void)fetchComicData;
-- (KJComic *)returnComicWithComicName:(NSString *)comicName;
-- (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot;
-- (BOOL)checkIfComicIsAFavourite:(NSString *)comicName;
++ (KJComic *)returnComicWithComicName:(NSString *)comicName;
++ (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot;
++ (BOOL)checkIfComicIsAFavourite:(NSString *)comicName;
 - (NSArray *)returnArrayOfComicFiles;
 - (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;
 - (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject;

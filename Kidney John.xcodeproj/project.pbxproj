@@ -51,6 +51,7 @@
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
 		68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D6D184D874500600FA5 /* KJRandomView.m */; };
 		68E48D71184D876400600FA5 /* KJMoreListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D70184D876400600FA5 /* KJMoreListView.m */; };
+		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,8 @@
 		68E48D6D184D874500600FA5 /* KJRandomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJRandomView.m; sourceTree = "<group>"; };
 		68E48D6F184D876400600FA5 /* KJMoreListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreListView.h; sourceTree = "<group>"; };
 		68E48D70184D876400600FA5 /* KJMoreListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreListView.m; sourceTree = "<group>"; };
+		68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicFavouriteActivity.h; sourceTree = "<group>"; };
+		68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicFavouriteActivity.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +181,8 @@
 				68E48D67184C20A500600FA5 /* KJComicListView.m */,
 				687BC377184EB75500F45970 /* KJComicDetailView.h */,
 				687BC378184EB75500F45970 /* KJComicDetailView.m */,
+				68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */,
+				68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */,
 				68E48D6C184D874500600FA5 /* KJRandomView.h */,
 				68E48D6D184D874500600FA5 /* KJRandomView.m */,
 				68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */,
@@ -474,6 +479,7 @@
 				68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */,
 				68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */,
 				687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */,
+				68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */,
 				68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */,
 				68E461F91860D2EF008D3E36 /* KJComicFromParse.m in Sources */,
 				68E461EA186078CA008D3E36 /* KJVideoFromParse.m in Sources */,

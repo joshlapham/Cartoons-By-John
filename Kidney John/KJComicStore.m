@@ -99,7 +99,7 @@
 
 #pragma mark - Comic Favourites methods
 
-- (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
++ (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
 {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
@@ -120,7 +120,7 @@
     }
 }
 
-- (BOOL)checkIfComicIsAFavourite:(NSString *)comicName
++ (BOOL)checkIfComicIsAFavourite:(NSString *)comicName
 {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
@@ -141,7 +141,7 @@
 
 #pragma mark - return comic with comic name method
 
-- (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind
++ (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind
 {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];

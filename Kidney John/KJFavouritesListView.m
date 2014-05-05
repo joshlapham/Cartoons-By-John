@@ -264,8 +264,8 @@
         // may have to pass a whole KJComic object?
         destViewController.isComingFromFavouritesList = YES;
         // pass a results array to dest VC containing only one object, our chosen one
-        if ([comicStore returnComicWithComicName:comicCell.comicName] != nil) {
-            destViewController.resultsArray = [NSArray arrayWithObject:[comicStore returnComicWithComicName:comicCell.comicName]];
+        if ([KJComicStore returnComicWithComicName:comicCell.comicName] != nil) {
+            destViewController.resultsArray = [NSArray arrayWithObject:[KJComicStore returnComicWithComicName:comicCell.comicName]];
         }
         
         // Hide tabbar on detail view
