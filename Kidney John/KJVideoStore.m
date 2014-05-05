@@ -48,14 +48,59 @@
         newVideo.videoCellHeight = videoCellHeight;
         newVideo.videoDuration = videoDuration;
         // Thumbnails
-        // DISABLED for now, as we are using SDWebImage to cache the YouTube thumbnails
+        // DISABLED - we are using SDWebImage to cache the YouTube thumbnails
 //        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
 //        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
 //        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
 //        newVideo.videoThumb = thumbData;
         
         // Save
-        [localContext MR_saveToPersistentStoreAndWait];
+        //[localContext MR_saveToPersistentStoreAndWait];
+        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            if (success) {
+                NSLog(@"videoStore: saved new video: %@", videoName);
+            } else if (error) {
+                NSLog(@"videoStore: error saving: %@", [error localizedDescription]);
+                // TODO: implement alert view on error?
+            }
+        }];
+    }
+}
+
+- (void)checkIfVideoNeedsUpdateWithVideoId:(NSString *)videoId
+                                      name:(NSString *)videoName
+                               description:(NSString *)videoDescription
+                                      date:(NSString *)videoDate
+                             videoDuration:(NSString *)videoDuration
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // If video is in database ..
+    if ([self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
+        KJVideo *videoToCheck = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+        
+        // Check if videoToCheck needs updating
+        if (![videoToCheck.videoId isEqualToString:videoId] || ![videoToCheck.videoName isEqualToString:videoName] || ![videoToCheck.videoDescription isEqualToString:videoDescription] || ![videoToCheck.videoDate isEqualToString:videoDate] || ![videoToCheck.videoDuration isEqualToString:videoDuration]) {
+            // Video needs updating
+            NSLog(@"videoStore: video needs update: %@", videoName);
+            
+            videoToCheck.videoId = videoId;
+            videoToCheck.videoName = videoName;
+            videoToCheck.videoDescription = videoDescription;
+            videoToCheck.videoDate = videoDate;
+            videoToCheck.videoDuration = videoDuration;
+            
+            // Save
+            //[localContext MR_saveToPersistentStoreAndWait];
+            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                if (success) {
+                    NSLog(@"videoStore: updated video: %@", videoName);
+                } else if (error) {
+                    NSLog(@"videoStore: error updating video: %@ - %@", videoName, [error localizedDescription]);
+                }
+            }];
+        }
     }
 }
 
@@ -63,7 +108,7 @@
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        NSLog(@"VIDEOS: IN GCD DEFAULT QUEUE THREAD ...");
+        NSLog(@"videoStore: fetching video data ..");
         
         // Setup query
         PFQuery *query = [KJVideoFromParse query];
@@ -85,15 +130,19 @@
                 
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
+                        // Check if video needs update
+                        // TODO: review this, maybe call after firstFetchHasHappened from NSUserDefaults?
+                        [self checkIfVideoNeedsUpdateWithVideoId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] videoDuration:object[@"videoDuration"]];
+                        
                         // Save Parse object to Core Data
                         [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"] videoDuration:object[@"videoDuration"]];
                     } else {
-                        NSLog(@"VIDEO LIST: video not active: %@", object[@"videoName"]);
+                        NSLog(@"videoStore: video not active: %@", object[@"videoName"]);
                     }
                 }
             } else {
                 // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
+                NSLog(@"videoStore: error: %@ %@", error, [error userInfo]);
             }
             
             // Set firstLoad = YES in NSUserDefaults
