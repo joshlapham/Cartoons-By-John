@@ -69,7 +69,7 @@
         
         // Check if imageToCheck needs updating
         if (![imageToCheck.imageId isEqualToString:imageId] || ![imageToCheck.imageDescription isEqualToString:imageDescription] || ![imageToCheck.imageUrl isEqualToString:imageUrl] || ![imageToCheck.imageDate isEqualToString:imageDate]) {
-            // Comic needs updating
+            // Image needs updating
             NSLog(@"doodleStore: doodle needs update: %@", imageUrl);
             
             imageToCheck.imageId = imageId;
@@ -94,11 +94,7 @@
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        NSLog(@"DOODLE PARSE FETCH: IN GCD DEFAULT QUEUE THREAD ...");
-        
-        // Show progress
-        //MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        //hud.labelText = @"Loading doodles ...";
+        NSLog(@"doodleStore: fetching doodle data ..");
         
         // Setup query
         PFQuery *randomQuery = [KJRandomImageFromParse query];
@@ -126,12 +122,12 @@
                         // Save Parse object to Core Data
                         [self persistNewRandomImageWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
                     } else {
-                        NSLog(@"RANDOM: image not active: %@", object[@"imageUrl"]);
+                        NSLog(@"doodleStore: image not active: %@", object[@"imageUrl"]);
                     }
                 }
             } else {
                 // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
+                NSLog(@"doodleStore: error: %@ %@", error, [error userInfo]);
             }
             
             // Set randomImagesFetchDone = YES in NSUserDefaults
@@ -144,11 +140,6 @@
             NSString *notificationName = @"KJDoodleDataFetchDidHappen";
             [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
         }];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"RANDOM PARSE FETCH: IN GCD MAIN QUEUE THREAD ...");
-        });
-        
     });
 }
 
@@ -164,7 +155,7 @@
     return randomImagesArray;
 }
 
-#pragma mark - init methods
+#pragma mark - Init methods
 
 - (id)initDoodleStore
 {
