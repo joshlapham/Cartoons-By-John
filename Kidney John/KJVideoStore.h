@@ -14,5 +14,6 @@
 + (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot;
 + (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId;
 + (NSArray *)returnFavouritesArray;
++ (BOOL)hasInitialDataFetchHappened;
 
 @end

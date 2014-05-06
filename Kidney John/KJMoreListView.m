@@ -7,7 +7,6 @@
 //
 
 #import "KJMoreListView.h"
-#import "KJMoreDetailView.h"
 #import "PBWebViewController.h"
 
 @interface KJMoreListView ()

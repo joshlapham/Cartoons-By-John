@@ -12,8 +12,9 @@
 #import "Models/KJVideo.h"
 #import "KJVideoStore.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <Reachability.h>
 
-@interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -21,6 +22,9 @@
     __block NSArray *videoResults;
     NSArray *searchResults;
     SDWebImageManager *webImageManager;
+    KJVideoStore *videoStore;
+    MBProgressHUD *hud;
+    UIAlertView *noNetworkAlertView;
 }
 
 #pragma mark - UISearchBar methods
@@ -197,22 +201,89 @@
     }
 }
 
+#pragma mark - Reachability
+
+- (void)noNetworkConnection
+{
+    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
+                                                 message:@"This app requires a network connection"
+                                                delegate:self
+                                       cancelButtonTitle:@"Cancel"
+                                       otherButtonTitles:@"Retry", nil];
+    
+    if (![KJVideoStore hasInitialDataFetchHappened]) {
+        [noNetworkAlertView show];
+    }
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"Button clicked: %d", buttonIndex);
+    
+    if (buttonIndex == 1) {
+        // Retry was clicked
+        [self fetchDataWithNetworkCheck];
+    } else if (buttonIndex == 0) {
+        // Cancel was clicked
+        // TODO: implement a new view with a button to retry data refresh here?
+    }
+}
+
+- (void)fetchDataWithNetworkCheck
+{
+    // Reachability
+    Reachability *reach = [Reachability reachabilityWithHostname:@"www.parse.com"];
+    reach.reachableBlock = ^(Reachability *reach) {
+        NSLog(@"REACHABLE!");
+        // Fetch new data
+        [videoStore fetchVideoData];
+    };
+    
+    reach.unreachableBlock = ^(Reachability *reach) {
+        NSLog(@"UNREACHABLE!");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([KJVideoStore hasInitialDataFetchHappened]) {
+                [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                [self videoFetchDidFinish];
+            } else {
+                // Hide progress
+                [hud hide:YES];
+                
+                // Hide network activity indicator
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                
+                [self noNetworkConnection];
+            }
+        });
+    };
+    
+    // Show progress
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading videos ...";
+    
+    // Show network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    videoStore = [[KJVideoStore alloc] init];
+    if ([KJVideoStore hasInitialDataFetchHappened]) {
+        [self videoFetchDidFinish];
+        // TODO: implement cache update
+    } else {
+        // Start the notifier
+        [reach startNotifier];
+    }
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    // Preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
-    
     // Set title
     self.title = @"Videos";
-    
-    // Extend line seperator between list items to edge of screen
-//    if ([self.tableView respondsToSelector:@selector(separatorInset)]) {
-//        self.tableView.separatorInset = UIEdgeInsetsZero;
-//    }
     
     // init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];
@@ -221,13 +292,8 @@
     NSString *notificationName = @"KJVideoDataFetchDidHappen";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFetchDidFinish) name:notificationName object:nil];
     
-    // Show progress
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading videos ...";
-    
     // Fetch data from store
-    KJVideoStore *store = [[KJVideoStore alloc] init];
-    [store fetchVideoData];
+    [self fetchDataWithNetworkCheck];
     
     // Set prompt text for UISearchBar
     // NOTE: disabled for now, as the prompt has since been setup in Storyboard

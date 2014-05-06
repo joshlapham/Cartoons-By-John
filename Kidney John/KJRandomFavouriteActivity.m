@@ -41,13 +41,10 @@
     // iPadShare@2x should be 126 px, iPadShare should be 53 px, iPhoneShare@2x should be 100
     // px, and iPhoneShare should be 50 px. I found these sizes to work for what I was making.
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        return [UIImage imageNamed:@"placeholder.png"];
-    }
-    else
-    {
-        return [UIImage imageNamed:@"placeholder.png"];
+    if ([KJDoodleStore checkIfDoodleIsAFavourite:urlOfImage]) {
+        return [UIImage imageNamed:@"remove-from-fav.png"];
+    } else {
+        return [UIImage imageNamed:@"add-to-fav.png"];
     }
 }
 

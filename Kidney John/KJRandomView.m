@@ -12,8 +12,9 @@
 #import "KJDoodleCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJRandomFavouriteActivity.h"
+#import <Reachability.h>
 
-@interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -23,9 +24,11 @@
     NSArray *randomImagesResults;
     NSString *currentRandomImageUrl;
     SDWebImageManager *webImageManager;
+    MBProgressHUD *hud;
+    UIAlertView *noNetworkAlertView;
 }
 
-@synthesize startOn, selectedImageFromFavouritesList;
+@synthesize selectedImageFromFavouritesList;
 
 #pragma mark - Setup collectionView method
 
@@ -125,17 +128,15 @@
 {
     NSLog(@"Doodles: data fetch did happen");
     
+    // Check if coming from Favourites list
     if (selectedImageFromFavouritesList != nil) {
         randomImagesResults = [[NSArray alloc] initWithObjects:selectedImageFromFavouritesList, nil];
-        
-        NSLog(@"results array count: %d", [randomImagesResults count]);
+        //NSLog(@"Doodles: results array count: %d", [randomImagesResults count]);
         //NSUInteger startOnIndex = [randomImagesResults indexOfObject:selectedImageFromFavouritesList];
-        //NSLog(@"start on image id: %@ and index: %d", selectedImageFromFavouritesList.imageId, startOnIndex);
-        
-        //NSIndexPath *indexPathToScrollTo = [NSIndexPath indexPathForRow:startOnIndex inSection:0];
-        //[self.collectionView scrollToItemAtIndexPath:indexPathToScrollTo atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+        //NSLog(@"Doodles: start on image id: %@ and index: %d", selectedImageFromFavouritesList.imageId, startOnIndex);
     } else {
-        NSLog(@"NO start on");
+        // Not coming from favourites list
+        //NSLog(@"Doodles: not coming from Favourites list");
         randomImagesResults = [[NSArray alloc] init];
         randomImagesResults = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
     }
@@ -211,6 +212,84 @@
     [self.navigationController presentViewController:activityVC animated:YES completion:nil];
 }
 
+#pragma mark - Reachability methods
+
+- (void)noNetworkConnection
+{
+    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
+                                                 message:@"This app requires a network connection"
+                                                delegate:self
+                                       cancelButtonTitle:@"Cancel"
+                                       otherButtonTitles:@"Retry", nil];
+    
+    if (![KJDoodleStore hasInitialDataFetchHappened]) {
+        [noNetworkAlertView show];
+    }
+}
+
+- (void)fetchDataWithNetworkCheck
+{
+    // Reachability
+    Reachability *reach = [Reachability reachabilityWithHostname:@"www.parse.com"];
+    reach.reachableBlock = ^(Reachability *reach) {
+        NSLog(@"REACHABLE!");
+        // Fetch new data
+        [KJDoodleStore fetchDoodleData];
+        
+        // Hide any alert view that may be on screen
+        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        //[noNetworkAlertView removeFromSuperview];
+    };
+    
+    reach.unreachableBlock = ^(Reachability *reach) {
+        NSLog(@"UNREACHABLE!");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([KJDoodleStore hasInitialDataFetchHappened]) {
+                [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                [self doodleFetchDidHappen];
+            } else {
+                // Hide progress
+                [hud hide:YES];
+            
+                // Hide network activity indicator
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                
+                [self noNetworkConnection];
+            }
+        });
+    };
+    
+    // Show progress
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading doodles ...";
+    
+    // Show network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    if ([KJDoodleStore hasInitialDataFetchHappened]) {
+        [self doodleFetchDidHappen];
+        // TODO: implement cache update
+    } else {
+        // Start the notifier
+        [reach startNotifier];
+    }
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"Button clicked: %d", buttonIndex);
+    
+    if (buttonIndex == 1) {
+        // Retry was clicked
+        [self fetchDataWithNetworkCheck];
+    } else if (buttonIndex == 0) {
+        // Cancel was clicked
+        // TODO: implement a new view with a button to retry data refresh here?
+    }
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -229,8 +308,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActivityView)];
     
     // Show progress
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading doodles ...";
+    //hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    //hud.labelText = @"Loading doodles ...";
     
     // Register for NSNotification
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -256,15 +335,17 @@
 {
     // Fetch data
     // If initial data has already been loaded
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstRandomImagesFetchDone"]) {
-        //NSLog(@"Random View: initial data load has happened");
-        // TODO: implement cache update
-        
-        [self doodleFetchDidHappen];
-    } else {
-        // Initial data load has not happened
-        [KJDoodleStore fetchDoodleData];
-    }
+//    if ([KJDoodleStore hasInitialDataFetchHappened]) {
+//        //NSLog(@"Random View: initial data load has happened");
+//        // TODO: implement cache update
+//        
+//        [self doodleFetchDidHappen];
+//    } else {
+//        // Initial data load has not happened
+//        [KJDoodleStore fetchDoodleData];
+//    }
+    
+    [self fetchDataWithNetworkCheck];
     
     // Reload collectionView
     //[self.collectionView reloadData];
@@ -272,7 +353,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    startOn = nil;
     selectedImageFromFavouritesList = nil;
 }
 

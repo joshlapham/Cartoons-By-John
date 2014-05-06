@@ -13,23 +13,19 @@
 #import "MBProgressHUD.h"
 #import "KJComicStore.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <Reachability.h>
 
-@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, SDWebImageManagerDelegate>
+@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, SDWebImageManagerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
 @end
 
 @implementation KJComicListView {
-    NSMutableArray *comicImages;
-    NSArray *comicThumbImages;
     NSArray *comicResults;
-    NSMutableData *fileData;
-    NSURL *fileUrl;
     SDWebImageManager *webImageManager;
-    NSArray *comicFileResults;
-    KJComicStore *comicStore;
-    NSArray *dirArray;
+    UIAlertView *noNetworkAlertView;
+    MBProgressHUD *hud;
 }
 
 #pragma mark - UICollectionView delegate methods
@@ -61,41 +57,6 @@
     KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicCell" forIndexPath:indexPath];
     
     KJComic *comicCell = [comicResults objectAtIndex:indexPath.row];
-    // loading from filesystem
-    //NSString *comicFileName = [comicFileResults objectAtIndex:indexPath.row];
-    
-    // SDWebImage
-    // check if image is in cache
-    // DISABLED - loading from filesystem
-//    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:comicCell.comicData]) {
-//        //NSLog(@"found image in cache");
-//    } else {
-//        //NSLog(@"no image in cache");
-//    }
-    
-//    otherHud = [MBProgressHUD showHUDAddedTo:cell animated:YES];
-//    otherHud.mode = MBProgressHUDModeAnnularDeterminate;
-//    otherHud.backgroundColor = [UIColor clearColor];
-    
-//    [webImageManager downloadWithURL:[NSURL URLWithString:comicCell.comicData]
-//                             options:0
-//                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
-//                                //otherHud = [MBProgressHUD showHUDAddedTo:cell animated:YES];
-//                                //otherHud.progress = receivedSize / expectedSize;
-//                            }
-//                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-//                               if (cellImage && finished) {
-//                                   cell.comicImageView.image = cellImage;
-//                                   [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-//                                   //[otherHud hide:YES];
-//                               } else {
-//                                   NSLog(@"comic download error");
-//                               }
-//                           }];
-    
-    // end of loading from filesystem
-    
     
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
@@ -103,7 +64,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.backgroundColor = [UIColor whiteColor];
-            cell.comicImageView.image = [comicStore returnComicThumbImageFromComicObject:comicCell];
+            cell.comicImageView.image = [KJComicStore returnComicThumbImageFromComicObject:comicCell];
         });
     });
     
@@ -149,8 +110,6 @@
     comicResults = [[NSArray alloc] init];
     comicResults = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
     
-    // TODO: add NSUserDefault here to say that first data fetch has completed
-    
     // TODO: when to disable activity monitor and progress?
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -161,6 +120,84 @@
     // Reload collectionview with data just fetched
     [[self collectionView] reloadData];
     //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+}
+
+#pragma mark - Reachability methods
+
+- (void)noNetworkConnection
+{
+    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
+                                                    message:@"This app requires a network connection"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Retry", nil];
+    
+    if (![KJComicStore hasInitialDataFetchHappened]) {
+        [noNetworkAlertView show];
+    }
+}
+
+- (void)fetchDataWithNetworkCheck
+{
+    // Reachability
+    Reachability *reach = [Reachability reachabilityWithHostname:@"www.parse.com"];
+    reach.reachableBlock = ^(Reachability *reach) {
+        NSLog(@"REACHABLE!");
+        // Fetch new data
+        [KJComicStore fetchComicData];
+        
+        // Hide any alert view that may be on screen
+        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        //[noNetworkAlertView removeFromSuperview];
+    };
+    
+    reach.unreachableBlock = ^(Reachability *reach) {
+        NSLog(@"UNREACHABLE!");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([KJComicStore hasInitialDataFetchHappened]) {
+                [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                [self comicFetchDidHappen];
+            } else {
+                // Hide progress
+                [hud hide:YES];
+                
+                // Hide network activity indicator
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                
+                [self noNetworkConnection];
+            }
+        });
+    };
+    
+    // Show progress
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading comix ...";
+    
+    // Show network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    if ([KJComicStore hasInitialDataFetchHappened]) {
+        [self comicFetchDidHappen];
+        // TODO: implement cache update
+    } else {
+        // Start the notifier
+        [reach startNotifier];
+    }
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"Button clicked: %d", buttonIndex);
+    
+    if (buttonIndex == 1) {
+        // Retry was clicked
+        [self fetchDataWithNetworkCheck];
+    } else if (buttonIndex == 0) {
+        // Cancel was clicked
+        // TODO: implement a new view with a button to retry data refresh here?
+    }
 }
 
 #pragma mark - Init methods
@@ -178,13 +215,6 @@
     // Init collection view cell
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
     
-    // Show progress
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading comix ...";
-    
-    // Show network activity indicator
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
     // Register NSNotifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(comicFetchDidHappen)
@@ -192,8 +222,7 @@
                                                object:nil];
     
     // Init comicStore and fetch comic data
-    comicStore = [[KJComicStore alloc] init];
-    [comicStore fetchComicData];
+    [self fetchDataWithNetworkCheck];
 }
 
 - (void)dealloc

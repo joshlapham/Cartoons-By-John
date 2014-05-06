@@ -157,9 +157,6 @@
     
     comicStore = [[KJComicStore alloc] init];
     
-    // Preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
-    
     self.title = titleForView;
     
     NSLog(@"cell results: %d", [cellResults count]);
@@ -167,24 +164,6 @@
     if ([cellResults count] == 0) {
         [self thereAreNoFavourites];
     }
-    
-    //[self getFavourites];
 }
-
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:YES];
-//    
-//    //[self getFavourites];
-//    
-//    [self.tableView reloadData];
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:YES];
-//    
-//    cellResults = nil;
-//}
 
 @end

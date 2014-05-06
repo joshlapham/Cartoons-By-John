@@ -68,7 +68,20 @@
     return arrayToReturn;
 }
 
-#pragma mark - Methods
+#pragma mark - Misc methods
+
+#pragma mark - Misc methods
+
++ (BOOL)hasInitialDataFetchHappened
+{
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstVideoFetchDone"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+#pragma mark - Core Data methods
 
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
@@ -202,8 +215,8 @@
             }
             
             // Set firstLoad = YES in NSUserDefaults
-            //[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"firstLoadDone"];
-            //[[NSUserDefaults standardUserDefaults] synchronize];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstVideoFetchDone"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             
             NSString *notificationName = @"KJVideoDataFetchDidHappen";
             [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];

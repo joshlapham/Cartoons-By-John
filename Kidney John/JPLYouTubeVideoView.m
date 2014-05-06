@@ -13,15 +13,38 @@
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
 
-@interface JPLYouTubeVideoView () <UIActionSheetDelegate>
+@interface JPLYouTubeVideoView () <UIWebViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *videoView;
 
 @end
 
-@implementation JPLYouTubeVideoView
+@implementation JPLYouTubeVideoView {
+    MBProgressHUD *hud;
+}
 
 @synthesize videoIdFromList, videoTitleFromList;
+
+#pragma mark - UIWebView delegate methods
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    // Show progress
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"";
+    
+    // Show network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    // Hide progress
+    [hud hide:YES];
+    
+    // Hide network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
 
 #pragma mark - HTML for YouTube webview
 
@@ -80,15 +103,14 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 {
     [super viewDidLoad];
     
-    // Show progress
-    //MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //hud.labelText = @"";
-    
     // Set title to video title
     self.title = videoTitleFromList;
     
     // Init action button in top right hand corner
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActivityView)];
+    
+    // Init webView
+    _videoView.delegate = self;
     
     // Set to enable/disable autoplay
     _videoView.mediaPlaybackRequiresUserAction = NO;

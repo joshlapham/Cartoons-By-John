@@ -21,12 +21,12 @@
     return [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"];
 }
 
-- (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject
++ (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject
 {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"ComicThumbs"];
     
     // Filepath for jpeg comic thumbs
-    filePath = [NSString stringWithFormat:@"%@/%@.jpg", comicsFolderPath, comicObject.comicNumber];
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@.jpg", comicsFolderPath, comicObject.comicNumber];
     
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     
@@ -70,7 +70,7 @@
     return imageToReturn;
 }
 
-- (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject
++ (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject
 {
     // TODO: handle if filepath is nil
     
@@ -170,7 +170,7 @@
 
 #pragma mark - Core Data methods
 
-- (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
++ (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
 {
     if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:context]) {
         //NSLog(@"COMICS LIST: yes, comic does exist in database");
@@ -181,7 +181,7 @@
     }
 }
 
-- (void)persistNewComicWithName:(NSString *)comicName
++ (void)persistNewComicWithName:(NSString *)comicName
                  comicFileData:(NSData *)comicFileData
                   comicFileName:(NSString *)comicFileName
                    comicFileUrl:(NSString *)comicFileUrl
@@ -223,7 +223,7 @@
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
     // If comic is in database ..
-    if ([self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
+    if ([KJComicStore checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
         KJComic *comicToCheck = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
         
         // Check if comicToCheck needs updating
@@ -249,7 +249,7 @@
     }
 }
 
-- (void)fetchComicData
++ (void)fetchComicData
 {
     // Setup query
     PFQuery *comicsQuery = [KJComicFromParse query];
@@ -314,9 +314,20 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
         
         // Set firstLoad = YES in NSUserDefaults
-        //[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"comicLoadDone"];
-        //[[NSUserDefaults standardUserDefaults] synchronize];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstComicFetchDone"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }];
+}
+
+#pragma mark - Misc methods
+
++ (BOOL)hasInitialDataFetchHappened
+{
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstComicFetchDone"]) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
 @end

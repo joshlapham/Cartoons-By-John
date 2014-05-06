@@ -18,5 +18,6 @@
 + (BOOL)checkIfDoodleIsAFavourite:(NSString *)doodleUrl;
 + (NSArray *)returnFavouritesArray;
 + (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject;
++ (BOOL)hasInitialDataFetchHappened;
 
 @end

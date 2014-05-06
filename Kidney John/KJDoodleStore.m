@@ -239,6 +239,15 @@
     return imageToReturn;
 }
 
++ (BOOL)hasInitialDataFetchHappened
+{
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstRandomImagesFetchDone"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 #pragma mark - Init methods
 
 - (id)initDoodleStore
