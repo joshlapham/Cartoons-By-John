@@ -11,7 +11,7 @@
 #import "KJRandomImage.h"
 #import "KJDoodleStore.h"
 #import "KJDoodleCell.h"
-#import <SDWebImage/UIImageView+WebCache.h>"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "KJRandomFavouriteActivity.h"
 
 @interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
