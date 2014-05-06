@@ -13,5 +13,6 @@
 - (void)fetchVideoData;
 + (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot;
 + (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId;
++ (NSArray *)returnFavouritesArray;
 
 @end

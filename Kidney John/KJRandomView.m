@@ -8,7 +8,6 @@
 
 #import "KJRandomView.h"
 #import "MBProgressHUD.h"
-#import "KJRandomImage.h"
 #import "KJDoodleStore.h"
 #import "KJDoodleCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -26,6 +25,8 @@
     SDWebImageManager *webImageManager;
 }
 
+@synthesize startOn, selectedImageFromFavouritesList;
+
 #pragma mark - Setup collectionView method
 
 - (void)setupCollectionView
@@ -42,7 +43,7 @@
     [self.collectionView setCollectionViewLayout:flowLayout];
     [self.collectionView setFrame:self.view.frame];
     
-    [self.collectionView reloadData];
+    //[self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionView delegate methods
@@ -123,8 +124,21 @@
 - (void)doodleFetchDidHappen
 {
     NSLog(@"Doodles: data fetch did happen");
-    randomImagesResults = [[NSArray alloc] init];
-    randomImagesResults = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
+    
+    if (selectedImageFromFavouritesList != nil) {
+        randomImagesResults = [[NSArray alloc] initWithObjects:selectedImageFromFavouritesList, nil];
+        
+        NSLog(@"results array count: %d", [randomImagesResults count]);
+        //NSUInteger startOnIndex = [randomImagesResults indexOfObject:selectedImageFromFavouritesList];
+        //NSLog(@"start on image id: %@ and index: %d", selectedImageFromFavouritesList.imageId, startOnIndex);
+        
+        //NSIndexPath *indexPathToScrollTo = [NSIndexPath indexPathForRow:startOnIndex inSection:0];
+        //[self.collectionView scrollToItemAtIndexPath:indexPathToScrollTo atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    } else {
+        NSLog(@"NO start on");
+        randomImagesResults = [[NSArray alloc] init];
+        randomImagesResults = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
+    }
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -225,8 +239,8 @@
                                                object:nil];
     
     // Use the doodleStore to fetch doodle data
-    KJDoodleStore *store = [[KJDoodleStore alloc] init];
-    [store fetchDoodleData];
+    //KJDoodleStore *store = [[KJDoodleStore alloc] init];
+    //[KJDoodleStore fetchDoodleData];
     
     // Setup collection view
     [self setupCollectionView];
@@ -240,8 +254,26 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    // Fetch data
+    // If initial data has already been loaded
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstRandomImagesFetchDone"]) {
+        //NSLog(@"Random View: initial data load has happened");
+        // TODO: implement cache update
+        
+        [self doodleFetchDidHappen];
+    } else {
+        // Initial data load has not happened
+        [KJDoodleStore fetchDoodleData];
+    }
+    
     // Reload collectionView
-    [self.collectionView reloadData];
+    //[self.collectionView reloadData];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    startOn = nil;
+    selectedImageFromFavouritesList = nil;
 }
 
 @end

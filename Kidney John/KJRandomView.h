@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJRandomImage.h"
 
 @interface KJRandomView : UIViewController
+
+@property (nonatomic, strong) NSNumber *startOn;
+@property (nonatomic, strong) KJRandomImage *selectedImageFromFavouritesList;
 
 @end

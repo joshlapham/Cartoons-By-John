@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="TEK-0B-4GJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="TEK-0B-4GJ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -312,27 +312,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="videoCell" id="hF2-tO-yMg">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="favouriteCell" id="hF2-tO-yMg">
                                 <rect key="frame" x="0.0" y="119" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hF2-tO-yMg" id="SAS-ha-qMs">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="vXZ-lx-hvc" kind="push" identifier="favouritesVideoSegue" id="g7e-E4-nJu"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="comicCell" id="ltJ-dN-fYm">
-                                <rect key="frame" x="0.0" y="163" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ltJ-dN-fYm" id="JFd-b2-4ab">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="viw-HE-GoZ" kind="push" identifier="comicDetailSegueFromFavourites" id="LFv-zC-XD2"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -341,10 +327,67 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="KCg-x1-lR8"/>
+                    <connections>
+                        <segue destination="viw-HE-GoZ" kind="push" identifier="comicDetailSegueFromFavourites" id="Hfi-Tv-zMT"/>
+                        <segue destination="vXZ-lx-hvc" kind="push" identifier="favouritesVideoSegue" id="9wO-Qc-WMm"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zd1-YQ-iiV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6285" y="1899"/>
+        </scene>
+        <!--Fav Doodles List View-->
+        <scene sceneID="Lu8-2E-TPH">
+            <objects>
+                <viewController id="Nsg-7J-yV3" customClass="KJFavDoodlesListView" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nsR-we-pCn"/>
+                        <viewControllerLayoutGuide type="bottom" id="cWD-mA-GGN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qFA-6O-3pG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ef5-XG-oqw">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kTx-7l-tsF">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DoodleFavouriteCell" id="2p0-zE-eWK">
+                                        <rect key="frame" x="0.0" y="64" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <connections>
+                                            <segue destination="THX-4a-68b" kind="push" identifier="doodleDetailSegueFromFavourites" id="czh-bW-b54"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="Nsg-7J-yV3" id="yyY-nb-zHf"/>
+                                    <outlet property="delegate" destination="Nsg-7J-yV3" id="ngh-gZ-qyc"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="hNw-En-Cz0"/>
+                    <connections>
+                        <outlet property="collectionView" destination="ef5-XG-oqw" id="wLq-JH-BUk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f53-HZ-uaP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6745" y="1899"/>
         </scene>
         <!--More List View-->
         <scene sceneID="yEN-Pi-eRB">
@@ -402,6 +445,7 @@
                     <connections>
                         <segue destination="jG7-is-GEI" kind="push" identifier="socialSegue" id="Zdc-uR-x4f"/>
                         <segue destination="pdg-rQ-Sxt" kind="push" identifier="favouritesSegue" id="Oyh-HK-pDd"/>
+                        <segue destination="Nsg-7J-yV3" kind="push" identifier="doodleFavouriteSegue" id="ZmQ-kC-ou2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b11-W8-l7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -537,7 +581,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="DNT-W0-zyw"/>
-        <segue reference="GK9-vj-efI"/>
+        <segue reference="czh-bW-b54"/>
+        <segue reference="9wO-Qc-WMm"/>
+        <segue reference="Hfi-Tv-zMT"/>
     </inferredMetricsTieBreakers>
 </document>

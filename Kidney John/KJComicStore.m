@@ -139,6 +139,19 @@
     }
 }
 
++ (NSArray *)returnFavouritesArray
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Find videos where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    
+    NSArray *arrayToReturn = [KJComic MR_findAllWithPredicate:predicate inContext:localContext];
+    
+    return arrayToReturn;
+}
+
 #pragma mark - return comic with comic name method
 
 + (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind

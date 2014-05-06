@@ -10,15 +10,19 @@
 #import "KJFavouritesListView.h"
 #import "KJMoreListView.h"
 #import "PBWebViewController.h"
-#import <MessageUI/MessageUI.h>
+#import "KJVideoStore.h"
+#import "KJComicStore.h"
+#import "KJDoodleStore.h"
+#import "KJFavDoodlesListView.h"
 
-@interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate>
+@interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 
 @end
 
 @implementation KJMoreInitialView {
     NSArray *cellArray;
     NSArray *socialCellArray;
+    NSInteger chosenRow;
 }
 
 #pragma mark - Table view data source
@@ -26,7 +30,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -35,7 +39,7 @@
     switch (section) {
         case 0:
             {
-                return 1;
+                return [cellArray count];
             }
             break;
         
@@ -43,12 +47,6 @@
             {
                 return [socialCellArray count];
             }
-            break;
-            
-        case 2:
-        {
-            return 1;
-        }
             break;
             
         default:
@@ -68,11 +66,6 @@
         case 1:
             //NSLog(@"section 1");
             return [NSString stringWithFormat:@"Like, Comment, Subscribe"];
-            break;
-            
-        case 2:
-            // NOTE: this is for beta testing ONLY
-            return [NSString stringWithFormat:@"Beta Testing"];
             break;
             
         default:
@@ -109,10 +102,6 @@
             cell.textLabel.text = [socialCellArray objectAtIndex:indexPath.row];
             break;
             
-        case 2:
-            cell.textLabel.text = @"Provide Feedback on the App";
-            break;
-            
         default:
             break;
     }
@@ -125,7 +114,15 @@
     switch (indexPath.section) {
         case 0:
             {
-                [self performSegueWithIdentifier:@"favouritesSegue" sender:self];
+                chosenRow = indexPath.row;
+                
+                // DEBUGGING
+                if (chosenRow == 2) {
+                    NSLog(@"DOOODLES WAS CHOSEN");
+                    [self performSegueWithIdentifier:@"doodleFavouriteSegue" sender:self];
+                } else {
+                    [self performSegueWithIdentifier:@"favouritesSegue" sender:self];
+                }
             }
             break;
             
@@ -157,45 +154,9 @@
             }
             break;
             
-        case 2:
-        {
-            // init mail composer view
-            if ([MFMailComposeViewController canSendMail]) {
-                MFMailComposeViewController *mailVC = [[MFMailComposeViewController alloc] init];
-                mailVC.mailComposeDelegate = self;
-                [mailVC setToRecipients:[NSArray arrayWithObject:@"josh@joshlapham.com"]];
-                [mailVC setSubject:@"Kidney John App Feedback"];
-                [self presentViewController:mailVC animated:YES completion:nil];
-            } else {
-                UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Email"
-                                                             message:@"This device is unable to send email to provide feedback"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:nil];
-                [av show];
-            }
-        }
-            break;
-            
         default:
             break;
     }
-}
-
-#pragma mark - MFMailComposeController delegate method
-
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-{
-    if (result == MFMailComposeResultSent) {
-        UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Feedback Sent"
-                                                     message:@"Thank you!"
-                                                    delegate:self
-                                           cancelButtonTitle:@"OK"
-                                           otherButtonTitles:nil];
-        [av show];
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Prepare for segue
@@ -204,6 +165,31 @@
 {
     // Set this in every view controller so that the back button displays back instead of the root view controller name
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
+    if ([[segue identifier] isEqualToString:@"favouritesSegue"]) {
+        //NSLog(@"in segue method ..");
+        NSString *typeOfFavourite = [cellArray objectAtIndex:chosenRow];
+        //NSLog(@"type of fav: %@", typeOfFavourite);
+        NSArray *favouritesDataToPass;
+        
+        KJFavouritesListView *destViewController = segue.destinationViewController;
+        destViewController.titleForView = typeOfFavourite;
+        
+        if (chosenRow == 0) {
+            // Videos
+            favouritesDataToPass = [KJVideoStore returnFavouritesArray];
+        } else if (chosenRow == 1) {
+            // Comix
+            favouritesDataToPass = [KJComicStore returnFavouritesArray];
+        }
+        
+        destViewController.cellResults = favouritesDataToPass;
+        
+    } else if ([segue.identifier isEqualToString:@"doodleFavouriteSegue"]) {
+        // If Doodles
+        KJFavDoodlesListView *destViewController = segue.destinationViewController;
+        [destViewController setTitle:@"Doodles"];
+    }
 }
 
 #pragma mark - Init methods
@@ -215,35 +201,11 @@
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
-    //self.title = @"More";
-    
-    cellArray = [NSArray arrayWithObjects:@"Favourites List", nil];
-    socialCellArray = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", nil];
-
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:NO];
-    
-    // dealloc navbar label here
-    self.navigationItem.titleView = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:NO];
-    
-    // Set title
     self.title = @"More";
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
     
-    cellArray = nil;
+    cellArray = [NSArray arrayWithObjects:@"Videos", @"Comix", @"Doodles", nil];
+    socialCellArray = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", @"society6", nil];
+
 }
 
 #pragma mark - Social media URL method
@@ -276,6 +238,9 @@
         case 5:
             return [NSURL URLWithString:@"http://instagram.com/johnroderickpaine"];
             break;
+            
+        case 6:
+            return [NSURL URLWithString:@"http://society6.com/kidneyjohn"];
             
         default:
             NSLog(@"Error: no URL");

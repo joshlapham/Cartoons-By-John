@@ -20,5 +20,6 @@
 - (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject;
 - (NSString *)returnFilepathForComicObject:(KJComic *)comicObject;
 - (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject;
++ (NSArray *)returnFavouritesArray;
 
 @end

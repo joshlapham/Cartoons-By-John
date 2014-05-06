@@ -55,6 +55,19 @@
     }
 }
 
++ (NSArray *)returnFavouritesArray
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Find videos where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    
+    NSArray *arrayToReturn = [KJVideo MR_findAllWithPredicate:predicate inContext:localContext];
+    
+    return arrayToReturn;
+}
+
 #pragma mark - Methods
 
 - (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context

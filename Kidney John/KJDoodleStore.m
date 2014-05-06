@@ -9,6 +9,7 @@
 #import "KJDoodleStore.h"
 #import "Parse.h"
 #import "KJRandomImageFromParse.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation KJDoodleStore
 
@@ -65,9 +66,22 @@
     }
 }
 
++ (NSArray *)returnFavouritesArray
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Find videos where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    
+    NSArray *arrayToReturn = [KJRandomImage MR_findAllWithPredicate:predicate inContext:localContext];
+    
+    return arrayToReturn;
+}
+
 #pragma mark - Core Data methods
 
-- (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
++ (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
 {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
         //NSLog(@"RANDOM: Yes, random image does exist in database");
@@ -78,7 +92,7 @@
     }
 }
 
-- (void)persistNewRandomImageWithId:(NSString *)imageId
++ (void)persistNewRandomImageWithId:(NSString *)imageId
                         description:(NSString *)imageDescription
                                 url:(NSString *)imageUrl
                                date:(NSString *)imageDate
@@ -107,7 +121,7 @@
     }
 }
 
-- (void)checkIfImageNeedsUpdateWithId:(NSString *)imageId
++ (void)checkIfImageNeedsUpdateWithId:(NSString *)imageId
                                description:(NSString *)imageDescription
                                 url:(NSString *)imageUrl
                                  date:(NSString *)imageDate
@@ -142,7 +156,7 @@
     }
 }
 
-- (void)fetchDoodleData
++ (void)fetchDoodleData
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
@@ -184,8 +198,8 @@
             
             // Set randomImagesFetchDone = YES in NSUserDefaults
             // NOTE - set to NO by default for debugging purposes
-            //[[NSUserDefaults standardUserDefaults] setObject:Nil forKey:@"randomImagesFetchDone"];
-            //[[NSUserDefaults standardUserDefaults] synchronize];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRandomImagesFetchDone"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             
             // Send NSNotification to random images view
             // to say that data fetch is done
@@ -195,9 +209,9 @@
     });
 }
 
-#pragma mark - Get random images array
+#pragma mark - Return results methods
 
-- (NSArray *)getRandomImagesArray
++ (NSArray *)returnArrayOfRandomImages
 {
     NSArray *randomImagesArray = [[NSArray alloc] init];
     randomImagesArray = [KJRandomImage MR_findAll];
@@ -205,6 +219,24 @@
     //NSLog(@"random images array count: %d", [randomImagesArray count]);
     
     return randomImagesArray;
+}
+
++ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject
+{
+    UIImage *imageToReturn;
+    
+    // SDWebImage
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl]) {
+        //NSLog(@"found image in cache");
+        imageToReturn = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl];
+    } else {
+        //NSLog(@"no image in cache");
+    }
+    
+    NSLog(@"doodleStore: returning doodle image from cache: %@", imageToReturn);
+    
+    return imageToReturn;
 }
 
 #pragma mark - Init methods

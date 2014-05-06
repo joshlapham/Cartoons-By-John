@@ -11,10 +11,12 @@
 
 @interface KJDoodleStore : NSObject
 
-- (void)fetchDoodleData;
-- (NSArray *)getRandomImagesArray;
++ (void)fetchDoodleData;
++ (NSArray *)returnArrayOfRandomImages;
 + (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl;
 + (void)updateDoodleFavouriteStatus:(NSString *)doodleUrl isFavourite:(BOOL)isOrNot;
 + (BOOL)checkIfDoodleIsAFavourite:(NSString *)doodleUrl;
++ (NSArray *)returnFavouritesArray;
++ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject;
 
 @end
