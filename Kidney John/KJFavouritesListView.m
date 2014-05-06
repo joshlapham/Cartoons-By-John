@@ -14,6 +14,7 @@
 #import "KJComicDetailView.h"
 #import "KJComicStore.h"
 #import "KJRandomView.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface KJFavouritesListView () <UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -59,31 +60,86 @@
     return [cellResults count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([titleForView isEqualToString:@"Comix"]) {
+        return 100;
+    } else {
+        return 120;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"favouriteCell";
+    static NSString *VideoCellIdentifier = @"favouriteCell";
+    static NSString *ComicCellIdentifier = @"comicFavouriteCell";
     
     // Configure the cell...
     // Custom font
-    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:22];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell;
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        if ([titleForView isEqualToString:@"Comix"]) {
+            // Comix
+            [tableView registerNib:[UINib nibWithNibName:@"KJComicFavouriteCell" bundle:nil] forCellReuseIdentifier:ComicCellIdentifier];
+            cell = [tableView dequeueReusableCellWithIdentifier:ComicCellIdentifier forIndexPath:indexPath];
+        } else {
+            // Videos
+            cell = [tableView dequeueReusableCellWithIdentifier:VideoCellIdentifier forIndexPath:indexPath];
+        }
     }
     
-    cell.textLabel.font = kjCustomFont;
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
+    UIImageView *thumbImage = (UIImageView *)[cell viewWithTag:102];
+    UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
+    
+    titleLabel.font = kjCustomFont;
+    titleLabel.numberOfLines = 0;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
     
     if ([titleForView isEqualToString:@"Videos"]) {
         KJVideo *cellData = [cellResults objectAtIndex:indexPath.row];
-        cell.textLabel.text = cellData.videoName;
+        titleLabel.text = cellData.videoName;
+        
+        // Cell detail text
+        UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
+        durationLabel.font = kjCustomFontDetailText;
+        durationLabel.textColor = [UIColor grayColor];
+        durationLabel.numberOfLines = 0;
+        
+        // Placeholder duration
+        // TODO: review this
+        if (cellData.videoDuration == nil) {
+            durationLabel.text = @"0:30";
+        } else {
+            durationLabel.text = cellData.videoDuration;
+        }
+        
+        // SDWebImage
+        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellData.videoId];
+        
+        // check if image is in cache
+        if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
+            //NSLog(@"found image in cache");
+            thumbImage.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString];
+        } else {
+            // TODO: fallback if not in cache
+            //NSLog(@"no image in cache");
+        }
+        
     } else if ([titleForView isEqualToString:@"Comix"]) {
         KJComic *cellData = [cellResults objectAtIndex:indexPath.row];
-        cell.textLabel.text = cellData.comicName;
+        
+        titleLabel.text = cellData.comicName;
+        
+        thumbImage.image = [KJComicStore returnComicThumbImageFromComicObject:cellData];
+        thumbImage.contentMode = UIViewContentModeScaleAspectFit;
+        
     } else if ([titleForView isEqualToString:@"Doodles"]) {
         KJRandomImage *cellData = [cellResults objectAtIndex:indexPath.row];
-        cell.textLabel.text = cellData.imageDescription;
+        titleLabel.text = cellData.imageDescription;
     }
     
     return cell;
