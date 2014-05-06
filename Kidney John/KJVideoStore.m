@@ -10,8 +10,11 @@
 #import "Parse.h"
 #import "KJVideo.h"
 #import "KJVideoFromParse.h"
+#import "Reachability.h"
 
 @implementation KJVideoStore
+
+#pragma mark - Reachability methods
 
 #pragma mark - Favourites methods
 
@@ -83,7 +86,7 @@
 
 #pragma mark - Core Data methods
 
-- (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
++ (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
         //NSLog(@"Yes, video does exist in database");
@@ -94,7 +97,7 @@
     }
 }
 
-- (void)persistNewVideoWithId:(NSString *)videoId
++ (void)persistNewVideoWithId:(NSString *)videoId
                          name:(NSString *)videoName
                   description:(NSString *)videoDescription
                          date:(NSString *)videoDate
@@ -136,7 +139,7 @@
     }
 }
 
-- (void)checkIfVideoNeedsUpdateWithVideoId:(NSString *)videoId
++ (void)checkIfVideoNeedsUpdateWithVideoId:(NSString *)videoId
                                       name:(NSString *)videoName
                                description:(NSString *)videoDescription
                                       date:(NSString *)videoDate
@@ -173,7 +176,7 @@
     }
 }
 
-- (void)fetchVideoData
++ (void)fetchVideoData
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{

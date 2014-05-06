@@ -12,7 +12,8 @@
 #import "KJDoodleCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJRandomFavouriteActivity.h"
-#import <Reachability.h>
+#import "Reachability.h"
+#import "JPLReachabilityManager.h"
 
 @interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAlertViewDelegate>
 
@@ -223,42 +224,25 @@
                                        otherButtonTitles:@"Retry", nil];
     
     if (![KJDoodleStore hasInitialDataFetchHappened]) {
+        
+        // Hide progress
+        [hud hide:YES];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
         [noNetworkAlertView show];
+    }
+}
+
+- (void)reachabilityDidChange
+{
+    if ([JPLReachabilityManager isReachable]) {
+        NSLog(@"Doodles: network became available");
+        [KJDoodleStore fetchDoodleData];
     }
 }
 
 - (void)fetchDataWithNetworkCheck
 {
-    // Reachability
-    Reachability *reach = [Reachability reachabilityWithHostname:@"www.parse.com"];
-    reach.reachableBlock = ^(Reachability *reach) {
-        NSLog(@"REACHABLE!");
-        // Fetch new data
-        [KJDoodleStore fetchDoodleData];
-        
-        // Hide any alert view that may be on screen
-        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        //[noNetworkAlertView removeFromSuperview];
-    };
-    
-    reach.unreachableBlock = ^(Reachability *reach) {
-        NSLog(@"UNREACHABLE!");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([KJDoodleStore hasInitialDataFetchHappened]) {
-                [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
-                [self doodleFetchDidHappen];
-            } else {
-                // Hide progress
-                [hud hide:YES];
-            
-                // Hide network activity indicator
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                [self noNetworkConnection];
-            }
-        });
-    };
-    
     // Show progress
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
@@ -272,8 +256,13 @@
         [self doodleFetchDidHappen];
         // TODO: implement cache update
     } else {
-        // Start the notifier
-        [reach startNotifier];
+        // Check if network is reachable
+        if ([JPLReachabilityManager isReachable]) {
+            [KJDoodleStore fetchDoodleData];
+        } else if ([JPLReachabilityManager isUnreachable]) {
+            // TODO: implement fallback if not reachable and is first data load
+            [self noNetworkConnection];
+        }
     }
 }
 
@@ -309,53 +298,38 @@
     // Init action button in top right hand corner of navbar
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActivityView)];
     
-    // Show progress
-    //hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //hud.labelText = @"Loading doodles ...";
-    
     // Register for NSNotification
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(doodleFetchDidHappen)
                                                  name:@"KJDoodleDataFetchDidHappen"
                                                object:nil];
     
-    // Use the doodleStore to fetch doodle data
-    //KJDoodleStore *store = [[KJDoodleStore alloc] init];
-    //[KJDoodleStore fetchDoodleData];
+    // Reachability NSNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityDidChange)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
     
     // Setup collection view
     [self setupCollectionView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    // Fetch doodle data
+    [self fetchDataWithNetworkCheck];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    selectedImageFromFavouritesList = nil;
 }
 
 - (void)dealloc
 {
     // Remove NSNotification observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJDoodleDataFetchDidHappen" object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    // Fetch data
-    // If initial data has already been loaded
-//    if ([KJDoodleStore hasInitialDataFetchHappened]) {
-//        //NSLog(@"Random View: initial data load has happened");
-//        // TODO: implement cache update
-//        
-//        [self doodleFetchDidHappen];
-//    } else {
-//        // Initial data load has not happened
-//        [KJDoodleStore fetchDoodleData];
-//    }
-    
-    [self fetchDataWithNetworkCheck];
-    
-    // Reload collectionView
-    //[self.collectionView reloadData];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    selectedImageFromFavouritesList = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 @end

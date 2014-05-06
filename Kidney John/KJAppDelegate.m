@@ -11,7 +11,7 @@
 #import "Models/KJVideoFromParse.h"
 #import "Models/KJComicFromParse.h"
 #import "Models/KJRandomImageFromParse.h"
-#import "MBProgressHUD.h"
+#import "JPLReachabilityManager.h"
 
 @implementation KJAppDelegate
 
@@ -71,6 +71,15 @@
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
     // Parse analytics
     //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    // Reachability
+    [JPLReachabilityManager sharedManager];
+    
+    if ([JPLReachabilityManager isReachable]) {
+        NSLog(@"Parse.com is reachable");
+    } else if ([JPLReachabilityManager isUnreachable]) {
+        NSLog(@"Parse.com is NOT reachable");
+    }
     
     // Override point for customization after application launch.
     return YES;

@@ -13,7 +13,8 @@
 #import "MBProgressHUD.h"
 #import "KJComicStore.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <Reachability.h>
+#import "Reachability.h"
+#import "JPLReachabilityManager.h"
 
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, SDWebImageManagerDelegate, UIAlertViewDelegate>
 
@@ -124,6 +125,14 @@
 
 #pragma mark - Reachability methods
 
+- (void)reachabilityDidChange
+{
+    if ([JPLReachabilityManager isReachable]) {
+        NSLog(@"Comix: network became available");
+        [KJComicStore fetchComicData];
+    }
+}
+
 - (void)noNetworkConnection
 {
     noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
@@ -133,42 +142,17 @@
                                           otherButtonTitles:@"Retry", nil];
     
     if (![KJComicStore hasInitialDataFetchHappened]) {
+        
+        // Hide progress
+        [hud hide:YES];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
         [noNetworkAlertView show];
     }
 }
 
 - (void)fetchDataWithNetworkCheck
 {
-    // Reachability
-    Reachability *reach = [Reachability reachabilityWithHostname:@"www.parse.com"];
-    reach.reachableBlock = ^(Reachability *reach) {
-        NSLog(@"REACHABLE!");
-        // Fetch new data
-        [KJComicStore fetchComicData];
-        
-        // Hide any alert view that may be on screen
-        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
-        //[noNetworkAlertView removeFromSuperview];
-    };
-    
-    reach.unreachableBlock = ^(Reachability *reach) {
-        NSLog(@"UNREACHABLE!");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([KJComicStore hasInitialDataFetchHappened]) {
-                [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
-                [self comicFetchDidHappen];
-            } else {
-                // Hide progress
-                [hud hide:YES];
-                
-                // Hide network activity indicator
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                [self noNetworkConnection];
-            }
-        });
-    };
-    
     // Show progress
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
@@ -182,8 +166,13 @@
         [self comicFetchDidHappen];
         // TODO: implement cache update
     } else {
-        // Start the notifier
-        [reach startNotifier];
+        // Check if network is reachable
+        if ([JPLReachabilityManager isReachable]) {
+            [KJComicStore fetchComicData];
+        } else if ([JPLReachabilityManager isUnreachable]) {
+            // TODO: implement fallback if not reachable and is first data load
+            [self noNetworkConnection];
+        }
     }
 }
 
@@ -223,7 +212,13 @@
                                                  name:@"KJComicDataFetchDidHappen"
                                                object:nil];
     
-    // Init comicStore and fetch comic data
+    // Reachability NSNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityDidChange)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    // Fetch comic data
     [self fetchDataWithNetworkCheck];
 }
 
@@ -231,6 +226,7 @@
 {
     // Remove NSNotificationCenter observer
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJComicDataFetchDidHappen" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 @end

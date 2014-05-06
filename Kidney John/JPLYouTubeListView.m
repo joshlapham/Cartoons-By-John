@@ -12,7 +12,8 @@
 #import "Models/KJVideo.h"
 #import "KJVideoStore.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <Reachability.h>
+#import "Reachability.h"
+#import "JPLReachabilityManager.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
@@ -201,21 +202,6 @@
     }
 }
 
-#pragma mark - Reachability
-
-- (void)noNetworkConnection
-{
-    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
-                                                 message:@"This app requires a network connection"
-                                                delegate:self
-                                       cancelButtonTitle:@"Cancel"
-                                       otherButtonTitles:@"Retry", nil];
-    
-    if (![KJVideoStore hasInitialDataFetchHappened]) {
-        [noNetworkAlertView show];
-    }
-}
-
 #pragma mark - UIAlertView delegate methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -231,34 +217,36 @@
     }
 }
 
+- (void)noNetworkConnection
+{
+    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
+                                                    message:@"This app requires a network connection"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Retry", nil];
+    
+    if (![KJVideoStore hasInitialDataFetchHappened]) {
+        
+        // Hide progress
+        [hud hide:YES];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        [noNetworkAlertView show];
+    }
+}
+
+#pragma mark - Reachability methods
+
+- (void)reachabilityDidChange
+{
+    if ([JPLReachabilityManager isReachable]) {
+        NSLog(@"Videos: network became available");
+        [KJVideoStore fetchVideoData];
+    }
+}
+
 - (void)fetchDataWithNetworkCheck
 {
-    // Reachability
-    Reachability *reach = [Reachability reachabilityWithHostname:@"www.parse.com"];
-    reach.reachableBlock = ^(Reachability *reach) {
-        NSLog(@"REACHABLE!");
-        // Fetch new data
-        [videoStore fetchVideoData];
-    };
-    
-    reach.unreachableBlock = ^(Reachability *reach) {
-        NSLog(@"UNREACHABLE!");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if ([KJVideoStore hasInitialDataFetchHappened]) {
-                [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
-                [self videoFetchDidFinish];
-            } else {
-                // Hide progress
-                [hud hide:YES];
-                
-                // Hide network activity indicator
-                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                
-                [self noNetworkConnection];
-            }
-        });
-    };
-    
     // Show progress
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
@@ -268,13 +256,17 @@
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    videoStore = [[KJVideoStore alloc] init];
     if ([KJVideoStore hasInitialDataFetchHappened]) {
         [self videoFetchDidFinish];
         // TODO: implement cache update
     } else {
-        // Start the notifier
-        [reach startNotifier];
+        // Check if network is reachable
+        if ([JPLReachabilityManager isReachable]) {
+            [KJVideoStore fetchVideoData];
+        } else if ([JPLReachabilityManager isUnreachable]) {
+            // TODO: implement fallback if not reachable and is first data load
+            [self noNetworkConnection];
+        }
     }
 }
 
@@ -290,11 +282,20 @@
     // init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];
     
-    // Set up NSNotification receiving
+    // Set up NSNotification receiving for when videoStore finishes data fetch
     NSString *notificationName = @"KJVideoDataFetchDidHappen";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFetchDidFinish) name:notificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoFetchDidFinish)
+                                                 name:notificationName
+                                               object:nil];
     
-    // Fetch data from store
+    // Reachability NSNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityDidChange)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    // Fetch video data
     [self fetchDataWithNetworkCheck];
     
     // Set prompt text for UISearchBar
@@ -304,8 +305,9 @@
 
 - (void)dealloc
 {
-    // remove observer
+    // Remove NSNotification observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJVideoDataFetchDidHappen" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 @end
