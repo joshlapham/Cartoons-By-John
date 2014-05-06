@@ -171,7 +171,9 @@
     
     // Show progress
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading comix ...";
+    hud.userInteractionEnabled = NO;
+    hud.labelText = @"Loading Comix ...";
+    hud.labelFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

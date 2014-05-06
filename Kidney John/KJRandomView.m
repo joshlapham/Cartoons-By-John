@@ -261,7 +261,9 @@
     
     // Show progress
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading doodles ...";
+    hud.userInteractionEnabled = NO;
+    hud.labelText = @"Loading Doodles ...";
+    hud.labelFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
