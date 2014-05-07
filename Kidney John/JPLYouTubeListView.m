@@ -23,7 +23,6 @@
     __block NSArray *videoResults;
     NSArray *searchResults;
     SDWebImageManager *webImageManager;
-    KJVideoStore *videoStore;
     MBProgressHUD *hud;
     UIAlertView *noNetworkAlertView;
 }

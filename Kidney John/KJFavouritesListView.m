@@ -20,9 +20,7 @@
 
 @end
 
-@implementation KJFavouritesListView {
-    KJComicStore *comicStore;
-}
+@implementation KJFavouritesListView
 
 @synthesize titleForView, cellResults;
 
@@ -210,8 +208,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    comicStore = [[KJComicStore alloc] init];
     
     self.title = titleForView;
     

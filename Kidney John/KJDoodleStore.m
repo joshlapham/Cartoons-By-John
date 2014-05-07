@@ -13,6 +13,20 @@
 
 @implementation KJDoodleStore
 
+#pragma mark - Init methods
+
++ (KJDoodleStore *)sharedStore
+{
+    static KJDoodleStore *_sharedStore = nil;
+    static dispatch_once_t oncePredicate;
+    
+    dispatch_once(&oncePredicate, ^{
+        _sharedStore = [[KJDoodleStore alloc] init];
+    });
+    
+    return _sharedStore;
+}
+
 #pragma mark - Favourite methods
 
 + (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl

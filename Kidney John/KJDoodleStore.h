@@ -11,6 +11,10 @@
 
 @interface KJDoodleStore : NSObject
 
+// Init method
++ (KJDoodleStore *)sharedStore;
+
+// Class methods
 + (void)fetchDoodleData;
 + (NSArray *)returnArrayOfRandomImages;
 + (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl;

@@ -10,6 +10,10 @@
 
 @interface KJVideoStore : NSObject
 
+// Init method
++ (KJVideoStore *)sharedStore;
+
+// Class methods
 + (void)fetchVideoData;
 + (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot;
 + (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId;

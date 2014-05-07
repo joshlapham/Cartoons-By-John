@@ -409,35 +409,6 @@
             </objects>
             <point key="canvasLocation" x="6745" y="1899"/>
         </scene>
-        <!--More List View-->
-        <scene sceneID="yEN-Pi-eRB">
-            <objects>
-                <tableViewController id="jG7-is-GEI" customClass="KJMoreListView" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="kOd-cR-dif">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="moreItemCell" id="3mO-br-lOj">
-                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3mO-br-lOj" id="IVm-6t-kL1">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="jG7-is-GEI" id="cJb-Dk-JkR"/>
-                            <outlet property="delegate" destination="jG7-is-GEI" id="sAd-CM-GnG"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="NsZ-rv-27c"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qK1-N8-etw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6285" y="2608"/>
-        </scene>
         <!--More Initial View-->
         <scene sceneID="wFU-pl-Ng1">
             <objects>
@@ -476,7 +447,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="Xzm-5A-BRi"/>
                     <connections>
-                        <segue destination="jG7-is-GEI" kind="push" identifier="socialSegue" id="Zdc-uR-x4f"/>
                         <segue destination="pdg-rQ-Sxt" kind="push" identifier="favouritesSegue" id="Oyh-HK-pDd"/>
                         <segue destination="Nsg-7J-yV3" kind="push" identifier="doodleFavouriteSegue" id="ZmQ-kC-ou2"/>
                     </connections>
@@ -484,41 +454,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b11-W8-l7c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5743" y="2179"/>
-        </scene>
-        <!--More Detail View-->
-        <scene sceneID="PzC-vd-G21">
-            <objects>
-                <viewController id="suh-0V-dCd" customClass="KJMoreDetailView" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="BW1-x0-chA"/>
-                        <viewControllerLayoutGuide type="bottom" id="UAN-Pd-bKM"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="iEn-bj-F2j">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Lf-mu-f2t">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="7Lf-mu-f2t" firstAttribute="leading" secondItem="iEn-bj-F2j" secondAttribute="leading" id="84K-KR-JBk"/>
-                            <constraint firstItem="7Lf-mu-f2t" firstAttribute="top" secondItem="iEn-bj-F2j" secondAttribute="top" id="CL1-67-r44"/>
-                            <constraint firstAttribute="bottom" secondItem="7Lf-mu-f2t" secondAttribute="bottom" id="L1r-TI-kHk"/>
-                            <constraint firstAttribute="trailing" secondItem="7Lf-mu-f2t" secondAttribute="trailing" id="NuZ-Ab-KHa"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="liR-dn-0y5"/>
-                    <connections>
-                        <outlet property="socialLinkView" destination="7Lf-mu-f2t" id="YEx-HG-wKo"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ufd-Ni-9vl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6745" y="2608"/>
         </scene>
         <!--Navigation Controller - Comix-->
         <scene sceneID="OAl-8g-JyG">

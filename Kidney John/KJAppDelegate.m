@@ -12,6 +12,9 @@
 #import "Models/KJComicFromParse.h"
 #import "Models/KJRandomImageFromParse.h"
 #import "JPLReachabilityManager.h"
+#import "KJVideoStore.h"
+#import "KJComicStore.h"
+#import "KJDoodleStore.h"
 
 @implementation KJAppDelegate
 
@@ -91,6 +94,11 @@
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
     // Parse analytics
     //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    // Init item stores
+    [KJVideoStore sharedStore];
+    [KJComicStore sharedStore];
+    [KJDoodleStore sharedStore];
     
     // Reachability
     [JPLReachabilityManager sharedManager];

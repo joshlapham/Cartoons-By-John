@@ -10,8 +10,20 @@
 #import "KJComicFromParse.h"
 #import "Parse.h"
 
-@implementation KJComicStore {
-    NSString *filePath;
+@implementation KJComicStore
+
+#pragma mark - Init methods
+
++ (KJComicStore *)sharedStore
+{
+    static KJComicStore *_sharedStore = nil;
+    static dispatch_once_t oncePredicate;
+    
+    dispatch_once(&oncePredicate, ^{
+        _sharedStore = [[KJComicStore alloc] init];
+    });
+    
+    return _sharedStore;
 }
 
 #pragma mark - Comic files on filesystem methods
@@ -40,11 +52,12 @@
     return filePath;
 }
 
-- (NSString *)returnFilepathForComicObject:(KJComic *)comicObject
++ (NSString *)returnFilepathForComicObject:(KJComic *)comicObject
 {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Comics"];
     
     // Filepath for jpeg comics
+    NSString *filePath;
     filePath = [NSString stringWithFormat:@"%@/%@%@.jpg", comicsFolderPath, comicObject.comicNumber, comicObject.comicFileName];
     
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
@@ -59,7 +72,7 @@
     return filePath;
 }
 
-- (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject
++ (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject
 {
     // TODO: handle if filepath is nil
     

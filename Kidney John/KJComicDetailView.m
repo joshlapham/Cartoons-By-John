@@ -23,7 +23,6 @@
 
 @implementation KJComicDetailView {
     SDWebImageManager *webImageManager;
-    KJComicStore *comicStore;
 }
 
 @synthesize nameFromList, titleFromList, fileNameFromList, hud, resultsArray, collectionViewIndexFromList, isComingFromFavouritesList;
@@ -49,7 +48,7 @@
     
     NSLog(@"cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
     
-    cell.comicImageView.image = [comicStore returnComicImageFromComicObject:cellData];
+    cell.comicImageView.image = [KJComicStore returnComicImageFromComicObject:cellData];
     
     NSLog(@"image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
     
@@ -111,7 +110,7 @@
     // Get data for comic currently on screen
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
-    UIImage *comicImageToShare = [comicStore returnComicImageFromComicObject:cellData];
+    UIImage *comicImageToShare = [KJComicStore returnComicImageFromComicObject:cellData];
     
     // Init UIActivity
     NSString *titleString;
@@ -166,9 +165,6 @@
     
     // Call method to setup collectionView and flow layout
     [self setupCollectionView];
-    
-    // Init comic store
-    comicStore = [[KJComicStore alloc] init];
     
     // Init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];

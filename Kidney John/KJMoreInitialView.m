@@ -8,7 +8,6 @@
 
 #import "KJMoreInitialView.h"
 #import "KJFavouritesListView.h"
-#import "KJMoreListView.h"
 #import "PBWebViewController.h"
 #import "KJVideoStore.h"
 #import "KJComicStore.h"

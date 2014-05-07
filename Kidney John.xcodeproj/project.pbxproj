@@ -52,7 +52,6 @@
 		68E48D5B184BEA7400600FA5 /* JPLYouTubeListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */; };
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
 		68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D6D184D874500600FA5 /* KJRandomView.m */; };
-		68E48D71184D876400600FA5 /* KJMoreListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D70184D876400600FA5 /* KJMoreListView.m */; };
 		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
 /* End PBXBuildFile section */
 
@@ -143,8 +142,6 @@
 		68E48D67184C20A500600FA5 /* KJComicListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicListView.m; sourceTree = "<group>"; };
 		68E48D6C184D874500600FA5 /* KJRandomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJRandomView.h; sourceTree = "<group>"; };
 		68E48D6D184D874500600FA5 /* KJRandomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJRandomView.m; sourceTree = "<group>"; };
-		68E48D6F184D876400600FA5 /* KJMoreListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJMoreListView.h; sourceTree = "<group>"; };
-		68E48D70184D876400600FA5 /* KJMoreListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJMoreListView.m; sourceTree = "<group>"; };
 		68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicFavouriteActivity.h; sourceTree = "<group>"; };
 		68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicFavouriteActivity.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -199,8 +196,6 @@
 				68E461CD185B272A008D3E36 /* KJFavouritesListView.m */,
 				6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */,
 				6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */,
-				68E48D6F184D876400600FA5 /* KJMoreListView.h */,
-				68E48D70184D876400600FA5 /* KJMoreListView.m */,
 				68E461FF1865CCC1008D3E36 /* KJTabBarController.h */,
 				68E462001865CCC1008D3E36 /* KJTabBarController.m */,
 			);
@@ -500,7 +495,6 @@
 				685C171718E29B5300088D26 /* KJComic.m in Sources */,
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
 				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
-				68E48D71184D876400600FA5 /* KJMoreListView.m in Sources */,
 				68E48D28184A247D00600FA5 /* main.m in Sources */,
 				6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */,
 				68E461F01860BCEA008D3E36 /* KJRandomImageFromParse.m in Sources */,

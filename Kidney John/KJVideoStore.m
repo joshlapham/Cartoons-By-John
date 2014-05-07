@@ -14,6 +14,20 @@
 
 @implementation KJVideoStore
 
+#pragma mark - Init methods
+
++ (KJVideoStore *)sharedStore
+{
+    static KJVideoStore *_sharedStore = nil;
+    static dispatch_once_t oncePredicate;
+    
+    dispatch_once(&oncePredicate, ^{
+        _sharedStore = [[KJVideoStore alloc] init];
+    });
+    
+    return _sharedStore;
+}
+
 #pragma mark - Favourites methods
 
 + (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot
