@@ -8,11 +8,15 @@ License: [Beerware](https://en.wikipedia.org/wiki/Beerware)
 
 An iOS app for animator [John Paine](http://kidneyjohn.com) that showcases his animations, comics and random drawings.
 
-**NOTE**: This app is not available in the App Store, as it is still *in-development*.
-
 ### Third-Party Libraries
+
+The following libraries were used to create this app -
 
 * [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
 * [Parse-iOS-SDK](https://parse.com)
 * [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
-* [MWPhotoBrowser](https://github.com/mwaterfall/MWPhotoBrowser)
+* [PBWebViewController](https://github.com/kmikael/PBWebViewController)
+* [SDWebImage](https://github.com/rs/SDWebImage)
+* [Reachability](https://github.com/tonymillion/Reachability)
+
+Thank you to the respective authors for creating and sharing your work.
