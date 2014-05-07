@@ -74,36 +74,118 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 35;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *headerLabel = [[UILabel alloc] init];
+    
+    headerLabel.frame = CGRectMake(20, 8, 320, 20);
+    headerLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:17];
+    headerLabel.textColor = [UIColor darkGrayColor];
+    headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:headerLabel];
+    
+    return headerView;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *SocialCellIdentifier = @"SocialLinkCell";
+    
+    UITableViewCell *cell;
     
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        if (indexPath.section == 1) {
+            // Social links section
+            [tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell" bundle:nil] forCellReuseIdentifier:SocialCellIdentifier];
+            cell = [tableView dequeueReusableCellWithIdentifier:SocialCellIdentifier forIndexPath:indexPath];
+        } else {
+            // Other sections (like Favourites)
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        }
     }
+    
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
+    UIImageView *thumbImage = (UIImageView *)[cell viewWithTag:102];
     
     // Set custom font
     UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
-    cell.textLabel.font = kjCustomFont;
+    //cell.textLabel.font = kjCustomFont;
+    titleLabel.font = kjCustomFont;
     
-    // Set image to show next to item
-    switch (indexPath.section) {
-        case 0:
-            // set Favourites icon here
-            //cell.imageView.image = something something
-            // Set the cell text
-            cell.textLabel.text = [cellArray objectAtIndex:indexPath.row];
-            break;
-            
-        case 1:
-            // set Social Media icon here
-            // Set the cell text
-            cell.textLabel.text = [socialCellArray objectAtIndex:indexPath.row];
-            break;
-            
-        default:
-            break;
+    // If Favourites section ..
+    if (indexPath.section == 0) {
+        // Set the cell text
+        //cell.textLabel.text = [cellArray objectAtIndex:indexPath.row];
+        titleLabel.text = [cellArray objectAtIndex:indexPath.row];
+        
+        // set Favourites icon
+        if (indexPath.row == 0) {
+            // Videos
+            thumbImage.image = [UIImage imageNamed:@"video-tab-icon.png"];
+            // Fix the look of the Video thumbnail when in tableView
+            thumbImage.contentMode = UIViewContentModeScaleAspectFit;
+        } else if (indexPath.row == 1) {
+            // Comix
+            thumbImage.image = [UIImage imageNamed:@"comic-tab-icon.png"];
+        } else if (indexPath.row == 2) {
+            // Doodles
+            thumbImage.image = [UIImage imageNamed:@"doodle-tab-icon.png"];
+        }
+        
+    // If Social Links section ..
+    } else {
+        // Set the cell text
+        titleLabel.text = [socialCellArray objectAtIndex:indexPath.row];
+        
+        // TODO: set Social Media icon here
+        switch (indexPath.row) {
+            case 0:
+                // Facebook
+                thumbImage.image = [UIImage imageNamed:@"facebook.png"];
+                break;
+                
+            case 1:
+                // Twitter
+                thumbImage.image = [UIImage imageNamed:@"twitter.png"];
+                break;
+                
+            case 2:
+                // Tumblr
+                thumbImage.image = [UIImage imageNamed:@"tumblr.png"];
+                break;
+                
+            case 3:
+                // Youtube
+                thumbImage.image = [UIImage imageNamed:@"youtube.png"];
+                break;
+                
+            case 4:
+                // Vimeo
+                thumbImage.image = [UIImage imageNamed:@"vimeo.png"];
+                break;
+                
+            case 5:
+                // Instagram
+                thumbImage.image = [UIImage imageNamed:@"instagram.png"];
+                break;
+                
+            case 6:
+                // Society6
+                thumbImage.image = [UIImage imageNamed:@"society6.png"];
+                break;
+                
+            default:
+                break;
+        }
+        
     }
     
     return cell;
@@ -116,11 +198,12 @@
             {
                 chosenRow = indexPath.row;
                 
-                // DEBUGGING
+                // If Doodles was tapped ..
                 if (chosenRow == 2) {
-                    NSLog(@"DOOODLES WAS CHOSEN");
+                    // Doodles was chosen
                     [self performSegueWithIdentifier:@"doodleFavouriteSegue" sender:self];
                 } else {
+                    // Videos or Comix was chosen
                     [self performSegueWithIdentifier:@"favouritesSegue" sender:self];
                 }
             }
@@ -204,7 +287,7 @@
     self.title = @"More";
     
     cellArray = [NSArray arrayWithObjects:@"Videos", @"Comix", @"Doodles", nil];
-    socialCellArray = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", @"society6", nil];
+    socialCellArray = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", @"Society6", nil];
 
 }
 

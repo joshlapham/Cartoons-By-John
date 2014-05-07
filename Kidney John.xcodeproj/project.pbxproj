@@ -18,6 +18,7 @@
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD21919938C003F3231 /* KJComicFavouriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */; };
 		6876CFD51919A383003F3231 /* JPLReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFD41919A383003F3231 /* JPLReachabilityManager.m */; };
+		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
 		689CAF471917A1B3000DD3F3 /* KJVideoFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 689CAF461917A1B3000DD3F3 /* KJVideoFavouriteActivity.m */; };
@@ -86,6 +87,7 @@
 		6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KJComicFavouriteCell.xib; sourceTree = "<group>"; };
 		6876CFD31919A383003F3231 /* JPLReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPLReachabilityManager.h; sourceTree = "<group>"; };
 		6876CFD41919A383003F3231 /* JPLReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPLReachabilityManager.m; sourceTree = "<group>"; };
+		6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KJSocialLinkCell.xib; sourceTree = "<group>"; };
 		687BC372184D9C8900F45970 /* KJComicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicCell.h; sourceTree = "<group>"; };
 		687BC373184D9C8900F45970 /* KJComicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicCell.m; sourceTree = "<group>"; };
 		687BC377184EB75500F45970 /* KJComicDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicDetailView.h; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				680CF06F190F8DBD00A0E296 /* KJComicDetailCell.h */,
 				680CF070190F8DBD00A0E296 /* KJComicDetailCell.m */,
 				6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */,
+				6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */,
 				683CAE5718C77DF2006173FA /* KJDoodleCell.h */,
 				683CAE5818C77DF2006173FA /* KJDoodleCell.m */,
 			);
@@ -421,6 +424,7 @@
 			files = (
 				68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */,
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
+				6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */,
 				68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */,
 				68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */,
 				685C171118E2745A00088D26 /* Comics in Resources */,

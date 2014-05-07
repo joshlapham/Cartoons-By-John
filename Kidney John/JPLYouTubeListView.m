@@ -307,6 +307,9 @@
     // Set prompt text for UISearchBar
     // NOTE: disabled for now, as the prompt has since been setup in Storyboard
     //self.searchDisplayController.searchBar.prompt = @"Type a video name";
+    
+    // Set font of UISearchBar
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"JohnRoderickPaine" size:16]];
 }
 
 - (void)dealloc
