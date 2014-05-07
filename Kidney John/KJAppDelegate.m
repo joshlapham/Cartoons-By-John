@@ -19,6 +19,9 @@
 
 - (void)setupUI
 {
+    // Show status bar after app launch image has shown
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    
     // Set navbar colour
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
     
@@ -37,6 +40,23 @@
     
     // Set navbar items of UIActivityViews to white
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
+    
+// For getting screenshot of app for app launch image
+#ifdef SCREENSHOT
+#warning Screenshot Mode enabled!
+    self.window.rootViewController.view.backgroundColor = [UIColor whiteColor];
+    
+    // TODO: resize navbar to allow for no status bar
+    CGRect sizeOfStatusBar = [[UIApplication sharedApplication] statusBarFrame];
+    CGRect originalNavbarSize = self.window.rootViewController.navigationController.navigationBar.frame;
+    
+    NSLog(@"size of status bar: %@, size of navbar: %@", NSStringFromCGRect(sizeOfStatusBar), NSStringFromCGRect(originalNavbarSize));
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
+    //[[UINavigationBar appearance] setFrame:navBarSizeToResizeTo];
+    
+#endif
 }
 
 #pragma mark - Init methods

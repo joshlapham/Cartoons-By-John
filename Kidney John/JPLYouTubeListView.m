@@ -310,6 +310,22 @@
     
     // Set font of UISearchBar
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"JohnRoderickPaine" size:16]];
+    
+// For getting screenshot of app for app launch image
+#ifdef SCREENSHOT
+#warning Screenshot Mode enabled!
+    self.searchDisplayController.searchBar.alpha = 0;
+	self.tableView.alpha = 0;
+    for (UITabBarItem *tabItem in self.tabBarController.tabBar.items) {
+        NSLog(@"SCREENSHOT MODE: changing text of tabbar item: %@", tabItem.title);
+        [tabItem setTitle:nil];
+        tabItem.image = nil;
+    }
+    self.title = nil;
+    // TODO: review this
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, 320, 70)];
+#endif
+    
 }
 
 - (void)dealloc
