@@ -10,6 +10,8 @@
 #import "Parse.h"
 #import "KJRandomImageFromParse.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "SDWebImagePrefetcher.h"
+#import "JPLReachabilityManager.h"
 
 @implementation KJDoodleStore
 
@@ -91,6 +93,28 @@
     NSArray *arrayToReturn = [KJRandomImage MR_findAllWithPredicate:predicate inContext:localContext];
     
     return arrayToReturn;
+}
+
+#pragma mark - Prefetch doodles method
+
++ (void)prefetchDoodles
+{
+    NSArray *resultsArray = [[NSArray alloc] init];
+    NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
+    
+    resultsArray = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
+    
+    for (KJRandomImage *image in resultsArray) {
+        NSString *urlString = image.imageUrl;
+        NSURL *urlToPrefetch = [NSURL URLWithString:urlString];
+        [prefetchUrls addObject:urlToPrefetch];
+    }
+    
+    // Cache URL for SDWebImage
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
+        NSLog(@"fetched count: %d, skipped count: %d", finishedCount, skippedCount);
+    }];
 }
 
 #pragma mark - Core Data methods
@@ -214,6 +238,12 @@
                 // to say that data fetch is done
                 NSString *notificationName = @"KJDoodleDataFetchDidHappen";
                 [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+                
+                // Prefetch doodles
+                if ([JPLReachabilityManager isReachable]) {
+                    [KJDoodleStore prefetchDoodles];
+                }
+                
             } else {
                 // Log details of the failure
                 NSLog(@"doodleStore: error: %@ %@", error, [error userInfo]);
