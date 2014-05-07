@@ -253,8 +253,14 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     if ([KJDoodleStore hasInitialDataFetchHappened]) {
+        // We have data, so call this method to fetch from local DB and reload table
         [self doodleFetchDidHappen];
-        // TODO: implement cache update
+        
+        // Fetch new data if network is available
+        if ([JPLReachabilityManager isReachable]) {
+            [KJDoodleStore fetchDoodleData];
+        }
+        
     } else {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {

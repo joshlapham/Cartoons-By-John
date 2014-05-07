@@ -191,20 +191,19 @@
                         NSLog(@"doodleStore: image not active: %@", object[@"imageUrl"]);
                     }
                 }
+                // Set randomImagesFetchDone = YES in NSUserDefaults
+                // NOTE - set to NO by default for debugging purposes
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRandomImagesFetchDone"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                // Send NSNotification to random images view
+                // to say that data fetch is done
+                NSString *notificationName = @"KJDoodleDataFetchDidHappen";
+                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
             } else {
                 // Log details of the failure
                 NSLog(@"doodleStore: error: %@ %@", error, [error userInfo]);
             }
-            
-            // Set randomImagesFetchDone = YES in NSUserDefaults
-            // NOTE - set to NO by default for debugging purposes
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRandomImagesFetchDone"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            // Send NSNotification to random images view
-            // to say that data fetch is done
-            NSString *notificationName = @"KJDoodleDataFetchDidHappen";
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
         }];
     });
 }
@@ -246,18 +245,6 @@
     } else {
         return NO;
     }
-}
-
-#pragma mark - Init methods
-
-- (id)initDoodleStore
-{
-    self = [super init];
-    if (self) {
-        // inits
-        //[self fetchDoodleData];
-    }
-    return self;
 }
 
 @end

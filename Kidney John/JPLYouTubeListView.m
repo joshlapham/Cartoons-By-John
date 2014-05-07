@@ -257,8 +257,14 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     if ([KJVideoStore hasInitialDataFetchHappened]) {
+        // We have data, so call this method to fetch from local DB and reload table
         [self videoFetchDidFinish];
-        // TODO: implement cache update
+        
+        // Fetch new data if network is available
+        if ([JPLReachabilityManager isReachable]) {
+            [KJVideoStore fetchVideoData];
+        }
+        
     } else {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {

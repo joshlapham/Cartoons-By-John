@@ -10,11 +10,9 @@
 #import "Parse.h"
 #import "KJVideo.h"
 #import "KJVideoFromParse.h"
-#import "Reachability.h"
+#import "JPLReachabilityManager.h"
 
 @implementation KJVideoStore
-
-#pragma mark - Reachability methods
 
 #pragma mark - Favourites methods
 
@@ -212,17 +210,16 @@
                         NSLog(@"videoStore: video not active: %@", object[@"videoName"]);
                     }
                 }
+                // Set firstLoad = YES in NSUserDefaults
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstVideoFetchDone"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                NSString *notificationName = @"KJVideoDataFetchDidHappen";
+                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
             } else {
                 // Log details of the failure
                 NSLog(@"videoStore: error: %@ %@", error, [error userInfo]);
             }
-            
-            // Set firstLoad = YES in NSUserDefaults
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstVideoFetchDone"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            NSString *notificationName = @"KJVideoDataFetchDidHappen";
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
         }];
     });
 }

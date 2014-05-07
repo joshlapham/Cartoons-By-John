@@ -163,8 +163,14 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     if ([KJComicStore hasInitialDataFetchHappened]) {
+        // We have data, so call this method to fetch from local DB and reload table
         [self comicFetchDidHappen];
-        // TODO: implement cache update
+        
+        // Fetch new data if network is available
+        if ([JPLReachabilityManager isReachable]) {
+            [KJComicStore fetchComicData];
+        }
+        
     } else {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {

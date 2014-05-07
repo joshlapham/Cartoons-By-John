@@ -303,19 +303,18 @@
                     NSLog(@"comicStore: comic not active: %@", object[@"comicName"]);
                 }
             }
+            // Send NSNotification to comix view
+            // to say that data fetch is done
+            NSString *notificationName = @"KJComicDataFetchDidHappen";
+            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+            
+            // Set firstLoad = YES in NSUserDefaults
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstComicFetchDone"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         } else {
             // Log details of the failure
             NSLog(@"comicStore: error: %@ %@", error, [error userInfo]);
         }
-        
-        // Send NSNotification to comix view
-        // to say that data fetch is done
-        NSString *notificationName = @"KJComicDataFetchDidHappen";
-        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-        
-        // Set firstLoad = YES in NSUserDefaults
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstComicFetchDone"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }];
 }
 
