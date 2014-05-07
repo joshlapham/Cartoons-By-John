@@ -144,6 +144,9 @@
         // Set the cell text
         titleLabel.text = [socialCellArray objectAtIndex:indexPath.row];
         
+        // Give the social icons a bit of opacity to match Favourites icons
+        thumbImage.alpha = 0.5;
+        
         // TODO: set Social Media icon here
         switch (indexPath.row) {
             case 0:
