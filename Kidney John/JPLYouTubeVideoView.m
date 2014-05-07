@@ -54,12 +54,7 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    // Show progress
-    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"";
-    
-    // Show network activity indicator
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSLog(@"%s", __FUNCTION__);
     
     if ([JPLReachabilityManager isUnreachable]) {
         // Hide progress
@@ -78,6 +73,8 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    NSLog(@"%s", __FUNCTION__);
+    
     // Hide progress
     [hud hide:YES];
     
@@ -87,6 +84,8 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+    NSLog(@"%s", __FUNCTION__);
+    
     // Hide progress
     [hud hide:YES];
     
@@ -106,6 +105,13 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 
 - (void)playVideoWithId:(NSString *)videoId
 {
+    // Show progress
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"";
+    
+    // Show network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
     //NSLog(@"VIDEO ID: %@", videoId);
     
     NSString *html = [NSString stringWithFormat:youTubeVideoHTML, videoId];
