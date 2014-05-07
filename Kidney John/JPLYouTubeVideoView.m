@@ -12,8 +12,9 @@
 #import "KJVideo.h"
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
+#import "JPLReachabilityManager.h"
 
-@interface JPLYouTubeVideoView () <UIWebViewDelegate>
+@interface JPLYouTubeVideoView () <UIWebViewDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIWebView *videoView;
 
@@ -25,6 +26,30 @@
 
 @synthesize videoIdFromList, videoTitleFromList;
 
+#pragma mark - UIAlertView delegate methods
+
+- (void)showErrorIfNoNetworkConnection
+{
+    NSString *messageString = NSLocalizedString(@"A network connection is required to watch videos", @"Cannot play the video as there is no network connection");
+    
+    UIAlertView *noNetworkAlert = [[UIAlertView alloc] initWithTitle:@"No Network"
+                                                             message:messageString
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil, nil];
+    
+    [noNetworkAlert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // If OK button was tapped ..
+    if (buttonIndex == 0) {
+        // Go back to video list view
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 #pragma mark - UIWebView delegate methods
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
@@ -35,6 +60,20 @@
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    if ([JPLReachabilityManager isUnreachable]) {
+        // Hide progress
+        [hud hide:YES];
+        
+        // Hide network activity indicator
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        // Stop loading webView
+        [_videoView stopLoading];
+        
+        // Show no network error alert
+        [self showErrorIfNoNetworkConnection];
+    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -44,6 +83,17 @@
     
     // Hide network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    // Hide progress
+    [hud hide:YES];
+    
+    // Hide network activity indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    NSLog(@"Video Detail: failed to load video: %@", [error localizedDescription]);
 }
 
 #pragma mark - HTML for YouTube webview
@@ -71,9 +121,6 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     // NOTE - must include NSBundle resourceURL otherwise video autoplay will not work (autoplay disabled for now)
     //[_videoView loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
-    
-    // Hide progress
-    //[MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 #pragma mark - UIActivityView methods
