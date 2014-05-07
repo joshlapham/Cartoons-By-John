@@ -57,17 +57,19 @@
 {
     KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicCell" forIndexPath:indexPath];
     
-    KJComic *comicCell = [comicResults objectAtIndex:indexPath.row];
-    
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(defaultQueue, ^{
-        //UIImage *comicImage = [comicStore returnComicImageFromComicObject:comicCell];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.backgroundColor = [UIColor whiteColor];
-            cell.comicImageView.image = [KJComicStore returnComicThumbImageFromComicObject:comicCell];
-        });
-    });
+    KJComic *cellData = [comicResults objectAtIndex:indexPath.row];
+
+    // Set comic thumbnail using SDWebImage
+    [cell.comicImageView setImageWithURL:[NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:cellData]]
+                       placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                              completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
+                                  if (cellImage && !error) {
+                                      NSLog(@"Comix: fetched comic thumbnail image");
+                                  } else {
+                                      NSLog(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
+                                      // TODO: implement fallback
+                                  }
+                              }];
     
     return cell;
 }
@@ -111,16 +113,16 @@
     comicResults = [[NSArray alloc] init];
     comicResults = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
     
-    // TODO: when to disable activity monitor and progress?
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
-    // Reload collectionview with data just fetched
-    [[self collectionView] reloadData];
-    //[self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+    // Reload collectionview with data just fetched on main thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.collectionView reloadData];
+    });
 }
 
 #pragma mark - Reachability methods
