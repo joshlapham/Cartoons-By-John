@@ -131,22 +131,18 @@
         //NSLog(@"found image in cache");
     } else {
         //NSLog(@"no image in cache");
+        // TODO: implement fallback if image not in cache
     }
     
-    [webImageManager downloadWithURL:[NSURL URLWithString:urlString]
-                             options:0
-                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
-                            }
-                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                               if (cellImage && finished) {
-                                   thumbnailImageView.image = cellImage;
-                                   // call setNeedsLayout so thumbnails are shown immediately
-                                   [cell setNeedsLayout];
-                               } else {
-                                   NSLog(@"video thumbnail download error");
-                               }
-                           }];
+    [thumbnailImageView setImageWithURL:[NSURL URLWithString:urlString]
+                         placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
+                                    if (cellImage && !error) {
+                                        NSLog(@"Videos: fetched video thumbnail image");
+                                    } else {
+                                        NSLog(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
+                                    }
+                                }];
     
     return cell;
 }
