@@ -316,14 +316,11 @@
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    // Setup collection view
-    [self setupCollectionView];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
     // Fetch doodle data
     [self fetchDataWithNetworkCheck];
+    
+    // Setup collection view
+    [self setupCollectionView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
