@@ -20,21 +20,19 @@
 
 @implementation KJMoreInitialView {
     NSArray *cellArray;
-    NSArray *socialCellArray;
     NSInteger chosenRow;
+    NSMutableArray *socialLinksArray;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     switch (section) {
         case 0:
             {
@@ -44,7 +42,7 @@
         
         case 1:
             {
-                return [socialCellArray count];
+                return [socialLinksArray count];
             }
             break;
             
@@ -58,12 +56,10 @@
 {
     switch (section) {
         case 0:
-            //DDLogVerbose(@"section 0");
             return [NSString stringWithFormat:@"Favourites"];
             break;
             
         case 1:
-            //DDLogVerbose(@"section 1");
             return [NSString stringWithFormat:@"Like, Comment, Subscribe"];
             break;
             
@@ -116,13 +112,11 @@
     
     // Set custom font
     UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
-    //cell.textLabel.font = kjCustomFont;
     titleLabel.font = kjCustomFont;
     
     // If Favourites section ..
     if (indexPath.section == 0) {
         // Set the cell text
-        //cell.textLabel.text = [cellArray objectAtIndex:indexPath.row];
         titleLabel.text = [cellArray objectAtIndex:indexPath.row];
         
         // set Favourites icon
@@ -142,52 +136,14 @@
     // If Social Links section ..
     } else {
         // Set the cell text
-        titleLabel.text = [socialCellArray objectAtIndex:indexPath.row];
+        NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+        titleLabel.text = [socialLink objectForKey:@"title"];
         
         // Give the social icons a bit of opacity to match Favourites icons
         thumbImage.alpha = 0.5;
         
-        // TODO: set Social Media icon here
-        switch (indexPath.row) {
-            case 0:
-                // Facebook
-                thumbImage.image = [UIImage imageNamed:@"facebook.png"];
-                break;
-                
-            case 1:
-                // Twitter
-                thumbImage.image = [UIImage imageNamed:@"twitter.png"];
-                break;
-                
-            case 2:
-                // Tumblr
-                thumbImage.image = [UIImage imageNamed:@"tumblr.png"];
-                break;
-                
-            case 3:
-                // Youtube
-                thumbImage.image = [UIImage imageNamed:@"youtube.png"];
-                break;
-                
-            case 4:
-                // Vimeo
-                thumbImage.image = [UIImage imageNamed:@"vimeo.png"];
-                break;
-                
-            case 5:
-                // Instagram
-                thumbImage.image = [UIImage imageNamed:@"instagram.png"];
-                break;
-                
-            case 6:
-                // Society6
-                thumbImage.image = [UIImage imageNamed:@"society6.png"];
-                break;
-                
-            default:
-                break;
-        }
-        
+        // Set social icon
+        thumbImage.image = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
     }
     
     return cell;
@@ -213,23 +169,15 @@
             
         case 1:
             {
-                //[self performSegueWithIdentifier:@"socialSegue" sender:self];
-                
+                // Social media links
                 // Set back button to have no text
                 self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 
                 // Initialize the web view controller and set it's URL
                 PBWebViewController *webViewController = [[PBWebViewController alloc] init];
-                webViewController.URL = [self returnUrlForItemAtPath:indexPath];
                 
-                // These are custom UIActivity subclasses that will show up in the UIActivityViewController
-                // when the action button is clicked
-                //PBSafariActivity *activity = [[PBSafariActivity alloc] init];
-                //webViewController.applicationActivities = @[activity];
-                
-                // This property also corresponds to the same one on UIActivityViewController
-                // Both properties do not need to be set unless you want custom actions
-                //webViewController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage, UIActivityTypePostToWeibo];
+                NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+                webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
                 
                 // Hide tabbar on detail view
                 webViewController.hidesBottomBarWhenPushed = YES;
@@ -277,6 +225,28 @@
     }
 }
 
+#pragma mark - Init social links array
+
+- (void)initSocialLinksArray
+{
+    NSDictionary *facebookLink = @{@"title" : @"Facebook", @"url" : @"https://www.facebook.com/kidneyjohn", @"image" : @"facebook.png"};
+    NSDictionary *twitterLink = @{@"title" : @"Twitter", @"url" : @"https://twitter.com/kidneyjohn", @"image" : @"twitter.png"};
+    NSDictionary *tumblrLink = @{@"title" : @"Tumblr", @"url" : @"http://johnroderickpaine.tumblr.com", @"image" : @"tumblr.png"};
+    NSDictionary *youtubeLink = @{@"title" : @"YouTube", @"url" : @"https://www.youtube.com/user/kidneyjohn", @"image" : @"youtube.png"};
+    NSDictionary *vimeoLink = @{@"title" : @"Vimeo", @"url" : @"http://vimeo.com/johnroderickpaine", @"image" : @"vimeo.png"};
+    NSDictionary *instaLink = @{@"title" : @"Instagram", @"url" : @"http://instagram.com/johnroderickpaine", @"image" : @"instagram.png"};
+    NSDictionary *societyLink = @{@"title" : @"Society6", @"url" : @"http://society6.com/kidneyjohn", @"image" : @"society6.png"};
+    
+    socialLinksArray = [[NSMutableArray alloc] init];
+    [socialLinksArray addObject:facebookLink];
+    [socialLinksArray addObject:twitterLink];
+    [socialLinksArray addObject:tumblrLink];
+    [socialLinksArray addObject:youtubeLink];
+    [socialLinksArray addObject:vimeoLink];
+    [socialLinksArray addObject:instaLink];
+    [socialLinksArray addObject:societyLink];
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -286,48 +256,9 @@
     self.title = @"More";
     
     cellArray = [NSArray arrayWithObjects:@"Videos", @"Comix", @"Doodles", nil];
-    socialCellArray = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", @"Society6", nil];
-}
-
-#pragma mark - Social media URL method
-
-- (NSURL *)returnUrlForItemAtPath:(NSIndexPath *)indexPath
-{
-    // Check to see what link was clicked
-    // REVIEW: cause this code kinda sucks
-    switch (indexPath.row) {
-        case 0:
-            return [NSURL URLWithString:@"https://www.facebook.com/kidneyjohn"];
-            break;
-            
-        case 1:
-            return [NSURL URLWithString:@"https://twitter.com/kidneyjohn"];
-            break;
-            
-        case 2:
-            return [NSURL URLWithString:@"http://johnroderickpaine.tumblr.com"];
-            break;
-            
-        case 3:
-            return [NSURL URLWithString:@"https://www.youtube.com/user/kidneyjohn"];
-            break;
-            
-        case 4:
-            return [NSURL URLWithString:@"http://vimeo.com/johnroderickpaine"];
-            break;
-            
-        case 5:
-            return [NSURL URLWithString:@"http://instagram.com/johnroderickpaine"];
-            break;
-            
-        case 6:
-            return [NSURL URLWithString:@"http://society6.com/kidneyjohn"];
-            
-        default:
-            DDLogVerbose(@"More: error: no URL");
-            return nil;
-            break;
-    }
+    
+    // Init social links array
+    [self initSocialLinksArray];
 }
 
 @end
