@@ -178,6 +178,7 @@
                 
                 NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
                 webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
+                webViewController.title = [socialLink objectForKey:@"title"];
                 
                 // Hide tabbar on detail view
                 webViewController.hidesBottomBarWhenPushed = YES;
