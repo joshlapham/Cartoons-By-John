@@ -11,10 +11,6 @@
 #import "KJVideo.h"
 #import "KJVideoFromParse.h"
 #import "JPLReachabilityManager.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @implementation KJVideoStore
 

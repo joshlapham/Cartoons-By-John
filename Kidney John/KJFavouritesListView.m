@@ -15,10 +15,6 @@
 #import "KJComicStore.h"
 #import "KJRandomView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJFavouritesListView () <UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 

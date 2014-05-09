@@ -12,10 +12,6 @@
 #import "KJDoodleCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJRandomView.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJFavDoodlesListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate>
 

@@ -12,10 +12,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SDWebImagePrefetcher.h"
 #import "JPLReachabilityManager.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @implementation KJDoodleStore
 
@@ -117,7 +113,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     // Cache URL for SDWebImage
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
-        DDLogVerbose(@"fetched count: %d, skipped count: %d", finishedCount, skippedCount);
+        DDLogVerbose(@"doodleStore: prefetched images count: %d, skipped: %d", finishedCount, skippedCount);
     }];
 }
 

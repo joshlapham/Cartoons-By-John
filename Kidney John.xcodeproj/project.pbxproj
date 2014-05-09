@@ -21,6 +21,7 @@
 		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
+		6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D13C191C7F1B001AD6A5 /* KJConstants.m */; };
 		689CAF471917A1B3000DD3F3 /* KJVideoFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 689CAF461917A1B3000DD3F3 /* KJVideoFavouriteActivity.m */; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
 		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
@@ -91,6 +92,8 @@
 		687BC373184D9C8900F45970 /* KJComicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicCell.m; sourceTree = "<group>"; };
 		687BC377184EB75500F45970 /* KJComicDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicDetailView.h; sourceTree = "<group>"; };
 		687BC378184EB75500F45970 /* KJComicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJComicDetailView.m; sourceTree = "<group>"; };
+		6891D13B191C7F1B001AD6A5 /* KJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJConstants.h; sourceTree = "<group>"; };
+		6891D13C191C7F1B001AD6A5 /* KJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJConstants.m; sourceTree = "<group>"; };
 		689CAF451917A1B3000DD3F3 /* KJVideoFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJVideoFavouriteActivity.h; sourceTree = "<group>"; };
 		689CAF461917A1B3000DD3F3 /* KJVideoFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJVideoFavouriteActivity.m; sourceTree = "<group>"; };
 		68CE160118BDDAF300127AA7 /* KJComicStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJComicStore.h; sourceTree = "<group>"; };
@@ -293,6 +296,8 @@
 				68E48D24184A247D00600FA5 /* InfoPlist.strings */,
 				68E48D27184A247D00600FA5 /* main.m */,
 				68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */,
+				6891D13B191C7F1B001AD6A5 /* KJConstants.h */,
+				6891D13C191C7F1B001AD6A5 /* KJConstants.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -494,6 +499,7 @@
 				68E461EA186078CA008D3E36 /* KJVideoFromParse.m in Sources */,
 				685C171718E29B5300088D26 /* KJComic.m in Sources */,
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
+				6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */,
 				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
 				68E48D28184A247D00600FA5 /* main.m in Sources */,
 				6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */,

@@ -13,10 +13,6 @@
 #import "KJComicStore.h"
 #import "KJComicFavouriteActivity.h"
 #import "KJComic.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJComicDetailView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 

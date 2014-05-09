@@ -13,10 +13,6 @@
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
 #import "JPLReachabilityManager.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface JPLYouTubeVideoView () <UIWebViewDelegate, UIAlertViewDelegate>
 

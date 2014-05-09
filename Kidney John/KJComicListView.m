@@ -15,10 +15,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, SDWebImageManagerDelegate, UIAlertViewDelegate>
 

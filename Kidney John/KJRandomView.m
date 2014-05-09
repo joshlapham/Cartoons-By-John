@@ -14,10 +14,6 @@
 #import "KJRandomFavouriteActivity.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAlertViewDelegate>
 

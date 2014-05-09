@@ -13,10 +13,6 @@
 #import "KJComicStore.h"
 #import "KJDoodleStore.h"
 #import "KJFavDoodlesListView.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 

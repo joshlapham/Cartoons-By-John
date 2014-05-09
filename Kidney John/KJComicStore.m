@@ -9,10 +9,6 @@
 #import "KJComicStore.h"
 #import "KJComicFromParse.h"
 #import "Parse.h"
-#import "DDLog.h"
-
-// Set log level
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @implementation KJComicStore
 
