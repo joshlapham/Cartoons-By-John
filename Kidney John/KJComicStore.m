@@ -9,6 +9,10 @@
 #import "KJComicStore.h"
 #import "KJComicFromParse.h"
 #import "Parse.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @implementation KJComicStore
 
@@ -44,9 +48,9 @@
     
     // TODO: make this better, return nil if none found
     if (fileExists) {
-        NSLog(@"comicStore: comic thumb file exists");
+        DDLogVerbose(@"comicStore: comic thumb file exists");
     } else {
-        NSLog(@"comicStore: comic thumb file does not exist");
+        DDLogVerbose(@"comicStore: comic thumb file does not exist");
     }
     
     return filePath;
@@ -64,9 +68,9 @@
     
     // TODO: make this better, return nil if none found
     if (fileExists) {
-        NSLog(@"comicStore: comic file exists");
+        DDLogVerbose(@"comicStore: comic file exists");
     } else {
-        NSLog(@"comicStore: comic file does not exist");
+        DDLogVerbose(@"comicStore: comic file does not exist");
     }
     
     return filePath;
@@ -78,7 +82,7 @@
     
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
     
-    NSLog(@"comicStore: comic image: %@", imageToReturn);
+    DDLogVerbose(@"comicStore: comic image: %@", imageToReturn);
     
     return imageToReturn;
 }
@@ -89,7 +93,7 @@
     
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnThumbnailFilepathForComicObject:comicObject]];
     
-    NSLog(@"comicStore: thumb image: %@", imageToReturn);
+    DDLogVerbose(@"comicStore: thumb image: %@", imageToReturn);
     
     return imageToReturn;
 }
@@ -100,10 +104,10 @@
     NSMutableArray *comicFileResults = [[NSMutableArray alloc] init];
     
     NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"] count];
-    NSLog(@"comicStore: bundle count: %d", pngCount);
+    DDLogVerbose(@"comicStore: bundle count: %d", pngCount);
     
     for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"]) {
-        //NSLog(@"%@", fileName);
+        //DDLogVerbose(@"%@", fileName);
         [comicFileResults addObject:fileName];
     }
     
@@ -121,7 +125,7 @@
     //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
     
     if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
-        //NSLog(@"Video is NOT already a favourite, adding now ..");
+        //DDLogVerbose(@"Video is NOT already a favourite, adding now ..");
         
         KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
         comicToFavourite.isFavourite = isOrNot;
@@ -129,7 +133,7 @@
         // Save
         [localContext MR_saveToPersistentStoreAndWait];
     } else {
-        NSLog(@"comicStore: comic not found in database, not adding anything to favourites");
+        DDLogVerbose(@"comicStore: comic not found in database, not adding anything to favourites");
     }
 }
 
@@ -141,10 +145,10 @@
     if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
         KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
         if (!comicToFavourite.isFavourite) {
-            NSLog(@"comicStore: comic IS NOT a favourite");
+            DDLogVerbose(@"comicStore: comic IS NOT a favourite");
             return FALSE;
         } else {
-            NSLog(@"comicStore: comic IS a favourite");
+            DDLogVerbose(@"comicStore: comic IS a favourite");
             return TRUE;
         }
     } else {
@@ -176,7 +180,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicNameToFind];
     KJComic *comicToReturn = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
     
-    //NSLog(@"comic store: comic to return: %@", comicToReturn.comicName);
+    //DDLogVerbose(@"comic store: comic to return: %@", comicToReturn.comicName);
     
     return comicToReturn;
 }
@@ -186,10 +190,10 @@
 + (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
 {
     if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:context]) {
-        //NSLog(@"COMICS LIST: yes, comic does exist in database");
+        //DDLogVerbose(@"COMICS LIST: yes, comic does exist in database");
         return TRUE;
     } else {
-        //NSLog(@"COMICS LIST: no, comic does NOT exist in database");
+        //DDLogVerbose(@"COMICS LIST: no, comic does NOT exist in database");
         return FALSE;
     }
 }
@@ -220,7 +224,7 @@
 //            NSURL *comicDataUrl = [NSURL URLWithString:comicData];
 //            newComic.comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
         
-        NSLog(@"comicStore: saved new comic: %@", comicName);
+        DDLogVerbose(@"comicStore: saved new comic: %@", comicName);
         
         // Save
         [localContext MR_saveToPersistentStoreAndWait];
@@ -242,7 +246,7 @@
         // Check if comicToCheck needs updating
         if (![comicToCheck.comicName isEqualToString:comicName] || ![comicToCheck.comicFileName isEqualToString:comicFileName] || ![comicToCheck.comicFileUrl isEqualToString:comicFileUrl] || ![comicToCheck.comicNumber isEqualToString:comicNumber]) {
             // Comic needs updating
-            NSLog(@"comicStore: comic needs update: %@", comicName);
+            DDLogVerbose(@"comicStore: comic needs update: %@", comicName);
             
             comicToCheck.comicName = comicName;
             comicToCheck.comicFileName = comicFileName;
@@ -253,9 +257,9 @@
             //[localContext MR_saveToPersistentStoreAndWait];
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
-                    NSLog(@"comicStore: updated comic: %@", comicName);
+                    DDLogVerbose(@"comicStore: updated comic: %@", comicName);
                 } else if (error) {
-                    NSLog(@"comicStore: error updating comic: %@ - %@", comicName, [error localizedDescription]);
+                    DDLogVerbose(@"comicStore: error updating comic: %@ - %@", comicName, [error localizedDescription]);
                 }
             }];
         }
@@ -302,7 +306,7 @@
                                      comicFileUrl:comicImageFile.url
                                       comicNumber:object[@"comicNumber"]];
                     
-                    //NSLog(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
+                    //DDLogVerbose(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
 //                        [comicImageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
 //                            if (!error) {
 //                                [self persistNewComicWithName:object[@"comicName"]
@@ -313,7 +317,7 @@
 //                        }];
                     
                 } else {
-                    NSLog(@"comicStore: comic not active: %@", object[@"comicName"]);
+                    DDLogVerbose(@"comicStore: comic not active: %@", object[@"comicName"]);
                 }
             }
             // Send NSNotification to comix view
@@ -326,7 +330,7 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
         } else {
             // Log details of the failure
-            NSLog(@"comicStore: error: %@ %@", error, [error userInfo]);
+            DDLogVerbose(@"comicStore: error: %@ %@", error, [error userInfo]);
         }
     }];
 }

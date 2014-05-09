@@ -15,6 +15,10 @@
 #import "KJComicStore.h"
 #import "KJRandomView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJFavouritesListView () <UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -28,7 +32,7 @@
 
 - (void)thereAreNoFavourites
 {
-    //NSLog(@"FAVOURITES: in thereAreNoFavourites method");
+    //DDLogVerbose(@"FAVOURITES: in thereAreNoFavourites method");
     NSString *messageString = [NSString stringWithFormat:@"You haven't set any %@ as favourites", titleForView];
     
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites"
@@ -42,7 +46,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    //NSLog(@"FAVOURITES: did dismiss no favourites alert view, popping Favourites List view");
+    //DDLogVerbose(@"FAVOURITES: did dismiss no favourites alert view, popping Favourites List view");
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -120,11 +124,11 @@
         
         // check if image is in cache
         if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
-            //NSLog(@"found image in cache");
+            //DDLogVerbose(@"found image in cache");
             thumbImage.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString];
         } else {
             // TODO: fallback if not in cache
-            //NSLog(@"no image in cache");
+            //DDLogVerbose(@"no image in cache");
         }
         
     } else if ([titleForView isEqualToString:@"Comix"]) {
@@ -211,7 +215,7 @@
     
     self.title = titleForView;
     
-    NSLog(@"cell results: %d", [cellResults count]);
+    DDLogVerbose(@"cell results: %d", [cellResults count]);
     
     if ([cellResults count] == 0) {
         [self thereAreNoFavourites];

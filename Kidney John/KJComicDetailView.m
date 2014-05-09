@@ -13,6 +13,10 @@
 #import "KJComicStore.h"
 #import "KJComicFavouriteActivity.h"
 #import "KJComic.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJComicDetailView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -31,7 +35,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    //NSLog(@"Comic Detail: count for collectionView - %d", [self.resultsArray count]);
+    //DDLogVerbose(@"Comic Detail: count for collectionView - %d", [self.resultsArray count]);
     return [self.resultsArray count];
 }
 
@@ -46,11 +50,11 @@
     
     KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
     
-    NSLog(@"cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
+    DDLogVerbose(@"Comics List: cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
     
     cell.comicImageView.image = [KJComicStore returnComicImageFromComicObject:cellData];
     
-    NSLog(@"image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
+    DDLogVerbose(@"Comics List: image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
     
     return cell;
 }
@@ -94,7 +98,7 @@
     [self.collectionView setPagingEnabled:YES];
     [self.collectionView setFrame:self.view.frame];
     
-    //NSLog(@"Comic Detail: collection view index from list: %@", collectionViewIndexFromList);
+    //DDLogVerbose(@"Comic Detail: collection view index from list: %@", collectionViewIndexFromList);
     
     // Scroll to comic that was selected in previous view controller
     [self.collectionView scrollToItemAtIndexPath:collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
@@ -134,7 +138,7 @@
 
 - (void)comicWasTapped
 {
-    NSLog(@"Comic Detail: comic was tapped");
+    DDLogVerbose(@"Comic Detail: comic was tapped");
     
     // Toggle navbar
     [self.navigationController setNavigationBarHidden:!self.navigationController.isNavigationBarHidden animated:YES];
@@ -158,7 +162,7 @@
 {
     [super viewDidLoad];
     
-    //NSLog(@"Comic Detail: row: %d", collectionViewIndexFromList.row);
+    //DDLogVerbose(@"Comic Detail: row: %d", collectionViewIndexFromList.row);
     
     // Set title
     self.title = titleFromList;

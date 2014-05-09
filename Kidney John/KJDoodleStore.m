@@ -12,6 +12,10 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SDWebImagePrefetcher.h"
 #import "JPLReachabilityManager.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @implementation KJDoodleStore
 
@@ -40,7 +44,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"imageUrl == %@", doodleUrl];
     KJRandomImage *doodleToReturn = [KJRandomImage MR_findFirstWithPredicate:predicate inContext:localContext];
     
-    //NSLog(@"comic store: comic to return: %@", comicToReturn.comicName);
+    //DDLogVerbose(@"comic store: comic to return: %@", comicToReturn.comicName);
     
     return doodleToReturn;
 }
@@ -51,7 +55,7 @@
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext]) {
-        //NSLog(@"doodleStore: doodle is NOT already a favourite, adding now ..");
+        //DDLogVerbose(@"doodleStore: doodle is NOT already a favourite, adding now ..");
         
         KJRandomImage *doodleToFavourite = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext];
         doodleToFavourite.isFavourite = isOrNot;
@@ -59,7 +63,7 @@
         // Save
         [localContext MR_saveToPersistentStoreAndWait];
     } else {
-        NSLog(@"doodleStore: doodle not found in database, not adding anything to favourites");
+        DDLogVerbose(@"doodleStore: doodle not found in database, not adding anything to favourites");
     }
 }
 
@@ -71,10 +75,10 @@
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext]) {
         KJRandomImage *doodleToFavourite = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext];
         if (!doodleToFavourite.isFavourite) {
-            NSLog(@"doodleStore: doodle IS NOT a favourite");
+            DDLogVerbose(@"doodleStore: doodle IS NOT a favourite");
             return FALSE;
         } else {
-            NSLog(@"doodleStore: doodle IS a favourite");
+            DDLogVerbose(@"doodleStore: doodle IS a favourite");
             return TRUE;
         }
     } else {
@@ -113,7 +117,7 @@
     // Cache URL for SDWebImage
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
-        NSLog(@"fetched count: %d, skipped count: %d", finishedCount, skippedCount);
+        DDLogVerbose(@"fetched count: %d, skipped count: %d", finishedCount, skippedCount);
     }];
 }
 
@@ -122,10 +126,10 @@
 + (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
 {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
-        //NSLog(@"RANDOM: Yes, random image does exist in database");
+        //DDLogVerbose(@"RANDOM: Yes, random image does exist in database");
         return TRUE;
     } else {
-        //NSLog(@"RANDOM: No, random image does NOT exist in database");
+        //DDLogVerbose(@"RANDOM: No, random image does NOT exist in database");
         return FALSE;
     }
 }
@@ -174,7 +178,7 @@
         // Check if imageToCheck needs updating
         if (![imageToCheck.imageId isEqualToString:imageId] || ![imageToCheck.imageDescription isEqualToString:imageDescription] || ![imageToCheck.imageUrl isEqualToString:imageUrl] || ![imageToCheck.imageDate isEqualToString:imageDate]) {
             // Image needs updating
-            NSLog(@"doodleStore: doodle needs update: %@", imageUrl);
+            DDLogVerbose(@"doodleStore: doodle needs update: %@", imageUrl);
             
             imageToCheck.imageId = imageId;
             imageToCheck.imageDescription = imageDescription;
@@ -185,9 +189,9 @@
             //[localContext MR_saveToPersistentStoreAndWait];
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
-                    NSLog(@"doodleStore: updated doodle: %@", imageUrl);
+                    DDLogVerbose(@"doodleStore: updated doodle: %@", imageUrl);
                 } else if (error) {
-                    NSLog(@"doodleStore: error updating doodle: %@ - %@", imageUrl, [error localizedDescription]);
+                    DDLogVerbose(@"doodleStore: error updating doodle: %@ - %@", imageUrl, [error localizedDescription]);
                 }
             }];
         }
@@ -198,7 +202,7 @@
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        NSLog(@"doodleStore: fetching doodle data ..");
+        DDLogVerbose(@"doodleStore: fetching doodle data ..");
         
         // Setup query
         PFQuery *randomQuery = [KJRandomImageFromParse query];
@@ -226,7 +230,7 @@
                         // Save Parse object to Core Data
                         [self persistNewRandomImageWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
                     } else {
-                        NSLog(@"doodleStore: image not active: %@", object[@"imageUrl"]);
+                        DDLogVerbose(@"doodleStore: image not active: %@", object[@"imageUrl"]);
                     }
                 }
                 // Set randomImagesFetchDone = YES in NSUserDefaults
@@ -246,7 +250,7 @@
                 
             } else {
                 // Log details of the failure
-                NSLog(@"doodleStore: error: %@ %@", error, [error userInfo]);
+                DDLogVerbose(@"doodleStore: error: %@ %@", error, [error userInfo]);
             }
         }];
     });
@@ -259,7 +263,7 @@
     NSArray *randomImagesArray = [[NSArray alloc] init];
     randomImagesArray = [KJRandomImage MR_findAll];
     
-    //NSLog(@"random images array count: %d", [randomImagesArray count]);
+    //DDLogVerbose(@"random images array count: %d", [randomImagesArray count]);
     
     return randomImagesArray;
 }
@@ -271,14 +275,14 @@
     // SDWebImage
     // check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl]) {
-        //NSLog(@"found image in cache");
+        //DDLogVerbose(@"found image in cache");
         imageToReturn = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl];
     } else {
-        //NSLog(@"no image in cache");
+        //DDLogVerbose(@"no image in cache");
         // TODO: implement fallback
     }
     
-    NSLog(@"doodleStore: returning doodle image from cache: %@", imageToReturn);
+    DDLogVerbose(@"doodleStore: returning doodle image from cache: %@", imageToReturn);
     
     return imageToReturn;
 }

@@ -14,6 +14,10 @@
 #import "KJRandomFavouriteActivity.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAlertViewDelegate>
 
@@ -71,9 +75,9 @@
     // SDWebImage
     // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
-        //NSLog(@"found image in cache");
+        //DDLogVerbose(@"found image in cache");
     } else {
-        //NSLog(@"no image in cache");
+        //DDLogVerbose(@"no image in cache");
         // TODO: implement fallback if image not in cache
     }
     
@@ -81,9 +85,9 @@
                          placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                                 completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
                                     if (cellImage && !error) {
-                                        NSLog(@"Doodles: fetched image");
+                                        DDLogVerbose(@"Doodles: fetched image");
                                     } else {
-                                        NSLog(@"Doodles: error fetching image: %@", [error localizedDescription]);
+                                        DDLogVerbose(@"Doodles: error fetching image: %@", [error localizedDescription]);
                                     }
     }];
     
@@ -102,23 +106,23 @@
 //    // SDWebImage
 //    // check if image is in cache
 //    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleToCache.imageUrl]) {
-//        //NSLog(@"found image in cache");
+//        //DDLogVerbose(@"found image in cache");
 //    } else {
-//        //NSLog(@"no image in cache");
+//        //DDLogVerbose(@"no image in cache");
 //    }
 //    
 //    [webImageManager downloadWithURL:[NSURL URLWithString:doodleToCache.imageUrl]
 //                             options:0
 //                            progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//                                //NSLog(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
+//                                //DDLogVerbose(@"video thumb download: %d of %d downloaded", receivedSize, expectedSize);
 //                            }
 //                           completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, BOOL finished) {
 //                               if (cellImage && finished) {
 //                                   // NOTE we are not doing anything here, just loading into the cache
 //                                   //cell.doodleImageView.image = cellImage;
-//                                   NSLog(@"preloaded doodle: %@", doodleToCache.imageId);
+//                                   DDLogVerbose(@"preloaded doodle: %@", doodleToCache.imageId);
 //                               } else {
-//                                   NSLog(@"doodle download error");
+//                                   DDLogVerbose(@"doodle download error");
 //                               }
 //                           }];
 //
@@ -128,17 +132,17 @@
 
 - (void)doodleFetchDidHappen
 {
-    NSLog(@"Doodles: data fetch did happen");
+    DDLogVerbose(@"Doodles: data fetch did happen");
     
     // Check if coming from Favourites list
     if (selectedImageFromFavouritesList != nil) {
         randomImagesResults = [[NSArray alloc] initWithObjects:selectedImageFromFavouritesList, nil];
-        //NSLog(@"Doodles: results array count: %d", [randomImagesResults count]);
+        //DDLogVerbose(@"Doodles: results array count: %d", [randomImagesResults count]);
         //NSUInteger startOnIndex = [randomImagesResults indexOfObject:selectedImageFromFavouritesList];
-        //NSLog(@"Doodles: start on image id: %@ and index: %d", selectedImageFromFavouritesList.imageId, startOnIndex);
+        //DDLogVerbose(@"Doodles: start on image id: %@ and index: %d", selectedImageFromFavouritesList.imageId, startOnIndex);
     } else {
         // Not coming from favourites list
-        //NSLog(@"Doodles: not coming from Favourites list");
+        //DDLogVerbose(@"Doodles: not coming from Favourites list");
         randomImagesResults = [[NSArray alloc] init];
         randomImagesResults = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
     }
@@ -190,10 +194,10 @@
     // SDWebImage
     // check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
-        //NSLog(@"found image in cache");
+        //DDLogVerbose(@"found image in cache");
         doodleImageToShare = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl];
     } else {
-        //NSLog(@"no image in cache");
+        //DDLogVerbose(@"no image in cache");
     }
     
     // Init UIActivity
@@ -237,7 +241,7 @@
 - (void)reachabilityDidChange
 {
     if ([JPLReachabilityManager isReachable]) {
-        NSLog(@"Doodles: network became available");
+        DDLogVerbose(@"Doodles: network became available");
         [KJDoodleStore fetchDoodleData];
     }
 }
@@ -277,7 +281,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Button clicked: %d", buttonIndex);
+    DDLogVerbose(@"Button clicked: %d", buttonIndex);
     
     if (buttonIndex == 1) {
         // Retry was clicked

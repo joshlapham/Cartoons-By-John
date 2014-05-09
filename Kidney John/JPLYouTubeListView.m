@@ -14,6 +14,10 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
@@ -47,7 +51,7 @@
 
 - (void)videoFetchDidFinish
 {
-    NSLog(@"VIDEOS: did receive notification that data fetch is complete, reloading table ..");
+    DDLogVerbose(@"Videos: did receive notification that data fetch is complete, reloading table ..");
     
     // Sort videos with newest at top
     videoResults = [[NSArray alloc] init];
@@ -128,9 +132,9 @@
     
     // check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
-        //NSLog(@"found image in cache");
+        //DDLogVerbose(@"found image in cache");
     } else {
-        //NSLog(@"no image in cache");
+        //DDLogVerbose(@"no image in cache");
         // TODO: implement fallback if image not in cache
     }
     
@@ -138,9 +142,9 @@
                          placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                                 completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
                                     if (cellImage && !error) {
-                                        NSLog(@"Videos: fetched video thumbnail image");
+                                        DDLogVerbose(@"Videos: fetched video thumbnail image");
                                     } else {
-                                        NSLog(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
+                                        DDLogVerbose(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
                                     }
                                 }];
     
@@ -201,7 +205,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Button clicked: %d", buttonIndex);
+    DDLogVerbose(@"Button clicked: %d", buttonIndex);
     
     if (buttonIndex == 1) {
         // Retry was clicked
@@ -235,7 +239,7 @@
 - (void)reachabilityDidChange
 {
     if ([JPLReachabilityManager isReachable]) {
-        NSLog(@"Videos: network became available");
+        DDLogVerbose(@"Videos: network became available");
         [KJVideoStore fetchVideoData];
     }
 }
@@ -312,7 +316,7 @@
     self.searchDisplayController.searchBar.alpha = 0;
 	self.tableView.alpha = 0;
     for (UITabBarItem *tabItem in self.tabBarController.tabBar.items) {
-        NSLog(@"SCREENSHOT MODE: changing text of tabbar item: %@", tabItem.title);
+        DDLogVerbose(@"SCREENSHOT MODE: changing text of tabbar item: %@", tabItem.title);
         [tabItem setTitle:nil];
         tabItem.image = nil;
     }

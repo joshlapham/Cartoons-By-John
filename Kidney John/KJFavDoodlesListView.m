@@ -12,6 +12,10 @@
 #import "KJDoodleCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJRandomView.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJFavDoodlesListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate>
 
@@ -27,7 +31,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Doodle Favs: selected item - %ld", (long)indexPath.row);
+    DDLogVerbose(@"Doodle Favs: selected item - %ld", (long)indexPath.row);
     [self performSegueWithIdentifier:@"doodleDetailSegueFromFavourites" sender:self];
 }
 
@@ -63,10 +67,10 @@
     // check if image is in cache
     // DISABLED - loading from filesystem
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
-            //NSLog(@"found image in cache");
+            //DDLogVerbose(@"found image in cache");
         cell.doodleImageView.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl];
         } else {
-            //NSLog(@"no image in cache");
+            //DDLogVerbose(@"no image in cache");
         }
     
 //    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -86,7 +90,7 @@
 
 - (void)thereAreNoFavourites
 {
-    //NSLog(@"FAVOURITES: in thereAreNoFavourites method");
+    //DDLogVerbose(@"FAVOURITES: in thereAreNoFavourites method");
     NSString *messageString = [NSString stringWithFormat:@"You haven't set any %@ as favourites", @"Doodles"];
     
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites"
@@ -100,7 +104,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    //NSLog(@"FAVOURITES: did dismiss no favourites alert view, popping Favourites List view");
+    //DDLogVerbose(@"FAVOURITES: did dismiss no favourites alert view, popping Favourites List view");
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -116,7 +120,7 @@
     
     cellResults = [KJDoodleStore returnFavouritesArray];
     
-    NSLog(@"cell results count: %d", [cellResults count]);
+    DDLogVerbose(@"cell results count: %d", [cellResults count]);
     
     if ([cellResults count] == 0) {
         [self thereAreNoFavourites];

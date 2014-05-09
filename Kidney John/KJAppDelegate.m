@@ -15,6 +15,8 @@
 #import "KJVideoStore.h"
 #import "KJComicStore.h"
 #import "KJDoodleStore.h"
+#import "DDLog.h"
+#import "DDTTYLogger.h"
 
 @implementation KJAppDelegate
 
@@ -69,11 +71,15 @@
     // Customize UI
     [self setupUI];
     
+    // CocoaLumberjack
+    // Setup XCode console logger
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    
     // MAGICAL RECORD
     //[MagicalRecord setupCoreDataStackWithStoreNamed:@"kj.sqlite"];
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"kj.sqlite"];
     
-    // PARSE SETUP
+    // PARSE
     // Parse custom class setup
     [KJVideoFromParse registerSubclass];
     [KJRandomImageFromParse registerSubclass];

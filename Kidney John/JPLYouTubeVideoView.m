@@ -13,6 +13,10 @@
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
 #import "JPLReachabilityManager.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface JPLYouTubeVideoView () <UIWebViewDelegate, UIAlertViewDelegate>
 
@@ -54,7 +58,7 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    NSLog(@"%s", __FUNCTION__);
+    DDLogVerbose(@"%s", __FUNCTION__);
     
     if ([JPLReachabilityManager isUnreachable]) {
         // Hide progress
@@ -73,7 +77,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSLog(@"%s", __FUNCTION__);
+    DDLogVerbose(@"%s", __FUNCTION__);
     
     // Hide progress
     [hud hide:YES];
@@ -84,7 +88,7 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    NSLog(@"%s", __FUNCTION__);
+    DDLogVerbose(@"%s", __FUNCTION__);
     
     // Hide progress
     [hud hide:YES];
@@ -92,7 +96,7 @@
     // Hide network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    NSLog(@"Video Detail: failed to load video: %@", [error localizedDescription]);
+    DDLogVerbose(@"Video Detail: failed to load video: %@", [error localizedDescription]);
 }
 
 #pragma mark - HTML for YouTube webview
@@ -112,11 +116,11 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    //NSLog(@"VIDEO ID: %@", videoId);
+    //DDLogVerbose(@"VIDEO ID: %@", videoId);
     
     NSString *html = [NSString stringWithFormat:youTubeVideoHTML, videoId];
     
-    //NSLog(@"video width: %f, video height: %f", _videoView.frame.size.width, _videoView.frame.size.height);
+    //DDLogVerbose(@"video width: %f, video height: %f", _videoView.frame.size.width, _videoView.frame.size.height);
     
     [_videoView loadHTMLString:html baseURL:nil];
     

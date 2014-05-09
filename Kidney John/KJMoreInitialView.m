@@ -13,6 +13,10 @@
 #import "KJComicStore.h"
 #import "KJDoodleStore.h"
 #import "KJFavDoodlesListView.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 
@@ -58,12 +62,12 @@
 {
     switch (section) {
         case 0:
-            //NSLog(@"section 0");
+            //DDLogVerbose(@"section 0");
             return [NSString stringWithFormat:@"Favourites"];
             break;
             
         case 1:
-            //NSLog(@"section 1");
+            //DDLogVerbose(@"section 1");
             return [NSString stringWithFormat:@"Like, Comment, Subscribe"];
             break;
             
@@ -252,9 +256,9 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     if ([[segue identifier] isEqualToString:@"favouritesSegue"]) {
-        //NSLog(@"in segue method ..");
+        //DDLogVerbose(@"in segue method ..");
         NSString *typeOfFavourite = [cellArray objectAtIndex:chosenRow];
-        //NSLog(@"type of fav: %@", typeOfFavourite);
+        //DDLogVerbose(@"type of fav: %@", typeOfFavourite);
         NSArray *favouritesDataToPass;
         
         KJFavouritesListView *destViewController = segue.destinationViewController;
@@ -283,14 +287,10 @@
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
     self.title = @"More";
     
     cellArray = [NSArray arrayWithObjects:@"Videos", @"Comix", @"Doodles", nil];
     socialCellArray = [NSArray arrayWithObjects:@"Facebook", @"Twitter", @"Tumblr", @"YouTube", @"Vimeo", @"Instagram", @"Society6", nil];
-
 }
 
 #pragma mark - Social media URL method
@@ -328,7 +328,7 @@
             return [NSURL URLWithString:@"http://society6.com/kidneyjohn"];
             
         default:
-            NSLog(@"Error: no URL");
+            DDLogVerbose(@"More: error: no URL");
             return nil;
             break;
     }

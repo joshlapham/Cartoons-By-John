@@ -11,6 +11,10 @@
 #import "KJVideo.h"
 #import "KJVideoFromParse.h"
 #import "JPLReachabilityManager.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @implementation KJVideoStore
 
@@ -39,7 +43,7 @@
     //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
     
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
-        //NSLog(@"Video is NOT already a favourite, adding now ..");
+        //DDLogVerbose(@"Video is NOT already a favourite, adding now ..");
         
         KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
         videoToFavourite.isFavourite = isOrNot;
@@ -47,7 +51,7 @@
         // Save
         [localContext MR_saveToPersistentStoreAndWait];
     } else {
-        NSLog(@"videoStore: video not found in database, not adding anything to favourites");
+        DDLogVerbose(@"videoStore: video not found in database, not adding anything to favourites");
     }
 }
 
@@ -59,10 +63,10 @@
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
         KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
         if (!videoToFavourite.isFavourite) {
-            NSLog(@"videoStore: video IS NOT a favourite");
+            DDLogVerbose(@"videoStore: video IS NOT a favourite");
             return FALSE;
         } else {
-            NSLog(@"videoStore: video IS a favourite");
+            DDLogVerbose(@"videoStore: video IS a favourite");
             return TRUE;
         }
     } else {
@@ -101,10 +105,10 @@
 + (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
-        //NSLog(@"Yes, video does exist in database");
+        //DDLogVerbose(@"Yes, video does exist in database");
         return TRUE;
     } else {
-        //NSLog(@"No, video does NOT exist in database");
+        //DDLogVerbose(@"No, video does NOT exist in database");
         return FALSE;
     }
 }
@@ -142,9 +146,9 @@
         //[localContext MR_saveToPersistentStoreAndWait];
         [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (success) {
-                NSLog(@"videoStore: saved new video: %@", videoName);
+                DDLogVerbose(@"videoStore: saved new video: %@", videoName);
             } else if (error) {
-                NSLog(@"videoStore: error saving: %@", [error localizedDescription]);
+                DDLogVerbose(@"videoStore: error saving: %@", [error localizedDescription]);
                 // TODO: implement alert view on error?
             }
         }];
@@ -167,7 +171,7 @@
         // Check if videoToCheck needs updating
         if (![videoToCheck.videoId isEqualToString:videoId] || ![videoToCheck.videoName isEqualToString:videoName] || ![videoToCheck.videoDescription isEqualToString:videoDescription] || ![videoToCheck.videoDate isEqualToString:videoDate] || ![videoToCheck.videoDuration isEqualToString:videoDuration]) {
             // Video needs updating
-            NSLog(@"videoStore: video needs update: %@", videoName);
+            DDLogVerbose(@"videoStore: video needs update: %@", videoName);
             
             videoToCheck.videoId = videoId;
             videoToCheck.videoName = videoName;
@@ -179,9 +183,9 @@
             //[localContext MR_saveToPersistentStoreAndWait];
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
-                    NSLog(@"videoStore: updated video: %@", videoName);
+                    DDLogVerbose(@"videoStore: updated video: %@", videoName);
                 } else if (error) {
-                    NSLog(@"videoStore: error updating video: %@ - %@", videoName, [error localizedDescription]);
+                    DDLogVerbose(@"videoStore: error updating video: %@ - %@", videoName, [error localizedDescription]);
                 }
             }];
         }
@@ -192,7 +196,7 @@
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(defaultQueue, ^{
-        NSLog(@"videoStore: fetching video data ..");
+        DDLogVerbose(@"videoStore: fetching video data ..");
         
         // Setup query
         PFQuery *query = [KJVideoFromParse query];
@@ -221,7 +225,7 @@
                         // Save Parse object to Core Data
                         [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"] videoDuration:object[@"videoDuration"]];
                     } else {
-                        NSLog(@"videoStore: video not active: %@", object[@"videoName"]);
+                        DDLogVerbose(@"videoStore: video not active: %@", object[@"videoName"]);
                     }
                 }
                 // Set firstLoad = YES in NSUserDefaults
@@ -232,7 +236,7 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
             } else {
                 // Log details of the failure
-                NSLog(@"videoStore: error: %@ %@", error, [error userInfo]);
+                DDLogVerbose(@"videoStore: error: %@ %@", error, [error userInfo]);
             }
         }];
     });

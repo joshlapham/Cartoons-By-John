@@ -15,6 +15,10 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
+#import "DDLog.h"
+
+// Set log level
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, SDWebImageManagerDelegate, UIAlertViewDelegate>
 
@@ -33,7 +37,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"COMIX: selected item - %ld", (long)indexPath.row);
+    DDLogVerbose(@"Comix: selected item - %ld", (long)indexPath.row);
     [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
     
 }
@@ -64,9 +68,9 @@
                        placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                               completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
                                   if (cellImage && !error) {
-                                      NSLog(@"Comix: fetched comic thumbnail image");
+                                      DDLogVerbose(@"Comix: fetched comic thumbnail image");
                                   } else {
-                                      NSLog(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
+                                      DDLogVerbose(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
                                       // TODO: implement fallback
                                   }
                               }];
@@ -96,7 +100,7 @@
         destViewController.resultsArray = [NSArray arrayWithArray:comicResults];
         destViewController.collectionViewIndexFromList = selectedIndexPath;
         
-        NSLog(@"selected comic row: %d", selectedIndexPath.row);
+        DDLogVerbose(@"Comix: selected comic row: %d", selectedIndexPath.row);
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
@@ -107,7 +111,7 @@
 
 - (void)comicFetchDidHappen
 {
-    NSLog(@"Comic fetch did happen ..");
+    DDLogVerbose(@"Comic fetch did happen ..");
     
     // TODO: init array here every time?
     comicResults = [[NSArray alloc] init];
@@ -130,7 +134,7 @@
 - (void)reachabilityDidChange
 {
     if ([JPLReachabilityManager isReachable]) {
-        NSLog(@"Comix: network became available");
+        DDLogVerbose(@"Comix: network became available");
         [KJComicStore fetchComicData];
     }
 }
@@ -188,7 +192,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Button clicked: %d", buttonIndex);
+    DDLogVerbose(@"Comix List: alert button clicked: %d", buttonIndex);
     
     if (buttonIndex == 1) {
         // Retry was clicked
