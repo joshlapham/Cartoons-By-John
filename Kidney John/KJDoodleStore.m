@@ -239,8 +239,8 @@
                 NSString *notificationName = @"KJDoodleDataFetchDidHappen";
                 [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
                 
-                // Prefetch doodles
-                if ([JPLReachabilityManager isReachable]) {
+                // Prefetch doodles if on Wifi
+                if ([JPLReachabilityManager isReachableViaWiFi]) {
                     [KJDoodleStore prefetchDoodles];
                 }
                 
@@ -275,6 +275,7 @@
         imageToReturn = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl];
     } else {
         //NSLog(@"no image in cache");
+        // TODO: implement fallback
     }
     
     NSLog(@"doodleStore: returning doodle image from cache: %@", imageToReturn);
