@@ -59,19 +59,33 @@
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    [[self tableView] reloadData];
+    // TODO: reshow search bar here if it was hidden?
+    
+    // Set background of tableView to nil to remove any network error image showing
+    self.tableView.backgroundView = nil;
+    
+    // Reload tableView
+    [self.tableView reloadData];
 }
 
 #pragma mark - UITableView delegate methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return 1;
+    DDLogVerbose(@"%s", __FUNCTION__);
+    
+    if ([videoResults count] > 0 || [searchResults count] > 0) {
+        return 1;
+    } else {
+        // No data
+        return 0;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    DDLogVerbose(@"%s", __FUNCTION__);
+    
     // Check if this is the video list or the search list
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return [searchResults count];
@@ -209,6 +223,10 @@
     } else if (buttonIndex == 0) {
         // Cancel was clicked
         // TODO: implement a new view with a button to retry data refresh here?
+        
+        // Reload table data to check for empty data source
+        // TODO: maybe don't reload here?
+        [self.tableView reloadData];
     }
 }
 
@@ -236,6 +254,11 @@
 {
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Videos: network became available");
+        
+        // Dismiss no network UIAlertView
+        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        
+        // Fetch data
         [KJVideoStore fetchVideoData];
     }
 }
@@ -271,6 +294,44 @@
     }
 }
 
+#pragma mark - Check for empty UITableView data source
+
+- (void)checkForEmptyDataSource
+{
+    // Check for empty data source
+    DDLogVerbose(@"%s", __FUNCTION__);
+    
+    int sections = [self.tableView numberOfSections];
+    BOOL hasRows = NO;
+    
+    for (int i = 0; i < sections; i++) {
+        hasRows = ([self.tableView numberOfRowsInSection:i] > 0) ? YES: NO;
+    }
+    
+    if (sections == 0 || hasRows == NO) {
+        DDLogVerbose(@"Video list data source is empty!");
+        
+        // Hide searchbar
+        // TODO: implement better solution, as this does not show searchbar when data becomes available
+        //[self.searchDisplayController.searchBar removeFromSuperview];
+        
+        // TODO: remove title?
+        
+        // Image to use for table background
+        UIImage *image = [UIImage imageNamed:@"no-data.png"];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        
+        [self.tableView addSubview:imageView];
+        self.tableView.backgroundView = imageView;
+        self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // Gesture recognizer to reload data if tapped
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        singleTap.numberOfTapsRequired = 1;
+        [self.tableView addGestureRecognizer:singleTap];
+    }
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -298,6 +359,9 @@
     
     // Fetch video data
     [self fetchDataWithNetworkCheck];
+    
+    // Check if data source for tableView is empty
+    [self checkForEmptyDataSource];
     
     // Set prompt text for UISearchBar
     // NOTE: disabled for now, as the prompt has since been setup in Storyboard

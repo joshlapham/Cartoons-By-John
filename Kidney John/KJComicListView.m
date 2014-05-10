@@ -27,6 +27,7 @@
     SDWebImageManager *webImageManager;
     UIAlertView *noNetworkAlertView;
     MBProgressHUD *hud;
+    UIImageView *imageView;
 }
 
 #pragma mark - UICollectionView delegate methods
@@ -119,6 +120,11 @@
     // Hide progress
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
+    // Set background of collectionView to nil to remove any network error image showing
+    // TODO: should we be doing this every time?
+    [imageView removeFromSuperview];
+    self.collectionView.backgroundView = nil;
+    
     // Reload collectionview with data just fetched on main thread
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.collectionView reloadData];
@@ -199,6 +205,40 @@
     }
 }
 
+#pragma mark - Check for empty UITableView data source
+
+- (void)checkForEmptyDataSource
+{
+    // Check for empty data source
+    DDLogVerbose(@"%s", __FUNCTION__);
+    
+    int sections = [self.collectionView numberOfSections];
+    BOOL hasRows = NO;
+    
+    for (int i = 0; i < sections; i++) {
+        hasRows = ([self.collectionView numberOfItemsInSection:i] > 0) ? YES: NO;
+    }
+    
+    if (sections == 0 || hasRows == NO) {
+        DDLogVerbose(@"Comix list data source is empty!");
+        
+        // TODO: remove title?
+        
+        // Image to use for table background
+        UIImage *image = [UIImage imageNamed:@"no-data.png"];
+        imageView = [[UIImageView alloc] initWithImage:image];
+        
+        [self.collectionView addSubview:imageView];
+        self.collectionView.backgroundView = imageView;
+        self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // Gesture recognizer to reload data if tapped
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        singleTap.numberOfTapsRequired = 1;
+        [self.collectionView addGestureRecognizer:singleTap];
+    }
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -228,6 +268,9 @@
     
     // Fetch comic data
     [self fetchDataWithNetworkCheck];
+    
+    // Check if data source for collectionView is empty
+    [self checkForEmptyDataSource];
 }
 
 - (void)dealloc

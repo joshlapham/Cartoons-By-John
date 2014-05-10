@@ -44,9 +44,9 @@
     
     // TODO: make this better, return nil if none found
     if (fileExists) {
-        DDLogVerbose(@"comicStore: comic thumb file exists");
+        //DDLogVerbose(@"comicStore: comic thumb file exists");
     } else {
-        DDLogVerbose(@"comicStore: comic thumb file does not exist");
+        //DDLogVerbose(@"comicStore: comic thumb file does not exist");
     }
     
     return filePath;
@@ -64,9 +64,9 @@
     
     // TODO: make this better, return nil if none found
     if (fileExists) {
-        DDLogVerbose(@"comicStore: comic file exists");
+        //DDLogVerbose(@"comicStore: comic file exists");
     } else {
-        DDLogVerbose(@"comicStore: comic file does not exist");
+        //DDLogVerbose(@"comicStore: comic file does not exist");
     }
     
     return filePath;
