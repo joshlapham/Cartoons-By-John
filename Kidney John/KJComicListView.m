@@ -28,6 +28,7 @@
     UIAlertView *noNetworkAlertView;
     MBProgressHUD *hud;
     UIImageView *imageView;
+    UITapGestureRecognizer *singleTap;
 }
 
 #pragma mark - UICollectionView delegate methods
@@ -67,7 +68,7 @@
                                   if (cellImage && !error) {
                                       DDLogVerbose(@"Comix: fetched comic thumbnail image");
                                   } else {
-                                      DDLogVerbose(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
+                                      DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
                                       // TODO: implement fallback
                                   }
                               }];
@@ -124,6 +125,9 @@
     // TODO: should we be doing this every time?
     [imageView removeFromSuperview];
     self.collectionView.backgroundView = nil;
+    
+    // Remove tap gesture recognizer
+    [self.collectionView removeGestureRecognizer:singleTap];
     
     // Reload collectionview with data just fetched on main thread
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -238,7 +242,7 @@
         self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
         singleTap.numberOfTapsRequired = 1;
         [self.collectionView addGestureRecognizer:singleTap];
     }

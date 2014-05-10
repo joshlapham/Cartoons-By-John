@@ -81,7 +81,7 @@
                                     if (cellImage && !error) {
                                         DDLogVerbose(@"Doodles: fetched image");
                                     } else {
-                                        DDLogVerbose(@"Doodles: error fetching image: %@", [error localizedDescription]);
+                                        DDLogError(@"Doodles: error fetching image: %@", [error localizedDescription]);
                                     }
     }];
     

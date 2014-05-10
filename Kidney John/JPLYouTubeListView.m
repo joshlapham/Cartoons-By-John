@@ -25,6 +25,7 @@
     SDWebImageManager *webImageManager;
     MBProgressHUD *hud;
     UIAlertView *noNetworkAlertView;
+    UITapGestureRecognizer *singleTap;
 }
 
 #pragma mark - UISearchBar methods
@@ -63,6 +64,9 @@
     
     // Set background of tableView to nil to remove any network error image showing
     self.tableView.backgroundView = nil;
+    
+    // Remove tap gesture recognizer
+    [self.tableView removeGestureRecognizer:singleTap];
     
     // Reload tableView
     [self.tableView reloadData];
@@ -154,7 +158,7 @@
                                     if (cellImage && !error) {
                                         DDLogVerbose(@"Videos: fetched video thumbnail image");
                                     } else {
-                                        DDLogVerbose(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
+                                        DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
                                     }
                                 }];
     
@@ -326,7 +330,7 @@
         self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
         singleTap.numberOfTapsRequired = 1;
         [self.tableView addGestureRecognizer:singleTap];
     }

@@ -9,6 +9,7 @@
 #import "KJComicStore.h"
 #import "KJComicFromParse.h"
 #import "Parse.h"
+#import "SDWebImagePrefetcher.h"
 
 @implementation KJComicStore
 
@@ -24,6 +25,27 @@
     });
     
     return _sharedStore;
+}
+
+#pragma mark - Prefetch comic thumbnails method
+
++ (void)prefetchComicThumbnails
+{
+    NSArray *resultsArray = [[NSArray alloc] init];
+    NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
+    
+    resultsArray = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
+    
+    for (KJComic *comic in resultsArray) {
+        NSURL *urlToPrefetch = [NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:comic]];
+        [prefetchUrls addObject:urlToPrefetch];
+    }
+    
+    // Cache URL for SDWebImage
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
+        DDLogVerbose(@"comicStore: prefetched comic thumbs count: %d, skipped: %d", finishedCount, skippedCount);
+    }];
 }
 
 #pragma mark - Comic files on filesystem methods
@@ -255,7 +277,7 @@
                 if (success) {
                     DDLogVerbose(@"comicStore: updated comic: %@", comicName);
                 } else if (error) {
-                    DDLogVerbose(@"comicStore: error updating comic: %@ - %@", comicName, [error localizedDescription]);
+                    DDLogError(@"comicStore: error updating comic: %@ - %@", comicName, [error localizedDescription]);
                 }
             }];
         }
@@ -302,16 +324,6 @@
                                      comicFileUrl:comicImageFile.url
                                       comicNumber:object[@"comicNumber"]];
                     
-                    //DDLogVerbose(@"COMIC LIST: PFFile URL: %@", thumbImageFile.url);
-//                        [comicImageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-//                            if (!error) {
-//                                [self persistNewComicWithName:object[@"comicName"]
-//                                               comicFileData:data
-//                                                comicFileName:object[@"comicFileName"]
-//                                                 comicFileUrl:comicImageFile.url];
-//                            }
-//                        }];
-                    
                 } else {
                     DDLogVerbose(@"comicStore: comic not active: %@", object[@"comicName"]);
                 }
@@ -324,6 +336,11 @@
             // Set firstLoad = YES in NSUserDefaults
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstComicFetchDone"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            // Prefetch comic thumbnails
+            // NOTE: does not need to be on wifi as comics are cached locally
+            [self prefetchComicThumbnails];
+            
         } else {
             // Log details of the failure
             DDLogVerbose(@"comicStore: error: %@ %@", error, [error userInfo]);
