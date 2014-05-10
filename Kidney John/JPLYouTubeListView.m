@@ -370,6 +370,9 @@
     // Set font of UISearchBar
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"JohnRoderickPaine" size:16]];
     
+    // Set searchbar to only show when tableView is scrolled
+    [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.tableHeaderView.frame.size.height) animated:YES];
+    
 // For getting screenshot of app for app launch image
 #ifdef SCREENSHOT
 #warning Screenshot Mode enabled!
