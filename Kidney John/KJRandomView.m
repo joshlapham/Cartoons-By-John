@@ -27,6 +27,8 @@
     SDWebImageManager *webImageManager;
     MBProgressHUD *hud;
     UIAlertView *noNetworkAlertView;
+    UIImageView *imageView;
+    UITapGestureRecognizer *singleTap;
 }
 
 @synthesize selectedImageFromFavouritesList;
@@ -115,6 +117,14 @@
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    // Set background of collectionView to nil to remove any network error image showing
+    // TODO: should we be doing this every time?
+    [imageView removeFromSuperview];
+    self.collectionView.backgroundView = nil;
+    
+    // Remove tap gesture recognizer
+    [self.collectionView removeGestureRecognizer:singleTap];
     
     // Reload collectionView data
     [self.collectionView reloadData];
@@ -237,6 +247,40 @@
     }
 }
 
+#pragma mark - Check for empty UICollectionView data source
+
+- (void)checkForEmptyDataSource
+{
+    // Check for empty data source
+    DDLogVerbose(@"%s", __FUNCTION__);
+    
+    int sections = [self.collectionView numberOfSections];
+    BOOL hasRows = NO;
+    
+    for (int i = 0; i < sections; i++) {
+        hasRows = ([self.collectionView numberOfItemsInSection:i] > 0) ? YES: NO;
+    }
+    
+    if (sections == 0 || hasRows == NO) {
+        DDLogVerbose(@"Doodles data source is empty!");
+        
+        // TODO: remove title?
+        
+        // Image to use for background
+        UIImage *image = [UIImage imageNamed:@"no-data.png"];
+        imageView = [[UIImageView alloc] initWithImage:image];
+        
+        [self.collectionView addSubview:imageView];
+        self.collectionView.backgroundView = imageView;
+        self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // Gesture recognizer to reload data if tapped
+        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        singleTap.numberOfTapsRequired = 1;
+        [self.collectionView addGestureRecognizer:singleTap];
+    }
+}
+
 #pragma mark - Init methods
 
 - (void)viewDidLoad
@@ -265,6 +309,9 @@
     
     // Fetch doodle data
     [self fetchDataWithNetworkCheck];
+    
+    // Check if data source for collectionView is empty
+    [self checkForEmptyDataSource];
     
     // Setup collection view
     [self setupCollectionView];

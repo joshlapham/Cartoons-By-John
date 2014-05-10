@@ -214,7 +214,7 @@
     }
 }
 
-#pragma mark - Check for empty UITableView data source
+#pragma mark - Check for empty UICollectionView data source
 
 - (void)checkForEmptyDataSource
 {
