@@ -137,6 +137,11 @@
 {
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Comix: network became available");
+        
+        // Dismiss no network UIAlertView
+        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        
+        // Fetch data
         [KJComicStore fetchComicData];
     }
 }

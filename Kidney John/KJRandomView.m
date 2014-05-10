@@ -182,6 +182,11 @@
 {
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Doodles: network became available");
+        
+        // Dismiss no network UIAlertView
+        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        
+        // Fetch data
         [KJDoodleStore fetchDoodleData];
     }
 }
