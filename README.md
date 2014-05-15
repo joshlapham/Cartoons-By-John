@@ -8,6 +8,18 @@ License: [Beerware](https://en.wikipedia.org/wiki/Beerware)
 
 An iOS app for animator [John Paine](http://kidneyjohn.com) that showcases his animations, comics and random drawings.
 
+### Usage
+
+#### CocoaPods
+
+This project uses [CocoaPods](http://cocoapods.org/) and includes a `Podfile`.
+
+Run `pod install` in the project directory to install these dependencies.
+
+#### Parse.com
+
+__NOTE__: This project uses Parse.com for the backend database, and does not include the required API keys for privacy reasons. The app will not run without them.
+
 ### Third-Party Libraries
 
 The following libraries were used to create this app -
@@ -18,5 +30,6 @@ The following libraries were used to create this app -
 * [PBWebViewController](https://github.com/kmikael/PBWebViewController)
 * [SDWebImage](https://github.com/rs/SDWebImage)
 * [Reachability](https://github.com/tonymillion/Reachability)
+* [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack)
 
 Thank you to the respective authors for creating and sharing your work.
