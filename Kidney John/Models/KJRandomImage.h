@@ -16,7 +16,6 @@
 @property (nonatomic, retain) NSString * imageUrl;
 @property (nonatomic, retain) NSString * imageDescription;
 @property (nonatomic, retain) NSString * imageDate;
-@property (nonatomic, retain) NSData * imageData;
 @property (nonatomic) BOOL isFavourite;
 
 @end

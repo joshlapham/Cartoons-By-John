@@ -8,7 +8,6 @@
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="KJRandomImage" representedClassName="KJRandomImage" syncable="YES">
-        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="imageDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageId" optional="YES" attributeType="String" syncable="YES"/>
@@ -26,7 +25,7 @@
     </entity>
     <elements>
         <element name="KJComic" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="133"/>
+        <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="118"/>
         <element name="KJVideo" positionX="0" positionY="0" width="128" height="150"/>
     </elements>
 </model>
