@@ -11,7 +11,6 @@
 
 @implementation KJComic
 
-@dynamic comicFileData;
 @dynamic comicFileName;
 @dynamic comicName;
 @dynamic isFavourite;

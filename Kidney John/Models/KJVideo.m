@@ -16,8 +16,6 @@
 @dynamic videoDescription;
 @dynamic videoDate;
 @dynamic videoCellHeight;
-@dynamic orderingValue;
-@dynamic videoThumb;
 @dynamic isFavourite;
 @dynamic videoDuration;
 

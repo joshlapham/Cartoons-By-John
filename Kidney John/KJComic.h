@@ -12,7 +12,6 @@
 
 @interface KJComic : NSManagedObject
 
-@property (nonatomic, retain) NSData * comicFileData;
 @property (nonatomic, retain) NSString * comicFileName;
 @property (nonatomic, retain) NSString * comicName;
 @property (nonatomic) BOOL isFavourite;

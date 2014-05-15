@@ -324,18 +324,18 @@
 			isa = PBXGroup;
 			children = (
 				68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */,
+				68E461EB18609897008D3E36 /* KJVideo.h */,
+				68E461EC18609897008D3E36 /* KJVideo.m */,
 				685C171518E29B5300088D26 /* KJComic.h */,
 				685C171618E29B5300088D26 /* KJComic.m */,
-				68E461EE1860BCEA008D3E36 /* KJRandomImageFromParse.h */,
-				68E461EF1860BCEA008D3E36 /* KJRandomImageFromParse.m */,
+				68E461F11860BD94008D3E36 /* KJRandomImage.h */,
+				68E461F21860BD94008D3E36 /* KJRandomImage.m */,
 				68E461E8186078CA008D3E36 /* KJVideoFromParse.h */,
 				68E461E9186078CA008D3E36 /* KJVideoFromParse.m */,
 				68E461F71860D2EF008D3E36 /* KJComicFromParse.h */,
 				68E461F81860D2EF008D3E36 /* KJComicFromParse.m */,
-				68E461F11860BD94008D3E36 /* KJRandomImage.h */,
-				68E461F21860BD94008D3E36 /* KJRandomImage.m */,
-				68E461EB18609897008D3E36 /* KJVideo.h */,
-				68E461EC18609897008D3E36 /* KJVideo.m */,
+				68E461EE1860BCEA008D3E36 /* KJRandomImageFromParse.h */,
+				68E461EF1860BCEA008D3E36 /* KJRandomImageFromParse.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";

@@ -17,8 +17,6 @@
 @property (nonatomic, retain) NSString * videoDescription;
 @property (nonatomic, retain) NSString * videoDate;
 @property (nonatomic, retain) NSString * videoCellHeight;
-@property (nonatomic) double orderingValue;
-@property (nonatomic, retain) NSData * videoThumb;
 @property (nonatomic) BOOL isFavourite;
 @property (nonatomic, retain) NSString * videoDuration;
 
