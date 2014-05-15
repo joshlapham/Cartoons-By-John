@@ -58,11 +58,9 @@
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // Create a new video in the current context
-    //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
-    
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
-        //DDLogVerbose(@"Video is NOT already a favourite, adding now ..");
+        // Video is NOT a favourite
+        DDLogVerbose(@"Video is NOT already a favourite, adding now ..");
         
         KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
         videoToFavourite.isFavourite = isOrNot;
@@ -106,9 +104,7 @@
     return arrayToReturn;
 }
 
-#pragma mark - Misc methods
-
-#pragma mark - Misc methods
+#pragma mark - Core Data methods
 
 + (BOOL)hasInitialDataFetchHappened
 {
@@ -118,8 +114,6 @@
         return NO;
     }
 }
-
-#pragma mark - Core Data methods
 
 + (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
@@ -154,15 +148,8 @@
         newVideo.videoDate = videoDate;
         newVideo.videoCellHeight = videoCellHeight;
         newVideo.videoDuration = videoDuration;
-        // Thumbnails
-        // DISABLED - we are using SDWebImage to cache the YouTube thumbnails
-//        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", videoId];
-//        NSURL *thumbnailUrl = [NSURL URLWithString:urlString];
-//        NSData *thumbData = [NSData dataWithContentsOfURL:thumbnailUrl];
-//        newVideo.videoThumb = thumbData;
         
         // Save
-        //[localContext MR_saveToPersistentStoreAndWait];
         [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 DDLogVerbose(@"videoStore: saved new video: %@", videoName);
@@ -199,7 +186,6 @@
             videoToCheck.videoDuration = videoDuration;
             
             // Save
-            //[localContext MR_saveToPersistentStoreAndWait];
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
                     DDLogVerbose(@"videoStore: updated video: %@", videoName);
@@ -229,9 +215,7 @@
         // Start query with block
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
-                // The find succeeded.
-                // Do something with the found objects
-                
+                // The find succeeded
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
@@ -251,6 +235,7 @@
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstVideoFetchDone"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
+                // Post NSNotification that data fetch is done
                 NSString *notificationName = @"KJVideoDataFetchDidHappen";
                 [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
                 

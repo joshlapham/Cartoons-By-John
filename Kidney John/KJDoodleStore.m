@@ -29,6 +29,35 @@
     return _sharedStore;
 }
 
+#pragma mark - Return results methods
+
++ (NSArray *)returnArrayOfRandomImages
+{
+    NSArray *randomImagesArray = [[NSArray alloc] init];
+    randomImagesArray = [KJRandomImage MR_findAll];
+    
+    return randomImagesArray;
+}
+
++ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject
+{
+    UIImage *imageToReturn;
+    
+    // SDWebImage
+    // check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl]) {
+        //DDLogVerbose(@"found image in cache");
+        imageToReturn = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl];
+    } else {
+        //DDLogVerbose(@"no image in cache");
+        // TODO: implement fallback
+    }
+    
+    DDLogVerbose(@"doodleStore: returning doodle image from cache: %@", imageToReturn);
+    
+    return imageToReturn;
+}
+
 #pragma mark - Favourite methods
 
 + (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl
@@ -36,11 +65,10 @@
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // Find comic where comicNameToFind matches
+    // Find Doodle where imageUrl matches
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"imageUrl == %@", doodleUrl];
-    KJRandomImage *doodleToReturn = [KJRandomImage MR_findFirstWithPredicate:predicate inContext:localContext];
     
-    //DDLogVerbose(@"comic store: comic to return: %@", comicToReturn.comicName);
+    KJRandomImage *doodleToReturn = [KJRandomImage MR_findFirstWithPredicate:predicate inContext:localContext];
     
     return doodleToReturn;
 }
@@ -51,7 +79,8 @@
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext]) {
-        //DDLogVerbose(@"doodleStore: doodle is NOT already a favourite, adding now ..");
+        // Doodle is NOT a favourite
+        DDLogVerbose(@"doodleStore: doodle is NOT already a favourite, adding now ..");
         
         KJRandomImage *doodleToFavourite = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext];
         doodleToFavourite.isFavourite = isOrNot;
@@ -119,6 +148,15 @@
 
 #pragma mark - Core Data methods
 
++ (BOOL)hasInitialDataFetchHappened
+{
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstRandomImagesFetchDone"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 + (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
 {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
@@ -138,21 +176,16 @@
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // If doodle does not exist in database then persist
+    // If Doodle does not exist in database then persist
     if (![self checkIfRandomImageIsInDatabaseWithImageUrl:imageUrl context:localContext]) {
-        // Create a new doodle in the current context
+        // Create a new Doodle in the current context
         KJRandomImage *newRandomImage = [KJRandomImage MR_createInContext:localContext];
         
         // Set attributes
         newRandomImage.imageId = imageId;
         newRandomImage.imageDescription = imageDescription;
         newRandomImage.imageUrl = imageUrl;
-        //newRandomImage.imageDate = imageDate;
-        // Thumbnails
-        // DISABLED as we are using SDWebImage for caching
-//        NSURL *imageUrlToFetch = [NSURL URLWithString:imageUrl];
-//        NSData *imageData = [NSData dataWithContentsOfURL:imageUrlToFetch];
-//        newRandomImage.imageData = imageData;
+        newRandomImage.imageDate = imageDate;
         
         // Save
         [localContext MR_saveToPersistentStoreAndWait];
@@ -212,9 +245,7 @@
         // Start query with block
         [randomQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
-                // The find succeeded.
-                // Do something with the found objects
-                
+                // The find succeeded
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
@@ -230,12 +261,10 @@
                     }
                 }
                 // Set randomImagesFetchDone = YES in NSUserDefaults
-                // NOTE - set to NO by default for debugging purposes
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRandomImagesFetchDone"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
-                // Send NSNotification to random images view
-                // to say that data fetch is done
+                // Send NSNotification to say that data fetch is done
                 NSString *notificationName = @"KJDoodleDataFetchDidHappen";
                 [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
                 
@@ -250,46 +279,6 @@
             }
         }];
     });
-}
-
-#pragma mark - Return results methods
-
-+ (NSArray *)returnArrayOfRandomImages
-{
-    NSArray *randomImagesArray = [[NSArray alloc] init];
-    randomImagesArray = [KJRandomImage MR_findAll];
-    
-    //DDLogVerbose(@"random images array count: %d", [randomImagesArray count]);
-    
-    return randomImagesArray;
-}
-
-+ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject
-{
-    UIImage *imageToReturn;
-    
-    // SDWebImage
-    // check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl]) {
-        //DDLogVerbose(@"found image in cache");
-        imageToReturn = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl];
-    } else {
-        //DDLogVerbose(@"no image in cache");
-        // TODO: implement fallback
-    }
-    
-    DDLogVerbose(@"doodleStore: returning doodle image from cache: %@", imageToReturn);
-    
-    return imageToReturn;
-}
-
-+ (BOOL)hasInitialDataFetchHappened
-{
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstRandomImagesFetchDone"]) {
-        return YES;
-    } else {
-        return NO;
-    }
 }
 
 @end

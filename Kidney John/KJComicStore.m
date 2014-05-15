@@ -118,7 +118,7 @@
 
 - (NSArray *)returnArrayOfComicFiles
 {
-    // load from resources path
+    // Load from resources path
     NSMutableArray *comicFileResults = [[NSMutableArray alloc] init];
     
     NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"] count];
@@ -139,11 +139,9 @@
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // Create a new video in the current context
-    //KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
-    
     if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
-        //DDLogVerbose(@"Video is NOT already a favourite, adding now ..");
+        // Comic is NOT a favourite
+        DDLogVerbose(@"Comic is NOT already a favourite, adding now ..");
         
         KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
         comicToFavourite.isFavourite = isOrNot;
@@ -187,7 +185,7 @@
     return arrayToReturn;
 }
 
-#pragma mark - return comic with comic name method
+#pragma mark - Return comic with comic name method
 
 + (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind
 {
@@ -196,14 +194,22 @@
     
     // Find comic where comicNameToFind matches
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicNameToFind];
-    KJComic *comicToReturn = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
     
-    //DDLogVerbose(@"comic store: comic to return: %@", comicToReturn.comicName);
+    KJComic *comicToReturn = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
     
     return comicToReturn;
 }
 
 #pragma mark - Core Data methods
+
++ (BOOL)hasInitialDataFetchHappened
+{
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstComicFetchDone"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 + (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
 {
@@ -217,7 +223,6 @@
 }
 
 + (void)persistNewComicWithName:(NSString *)comicName
-                 comicFileData:(NSData *)comicFileData
                   comicFileName:(NSString *)comicFileName
                    comicFileUrl:(NSString *)comicFileUrl
                     comicNumber:(NSString *)comicNumber
@@ -232,15 +237,9 @@
         
         // Set attributes
         newComic.comicName = comicName;
-        //newComic.comicFileData = comicFileData;
         newComic.comicFileName = comicFileName;
         newComic.comicFileUrl = comicFileUrl;
         newComic.comicNumber = comicNumber;
-        
-        // Set comic file data from comicData string
-        // DISABLED as we are using SDWebImage for comic image caching
-//            NSURL *comicDataUrl = [NSURL URLWithString:comicData];
-//            newComic.comicFileData = [NSData dataWithContentsOfURL:comicDataUrl];
         
         DDLogVerbose(@"comicStore: saved new comic: %@", comicName);
         
@@ -272,7 +271,6 @@
             comicToCheck.comicNumber = comicNumber;
             
             // Save
-            //[localContext MR_saveToPersistentStoreAndWait];
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
                     DDLogVerbose(@"comicStore: updated comic: %@", comicName);
@@ -298,9 +296,7 @@
     // Start query with block
     [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            // The find succeeded.
-            // Do something with the found objects
-            
+            // The find succeeded
             // Show network activity monitor
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
             
@@ -310,7 +306,6 @@
                     // - check if PFFile is already saved on filesystem
                     
                     // Save Parse object to Core Data
-                    //PFFile *thumbImageFile = [object objectForKey:@"comicThumb"];
                     PFFile *comicImageFile = [object objectForKey:@"comicFile"];
                     
                     // Check if comic needs updating
@@ -319,7 +314,6 @@
                     
                     // Save
                     [self persistNewComicWithName:object[@"comicName"]
-                                    comicFileData:nil
                                     comicFileName:object[@"comicFileName"]
                                      comicFileUrl:comicImageFile.url
                                       comicNumber:object[@"comicNumber"]];
@@ -328,8 +322,7 @@
                     DDLogVerbose(@"comicStore: comic not active: %@", object[@"comicName"]);
                 }
             }
-            // Send NSNotification to comix view
-            // to say that data fetch is done
+            // Send NSNotification to say that data fetch is done
             NSString *notificationName = @"KJComicDataFetchDidHappen";
             [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
             
@@ -346,17 +339,6 @@
             DDLogVerbose(@"comicStore: error: %@ %@", error, [error userInfo]);
         }
     }];
-}
-
-#pragma mark - Misc methods
-
-+ (BOOL)hasInitialDataFetchHappened
-{
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstComicFetchDone"]) {
-        return YES;
-    } else {
-        return NO;
-    }
 }
 
 @end
