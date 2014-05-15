@@ -1,5 +1,6 @@
 *.swp
 Kidney John.xcworkspace
+kj-app.db
 
 # Parse.com API keys
 Kidney John/Keys.plist
