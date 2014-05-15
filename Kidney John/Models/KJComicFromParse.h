@@ -13,8 +13,4 @@
 
 + (NSString *)parseClassName;
 
-@property (retain) NSString *comicName;
-@property (retain) NSData *comicData;
-@property (retain) NSData *comicThumbData;
-
 @end

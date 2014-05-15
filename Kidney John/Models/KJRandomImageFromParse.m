@@ -11,8 +11,6 @@
 
 @implementation KJRandomImageFromParse
 
-@dynamic imageId, imageUrl, imageDescription, imageDate;
-
 + (NSString *)parseClassName
 {
     return @"RandomImage";

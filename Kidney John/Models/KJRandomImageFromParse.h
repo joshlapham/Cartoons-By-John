@@ -13,9 +13,4 @@
 
 + (NSString *)parseClassName;
 
-@property (retain) NSString *imageId;
-@property (retain) NSString *imageUrl;
-@property (retain) NSString *imageDescription;
-@property (retain) NSDate *imageDate;
-
 @end

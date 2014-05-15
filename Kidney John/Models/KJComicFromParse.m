@@ -16,6 +16,4 @@
     return @"Comic";
 }
 
-@dynamic comicName, comicData, comicThumbData;
-
 @end
