@@ -10,7 +10,7 @@
 #import "JPLYouTubeVideoView.h"
 #import "KJVideo.h"
 #import "KJComic.h"
-#import "Models/KJRandomImage.h"
+#import "KJRandomImage.h"
 #import "KJComicDetailView.h"
 #import "KJComicStore.h"
 #import "KJRandomView.h"
