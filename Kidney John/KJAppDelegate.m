@@ -18,7 +18,10 @@
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 
-@implementation KJAppDelegate
+@implementation KJAppDelegate {
+    NSString *parseAppId;
+    NSString *parseClientKey;
+}
 
 #pragma mark - UI methods
 
@@ -47,6 +50,40 @@
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
 }
 
+#pragma mark - Read Parse.com API keys from plist method
+
+- (void)readAPIKeysFromPlist
+{
+    NSString *errorDesc = nil;
+    NSPropertyListFormat format;
+    NSString *plistPath;
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                              NSUserDomainMask, YES) objectAtIndex:0];
+    
+    plistPath = [rootPath stringByAppendingPathComponent:@"Keys.plist"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:plistPath]) {
+        plistPath = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];
+    }
+    
+    NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:plistPath];
+    
+    NSDictionary *temp = (NSDictionary *)[NSPropertyListSerialization
+                                          propertyListFromData:plistXML
+                                          mutabilityOption:NSPropertyListMutableContainersAndLeaves
+                                          format:&format
+                                          errorDescription:&errorDesc];
+    
+    if (!temp) {
+        NSLog(@"Error reading plist: %@, format: %d", errorDesc, format);
+    }
+    
+    parseAppId = [temp objectForKey:@"appId"];
+    parseClientKey = [temp objectForKey:@"clientKey"];
+    
+    DDLogVerbose(@"Parse App ID: %@, Client Key: %@", parseAppId, parseClientKey);
+}
+
 #pragma mark - Init methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -68,8 +105,12 @@
     [KJComicFromParse registerSubclass];
     
     // Parse App and client ID
-    [Parse setApplicationId:@"IDGldVVzggf7F2YBimgm7l9Cn1YOktzzy3BbNSkm"
-                  clientKey:@"VqeQO1YqbioimMbrzD6SMlOKdjvr6VCj6gZqj3VY"];
+    // Read from Keys.plist (not checked into Git)
+    [self readAPIKeysFromPlist];
+    
+    // Set keys after method reads from Keys.plist
+    [Parse setApplicationId:parseAppId
+                  clientKey:parseClientKey];
     
     // Parse security
     [PFUser enableAutomaticUser];
