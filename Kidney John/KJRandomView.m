@@ -27,7 +27,7 @@
     SDWebImageManager *webImageManager;
     MBProgressHUD *hud;
     UIAlertView *noNetworkAlertView;
-    UIImageView *imageView;
+    UIImageView *backgroundImageView;
     UITapGestureRecognizer *singleTap;
 }
 
@@ -90,21 +90,18 @@
     return cell;
 }
 
-#pragma mark - NSNotification method
+#pragma mark - NSNotification methods
 
 - (void)doodleFetchDidHappen
 {
     DDLogVerbose(@"Doodles: data fetch did happen");
     
-    // Check if coming from Favourites list
+    // Check if coming from Favourites list ..
     if (selectedImageFromFavouritesList != nil) {
+        // Is coming from favourites list
         randomImagesResults = [[NSArray alloc] initWithObjects:selectedImageFromFavouritesList, nil];
-        //DDLogVerbose(@"Doodles: results array count: %d", [randomImagesResults count]);
-        //NSUInteger startOnIndex = [randomImagesResults indexOfObject:selectedImageFromFavouritesList];
-        //DDLogVerbose(@"Doodles: start on image id: %@ and index: %d", selectedImageFromFavouritesList.imageId, startOnIndex);
     } else {
         // Not coming from favourites list
-        //DDLogVerbose(@"Doodles: not coming from Favourites list");
         randomImagesResults = [[NSArray alloc] init];
         randomImagesResults = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
     }
@@ -120,7 +117,7 @@
     
     // Set background of collectionView to nil to remove any network error image showing
     // TODO: should we be doing this every time?
-    [imageView removeFromSuperview];
+    [backgroundImageView removeFromSuperview];
     self.collectionView.backgroundView = nil;
     
     // Remove tap gesture recognizer
@@ -236,8 +233,6 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    DDLogVerbose(@"Button clicked: %d", buttonIndex);
-    
     if (buttonIndex == 1) {
         // Retry was clicked
         [self fetchDataWithNetworkCheck];
@@ -251,9 +246,6 @@
 
 - (void)checkForEmptyDataSource
 {
-    // Check for empty data source
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
     int sections = [self.collectionView numberOfSections];
     BOOL hasRows = NO;
     
@@ -264,14 +256,12 @@
     if (sections == 0 || hasRows == NO) {
         DDLogVerbose(@"Doodles data source is empty!");
         
-        // TODO: remove title?
-        
         // Image to use for background
         UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        imageView = [[UIImageView alloc] initWithImage:image];
+        backgroundImageView = [[UIImageView alloc] initWithImage:image];
         
-        [self.collectionView addSubview:imageView];
-        self.collectionView.backgroundView = imageView;
+        [self.collectionView addSubview:backgroundImageView];
+        self.collectionView.backgroundView = backgroundImageView;
         self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped
@@ -324,7 +314,7 @@
 
 - (void)dealloc
 {
-    // Remove NSNotification observer
+    // Remove NSNotification observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJDoodleDataFetchDidHappen" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }

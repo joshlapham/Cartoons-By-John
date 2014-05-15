@@ -37,10 +37,6 @@
 
 - (UIImage *)activityImage
 {
-    // Note: These images need to have a transparent background and I recommend these sizes:
-    // iPadShare@2x should be 126 px, iPadShare should be 53 px, iPhoneShare@2x should be 100
-    // px, and iPhoneShare should be 50 px. I found these sizes to work for what I was making.
-    
     if ([KJComicStore checkIfComicIsAFavourite:nameOfComic]) {
         return [UIImage imageNamed:@"remove-from-fav.png"];
     } else {
@@ -50,7 +46,6 @@
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
 {
-    //NSLog(@"%s", __FUNCTION__);
     return YES;
 }
 
@@ -62,21 +57,15 @@
     } else {
         [KJComicStore updateComicFavouriteStatus:nameOfComic isFavourite:NO];
     }
-    
-    //NSLog(@"%s",__FUNCTION__);
 }
 
 - (UIViewController *)activityViewController
 {
-    //NSLog(@"%s",__FUNCTION__);
     return nil;
 }
 
 - (void)performActivity
 {
-    // This is where you can do anything you want, and is the whole reason for creating a custom
-    // UIActivity
-    
     [self activityDidFinish:YES];
 }
 

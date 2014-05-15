@@ -27,7 +27,7 @@
     SDWebImageManager *webImageManager;
     UIAlertView *noNetworkAlertView;
     MBProgressHUD *hud;
-    UIImageView *imageView;
+    UIImageView *backgroundImageView;
     UITapGestureRecognizer *singleTap;
 }
 
@@ -76,7 +76,7 @@
     return cell;
 }
 
-#pragma mark - Prepare for segue
+#pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -88,7 +88,7 @@
         KJComicDetailView *destViewController = segue.destinationViewController;
         
         KJComic *comicCell = [comicResults objectAtIndex:selectedIndexPath.row];
-        // TODO: comicData is a string; use less misleading ivar names
+        
         destViewController.nameFromList = comicCell.comicName;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
@@ -111,7 +111,6 @@
 {
     DDLogVerbose(@"Comic fetch did happen ..");
     
-    // TODO: init array here every time?
     comicResults = [[NSArray alloc] init];
     comicResults = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
     
@@ -123,7 +122,7 @@
     
     // Set background of collectionView to nil to remove any network error image showing
     // TODO: should we be doing this every time?
-    [imageView removeFromSuperview];
+    [backgroundImageView removeFromSuperview];
     self.collectionView.backgroundView = nil;
     
     // Remove tap gesture recognizer
@@ -231,14 +230,12 @@
     if (sections == 0 || hasRows == NO) {
         DDLogVerbose(@"Comix list data source is empty!");
         
-        // TODO: remove title?
-        
         // Image to use for table background
         UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        imageView = [[UIImageView alloc] initWithImage:image];
+        backgroundImageView = [[UIImageView alloc] initWithImage:image];
         
-        [self.collectionView addSubview:imageView];
-        self.collectionView.backgroundView = imageView;
+        [self.collectionView addSubview:backgroundImageView];
+        self.collectionView.backgroundView = backgroundImageView;
         self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped
@@ -284,7 +281,7 @@
 
 - (void)dealloc
 {
-    // Remove NSNotificationCenter observer
+    // Remove NSNotificationCenter observers
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJComicDataFetchDidHappen" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }

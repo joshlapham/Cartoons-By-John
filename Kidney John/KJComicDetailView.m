@@ -16,22 +16,21 @@
 
 @interface KJComicDetailView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic, strong) MBProgressHUD *hud;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
 @implementation KJComicDetailView {
+    MBProgressHUD *hud;
     SDWebImageManager *webImageManager;
 }
 
-@synthesize nameFromList, titleFromList, fileNameFromList, hud, resultsArray, collectionViewIndexFromList, isComingFromFavouritesList;
+@synthesize nameFromList, titleFromList, fileNameFromList, resultsArray, collectionViewIndexFromList;
 
 #pragma mark - UICollectionView methods
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    //DDLogVerbose(@"Comic Detail: count for collectionView - %d", [self.resultsArray count]);
     return [self.resultsArray count];
 }
 
@@ -66,10 +65,10 @@
     
     KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
     
-    // set title to comic after scroll has finished
+    // Set title to comic after scroll has finished
     self.title = cellData.comicName;
     
-    // update titleFromList so that Favourites will function correctly,
+    // Update titleFromList so that Favourites will function correctly,
     // as our Favourites methods use this ivar
     titleFromList = cellData.comicName;
 }
@@ -87,8 +86,6 @@
     
     // Set collectionView flow layout
     [self.collectionView setCollectionViewLayout:flowLayout];
-    
-    //[self.collectionView.collectionViewLayout invalidateLayout];
     
     // Set collectionView options
     [self.collectionView setPagingEnabled:YES];
@@ -158,8 +155,6 @@
 {
     [super viewDidLoad];
     
-    //DDLogVerbose(@"Comic Detail: row: %d", collectionViewIndexFromList.row);
-    
     // Set title
     self.title = titleFromList;
     
@@ -178,7 +173,6 @@
     // Gesture recognizer to show navbar when comic is single tapped
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(comicWasTapped)];
     singleTap.numberOfTapsRequired = 1;
-    //tapRecognizer.numberOfTouchesRequired = 1;
     [self.collectionView addGestureRecognizer:singleTap];
     
     // Gesture recognizer to zoom comicScrollView on cell when double tapped
@@ -186,13 +180,8 @@
     [doubleTap setNumberOfTapsRequired:2];
     [self.collectionView addGestureRecognizer:doubleTap];
     
+    // Differentiate between single tap and double tap 
     [singleTap requireGestureRecognizerToFail:doubleTap];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    // reset isComingFromFavourites ivar
-    isComingFromFavouritesList = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated

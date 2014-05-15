@@ -54,8 +54,6 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
     if ([JPLReachabilityManager isUnreachable]) {
         // Hide progress
         [hud hide:YES];
@@ -73,8 +71,6 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
     // Hide progress
     [hud hide:YES];
     
@@ -84,8 +80,6 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
     // Hide progress
     [hud hide:YES];
     
@@ -112,11 +106,7 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    //DDLogVerbose(@"VIDEO ID: %@", videoId);
-    
     NSString *html = [NSString stringWithFormat:youTubeVideoHTML, videoId];
-    
-    //DDLogVerbose(@"video width: %f, video height: %f", _videoView.frame.size.width, _videoView.frame.size.height);
     
     [_videoView loadHTMLString:html baseURL:nil];
     
@@ -164,11 +154,11 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     // Init webView
     _videoView.delegate = self;
+    _videoView.scrollView.scrollEnabled = NO;
+    //_videoView.scalesPageToFit = YES;
     
     // Set to enable/disable autoplay
     _videoView.mediaPlaybackRequiresUserAction = NO;
-    //_videoView.scalesPageToFit = YES;
-    _videoView.scrollView.scrollEnabled = NO;
     
     // Call play video method
     [self playVideoWithId:videoIdFromList];
@@ -182,13 +172,6 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     
     // Go back to video list if changing views
     [self.navigationController popViewControllerAnimated:NO];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    
-    self.videoView = nil;
 }
 
 @end

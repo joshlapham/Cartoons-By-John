@@ -28,7 +28,6 @@
 
 - (void)thereAreNoFavourites
 {
-    //DDLogVerbose(@"FAVOURITES: in thereAreNoFavourites method");
     NSString *messageString = [NSString stringWithFormat:@"You haven't set any %@ as favourites", titleForView];
     
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites"
@@ -42,7 +41,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    //DDLogVerbose(@"FAVOURITES: did dismiss no favourites alert view, popping Favourites List view");
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -118,7 +117,7 @@
         // SDWebImage
         NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellData.videoId];
         
-        // check if image is in cache
+        // Check if image is in cache
         if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
             //DDLogVerbose(@"found image in cache");
             thumbImage.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString];
@@ -157,7 +156,7 @@
     }
 }
 
-#pragma mark - Prepare for segue
+#pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -172,8 +171,6 @@
         destViewController.videoIdFromList = cellVideo.videoId;
         destViewController.videoTitleFromList = cellVideo.videoName;
         
-        // Hide tabbar on detail view
-        //destViewController.hidesBottomBarWhenPushed = YES;
     } else if ([segue.identifier isEqualToString:@"comicDetailSegueFromFavourites"]) {
         
         KJComicDetailView *destViewController = segue.destinationViewController;
@@ -183,11 +180,8 @@
         destViewController.nameFromList = comicCell.comicName;
         destViewController.titleFromList = comicCell.comicName;
         destViewController.fileNameFromList = comicCell.comicFileName;
-        // TODO: need to pass a results array here
-        // or comics favourites will not work.
-        // may have to pass a whole KJComic object?
-        destViewController.isComingFromFavouritesList = YES;
-        // pass a results array to dest VC containing only one object, our chosen one
+        
+        // Pass a results array to dest VC containing only one object, our chosen one
         if ([KJComicStore returnComicWithComicName:comicCell.comicName] != nil) {
             destViewController.resultsArray = [NSArray arrayWithObject:[KJComicStore returnComicWithComicName:comicCell.comicName]];
         }
@@ -211,8 +205,7 @@
     
     self.title = titleForView;
     
-    DDLogVerbose(@"cell results: %d", [cellResults count]);
-    
+    // Check for Favourites results
     if ([cellResults count] == 0) {
         [self thereAreNoFavourites];
     }

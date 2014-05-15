@@ -20,7 +20,7 @@
 @end
 
 @implementation JPLYouTubeListView {
-    __block NSArray *videoResults;
+    NSArray *videoResults;
     NSArray *searchResults;
     SDWebImageManager *webImageManager;
     MBProgressHUD *hud;
@@ -60,8 +60,6 @@
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    // TODO: reshow search bar here if it was hidden?
-    
     // Set background of tableView to nil to remove any network error image showing
     self.tableView.backgroundView = nil;
     
@@ -76,8 +74,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
+    // If there is data ..
     if ([videoResults count] > 0 || [searchResults count] > 0) {
         return 1;
     } else {
@@ -88,8 +85,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
     // Check if this is the video list or the search list
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return [searchResults count];
@@ -144,7 +139,7 @@
     // SDWebImage
     NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
     
-    // check if image is in cache
+    // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
         //DDLogVerbose(@"found image in cache");
     } else {
@@ -184,12 +179,7 @@
     return cellHeightFloat;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 160;
-}
-
-#pragma mark - Prepare for segue
+#pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -315,12 +305,6 @@
     if (sections == 0 || hasRows == NO) {
         DDLogVerbose(@"Video list data source is empty!");
         
-        // Hide searchbar
-        // TODO: implement better solution, as this does not show searchbar when data becomes available
-        //[self.searchDisplayController.searchBar removeFromSuperview];
-        
-        // TODO: remove title?
-        
         // Image to use for table background
         UIImage *image = [UIImage imageNamed:@"no-data.png"];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
@@ -376,22 +360,6 @@
     
     // Set searchbar to only show when tableView is scrolled
     [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.tableHeaderView.frame.size.height) animated:YES];
-    
-// For getting screenshot of app for app launch image
-#ifdef SCREENSHOT
-#warning Screenshot Mode enabled!
-    self.searchDisplayController.searchBar.alpha = 0;
-	self.tableView.alpha = 0;
-    for (UITabBarItem *tabItem in self.tabBarController.tabBar.items) {
-        DDLogVerbose(@"SCREENSHOT MODE: changing text of tabbar item: %@", tabItem.title);
-        [tabItem setTitle:nil];
-        tabItem.image = nil;
-    }
-    self.title = nil;
-    // TODO: review this
-    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, 320, 70)];
-#endif
-    
 }
 
 - (void)dealloc

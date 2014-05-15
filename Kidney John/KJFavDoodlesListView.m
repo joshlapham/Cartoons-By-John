@@ -28,6 +28,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     DDLogVerbose(@"Doodle Favs: selected item - %ld", (long)indexPath.row);
+    
     [self performSegueWithIdentifier:@"doodleDetailSegueFromFavourites" sender:self];
 }
 
@@ -56,28 +57,15 @@
     KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"DoodleFavouriteCell" forIndexPath:indexPath];
     
     KJRandomImage *cellData = [cellResults objectAtIndex:indexPath.row];
-    // loading from filesystem
-    //NSString *comicFileName = [comicFileResults objectAtIndex:indexPath.row];
     
     // SDWebImage
-    // check if image is in cache
-    // DISABLED - loading from filesystem
+    // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
-            //DDLogVerbose(@"found image in cache");
         cell.doodleImageView.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl];
-        } else {
-            //DDLogVerbose(@"no image in cache");
-        }
-    
-//    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//    dispatch_async(defaultQueue, ^{
-//        //UIImage *comicImage = [comicStore returnComicImageFromComicObject:comicCell];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            cell.backgroundColor = [UIColor whiteColor];
-//            cell.comicImageView.image = [comicStore returnComicThumbImageFromComicObject:comicCell];
-//        });
-//    });
+    } else {
+        //DDLogVerbose(@"no image in cache");
+        // TODO: fallback if no image in cache
+    }
     
     return cell;
 }
@@ -86,7 +74,6 @@
 
 - (void)thereAreNoFavourites
 {
-    //DDLogVerbose(@"FAVOURITES: in thereAreNoFavourites method");
     NSString *messageString = [NSString stringWithFormat:@"You haven't set any %@ as favourites", @"Doodles"];
     
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites"
@@ -100,7 +87,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    //DDLogVerbose(@"FAVOURITES: did dismiss no favourites alert view, popping Favourites List view");
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -109,25 +96,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
     // Init collection view cell
     [self.collectionView registerClass:[KJDoodleCell class] forCellWithReuseIdentifier:@"DoodleFavouriteCell"];
     
     cellResults = [KJDoodleStore returnFavouritesArray];
     
-    DDLogVerbose(@"cell results count: %d", [cellResults count]);
-    
+    // Check for Favourites results
     if ([cellResults count] == 0) {
         [self thereAreNoFavourites];
     }
     
+    // Reload collectionView
     [self.collectionView reloadData];
 }
 
-#pragma mark - Navigation
+#pragma mark - Prepare for segue method
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Set this in every view controller so that the back button displays back instead of the root view controller name
@@ -139,9 +124,7 @@
         KJRandomImage *doodleCell = [cellResults objectAtIndex:selectedIndex.row];
         
         destViewController.selectedImageFromFavouritesList = doodleCell;
-        //destViewController.startOn = [NSNumber numberWithInteger:indexPath.row];
     }
-
 }
 
 @end

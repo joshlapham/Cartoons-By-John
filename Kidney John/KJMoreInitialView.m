@@ -24,7 +24,7 @@
     NSMutableArray *socialLinksArray;
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableView delegate methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -64,6 +64,7 @@
             break;
             
         default:
+            // TODO: review this
             return [NSString stringWithFormat:@"LOL error"];
             break;
     }
@@ -119,7 +120,7 @@
         // Set the cell text
         titleLabel.text = [cellArray objectAtIndex:indexPath.row];
         
-        // set Favourites icon
+        // Set Favourites icon
         if (indexPath.row == 0) {
             // Videos
             thumbImage.image = [UIImage imageNamed:@"video-tab-icon.png"];
@@ -193,7 +194,7 @@
     }
 }
 
-#pragma mark - Prepare for segue
+#pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

@@ -16,6 +16,5 @@
 @property (nonatomic, weak) NSString *fileNameFromList;
 @property (nonatomic, strong) NSArray *resultsArray;
 @property (nonatomic, strong) NSIndexPath *collectionViewIndexFromList;
-@property (nonatomic) BOOL isComingFromFavouritesList;
 
 @end
