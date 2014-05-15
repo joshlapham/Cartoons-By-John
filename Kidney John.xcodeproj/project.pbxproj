@@ -295,17 +295,17 @@
 		68E48D22184A247D00600FA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
+				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
+				6891D13B191C7F1B001AD6A5 /* KJConstants.h */,
+				6891D13C191C7F1B001AD6A5 /* KJConstants.m */,
 				680006DF1910C4150002D604 /* ComicThumbs */,
 				685C171018E2745A00088D26 /* Comics */,
 				68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */,
-				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
-				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
 				68E48D23184A247D00600FA5 /* Kidney John-Info.plist */,
 				68E48D24184A247D00600FA5 /* InfoPlist.strings */,
 				68E48D27184A247D00600FA5 /* main.m */,
 				68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */,
-				6891D13B191C7F1B001AD6A5 /* KJConstants.h */,
-				6891D13C191C7F1B001AD6A5 /* KJConstants.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

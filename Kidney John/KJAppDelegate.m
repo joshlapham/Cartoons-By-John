@@ -45,23 +45,6 @@
     
     // Set navbar items of UIActivityViews to white
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
-    
-// For getting screenshot of app for app launch image
-#ifdef SCREENSHOT
-#warning Screenshot Mode enabled!
-    self.window.rootViewController.view.backgroundColor = [UIColor whiteColor];
-    
-    // TODO: resize navbar to allow for no status bar
-    CGRect sizeOfStatusBar = [[UIApplication sharedApplication] statusBarFrame];
-    CGRect originalNavbarSize = self.window.rootViewController.navigationController.navigationBar.frame;
-    
-    NSLog(@"size of status bar: %@, size of navbar: %@", NSStringFromCGRect(sizeOfStatusBar), NSStringFromCGRect(originalNavbarSize));
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
-    //[[UINavigationBar appearance] setFrame:navBarSizeToResizeTo];
-    
-#endif
 }
 
 #pragma mark - Init methods
@@ -75,20 +58,16 @@
     // Setup XCode console logger
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     
-    // MAGICAL RECORD
-    //[MagicalRecord setupCoreDataStackWithStoreNamed:@"kj.sqlite"];
+    // Magical Record
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"kj.sqlite"];
     
-    // PARSE
-    // Parse custom class setup
+    // Parse
+    // Setup custom class
     [KJVideoFromParse registerSubclass];
     [KJRandomImageFromParse registerSubclass];
     [KJComicFromParse registerSubclass];
     
-    // Parse App ID:
-    // IDGldVVzggf7F2YBimgm7l9Cn1YOktzzy3BbNSkm
-    // Parse Client ID:
-    // VqeQO1YqbioimMbrzD6SMlOKdjvr6VCj6gZqj3VY
+    // Parse App and client ID
     [Parse setApplicationId:@"IDGldVVzggf7F2YBimgm7l9Cn1YOktzzy3BbNSkm"
                   clientKey:@"VqeQO1YqbioimMbrzD6SMlOKdjvr6VCj6gZqj3VY"];
     
@@ -98,6 +77,7 @@
     // Optionally enable public read access while disabling public write access.
     [defaultACL setPublicReadAccess:YES];
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
+    
     // Parse analytics
     //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
@@ -110,9 +90,9 @@
     [JPLReachabilityManager sharedManager];
     
     if ([JPLReachabilityManager isReachable]) {
-        NSLog(@"Parse.com is reachable");
+        DDLogVerbose(@"Parse.com is reachable");
     } else if ([JPLReachabilityManager isUnreachable]) {
-        NSLog(@"Parse.com is NOT reachable");
+        DDLogVerbose(@"Parse.com is NOT reachable");
     }
     
     // Override point for customization after application launch.

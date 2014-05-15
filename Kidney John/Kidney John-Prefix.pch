@@ -16,9 +16,5 @@
     #import <Foundation/Foundation.h>
 #endif
 
-// With this define the UI gets ready for capturing the default screen.
-// Uncomment to enable Screenshot mode -
-//#define SCREENSHOT
-
 // For Cocoalumberjack logging
 #import "KJConstants.h"
