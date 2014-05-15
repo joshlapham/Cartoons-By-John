@@ -10,29 +10,26 @@
 
 @implementation KJDoodleCell
 
+#pragma mark - Init methods
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    
     if (self) {
         // Init image view
         self.doodleImageView = [[UIImageView alloc] init];
-        // scale image to fit
+        
+        // Scale image to fit
         [self.doodleImageView setContentMode:UIViewContentModeScaleAspectFit];
-        // set frame to entire screen
+        
+        // Set frame to entire screen
         self.doodleImageView.frame = self.bounds;
-        // add image view to cell's view
+        
+        // Add image view to cell's view
         [self addSubview:self.doodleImageView];
     }
     return self;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

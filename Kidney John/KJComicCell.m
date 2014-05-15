@@ -17,11 +17,14 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    
     if (self) {
-        // Init image view
+        // Init imageView
         comicImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        // Make comic fill view
+        
+        // Make comic scale to fill view
         comicImageView.contentMode = UIViewContentModeScaleToFill;
+        
         // Add imageView to view
         [self addSubview:comicImageView];
     }

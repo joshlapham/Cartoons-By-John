@@ -17,6 +17,7 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    
     if (self) {
         // Register for NSNotifications
         NSString *notificationName = @"KJComicWasDoubleTapped";
@@ -25,19 +26,20 @@
         // Add as observer
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDoubleTap:) name:notificationName object:nil];
         
-        // Init scroll view
+        // Init scrollView
         comicScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         comicScrollView.delegate = self;
         comicScrollView.minimumZoomScale = 1.0;
         comicScrollView.maximumZoomScale = 3.0;
         comicScrollView.contentSize = self.bounds.size;
         
-        // Init image view
+        // Init imageView
         comicImageView = [[UIImageView alloc] initWithFrame:comicScrollView.bounds];
         comicImageView.contentMode = UIViewContentModeScaleToFill;
         
         // Add imageView to scrollView
         [comicScrollView addSubview:comicImageView];
+        
         // Add scrollView to view
         [self addSubview:comicScrollView];
     }
@@ -46,14 +48,19 @@
 
 - (void)dealloc
 {
+    // Remove NSNotification observer
     NSString *notificationName = @"KJComicWasDoubleTapped";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 }
+
+#pragma mark - UIScrollView delegate methods
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return comicImageView;
 }
+
+#pragma mark - UIGestureRecognizer methods
 
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer {
     

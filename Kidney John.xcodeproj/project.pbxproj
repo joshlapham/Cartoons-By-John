@@ -227,10 +227,10 @@
 				687BC373184D9C8900F45970 /* KJComicCell.m */,
 				680CF06F190F8DBD00A0E296 /* KJComicDetailCell.h */,
 				680CF070190F8DBD00A0E296 /* KJComicDetailCell.m */,
-				6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */,
-				6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */,
 				683CAE5718C77DF2006173FA /* KJDoodleCell.h */,
 				683CAE5818C77DF2006173FA /* KJDoodleCell.m */,
+				6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */,
+				6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
