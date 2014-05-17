@@ -105,7 +105,7 @@
     }
 }
 
-#pragma mark - NSNotification methods
+#pragma mark - Data fetch did happen method
 
 - (void)comicFetchDidHappen
 {
@@ -121,9 +121,10 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     // Set background of collectionView to nil to remove any network error image showing
-    // TODO: should we be doing this every time?
-    [backgroundImageView removeFromSuperview];
-    self.collectionView.backgroundView = nil;
+    if (![backgroundImageView isHidden]) {
+        [backgroundImageView removeFromSuperview];
+        [self.collectionView setBackgroundView:nil];
+    }
     
     // Remove tap gesture recognizer
     [self.collectionView removeGestureRecognizer:singleTap];
@@ -192,7 +193,6 @@
         if ([JPLReachabilityManager isReachable]) {
             [KJComicStore fetchComicData];
         } else if ([JPLReachabilityManager isUnreachable]) {
-            // TODO: implement fallback if not reachable and is first data load
             [self noNetworkConnection];
         }
     }
@@ -210,38 +210,10 @@
     } else if (buttonIndex == 0) {
         // Cancel was clicked
         // TODO: implement a new view with a button to retry data refresh here?
-    }
-}
-
-#pragma mark - Check for empty UICollectionView data source
-
-- (void)checkForEmptyDataSource
-{
-    // Check for empty data source
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
-    int sections = [self.collectionView numberOfSections];
-    BOOL hasRows = NO;
-    
-    for (int i = 0; i < sections; i++) {
-        hasRows = ([self.collectionView numberOfItemsInSection:i] > 0) ? YES: NO;
-    }
-    
-    if (sections == 0 || hasRows == NO) {
-        DDLogVerbose(@"Comix list data source is empty!");
         
-        // Image to use for table background
-        UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        backgroundImageView = [[UIImageView alloc] initWithImage:image];
-        
-        [self.collectionView addSubview:backgroundImageView];
-        self.collectionView.backgroundView = backgroundImageView;
-        self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        // Gesture recognizer to reload data if tapped
-        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
-        singleTap.numberOfTapsRequired = 1;
-        [self.collectionView addGestureRecognizer:singleTap];
+        // Reload collectionView data to check for empty data source
+        // TODO: maybe don't reload here?
+        [self.collectionView reloadData];
     }
 }
 
@@ -275,8 +247,21 @@
     // Fetch comic data
     [self fetchDataWithNetworkCheck];
     
-    // Check if data source for collectionView is empty
-    [self checkForEmptyDataSource];
+    // Set background image if no network is available
+    if ([JPLReachabilityManager isUnreachable]) {
+        // Image to use for table background
+        UIImage *image = [UIImage imageNamed:@"no-data.png"];
+        backgroundImageView = [[UIImageView alloc] initWithImage:image];
+        
+        [self.collectionView addSubview:backgroundImageView];
+        self.collectionView.backgroundView = backgroundImageView;
+        self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // Gesture recognizer to reload data if tapped
+        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        singleTap.numberOfTapsRequired = 1;
+        [self.collectionView addGestureRecognizer:singleTap];
+    }
 }
 
 - (void)dealloc

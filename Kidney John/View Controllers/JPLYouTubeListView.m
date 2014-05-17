@@ -44,7 +44,7 @@
     return YES;
 }
 
-#pragma mark - NSNotification methods
+#pragma mark - Data fetch did happen method
 
 - (void)videoFetchDidFinish
 {
@@ -61,7 +61,10 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Set background of tableView to nil to remove any network error image showing
-    self.tableView.backgroundView = nil;
+    // Set background of collectionView to nil to remove any network error image showing
+    if (![self.tableView.backgroundView isHidden]) {
+        [self.tableView setBackgroundView:nil];
+    }
     
     // Remove tap gesture recognizer
     [self.tableView removeGestureRecognizer:singleTap];
@@ -282,41 +285,8 @@
         if ([JPLReachabilityManager isReachable]) {
             [KJVideoStore fetchVideoData];
         } else if ([JPLReachabilityManager isUnreachable]) {
-            // TODO: implement fallback if not reachable and is first data load
             [self noNetworkConnection];
         }
-    }
-}
-
-#pragma mark - Check for empty UITableView data source
-
-- (void)checkForEmptyDataSource
-{
-    // Check for empty data source
-    DDLogVerbose(@"%s", __FUNCTION__);
-    
-    int sections = [self.tableView numberOfSections];
-    BOOL hasRows = NO;
-    
-    for (int i = 0; i < sections; i++) {
-        hasRows = ([self.tableView numberOfRowsInSection:i] > 0) ? YES: NO;
-    }
-    
-    if (sections == 0 || hasRows == NO) {
-        DDLogVerbose(@"Video list data source is empty!");
-        
-        // Image to use for table background
-        UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        
-        [self.tableView addSubview:imageView];
-        self.tableView.backgroundView = imageView;
-        self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        // Gesture recognizer to reload data if tapped
-        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
-        singleTap.numberOfTapsRequired = 1;
-        [self.tableView addGestureRecognizer:singleTap];
     }
 }
 
@@ -348,8 +318,21 @@
     // Fetch video data
     [self fetchDataWithNetworkCheck];
     
-    // Check if data source for tableView is empty
-    [self checkForEmptyDataSource];
+    // Set background if no network is available
+    if ([JPLReachabilityManager isUnreachable]) {
+        // Image to use for table background
+        UIImage *image = [UIImage imageNamed:@"no-data.png"];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        
+        [self.tableView addSubview:imageView];
+        self.tableView.backgroundView = imageView;
+        self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // Gesture recognizer to reload data if tapped
+        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        singleTap.numberOfTapsRequired = 1;
+        [self.tableView addGestureRecognizer:singleTap];
+    }
     
     // Set prompt text for UISearchBar
     // NOTE: disabled for now, as the prompt has since been setup in Storyboard
