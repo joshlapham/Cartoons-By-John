@@ -30,12 +30,14 @@
 
 - (void)showErrorIfNoNetworkConnection
 {
-    NSString *messageString = NSLocalizedString(@"A network connection is required to watch videos", @"Cannot play the video as there is no network connection");
+    NSString *titleString = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
+    NSString *messageString = NSLocalizedString(@"A network connection is required to watch videos", @"Error message displayed when no network connection is available");
+    NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in no network connection error alert");
     
-    UIAlertView *noNetworkAlert = [[UIAlertView alloc] initWithTitle:@"No Network"
+    UIAlertView *noNetworkAlert = [[UIAlertView alloc] initWithTitle:titleString
                                                              message:messageString
                                                             delegate:self
-                                                   cancelButtonTitle:@"OK"
+                                                   cancelButtonTitle:okButtonString
                                                    otherButtonTitles:nil, nil];
     
     [noNetworkAlert show];
@@ -126,9 +128,9 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
     NSString *titleString;
     
     if (![KJVideoStore checkIfVideoIdIsAFavourite:videoIdFromList]) {
-        titleString = @"Add To Favourites";
+        titleString = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
     } else {
-        titleString = @"Remove From Favourites";
+        titleString = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
     }
     
     KJVideoFavouriteActivity *favouriteActivity = [[KJVideoFavouriteActivity alloc] initWithActivityTitle:titleString andVideoId:videoIdFromList];

@@ -28,13 +28,16 @@
 
 - (void)thereAreNoFavourites
 {
-    NSString *messageString = [NSString stringWithFormat:@"You haven't set any %@ as favourites", titleForView];
+    NSString *titleString = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
+    NSString *messageString = [NSString stringWithFormat:NSLocalizedString(@"You haven't set any %@ as favourites", @"Message displayed when user hasn't favourited any {items}"), titleForView];
+    NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in No Favourites error alert");
     
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:titleString
                                                  message:messageString
                                                 delegate:self
                                        cancelButtonTitle:Nil
-                                       otherButtonTitles:@"OK", nil];
+                                       otherButtonTitles:okButtonString, nil];
+    
     [av show];
 }
 

@@ -229,11 +229,16 @@
 
 - (void)noNetworkConnection
 {
-    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
-                                                    message:@"This app requires a network connection"
+    NSString *titleString = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
+    NSString *messageString = NSLocalizedString(@"This app requires a network connection", @"Error message displayed when no network connection is available");
+    NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
+    NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
+    
+    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
+                                                    message:messageString
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Retry", nil];
+                                          cancelButtonTitle:cancelButtonString
+                                          otherButtonTitles:retryButtonString, nil];
     
     if (![KJVideoStore hasInitialDataFetchHappened]) {
         
@@ -265,7 +270,8 @@
     // Show progress
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
-    hud.labelText = @"Loading Videos ...";
+    NSString *progressHudString = NSLocalizedString(@"Loading Videos ...", @"Message shown under progress wheel when videos are loading");
+    hud.labelText = progressHudString;
     hud.labelFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     
     // Show network activity indicator
@@ -297,7 +303,7 @@
     [super viewDidLoad];
     
     // Set title
-    self.title = @"Videos";
+    self.title = NSLocalizedString(@"Videos", @"Title of Videos view");
     
     // init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];
@@ -334,9 +340,9 @@
         [self.tableView addGestureRecognizer:singleTap];
     }
     
-    // Set prompt text for UISearchBar
-    // NOTE: disabled for now, as the prompt has since been setup in Storyboard
-    //self.searchDisplayController.searchBar.prompt = @"Type a video name";
+    // Set placeholder and prompt text for UISearchBar
+    NSString *searchPlaceholderString = NSLocalizedString(@"Search videos", @"Text displayed in search bar on videos list view");
+    [self.searchDisplayController.searchBar setPlaceholder:searchPlaceholderString];
     
     // Set font of UISearchBar
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"JohnRoderickPaine" size:16]];

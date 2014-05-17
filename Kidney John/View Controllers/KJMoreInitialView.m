@@ -56,10 +56,12 @@
 {
     switch (section) {
         case 0:
+            // TODO: NSLocalized string here
             return [NSString stringWithFormat:@"Favourites"];
             break;
             
         case 1:
+            // TODO: NSLocalized string here
             return [NSString stringWithFormat:@"Like, Comment, Subscribe"];
             break;
             
@@ -221,9 +223,9 @@
         destViewController.cellResults = favouritesDataToPass;
         
     } else if ([segue.identifier isEqualToString:@"doodleFavouriteSegue"]) {
-        // If Doodles
-        KJFavDoodlesListView *destViewController = segue.destinationViewController;
-        [destViewController setTitle:@"Doodles"];
+        // If Doodles ..
+        // NOTE: don't need to set anything here
+        //KJFavDoodlesListView *destViewController = segue.destinationViewController;
     }
 }
 
@@ -255,9 +257,15 @@
 {
     [super viewDidLoad];
     
-    self.title = @"More";
+    self.title = NSLocalizedString(@"More", @"Title of More view");
     
-    cellArray = [NSArray arrayWithObjects:@"Videos", @"Comix", @"Doodles", nil];
+    
+    // Array of titles for Favourites cells
+    // NOTE: these strings will be used as titles for their respective views when tapped
+    NSString *videosString = NSLocalizedString(@"Videos", @"Title of Videos button for Favourites list");
+    NSString *comicString = NSLocalizedString(@"Comix", @"Title of Comics button for Favourites list");
+    NSString *doodlesString = NSLocalizedString(@"Doodles", @"Title of Doodles button for Favourites list");
+    cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
     
     // Init social links array
     [self initSocialLinksArray];

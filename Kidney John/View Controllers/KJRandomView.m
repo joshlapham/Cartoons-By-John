@@ -152,9 +152,9 @@
     NSString *titleString;
     
     if (![KJDoodleStore checkIfDoodleIsAFavourite:cellData.imageUrl]) {
-        titleString = @"Add To Favourites";
+        titleString = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
     } else {
-        titleString = @"Remove From Favourites";
+        titleString = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
     }
     
     KJRandomFavouriteActivity *favouriteActivity = [[KJRandomFavouriteActivity alloc] initWithActivityTitle:titleString andImageUrl:cellData.imageUrl];
@@ -170,11 +170,16 @@
 
 - (void)noNetworkConnection
 {
-    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:@"No Connection"
-                                                 message:@"This app requires a network connection"
-                                                delegate:self
-                                       cancelButtonTitle:@"Cancel"
-                                       otherButtonTitles:@"Retry", nil];
+    NSString *titleString = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
+    NSString *messageString = NSLocalizedString(@"This app requires a network connection", @"Error message displayed when no network connection is available");
+    NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
+    NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
+    
+    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
+                                                    message:messageString
+                                                   delegate:self
+                                          cancelButtonTitle:cancelButtonString
+                                          otherButtonTitles:retryButtonString, nil];
     
     if (![KJDoodleStore hasInitialDataFetchHappened]) {
         
@@ -204,7 +209,8 @@
     // Show progress
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
-    hud.labelText = @"Loading Doodles ...";
+    NSString *progressHudString = NSLocalizedString(@"Loading Doodles ...", @"Message shown under progress wheel when doodles (drawings) are loading");
+    hud.labelText = progressHudString;
     hud.labelFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
     
     // Show network activity indicator
@@ -252,7 +258,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Doodles";
+    self.title = NSLocalizedString(@"Doodles", @"Title of Doodles (drawings) view");
     
     // Init SDWebImage cache manager
     webImageManager = [SDWebImageManager sharedManager];

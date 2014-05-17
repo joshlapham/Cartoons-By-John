@@ -45,7 +45,7 @@
     
     KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
     
-    DDLogVerbose(@"Comics List: cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
+    //DDLogVerbose(@"Comics List: cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
     
     cell.comicImageView.image = [KJComicStore returnComicImageFromComicObject:cellData];
     
@@ -113,9 +113,9 @@
     NSString *titleString;
     
     if (![KJComicStore checkIfComicIsAFavourite:cellData.comicName]) {
-        titleString = @"Add To Favourites";
+        titleString = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
     } else {
-        titleString = @"Remove From Favourites";
+        titleString = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
     }
     
     KJComicFavouriteActivity *favouriteActivity = [[KJComicFavouriteActivity alloc] initWithActivityTitle:titleString andComicName:titleFromList];

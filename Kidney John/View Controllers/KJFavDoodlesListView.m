@@ -74,13 +74,15 @@
 
 - (void)thereAreNoFavourites
 {
-    NSString *messageString = [NSString stringWithFormat:@"You haven't set any %@ as favourites", @"Doodles"];
+    NSString *titleString = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
+    NSString *messageString = NSLocalizedString(@"You haven't set any Doodles as favourites", @"Message displayed when user hasn't favourited any Doodles (drawings)");
+    NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in No Favourites error alert");
     
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"No Favourites"
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:titleString
                                                  message:messageString
                                                 delegate:self
                                        cancelButtonTitle:Nil
-                                       otherButtonTitles:@"OK", nil];
+                                       otherButtonTitles:okButtonString, nil];
     [av show];
 }
 
@@ -89,26 +91,6 @@
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - Init methods
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    // Init collection view cell
-    [self.collectionView registerClass:[KJDoodleCell class] forCellWithReuseIdentifier:@"DoodleFavouriteCell"];
-    
-    cellResults = [KJDoodleStore returnFavouritesArray];
-    
-    // Check for Favourites results
-    if ([cellResults count] == 0) {
-        [self thereAreNoFavourites];
-    }
-    
-    // Reload collectionView
-    [self.collectionView reloadData];
 }
 
 #pragma mark - Prepare for segue method
@@ -125,6 +107,28 @@
         
         destViewController.selectedImageFromFavouritesList = doodleCell;
     }
+}
+
+#pragma mark - Init methods
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"Doodles", @"Title of Doodles (drawings) favourites list view");
+    
+    // Init collection view cell
+    [self.collectionView registerClass:[KJDoodleCell class] forCellWithReuseIdentifier:@"DoodleFavouriteCell"];
+    
+    cellResults = [KJDoodleStore returnFavouritesArray];
+    
+    // Check for Favourites results
+    if ([cellResults count] == 0) {
+        [self thereAreNoFavourites];
+    }
+    
+    // Reload collectionView
+    [self.collectionView reloadData];
 }
 
 @end
