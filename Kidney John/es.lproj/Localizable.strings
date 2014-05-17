@@ -1,0 +1,93 @@
+/* 
+  Localizable.strings
+  Kidney John
+
+  Created by jl on 18/05/2014.
+  Copyright (c) 2014 Josh Lapham. All rights reserved.
+*/
+
+/* Error message displayed when no network connection is available */
+"A network connection is required to watch videos" = "Se requiere una conexión de red para ver vídeos";
+
+/* Title of button to favourite an item */
+"Add To Favourites" = "Añadir a Favoritos";
+
+/* Title of Cancel button in No Network connection error alert */
+"Cancel" = "Cancelar";
+
+/* No comment provided by engineer. */
+"Cellular" = "Celular";
+
+/* Title of Comics button for Favourites list
+ Title of Comics view */
+"Comix" = "Historietas";
+
+/* Title of Doodles (drawings) favourites list view
+ Title of Doodles (drawings) view
+ Title of Doodles button for Favourites list */
+"Doodles" = "Garabato";
+
+/* FBLB:LikeButton */
+"Like" = "Como";
+
+/* FBLB:LikeButton */
+"Liked" = "Gustado";
+
+/* Message shown under progress wheel when comics are loading */
+"Loading Comix ..." = "Cargando Historietas ...";
+
+/* Message shown under progress wheel when doodles (drawings) are loading */
+"Loading Doodles ..." = "Cargando Garabatos ...";
+
+/* Message shown under progress wheel when videos are loading */
+"Loading Videos ..." = "Cargando Vídeos ...";
+
+/* Title of More view */
+"More" = "Más";
+
+/* Header title for Favourites buttons in More view */
+"Favourites" = "Favoritos";
+
+/* Header title for social media buttons in More view */
+"Like, Comment, Subscribe" = "Al igual, el comentario, Suscríbete";
+
+/* Title of error alert displayed when no network connection is available */
+"No Connection" = "No hay red";
+
+/* Title of error alert displayed when user hasn't favourited any items */
+"No Favourites" = "No hay Favoritos";
+
+/* Title of error alert displayed when no network connection is available */
+"No Network" = "No hay red";
+
+/* Title of OK button in No Favourites error alert
+ Title of OK button in no network connection error alert */
+"OK" = "¡Vale!";
+
+/* Title of button to remove an item as a favourite */
+"Remove From Favourites" = "Eliminar de los Favoritos";
+
+/* Title of Retry button in No Network connection error alert */
+"Retry" = "Reintente";
+
+/* Text displayed in search bar on videos list view */
+"Search videos" = "Buscar vídeos";
+
+/* Error message displayed when no network connection is available */
+"This app requires a network connection" = "Esta aplicación requiere una conexión de red";
+
+/* Format for the string to return to a calling app. */
+"Touch to return to %1$@" = "Touch to return to %1$@";
+
+/* Title of Videos button for Favourites list
+ Title of Videos view */
+"Videos" = "Vídeos";
+
+/* No comment provided by engineer. */
+"WiFi" = "WiFi";
+
+/* Message displayed when user hasn't favourited any {items} */
+"You haven't set any %@ as favourites" = "Usted no se ha definido ninguna %@ como favoritos";
+
+/* Message displayed when user hasn't favourited any Doodles (drawings) */
+"You haven't set any Doodles as favourites" = "Usted no se ha definido ninguna Garabato como favoritos";

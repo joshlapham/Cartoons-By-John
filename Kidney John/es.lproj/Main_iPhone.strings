@@ -1,0 +1,24 @@
+
+/* Class = "IBUITabBarItem"; title = "Doodles"; ObjectID = "5kr-sc-8Nq"; */
+"5kr-sc-8Nq.title" = "Doodles";
+
+/* Class = "IBUITabBarItem"; title = "Videos"; ObjectID = "C2W-m3-Jtk"; */
+"C2W-m3-Jtk.title" = "Videos";
+
+/* Class = "IBUILabel"; text = "3:00"; ObjectID = "EAa-c1-HaI"; */
+"EAa-c1-HaI.text" = "3:00";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "KfD-jI-hWm"; */
+"KfD-jI-hWm.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Qxj-ND-6pb"; */
+"Qxj-ND-6pb.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "SHb-L1-GeI"; */
+"SHb-L1-GeI.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "fGm-iH-0aW"; */
+"fGm-iH-0aW.text" = "Title";
+
+/* Class = "IBUITabBarItem"; title = "Comix"; ObjectID = "voB-Ex-cDg"; */
+"voB-Ex-cDg.title" = "Comix";

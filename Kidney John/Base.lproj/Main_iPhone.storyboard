@@ -111,11 +111,11 @@
             </objects>
             <point key="canvasLocation" x="6194" y="91"/>
         </scene>
-        <!--Navigation Controller - Videos-->
+        <!--Navigation Controller-->
         <scene sceneID="XMA-8E-hFS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DAg-H2-wMn" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Videos" image="video-tab-icon" id="C2W-m3-Jtk"/>
+                    <tabBarItem key="tabBarItem" title="" image="video-tab-icon" id="C2W-m3-Jtk"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nOZ-ae-Yhn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -454,11 +454,11 @@
             </objects>
             <point key="canvasLocation" x="5743" y="2179"/>
         </scene>
-        <!--Navigation Controller - Comix-->
+        <!--Navigation Controller-->
         <scene sceneID="OAl-8g-JyG">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" modalTransitionStyle="flipHorizontal" id="omK-4O-6RW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Comix" image="comic-tab-icon" id="voB-Ex-cDg"/>
+                    <tabBarItem key="tabBarItem" title="" image="comic-tab-icon" id="voB-Ex-cDg"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="S4J-fi-pnh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -477,11 +477,11 @@
             </objects>
             <point key="canvasLocation" x="5292" y="795"/>
         </scene>
-        <!--Navigation Controller - Doodles-->
+        <!--Navigation Controller-->
         <scene sceneID="9LD-zX-3HI">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="naJ-Ph-eeK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Doodles" image="doodle-tab-icon" id="5kr-sc-8Nq"/>
+                    <tabBarItem key="tabBarItem" title="" image="doodle-tab-icon" id="5kr-sc-8Nq"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KhS-tl-h1u">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -548,8 +548,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="ZUx-I9-M53"/>
         <segue reference="GK9-vj-efI"/>
-        <segue reference="czh-bW-b54"/>
         <segue reference="DNT-W0-zyw"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -22,6 +22,12 @@
     
     self.delegate = self;
     
+    // Set tab button titles
+    // NOTE: title for More button is set in Storyboard
+    [[self.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"Videos", nil)];
+    [[self.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"Comix", nil)];
+    [[self.tabBar.items objectAtIndex:2] setTitle:NSLocalizedString(@"Doodles", nil)];
+    
     // Set tabbar background colour to #003366
     [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
     

@@ -57,12 +57,12 @@
     switch (section) {
         case 0:
             // TODO: NSLocalized string here
-            return [NSString stringWithFormat:@"Favourites"];
+            return NSLocalizedString(@"Favourites", @"Header title for Favourites buttons in More view");
             break;
             
         case 1:
             // TODO: NSLocalized string here
-            return [NSString stringWithFormat:@"Like, Comment, Subscribe"];
+            return NSLocalizedString(@"Like, Comment, Subscribe", @"Header title for social media buttons in More view");
             break;
             
         default:
