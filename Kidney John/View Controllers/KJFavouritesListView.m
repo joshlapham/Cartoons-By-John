@@ -62,7 +62,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([titleForView isEqualToString:@"Comix"]) {
+    if ([[cellResults firstObject] isKindOfClass:[KJComic class]]) {
         return 100;
     } else {
         return 120;
@@ -81,7 +81,7 @@
     UITableViewCell *cell;
     
     if (!cell) {
-        if ([titleForView isEqualToString:@"Comix"]) {
+        if ([[cellResults firstObject] isKindOfClass:[KJComic class]]) {
             // Comix
             [tableView registerNib:[UINib nibWithNibName:@"KJComicFavouriteCell" bundle:nil] forCellReuseIdentifier:ComicCellIdentifier];
             cell = [tableView dequeueReusableCellWithIdentifier:ComicCellIdentifier forIndexPath:indexPath];
@@ -99,7 +99,7 @@
     titleLabel.numberOfLines = 0;
     titleLabel.adjustsFontSizeToFitWidth = YES;
     
-    if ([titleForView isEqualToString:@"Videos"]) {
+    if ([[cellResults firstObject] isKindOfClass:[KJVideo class]]) {
         KJVideo *cellData = [cellResults objectAtIndex:indexPath.row];
         titleLabel.text = cellData.videoName;
         
@@ -129,7 +129,7 @@
             //DDLogVerbose(@"no image in cache");
         }
         
-    } else if ([titleForView isEqualToString:@"Comix"]) {
+    } else if ([[cellResults firstObject] isKindOfClass:[KJComic class]]) {
         KJComic *cellData = [cellResults objectAtIndex:indexPath.row];
         
         titleLabel.text = cellData.comicName;
@@ -138,6 +138,7 @@
         thumbImage.contentMode = UIViewContentModeScaleAspectFit;
         
     } else if ([titleForView isEqualToString:@"Doodles"]) {
+        // TODO: do we need this else-if statement for Doodles?
         KJRandomImage *cellData = [cellResults objectAtIndex:indexPath.row];
         titleLabel.text = cellData.imageDescription;
     }
