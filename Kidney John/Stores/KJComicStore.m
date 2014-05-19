@@ -31,10 +31,8 @@
 
 + (void)prefetchComicThumbnails
 {
-    NSArray *resultsArray = [[NSArray alloc] init];
+    NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES]];
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
-    
-    resultsArray = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
     
     for (KJComic *comic in resultsArray) {
         NSURL *urlToPrefetch = [NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:comic]];

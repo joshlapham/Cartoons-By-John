@@ -137,7 +137,7 @@
     KJRandomImage *cellData = [randomImagesResults objectAtIndex:currentCellIndex.row];
     
     // Image to share
-    UIImage *doodleImageToShare;
+    UIImage *doodleImageToShare = [[UIImage alloc] init];
     
     // SDWebImage
     // check if image is in cache

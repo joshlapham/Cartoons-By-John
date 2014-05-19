@@ -33,8 +33,7 @@
 
 + (NSArray *)returnArrayOfRandomImages
 {
-    NSArray *randomImagesArray = [[NSArray alloc] init];
-    randomImagesArray = [KJRandomImage MR_findAll];
+    NSArray *randomImagesArray = [[NSArray alloc] initWithArray:[KJRandomImage MR_findAll]];
     
     return randomImagesArray;
 }
@@ -128,10 +127,8 @@
 
 + (void)prefetchDoodles
 {
-    NSArray *resultsArray = [[NSArray alloc] init];
+    NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES]];
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
-    
-    resultsArray = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
     
     for (KJRandomImage *image in resultsArray) {
         NSString *urlString = image.imageUrl;

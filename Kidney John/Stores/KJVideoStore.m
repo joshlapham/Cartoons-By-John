@@ -33,10 +33,8 @@
 
 + (void)prefetchVideoThumbnails
 {
-    NSArray *resultsArray = [[NSArray alloc] init];
+    NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO]];
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
-    
-    resultsArray = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
     for (KJVideo *video in resultsArray) {
         NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", video.videoId];
