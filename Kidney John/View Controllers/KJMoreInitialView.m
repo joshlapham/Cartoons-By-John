@@ -234,7 +234,7 @@
 - (void)initSocialLinksArray
 {
     NSDictionary *facebookLink = @{@"title" : @"Facebook", @"url" : @"https://www.facebook.com/kidneyjohn", @"image" : @"facebook.png"};
-    NSDictionary *twitterLink = @{@"title" : @"Twitter", @"url" : @"https://twitter.com/kidneyjohn", @"image" : @"twitter.png"};
+    NSDictionary *twitterLink = @{@"title" : @"Twitter", @"url" : @"https://twitter.com/johnrodpaine", @"image" : @"twitter.png"};
     NSDictionary *tumblrLink = @{@"title" : @"Tumblr", @"url" : @"http://johnroderickpaine.tumblr.com", @"image" : @"tumblr.png"};
     NSDictionary *youtubeLink = @{@"title" : @"YouTube", @"url" : @"https://www.youtube.com/user/kidneyjohn", @"image" : @"youtube.png"};
     NSDictionary *vimeoLink = @{@"title" : @"Vimeo", @"url" : @"http://vimeo.com/johnroderickpaine", @"image" : @"vimeo.png"};

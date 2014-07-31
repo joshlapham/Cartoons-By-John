@@ -1,11 +1,12 @@
 PODS:
   - Bolts (1.1.0)
-  - CocoaLumberjack (1.8.1):
+  - CocoaLumberjack (1.9.1):
     - CocoaLumberjack/Extensions
-  - CocoaLumberjack/Core (1.8.1)
-  - CocoaLumberjack/Extensions (1.8.1):
+  - CocoaLumberjack/Core (1.9.1)
+  - CocoaLumberjack/Extensions (1.9.1):
     - CocoaLumberjack/Core
-  - Facebook-iOS-SDK (3.14.0):
+  - CrashlyticsFramework (2.2.1)
+  - Facebook-iOS-SDK (3.15.1):
     - Bolts
   - MagicalRecord (2.2):
     - MagicalRecord/Core
@@ -21,6 +22,7 @@ PODS:
 
 DEPENDENCIES:
   - CocoaLumberjack (~> 1.8)
+  - CrashlyticsFramework (~> 2.1)
   - MagicalRecord (~> 2.2)
   - MBProgressHUD (~> 0.8)
   - Parse-iOS-SDK (~> 1.2.16)
@@ -29,14 +31,15 @@ DEPENDENCIES:
   - SDWebImage (~> 3.5)
 
 SPEC CHECKSUMS:
-  Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
-  CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
-  Facebook-iOS-SDK: 63e19ff8d275d63b765819f492a4e71e445f9822
-  MagicalRecord: 95d49d74ef752cd52f6ad87bcb474817fc3978cf
-  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
-  Parse-iOS-SDK: 48e366fb9a8956c4e50d93cfd16243176938fae1
-  PBWebViewController: e376016f325044fa0e87a50f25f4f074f89b6afd
-  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
-  SDWebImage: 7eb273e54ca8a2e506ad9bd5e80c35b2a4d7c95e
+  Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
+  CocoaLumberjack: 94accd5749f5c5d15134c8d50f34a973aed8ef69
+  CrashlyticsFramework: a9d172599c3a34e68067e16446a764041b980162
+  Facebook-iOS-SDK: 56214af8e0ef16e751eb2804250326b709e571b8
+  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
+  PBWebViewController: 4ce33129c0f0adfce9cec105be4d48c7c9b70026
+  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
+  SDWebImage: c6989652c1cdf27cbdf3f56957e2030f825af5bc
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.33.1

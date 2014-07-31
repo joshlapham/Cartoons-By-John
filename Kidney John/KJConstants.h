@@ -10,7 +10,7 @@
 #import "DDLog.h"
 
 // Set CocoaLumberjack logging level
-static int ddLogLevel = LOG_LEVEL_VERBOSE;
+static int ddLogLevel = LOG_LEVEL_OFF;
 
 @interface KJConstants : NSObject
 

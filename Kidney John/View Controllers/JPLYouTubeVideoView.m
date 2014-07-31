@@ -170,10 +170,18 @@ static NSString *youTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backgr
 {
     [super viewDidDisappear:YES];
     
+    [self.videoView setDelegate:nil];
+    [self.videoView stopLoading];
     self.videoView = nil;
     
     // Go back to video list if changing views
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void)dealloc
+{
+    [self.videoView setDelegate:nil];
+    [self.videoView stopLoading];
 }
 
 @end

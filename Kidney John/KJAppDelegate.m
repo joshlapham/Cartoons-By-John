@@ -123,7 +123,7 @@
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
     
     // Parse analytics
-    //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     // Init item stores
     [KJVideoStore sharedStore];
