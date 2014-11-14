@@ -30,7 +30,6 @@
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
 		68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CD185B272A008D3E36 /* KJFavouritesListView.m */; };
 		68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */; };
-		68E461EA186078CA008D3E36 /* KJVideoFromParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461E9186078CA008D3E36 /* KJVideoFromParse.m */; };
 		68E461ED18609897008D3E36 /* KJVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461EC18609897008D3E36 /* KJVideo.m */; };
 		68E461F01860BCEA008D3E36 /* KJRandomImageFromParse.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461EF1860BCEA008D3E36 /* KJRandomImageFromParse.m */; };
 		68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461F21860BD94008D3E36 /* KJRandomImage.m */; };
@@ -69,7 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		4D94687170B9557CDE67339B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		52795D1CEF6142A9BA845EF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		680006DF1910C4150002D604 /* ComicThumbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ComicThumbs; sourceTree = "<group>"; };
 		680CF06F190F8DBD00A0E296 /* KJComicDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicDetailCell.h; path = Cells/KJComicDetailCell.h; sourceTree = "<group>"; };
@@ -115,8 +114,6 @@
 		68E461CD185B272A008D3E36 /* KJFavouritesListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJFavouritesListView.m; path = "View Controllers/KJFavouritesListView.m"; sourceTree = "<group>"; };
 		68E461CF185B4BD5008D3E36 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		68E461DA18604EBB008D3E36 /* Kidney John.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John.xcdatamodel"; sourceTree = "<group>"; };
-		68E461E8186078CA008D3E36 /* KJVideoFromParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoFromParse.h; path = Models/KJVideoFromParse.h; sourceTree = "<group>"; };
-		68E461E9186078CA008D3E36 /* KJVideoFromParse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoFromParse.m; path = Models/KJVideoFromParse.m; sourceTree = "<group>"; };
 		68E461EB18609897008D3E36 /* KJVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideo.h; path = Models/KJVideo.h; sourceTree = "<group>"; };
 		68E461EC18609897008D3E36 /* KJVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideo.m; path = Models/KJVideo.m; sourceTree = "<group>"; };
 		68E461EE1860BCEA008D3E36 /* KJRandomImageFromParse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomImageFromParse.h; path = Models/KJRandomImageFromParse.h; sourceTree = "<group>"; };
@@ -156,6 +153,7 @@
 		68E48D6D184D874500600FA5 /* KJRandomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomView.m; path = "View Controllers/KJRandomView.m"; sourceTree = "<group>"; };
 		68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicFavouriteActivity.h; path = UIActivity/KJComicFavouriteActivity.h; sourceTree = "<group>"; };
 		68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicFavouriteActivity.m; path = UIActivity/KJComicFavouriteActivity.m; sourceTree = "<group>"; };
+		AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,7 +256,7 @@
 				68E48D43184A247D00600FA5 /* Kidney JohnTests */,
 				68E48D1A184A247D00600FA5 /* Frameworks */,
 				68E48D19184A247D00600FA5 /* Products */,
-				3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */,
+				C3F39471CE9A082CDF116918 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -349,14 +347,21 @@
 				685C171618E29B5300088D26 /* KJComic.m */,
 				68E461F11860BD94008D3E36 /* KJRandomImage.h */,
 				68E461F21860BD94008D3E36 /* KJRandomImage.m */,
-				68E461E8186078CA008D3E36 /* KJVideoFromParse.h */,
-				68E461E9186078CA008D3E36 /* KJVideoFromParse.m */,
 				68E461F71860D2EF008D3E36 /* KJComicFromParse.h */,
 				68E461F81860D2EF008D3E36 /* KJComicFromParse.m */,
 				68E461EE1860BCEA008D3E36 /* KJRandomImageFromParse.h */,
 				68E461EF1860BCEA008D3E36 /* KJRandomImageFromParse.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		C3F39471CE9A082CDF116918 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */,
+				4D94687170B9557CDE67339B /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -479,7 +484,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B2586506AB6D411DA3408D9D /* Check Pods Manifest.lock */ = {
@@ -518,7 +523,6 @@
 				68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */,
 				68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */,
 				68E461F91860D2EF008D3E36 /* KJComicFromParse.m in Sources */,
-				68E461EA186078CA008D3E36 /* KJVideoFromParse.m in Sources */,
 				685C171718E29B5300088D26 /* KJComic.m in Sources */,
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
 				6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */,
@@ -680,7 +684,7 @@
 		};
 		68E48D4E184A247D00600FA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */;
+			baseConfigurationReference = AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -698,7 +702,7 @@
 		};
 		68E48D4F184A247D00600FA5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3AA2A9E7208240A5B5BE0AE3 /* Pods.xcconfig */;
+			baseConfigurationReference = 4D94687170B9557CDE67339B /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
