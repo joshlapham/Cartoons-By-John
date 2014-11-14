@@ -7,7 +7,6 @@
 //
 
 #import "KJComicStore.h"
-#import "KJComicFromParse.h"
 #import "Parse.h"
 #import "SDWebImagePrefetcher.h"
 
@@ -283,7 +282,7 @@
 + (void)fetchComicData
 {
     // Setup query
-    PFQuery *comicsQuery = [KJComicFromParse query];
+    PFQuery *comicsQuery = [PFQuery queryWithClassName:@"Comic"];
     
     // Query all comics
     [comicsQuery whereKey:@"comicName" notEqualTo:@"LOL"];

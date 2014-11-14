@@ -8,7 +8,6 @@
 
 #import "KJDoodleStore.h"
 #import "Parse.h"
-#import "KJRandomImageFromParse.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SDWebImagePrefetcher.h"
 #import "JPLReachabilityManager.h"
@@ -226,12 +225,12 @@
 
 + (void)fetchDoodleData
 {
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"doodleStore: fetching doodle data ..");
         
         // Setup query
-        PFQuery *randomQuery = [KJRandomImageFromParse query];
+        PFQuery *randomQuery = [PFQuery queryWithClassName:@"RandomImage"];
         
         // Query all random image urls
         [randomQuery whereKey:@"imageUrl" notEqualTo:@"LOL"];

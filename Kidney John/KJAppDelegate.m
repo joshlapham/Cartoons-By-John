@@ -8,9 +8,6 @@
 
 #import "KJAppDelegate.h"
 #import "Parse.h"
-#import "Models/KJVideoFromParse.h"
-#import "Models/KJComicFromParse.h"
-#import "Models/KJRandomImageFromParse.h"
 #import "JPLReachabilityManager.h"
 #import "KJVideoStore.h"
 #import "KJComicStore.h"
@@ -102,11 +99,6 @@
     [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];
     
     // Parse
-    // Setup custom class
-    [KJVideoFromParse registerSubclass];
-    [KJRandomImageFromParse registerSubclass];
-    [KJComicFromParse registerSubclass];
-    
     // Parse App and client ID
     // Read from Keys.plist (not checked into Git)
     [self readAPIKeysFromPlist];

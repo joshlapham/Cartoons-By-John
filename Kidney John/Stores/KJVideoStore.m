@@ -9,7 +9,6 @@
 #import "KJVideoStore.h"
 #import "Parse.h"
 #import "KJVideo.h"
-#import "KJVideoFromParse.h"
 #import "JPLReachabilityManager.h"
 #import "SDWebImagePrefetcher.h"
 
@@ -197,12 +196,12 @@
 
 + (void)fetchVideoData
 {
-    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"videoStore: fetching video data ..");
         
-        // Setup query
-        PFQuery *query = [KJVideoFromParse query];
+        // Setup query with classname on Parse
+        PFQuery *query = [PFQuery queryWithClassName:@"Video"];
         
         // Query all videos
         [query whereKey:@"videoName" notEqualTo:@"LOL"];
