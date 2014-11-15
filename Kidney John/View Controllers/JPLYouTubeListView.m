@@ -22,7 +22,6 @@
 @implementation JPLYouTubeListView {
     NSArray *videoResults;
     NSArray *searchResults;
-    SDWebImageManager *webImageManager;
     MBProgressHUD *hud;
     UIAlertView *noNetworkAlertView;
     UITapGestureRecognizer *singleTap;
@@ -55,7 +54,7 @@
     videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
     // Hide progress
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [hud hide:YES];
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -150,11 +149,11 @@
         // TODO: implement fallback if image not in cache
     }
     
-    [thumbnailImageView setImageWithURL:[NSURL URLWithString:urlString]
+    [thumbnailImageView sd_setImageWithURL:[NSURL URLWithString:urlString]
                          placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
+                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
                                     if (cellImage && !error) {
-                                        DDLogVerbose(@"Videos: fetched video thumbnail image");
+                                        DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
                                     } else {
                                         DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
                                     }
@@ -212,7 +211,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    DDLogVerbose(@"Button clicked: %d", buttonIndex);
+    DDLogVerbose(@"Button clicked: %ld", (long)buttonIndex);
     
     if (buttonIndex == 1) {
         // Retry was clicked
@@ -268,6 +267,7 @@
 - (void)fetchDataWithNetworkCheck
 {
     // Show progress
+    // Init MBProgressHUD
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Videos ...", @"Message shown under progress wheel when videos are loading");
@@ -304,9 +304,6 @@
     
     // Set title
     self.title = NSLocalizedString(@"Videos", @"Title of Videos view");
-    
-    // init SDWebImage cache manager
-    webImageManager = [SDWebImageManager sharedManager];
     
     // Set up NSNotification receiving for when videoStore finishes data fetch
     NSString *notificationName = @"KJVideoDataFetchDidHappen";
