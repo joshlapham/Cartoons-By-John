@@ -16,7 +16,7 @@
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 
-@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, SDWebImageManagerDelegate, UIAlertViewDelegate>
+@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
@@ -24,7 +24,6 @@
 
 @implementation KJComicListView {
     NSArray *comicResults;
-    SDWebImageManager *webImageManager;
     UIAlertView *noNetworkAlertView;
     MBProgressHUD *hud;
     UIImageView *backgroundImageView;
@@ -62,11 +61,11 @@
     KJComic *cellData = [comicResults objectAtIndex:indexPath.row];
 
     // Set comic thumbnail using SDWebImage
-    [cell.comicImageView setImageWithURL:[NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:cellData]]
+    [cell.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:cellData]]
                        placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                              completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
+                              completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
                                   if (cellImage && !error) {
-                                      DDLogVerbose(@"Comix: fetched comic thumbnail image");
+                                      DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
                                   } else {
                                       DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
                                       // TODO: implement fallback
@@ -118,7 +117,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Hide progress
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [hud hide:YES];
     
     // Set background of collectionView to nil to remove any network error image showing
     if (![backgroundImageView isHidden]) {
@@ -176,6 +175,7 @@
 - (void)fetchDataWithNetworkCheck
 {
     // Show progress
+    // Init MBProgressHUD
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Comix ...", @"Message shown under progress wheel when comics are loading");
@@ -230,10 +230,6 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Comix", @"Title of Comics view");
-    
-    // Init SDWebImage cache manager
-    webImageManager = [SDWebImageManager sharedManager];
-    webImageManager.delegate = self;
     
     // Init collection view cell
     [self.collectionView registerClass:[KJComicCell class] forCellWithReuseIdentifier:@"comicCell"];
