@@ -26,6 +26,7 @@
     NSArray *cellArray;
     NSInteger chosenRow;
     NSMutableArray *socialLinksArray;
+    BOOL areWeTestingSocialLinksFromParseFeature;
 }
 
 #pragma mark - UITableView delegate methods
@@ -143,18 +144,23 @@
     // If Social Links section ..
     } else {
         // Set the cell text
-        //NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
-        //titleLabel.text = [socialLink objectForKey:@"title"];
         
-        KJSocialLink *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
-        titleLabel.text = socialLink.title;
+        // FOR TESTING
+        if (areWeTestingSocialLinksFromParseFeature == YES) {
+            // From Parse
+            KJSocialLink *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+            titleLabel.text = socialLink.title;
+            thumbImage.image = [UIImage imageNamed:socialLink.imagePath];
+        } else {
+            // Use hardcoded social links
+            NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+            titleLabel.text = [socialLink objectForKey:@"title"];
+            thumbImage.image = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
+        }
         
         // Give the social icons a bit of opacity to match Favourites icons
         thumbImage.alpha = 0.5;
         
-        // Set social icon
-        //thumbImage.image = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
-        thumbImage.image = [UIImage imageNamed:socialLink.imagePath];
     }
     
     return cell;
@@ -187,12 +193,18 @@
                 // Initialize the web view controller and set it's URL
                 PBWebViewController *webViewController = [[PBWebViewController alloc] init];
                 
-                //NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
-                KJSocialLink *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
-                //webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
-                //webViewController.title = [socialLink objectForKey:@"title"];
-                webViewController.URL = [NSURL URLWithString:socialLink.url];
-                webViewController.title = socialLink.title;
+                // FOR TESTING
+                if (areWeTestingSocialLinksFromParseFeature == YES) {
+                    // Use Parse
+                    KJSocialLink *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+                    webViewController.URL = [NSURL URLWithString:socialLink.url];
+                    webViewController.title = socialLink.title;
+                } else {
+                    // Use hardcoded social links
+                    NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+                    webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
+                    webViewController.title = [socialLink objectForKey:@"title"];
+                }
                 
                 // Hide tabbar on detail view
                 webViewController.hidesBottomBarWhenPushed = YES;
@@ -240,28 +252,6 @@
     }
 }
 
-//#pragma mark - Init initial social links array
-//
-//- (void)initInitialSocialLinksArray
-//{
-//    NSDictionary *facebookLink = @{@"title" : @"Facebook", @"url" : @"https://www.facebook.com/kidneyjohn", @"image" : @"facebook.png"};
-//    NSDictionary *twitterLink = @{@"title" : @"Twitter", @"url" : @"https://twitter.com/johnrodpaine", @"image" : @"twitter.png"};
-//    NSDictionary *tumblrLink = @{@"title" : @"Tumblr", @"url" : @"http://johnroderickpaine.tumblr.com", @"image" : @"tumblr.png"};
-//    NSDictionary *youtubeLink = @{@"title" : @"YouTube", @"url" : @"https://www.youtube.com/user/kidneyjohn", @"image" : @"youtube.png"};
-//    NSDictionary *vimeoLink = @{@"title" : @"Vimeo", @"url" : @"http://vimeo.com/johnroderickpaine", @"image" : @"vimeo.png"};
-//    NSDictionary *instaLink = @{@"title" : @"Instagram", @"url" : @"http://instagram.com/johnroderickpaine", @"image" : @"instagram.png"};
-//    NSDictionary *societyLink = @{@"title" : @"Society6", @"url" : @"http://society6.com/kidneyjohn", @"image" : @"society6.png"};
-//    
-//    socialLinksArray = [[NSMutableArray alloc] init];
-//    [socialLinksArray addObject:facebookLink];
-//    [socialLinksArray addObject:twitterLink];
-//    [socialLinksArray addObject:tumblrLink];
-//    [socialLinksArray addObject:youtubeLink];
-//    [socialLinksArray addObject:vimeoLink];
-//    [socialLinksArray addObject:instaLink];
-//    [socialLinksArray addObject:societyLink];
-//}
-
 #pragma mark - Reachability methods
 
 - (void)reachabilityDidChange
@@ -290,27 +280,13 @@
     [self.tableView reloadData];
 }
 
-#pragma mark - Init methods
+#pragma mark - Init cell array methods
 
-- (void)viewDidLoad
+// NOTE - since we are still testing fetching of Social Links from Parse,
+// these methods are here for that purpose
+
+- (void)initSocialLinksArrayFromParse
 {
-    [super viewDidLoad];
-    
-    self.title = NSLocalizedString(@"More", @"Title of More view");
-    
-    // Set up NSNotification receiving for when videoStore finishes data fetch
-    NSString *notificationName = @"KJSocialLinkDataFetchDidHappen";
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didFetchSocialLinks)
-                                                 name:notificationName
-                                               object:nil];
-    
-    // Reachability NSNotification
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityDidChange)
-                                                 name:kReachabilityChangedNotification
-                                               object:nil];
-
     // Init social link data source array
     socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
     
@@ -322,6 +298,60 @@
         // Fetch social links from Parse
         [KJSocialLinkStore fetchSocialLinkData];
     }
+}
+
+- (void)initHardcodedSocialLinksArray
+{
+    NSDictionary *facebookLink = @{@"title" : @"Facebook", @"url" : @"https://www.facebook.com/kidneyjohn", @"image" : @"facebook.png"};
+    NSDictionary *twitterLink = @{@"title" : @"Twitter", @"url" : @"https://twitter.com/johnrodpaine", @"image" : @"twitter.png"};
+    NSDictionary *tumblrLink = @{@"title" : @"Tumblr", @"url" : @"http://johnroderickpaine.tumblr.com", @"image" : @"tumblr.png"};
+    NSDictionary *youtubeLink = @{@"title" : @"YouTube", @"url" : @"https://www.youtube.com/user/kidneyjohn", @"image" : @"youtube.png"};
+    NSDictionary *vimeoLink = @{@"title" : @"Vimeo", @"url" : @"http://vimeo.com/johnroderickpaine", @"image" : @"vimeo.png"};
+    NSDictionary *instaLink = @{@"title" : @"Instagram", @"url" : @"http://instagram.com/johnroderickpaine", @"image" : @"instagram.png"};
+    NSDictionary *societyLink = @{@"title" : @"Society6", @"url" : @"http://society6.com/kidneyjohn", @"image" : @"society6.png"};
+    
+    socialLinksArray = [[NSMutableArray alloc] init];
+    [socialLinksArray addObject:facebookLink];
+    [socialLinksArray addObject:twitterLink];
+    [socialLinksArray addObject:tumblrLink];
+    [socialLinksArray addObject:youtubeLink];
+    [socialLinksArray addObject:vimeoLink];
+    [socialLinksArray addObject:instaLink];
+    [socialLinksArray addObject:societyLink];
+}
+
+#pragma mark - Init methods
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"More", @"Title of More view");
+    
+    // FOR TESTING of fetching Social Link data from Parse
+    areWeTestingSocialLinksFromParseFeature = NO;
+    
+    if (areWeTestingSocialLinksFromParseFeature == YES) {
+        // Set up NSNotification receiving for when videoStore finishes data fetch
+        NSString *notificationName = @"KJSocialLinkDataFetchDidHappen";
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didFetchSocialLinks)
+                                                     name:notificationName
+                                                   object:nil];
+        
+        // Reachability NSNotification
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reachabilityDidChange)
+                                                     name:kReachabilityChangedNotification
+                                                   object:nil];
+        
+        // Init cell array
+        [self initSocialLinksArrayFromParse];
+    } else {
+        // Use hardcoded links
+        [self initHardcodedSocialLinksArray];
+    }
+    
     
     // Array of titles for Favourites cells
     // NOTE: these strings will be used as titles for their respective views when tapped
