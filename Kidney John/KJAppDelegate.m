@@ -12,6 +12,7 @@
 #import "KJVideoStore.h"
 #import "KJComicStore.h"
 #import "KJDoodleStore.h"
+#import "KJSocialLinkStore.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 
@@ -121,6 +122,7 @@
     [KJVideoStore sharedStore];
     [KJComicStore sharedStore];
     [KJDoodleStore sharedStore];
+    [KJSocialLinkStore sharedStore];
     
     // Reachability
     [JPLReachabilityManager sharedManager];
