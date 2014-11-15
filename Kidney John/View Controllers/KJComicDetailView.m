@@ -7,9 +7,7 @@
 //
 
 #import "KJComicDetailView.h"
-#import "MBProgressHUD.h"
 #import "KJComicDetailCell.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "KJComicStore.h"
 #import "KJComicFavouriteActivity.h"
 #import "KJComic.h"
@@ -20,10 +18,7 @@
 
 @end
 
-@implementation KJComicDetailView {
-    MBProgressHUD *hud;
-    SDWebImageManager *webImageManager;
-}
+@implementation KJComicDetailView
 
 @synthesize nameFromList, titleFromList, fileNameFromList, resultsArray, collectionViewIndexFromList;
 
@@ -44,8 +39,6 @@
     KJComicDetailCell *cell = (KJComicDetailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicDetailCell" forIndexPath:indexPath];
     
     KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
-    
-    //DDLogVerbose(@"Comics List: cell data: %@, results count: %d", cellData.comicFileUrl, [self.resultsArray count]);
     
     cell.comicImageView.image = [KJComicStore returnComicImageFromComicObject:cellData];
     
@@ -90,8 +83,6 @@
     // Set collectionView options
     [self.collectionView setPagingEnabled:YES];
     [self.collectionView setFrame:self.view.frame];
-    
-    //DDLogVerbose(@"Comic Detail: collection view index from list: %@", collectionViewIndexFromList);
     
     // Scroll to comic that was selected in previous view controller
     [self.collectionView scrollToItemAtIndexPath:collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
@@ -160,9 +151,6 @@
     
     // Call method to setup collectionView and flow layout
     [self setupCollectionView];
-    
-    // Init SDWebImage cache manager
-    webImageManager = [SDWebImageManager sharedManager];
     
     // Register custom UICollectionViewCell
     [self.collectionView registerClass:[KJComicDetailCell class] forCellWithReuseIdentifier:@"comicDetailCell"];

@@ -15,7 +15,7 @@
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 
-@interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIAlertViewDelegate>
+@interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
@@ -24,7 +24,6 @@
 @implementation KJRandomView {
     NSArray *randomImagesResults;
     NSString *currentRandomImageUrl;
-    SDWebImageManager *webImageManager;
     MBProgressHUD *hud;
     UIAlertView *noNetworkAlertView;
     UIImageView *backgroundImageView;
@@ -77,11 +76,11 @@
         // TODO: implement fallback if image not in cache
     }
     
-    [cell.doodleImageView setImageWithURL:[NSURL URLWithString:cellData.imageUrl]
+    [cell.doodleImageView sd_setImageWithURL:[NSURL URLWithString:cellData.imageUrl]
                          placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType) {
+                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
                                     if (cellImage && !error) {
-                                        DDLogVerbose(@"Doodles: fetched image");
+                                        DDLogVerbose(@"Doodles: fetched image from URL: %@", url);
                                     } else {
                                         DDLogError(@"Doodles: error fetching image: %@", [error localizedDescription]);
                                     }
@@ -110,7 +109,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActivityView)];
     
     // Hide progress
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [hud hide:YES];
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -207,6 +206,7 @@
 - (void)fetchDataWithNetworkCheck
 {
     // Show progress
+    // Init MBProgressHUD
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Doodles ...", @"Message shown under progress wheel when doodles (drawings) are loading");
@@ -259,9 +259,6 @@
     [super viewDidLoad];
     
     self.title = NSLocalizedString(@"Doodles", @"Title of Doodles (drawings) view");
-    
-    // Init SDWebImage cache manager
-    webImageManager = [SDWebImageManager sharedManager];
     
     // Register custom UICollectionViewCell
     [self.collectionView registerClass:[KJDoodleCell class] forCellWithReuseIdentifier:@"doodleCell"];
