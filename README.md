@@ -6,7 +6,7 @@ License: [Beerware](https://en.wikipedia.org/wiki/Beerware)
 
 ### What This Is
 
-An iOS app for animator [John Paine](http://kidneyjohn.com) that showcases his animations, comics and random drawings.
+An iOS app for animator [John Paine](https://twitter.com/johnrodpaine) that showcases his animations, comics and random drawings.
 
 Available on the [App Store](https://appsto.re/au/OKBL1.i).
 
