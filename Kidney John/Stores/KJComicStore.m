@@ -10,6 +10,12 @@
 #import "Parse.h"
 #import "SDWebImagePrefetcher.h"
 
+// Constants for Parse object keys
+static NSString *kParseComicNameKey = @"comicName";
+static NSString *kParseComicFileKey = @"comicFile";
+static NSString *kParseComicFileNameKey = @"comicFileName";
+static NSString *kParseComicNumberKey = @"comicNumber";
+
 @implementation KJComicStore
 
 #pragma mark - Init methods
@@ -285,7 +291,7 @@
     PFQuery *comicsQuery = [PFQuery queryWithClassName:@"Comic"];
     
     // Query all comics
-    [comicsQuery whereKey:@"comicName" notEqualTo:@"LOL"];
+    [comicsQuery whereKey:kParseComicNameKey notEqualTo:@"LOL"];
     
     // Cache policy
     //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
@@ -303,20 +309,20 @@
                     // - check if PFFile is already saved on filesystem
                     
                     // Save Parse object to Core Data
-                    PFFile *comicImageFile = [object objectForKey:@"comicFile"];
+                    PFFile *comicImageFile = [object objectForKey:kParseComicFileKey];
                     
                     // Check if comic needs updating
                     // NOTE: disabled as app will break if comics are updated
                     //[self checkIfComicNeedsUpdateWithComicName:object[@"comicName"] comicFileName:object[@"comicFileName"] comicFileUrl:comicImageFile.url comicNumber:object[@"comicNumber"]];
                     
                     // Save
-                    [self persistNewComicWithName:object[@"comicName"]
-                                    comicFileName:object[@"comicFileName"]
+                    [self persistNewComicWithName:object[kParseComicNameKey]
+                                    comicFileName:object[kParseComicFileNameKey]
                                      comicFileUrl:comicImageFile.url
-                                      comicNumber:object[@"comicNumber"]];
+                                      comicNumber:object[kParseComicNumberKey]];
                     
                 } else {
-                    DDLogVerbose(@"comicStore: comic not active: %@", object[@"comicName"]);
+                    DDLogVerbose(@"comicStore: comic not active: %@", object[kParseComicNameKey]);
                 }
             }
             // Send NSNotification to say that data fetch is done
