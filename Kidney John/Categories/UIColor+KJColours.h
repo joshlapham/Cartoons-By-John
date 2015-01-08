@@ -15,6 +15,12 @@
 + (UIColor *)kj_navbarTitleFontShadowColour;
 + (UIColor *)kj_navbarTitleFontColour;
 
+// Tab bar
++ (UIColor *)kj_tabBarBackgroundColour;
++ (UIColor *)kj_tabBarItemFontStateNormalColour;
++ (UIColor *)kj_tabBarItemFontStateSelectedColour;
++ (UIColor *)kj_tabBarItemIconStateSelectedColour;
+
 // Videos
 + (UIColor *)kj_videoDurationTextColour;
 + (UIColor *)kj_newVideoLabelColour;

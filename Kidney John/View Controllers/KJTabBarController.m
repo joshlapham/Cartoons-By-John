@@ -8,6 +8,7 @@
 
 #import "KJTabBarController.h"
 #import "UIFont+KJFonts.h"
+#import "UIColor+KJColours.h"
 
 @interface KJTabBarController () <UITabBarControllerDelegate>
 
@@ -29,17 +30,28 @@
     [[self.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"Comix", nil)];
     [[self.tabBar.items objectAtIndex:2] setTitle:NSLocalizedString(@"Doodles", nil)];
     
-    // Set tabbar background colour to #003366
-    [[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
+    // Set tab bar background colour
+    [[UITabBar appearance] setBarTintColor:[UIColor kj_tabBarBackgroundColour]];
     
     // Set tabbar font and colour when button not selected
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont kj_tabBarFont], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+    NSDictionary *titleAttributesForNormalState = @{
+                                      NSFontAttributeName : [UIFont kj_tabBarFont],
+                                      NSForegroundColorAttributeName : [UIColor whiteColor]
+                                      };
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:titleAttributesForNormalState
+                                             forState:UIControlStateNormal];
     
     // Set tabbar font and colour when button IS selected
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont kj_tabBarFont], NSFontAttributeName, [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1], NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+    NSDictionary *titleAttributesForSelectedState = @{
+                                                      NSFontAttributeName : [UIFont kj_tabBarFont],
+                                                      NSForegroundColorAttributeName : [UIColor kj_tabBarItemFontStateSelectedColour]
+                                                      };
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:titleAttributesForSelectedState forState:UIControlStateSelected];
     
     // Set colour of button icon when selected
-    [[UITabBar appearance] setTintColor:[UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1]];
+    [[UITabBar appearance] setTintColor:[UIColor kj_tabBarItemIconStateSelectedColour]];
 }
 
 @end
