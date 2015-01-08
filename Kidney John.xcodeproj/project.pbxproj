@@ -16,6 +16,7 @@
 		68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */; };
 		685C171118E2745A00088D26 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 685C171018E2745A00088D26 /* Comics */; };
 		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
+		68659F3E1A5E99240048A887 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68659F3D1A5E99240048A887 /* Settings.bundle */; };
 		6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */; };
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD21919938C003F3231 /* KJComicFavouriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */; };
@@ -88,6 +89,7 @@
 		685C171018E2745A00088D26 /* Comics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Comics; sourceTree = "<group>"; };
 		685C171518E29B5300088D26 /* KJComic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComic.h; path = Models/KJComic.h; sourceTree = "<group>"; };
 		685C171618E29B5300088D26 /* KJComic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComic.m; path = Models/KJComic.m; sourceTree = "<group>"; };
+		68659F3D1A5E99240048A887 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomFavouriteActivity.h; path = UIActivity/KJRandomFavouriteActivity.h; sourceTree = "<group>"; };
 		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
 		6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJFavDoodlesListView.h; path = "View Controllers/KJFavDoodlesListView.h"; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 		68E48D22184A247D00600FA5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				68659F3D1A5E99240048A887 /* Settings.bundle */,
 				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
 				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
 				6891D13B191C7F1B001AD6A5 /* KJConstants.h */,
@@ -451,6 +454,7 @@
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
 				68211A211927A95000B24BF1 /* Localizable.strings in Resources */,
 				6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */,
+				68659F3E1A5E99240048A887 /* Settings.bundle in Resources */,
 				68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */,
 				6832C3751924B91E00E94788 /* Keys.plist in Resources */,
 				68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */,
