@@ -234,8 +234,8 @@ static NSString *kParseImageDateKey = @"date";
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // NOTE - we're not checking if video is in database first (as  the checkIfvideoNeedsUpdate method does),
-    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchVideoData method
+    // NOTE - we're not checking if doodle is in database first (as  the checkIfImageNeedsUpdate method does),
+    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchDoodleData method
     
     KJRandomImage *doodleToDelete = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:localContext];
     
