@@ -194,6 +194,31 @@
     }
 }
 
++ (void)deleteVideoFromDatabaseWithVideoId:(NSString *)videoId
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // NOTE - we're not checking if video is in database first (as  the checkIfvideoNeedsUpdate method does),
+    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchVideoData method
+    
+    KJVideo *videoToDelete = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+    
+    if (videoToDelete) {
+        // Delete object
+        [videoToDelete MR_deleteInContext:localContext];
+        
+        // Save
+        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            if (success) {
+                DDLogVerbose(@"videoStore: deleted video");
+            } else if (error) {
+                DDLogError(@"videoStore: error deleting video: %@", [error localizedDescription]);
+            }
+        }];
+    }
+}
+
 + (void)fetchVideoData
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
@@ -226,6 +251,14 @@
                         [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"] videoDuration:object[@"videoDuration"]];
                     } else {
                         DDLogVerbose(@"videoStore: video not active: %@", object[@"videoName"]);
+                        
+                        // Check if video exists in database, and delete if so
+                        BOOL existInDatabase = [self checkIfVideoIsInDatabaseWithVideoId:object[@"videoId"] context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                        
+                        if (existInDatabase) {
+                            DDLogVerbose(@"videoStore: video %@ exists in database but is no longer active on server; now removing", object[@"videoName"]);
+                            [self deleteVideoFromDatabaseWithVideoId:object[@"videoId"]];
+                        }
                     }
                 }
                 // Set firstLoad = YES in NSUserDefaults
