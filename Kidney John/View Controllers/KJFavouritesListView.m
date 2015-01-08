@@ -15,6 +15,10 @@
 #import "KJComicStore.h"
 #import "KJRandomView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "UIFont+KJFonts.h"
+
+static NSString *VideoCellIdentifier = @"favouriteCell";
+static NSString *ComicCellIdentifier = @"comicFavouriteCell";
 
 @interface KJFavouritesListView () <UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -71,13 +75,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *VideoCellIdentifier = @"favouriteCell";
-    static NSString *ComicCellIdentifier = @"comicFavouriteCell";
-    
-    // Configure the cell...
-    // Custom font
-    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:22];
-    
+    // Init cell
     UITableViewCell *cell;
     
     if (!cell) {
@@ -95,16 +93,21 @@
     UIImageView *thumbImage = (UIImageView *)[cell viewWithTag:102];
     UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
     
-    titleLabel.font = kjCustomFont;
+    // Video name
+    titleLabel.font = [UIFont kj_videoNameFont];
     titleLabel.numberOfLines = 0;
     titleLabel.adjustsFontSizeToFitWidth = YES;
     
     if ([[cellResults firstObject] isKindOfClass:[KJVideo class]]) {
+        
+        // Init cell data
         KJVideo *cellData = [cellResults objectAtIndex:indexPath.row];
+        
+        // Video name
         titleLabel.text = cellData.videoName;
         
-        // Cell detail text
-        UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
+        // Video duration
+        UIFont *kjCustomFontDetailText = [UIFont kj_videoDurationFont];
         durationLabel.font = kjCustomFontDetailText;
         durationLabel.textColor = [UIColor grayColor];
         durationLabel.numberOfLines = 0;

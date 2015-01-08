@@ -16,6 +16,12 @@
     return [self kj_kidneyJohnFontOfSize:21];
 }
 
+// Tab bar
++ (UIFont *)kj_tabBarFont {
+    
+    return [self kj_kidneyJohnFontOfSize:16];
+}
+
 // Progress HUD
 + (UIFont *)kj_progressHudFont {
     
@@ -41,6 +47,17 @@
 + (UIFont *)kj_videoSearchBarFont {
     
     return [self kj_kidneyJohnFontOfSize:16];
+}
+
+// 'More' view
++ (UIFont *)kj_sectionHeaderFont {
+    
+    return [self kj_kidneyJohnFontOfSize:17];
+}
+
++ (UIFont *)kj_moreViewCellFont {
+    
+    return [self kj_kidneyJohnFontOfSize:20];
 }
 
 // Private methods

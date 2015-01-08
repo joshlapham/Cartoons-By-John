@@ -15,6 +15,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
+#import "UIFont+KJFonts.h"
 
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate>
 
@@ -180,7 +181,7 @@
     hud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Comix ...", @"Message shown under progress wheel when comics are loading");
     hud.labelText = progressHudString;
-    hud.labelFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    hud.labelFont = [UIFont kj_progressHudFont];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

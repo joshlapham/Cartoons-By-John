@@ -14,6 +14,7 @@
 #import "KJRandomFavouriteActivity.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
+#import "UIFont+KJFonts.h"
 
 @interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UIAlertViewDelegate>
 
@@ -211,7 +212,7 @@
     hud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Doodles ...", @"Message shown under progress wheel when doodles (drawings) are loading");
     hud.labelText = progressHudString;
-    hud.labelFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    hud.labelFont = [UIFont kj_progressHudFont];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

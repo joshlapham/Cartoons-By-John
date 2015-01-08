@@ -17,6 +17,7 @@
 #import "JPLReachabilityManager.h"
 #import <Reachability/Reachability.h>
 #import "KJSocialLink.h"
+#import "UIFont+KJFonts.h"
 
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 
@@ -61,12 +62,10 @@
 {
     switch (section) {
         case 0:
-            // TODO: NSLocalized string here
             return NSLocalizedString(@"Favourites", @"Header title for Favourites buttons in More view");
             break;
             
         case 1:
-            // TODO: NSLocalized string here
             return NSLocalizedString(@"Like, Comment, Subscribe", @"Header title for social media buttons in More view");
             break;
             
@@ -87,7 +86,7 @@
     UILabel *headerLabel = [[UILabel alloc] init];
     
     headerLabel.frame = CGRectMake(20, 8, 320, 20);
-    headerLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:17];
+    headerLabel.font = [UIFont kj_sectionHeaderFont];
     headerLabel.textColor = [UIColor darkGrayColor];
     headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
     
@@ -118,9 +117,8 @@
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
     UIImageView *thumbImage = (UIImageView *)[cell viewWithTag:102];
     
-    // Set custom font
-    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
-    titleLabel.font = kjCustomFont;
+    // Set font
+    titleLabel.font = [UIFont kj_moreViewCellFont];
     
     // If Favourites section ..
     if (indexPath.section == 0) {
