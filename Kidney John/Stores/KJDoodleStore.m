@@ -12,6 +12,12 @@
 #import "SDWebImagePrefetcher.h"
 #import "JPLReachabilityManager.h"
 
+// Constants for Parse object keys
+static NSString *kParseImageIdKey = @"imageId";
+static NSString *kParseImageDescriptionKey = @"imageDescription";
+static NSString *kParseImageUrlKey = @"imageUrl";
+static NSString *kParseImageDateKey = @"date";
+
 @implementation KJDoodleStore
 
 #pragma mark - Init methods
@@ -258,7 +264,7 @@
         PFQuery *randomQuery = [PFQuery queryWithClassName:@"RandomImage"];
         
         // Query all random image urls
-        [randomQuery whereKey:@"imageUrl" notEqualTo:@"LOL"];
+        [randomQuery whereKey:kParseImageUrlKey notEqualTo:@"LOL"];
         
         // Cache policy
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
@@ -273,19 +279,19 @@
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // Check if image needs updating
-                        [self checkIfImageNeedsUpdateWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
+                        [self checkIfImageNeedsUpdateWithId:object[kParseImageIdKey] description:object[kParseImageDescriptionKey] url:object[kParseImageUrlKey] date:object[kParseImageDateKey]];
                         
                         // Save Parse object to Core Data
-                        [self persistNewRandomImageWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
+                        [self persistNewRandomImageWithId:object[kParseImageIdKey] description:object[kParseImageDescriptionKey] url:object[kParseImageUrlKey] date:object[kParseImageDateKey]];
                     } else {
-                        DDLogVerbose(@"doodleStore: doodle not active: %@", object[@"imageUrl"]);
+                        DDLogVerbose(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
                         
                         // Check if doodle exists in database, and delete if so
-                        BOOL existInDatabase = [self checkIfRandomImageIsInDatabaseWithImageUrl:object[@"imageUrl"] context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                        BOOL existInDatabase = [self checkIfRandomImageIsInDatabaseWithImageUrl:object[kParseImageUrlKey] context:[NSManagedObjectContext MR_contextForCurrentThread]];
                         
                         if (existInDatabase) {
-                            DDLogVerbose(@"doodleStore: doodle URL %@ exists in database but is no longer active on server; now removing", object[@"imageUrl"]);
-                            [self deleteDoodleFromDatabaseWithUrl:object[@"imageUrl"]];
+                            DDLogVerbose(@"doodleStore: doodle URL %@ exists in database but is no longer active on server; now removing", object[kParseImageUrlKey]);
+                            [self deleteDoodleFromDatabaseWithUrl:object[kParseImageUrlKey]];
                         }
                     }
                 }
