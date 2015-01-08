@@ -285,6 +285,31 @@ static NSString *kParseComicNumberKey = @"comicNumber";
     }
 }
 
++ (void)deleteComicFromDatabaseWithComicName:(NSString *)comicName
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // NOTE - we're not checking if comic is in database first (as  the checkIfComicNeedsUpdate method does),
+    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchComicData method
+    
+    KJComic *comicToDelete = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+    
+    if (comicToDelete) {
+        // Delete object
+        [comicToDelete MR_deleteInContext:localContext];
+        
+        // Save
+        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            if (success) {
+                DDLogVerbose(@"comicStore: deleted comic");
+            } else if (error) {
+                DDLogError(@"comicStore: error deleting comic: %@", [error localizedDescription]);
+            }
+        }];
+    }
+}
+
 + (void)fetchComicData
 {
     // Setup query
@@ -323,6 +348,16 @@ static NSString *kParseComicNumberKey = @"comicNumber";
                     
                 } else {
                     DDLogVerbose(@"comicStore: comic not active: %@", object[kParseComicNameKey]);
+                    
+                    // Check if comic exists in database, and delete if so
+                    BOOL existInDatabase = [self checkIfComicIsInDatabaseWithName:object[kParseComicNameKey]
+                                                                          context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                    
+                    if (existInDatabase) {
+                        DDLogVerbose(@"comicStore: comic %@ exists in database but is no longer active on server; now removing", object[kParseComicNameKey]);
+                        [self deleteComicFromDatabaseWithComicName:object[kParseComicNameKey]];
+                    }
+
                 }
             }
             // Send NSNotification to say that data fetch is done
