@@ -279,7 +279,7 @@
     hud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Videos ...", @"Message shown under progress wheel when videos are loading");
     hud.labelText = progressHudString;
-    hud.labelFont = [UIFont fontWithName:@"JohnRoderickPaine" size:20];
+    hud.labelFont = [UIFont kj_progressHudFont];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -356,7 +356,7 @@
     
     // Init label
     UILabel *newVideoLabel = [[UILabel alloc] initWithFrame:labelFrame];
-    newVideoLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:12.0];
+    newVideoLabel.font = [UIFont kj_videoNewLabelFont];
     newVideoLabel.textColor = [UIColor whiteColor];
     newVideoLabel.backgroundColor = [UIColor colorWithRed:92/255.0 green:184/255.0 blue:92/255.0 alpha:1];
     newVideoLabel.numberOfLines = 0;
@@ -419,7 +419,7 @@
     [self.searchDisplayController.searchBar setPlaceholder:searchPlaceholderString];
     
     // Set font of UISearchBar
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont fontWithName:@"JohnRoderickPaine" size:16]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont kj_videoSearchBarFont]];
     
     // Set searchbar to only show when tableView is scrolled
     [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.tableHeaderView.frame.size.height) animated:YES];

@@ -16,6 +16,12 @@
     return [self kj_kidneyJohnFontOfSize:21];
 }
 
+// Progress HUD
++ (UIFont *)kj_progressHudFont {
+    
+    return [self kj_kidneyJohnFontOfSize:20];
+}
+
 // Videos
 + (UIFont *)kj_videoNameFont {
     
@@ -25,6 +31,16 @@
 + (UIFont *)kj_videoDurationFont {
     
     return [self kj_kidneyJohnFontOfSize:18];
+}
+
++ (UIFont *)kj_videoNewLabelFont {
+    
+    return [self kj_kidneyJohnFontOfSize:12];
+}
+
++ (UIFont *)kj_videoSearchBarFont {
+    
+    return [self kj_kidneyJohnFontOfSize:16];
 }
 
 // Private methods

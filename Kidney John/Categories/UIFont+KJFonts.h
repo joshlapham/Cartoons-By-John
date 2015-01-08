@@ -13,8 +13,13 @@
 // Navbar
 + (UIFont *)kj_navbarFont;
 
+// Progress HUD
++ (UIFont *)kj_progressHudFont;
+
 // Videos
 + (UIFont *)kj_videoNameFont;
 + (UIFont *)kj_videoDurationFont;
++ (UIFont *)kj_videoNewLabelFont;
++ (UIFont *)kj_videoSearchBarFont;
 
 @end
