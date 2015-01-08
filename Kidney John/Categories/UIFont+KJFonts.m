@@ -10,9 +10,21 @@
 
 @implementation UIFont (KJFonts)
 
+// Navbar
 + (UIFont *)kj_navbarFont {
     
     return [self kj_kidneyJohnFontOfSize:21];
+}
+
+// Videos
++ (UIFont *)kj_videoNameFont {
+    
+    return [self kj_kidneyJohnFontOfSize:22];
+}
+
++ (UIFont *)kj_videoDurationFont {
+    
+    return [self kj_kidneyJohnFontOfSize:18];
 }
 
 // Private methods

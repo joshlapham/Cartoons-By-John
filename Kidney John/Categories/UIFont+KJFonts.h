@@ -10,6 +10,11 @@
 
 @interface UIFont (KJFonts)
 
+// Navbar
 + (UIFont *)kj_navbarFont;
+
+// Videos
++ (UIFont *)kj_videoNameFont;
++ (UIFont *)kj_videoDurationFont;
 
 @end

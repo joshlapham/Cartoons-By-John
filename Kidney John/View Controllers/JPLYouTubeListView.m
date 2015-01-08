@@ -14,6 +14,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
+#import "UIFont+KJFonts.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
@@ -120,16 +121,15 @@
     UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
     UIImageView *thumbnailImageView = (UIImageView *)[cell viewWithTag:102];
     
-    // Cell text
-    UIFont *kjCustomFont = [UIFont fontWithName:@"JohnRoderickPaine" size:22];
-    titleLabel.font = kjCustomFont;
+    // Init cell text
+    // Video name
+    titleLabel.font = [UIFont kj_videoNameFont];
     titleLabel.numberOfLines = 0;
     titleLabel.adjustsFontSizeToFitWidth = YES;
     titleLabel.text = cellVideo.videoName;
     
-    // Cell detail text
-    UIFont *kjCustomFontDetailText = [UIFont fontWithName:@"JohnRoderickPaine" size:18];
-    durationLabel.font = kjCustomFontDetailText;
+    // Video duration
+    durationLabel.font = [UIFont kj_videoDurationFont];
     durationLabel.textColor = [UIColor grayColor];
     durationLabel.numberOfLines = 0;
     
