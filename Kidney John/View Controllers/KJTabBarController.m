@@ -37,7 +37,7 @@
     // Set tabbar font and colour when button not selected
     NSDictionary *titleAttributesForNormalState = @{
                                       NSFontAttributeName : [UIFont kj_tabBarFont],
-                                      NSForegroundColorAttributeName : [UIColor whiteColor]
+                                      NSForegroundColorAttributeName : [UIColor kj_tabBarItemFontStateNormalColour]
                                       };
     
     [[UITabBarItem appearance] setTitleTextAttributes:titleAttributesForNormalState
