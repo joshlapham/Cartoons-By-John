@@ -279,15 +279,22 @@ static NSString *kParseImageDateKey = @"date";
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // Check if image needs updating
-                        [self checkIfImageNeedsUpdateWithId:object[kParseImageIdKey] description:object[kParseImageDescriptionKey] url:object[kParseImageUrlKey] date:object[kParseImageDateKey]];
+                        [self checkIfImageNeedsUpdateWithId:object[kParseImageIdKey]
+                                                description:object[kParseImageDescriptionKey]
+                                                        url:object[kParseImageUrlKey]
+                                                       date:object[kParseImageDateKey]];
                         
                         // Save Parse object to Core Data
-                        [self persistNewRandomImageWithId:object[kParseImageIdKey] description:object[kParseImageDescriptionKey] url:object[kParseImageUrlKey] date:object[kParseImageDateKey]];
+                        [self persistNewRandomImageWithId:object[kParseImageIdKey]
+                                              description:object[kParseImageDescriptionKey]
+                                                      url:object[kParseImageUrlKey]
+                                                     date:object[kParseImageDateKey]];
                     } else {
                         DDLogVerbose(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
                         
                         // Check if doodle exists in database, and delete if so
-                        BOOL existInDatabase = [self checkIfRandomImageIsInDatabaseWithImageUrl:object[kParseImageUrlKey] context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                        BOOL existInDatabase = [self checkIfRandomImageIsInDatabaseWithImageUrl:object[kParseImageUrlKey]
+                                                                                        context:[NSManagedObjectContext MR_contextForCurrentThread]];
                         
                         if (existInDatabase) {
                             DDLogVerbose(@"doodleStore: doodle URL %@ exists in database but is no longer active on server; now removing", object[kParseImageUrlKey]);

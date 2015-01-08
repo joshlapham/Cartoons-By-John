@@ -271,7 +271,8 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
                         DDLogVerbose(@"videoStore: video not active: %@", object[@"videoName"]);
                         
                         // Check if video exists in database, and delete if so
-                        BOOL existInDatabase = [self checkIfVideoIsInDatabaseWithVideoId:object[kParseVideoIdKey] context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                        BOOL existInDatabase = [self checkIfVideoIsInDatabaseWithVideoId:object[kParseVideoIdKey]
+                                                                                 context:[NSManagedObjectContext MR_contextForCurrentThread]];
                         
                         if (existInDatabase) {
                             DDLogVerbose(@"videoStore: video %@ exists in database but is no longer active on server; now removing", object[@"videoName"]);
