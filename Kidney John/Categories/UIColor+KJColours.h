@@ -19,4 +19,7 @@
 + (UIColor *)kj_videoDurationTextColour;
 + (UIColor *)kj_newVideoLabelColour;
 
+// 'More' view
++ (UIColor *)kj_moreViewSectionTextColour;
+
 @end

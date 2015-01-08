@@ -18,6 +18,7 @@
 #import <Reachability/Reachability.h>
 #import "KJSocialLink.h"
 #import "UIFont+KJFonts.h"
+#import "UIColor+KJColours.h"
 
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 
@@ -87,7 +88,7 @@
     
     headerLabel.frame = CGRectMake(20, 8, 320, 20);
     headerLabel.font = [UIFont kj_sectionHeaderFont];
-    headerLabel.textColor = [UIColor darkGrayColor];
+    headerLabel.textColor = [UIColor kj_moreViewSectionTextColour];
     headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
     
     UIView *headerView = [[UIView alloc] init];

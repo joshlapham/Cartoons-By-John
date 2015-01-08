@@ -16,6 +16,7 @@
 #import "KJRandomView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIFont+KJFonts.h"
+#import "UIColor+KJColours.h"
 
 static NSString *VideoCellIdentifier = @"favouriteCell";
 static NSString *ComicCellIdentifier = @"comicFavouriteCell";
@@ -109,7 +110,7 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
         // Video duration
         UIFont *kjCustomFontDetailText = [UIFont kj_videoDurationFont];
         durationLabel.font = kjCustomFontDetailText;
-        durationLabel.textColor = [UIColor grayColor];
+        durationLabel.textColor = [UIColor kj_videoDurationTextColour];
         durationLabel.numberOfLines = 0;
         
         // Placeholder duration

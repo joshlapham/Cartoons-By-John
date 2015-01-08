@@ -37,4 +37,10 @@
     return [UIColor colorWithRed:92/255.0 green:184/255.0 blue:92/255.0 alpha:1];
 }
 
+// 'More' view
++ (UIColor *)kj_moreViewSectionTextColour {
+    
+    return [UIColor darkGrayColor];
+}
+
 @end
