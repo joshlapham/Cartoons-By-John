@@ -22,6 +22,7 @@
 {
     [super viewDidLoad];
     
+    // Set delegate
     self.delegate = self;
     
     // Set tab button titles
@@ -48,7 +49,8 @@
                                                       NSForegroundColorAttributeName : [UIColor kj_tabBarItemFontStateSelectedColour]
                                                       };
     
-    [[UITabBarItem appearance] setTitleTextAttributes:titleAttributesForSelectedState forState:UIControlStateSelected];
+    [[UITabBarItem appearance] setTitleTextAttributes:titleAttributesForSelectedState
+                                             forState:UIControlStateSelected];
     
     // Set colour of button icon when selected
     [[UITabBar appearance] setTintColor:[UIColor kj_tabBarItemIconStateSelectedColour]];
