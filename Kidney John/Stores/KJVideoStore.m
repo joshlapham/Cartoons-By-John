@@ -12,6 +12,13 @@
 #import "JPLReachabilityManager.h"
 #import "SDWebImagePrefetcher.h"
 
+// Constants for Parse object keys
+static NSString *kParseVideoIdKey = @"videoId";
+static NSString *kParseVideoNameKey = @"videoName";
+static NSString *kParseVideoDescriptionKey = @"videoDescription";
+static NSString *kParseVideoDateKey = @"date";
+static NSString *kParseVideoDurationKey = @"videoDuration";
+
 @implementation KJVideoStore
 
 #pragma mark - Init methods
@@ -229,7 +236,7 @@
         PFQuery *query = [PFQuery queryWithClassName:@"Video"];
         
         // Query all videos
-        [query whereKey:@"videoName" notEqualTo:@"LOL"];
+        [query whereKey:kParseVideoNameKey notEqualTo:@"LOL"];
         
         // Cache policy
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
@@ -245,19 +252,30 @@
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // Check if video needs update
                         // TODO: review this, maybe call after firstFetchHasHappened from NSUserDefaults?
-                        [self checkIfVideoNeedsUpdateWithVideoId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] videoDuration:object[@"videoDuration"]];
+                        [self checkIfVideoNeedsUpdateWithVideoId:object[kParseVideoIdKey]
+                                                            name:object[kParseVideoNameKey]
+                                                     description:object[kParseVideoDescriptionKey]
+                                                            date:object[kParseVideoDateKey]
+                                                   videoDuration:object[kParseVideoDurationKey]];
                         
                         // Save Parse object to Core Data
-                        [self persistNewVideoWithId:object[@"videoId"] name:object[@"videoName"] description:object[@"videoDescription"] date:object[@"date"] cellHeight:object[@"cellHeight"] videoDuration:object[@"videoDuration"]];
+                        // NOTE - not using cellHeight parameter anymore
+                        [self persistNewVideoWithId:object[kParseVideoIdKey]
+                                               name:object[kParseVideoNameKey]
+                                        description:object[kParseVideoDescriptionKey]
+                                               date:object[kParseVideoDateKey]
+                                         cellHeight:nil
+                                      videoDuration:object[kParseVideoDurationKey]];
+                        
                     } else {
                         DDLogVerbose(@"videoStore: video not active: %@", object[@"videoName"]);
                         
                         // Check if video exists in database, and delete if so
-                        BOOL existInDatabase = [self checkIfVideoIsInDatabaseWithVideoId:object[@"videoId"] context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                        BOOL existInDatabase = [self checkIfVideoIsInDatabaseWithVideoId:object[kParseVideoIdKey] context:[NSManagedObjectContext MR_contextForCurrentThread]];
                         
                         if (existInDatabase) {
                             DDLogVerbose(@"videoStore: video %@ exists in database but is no longer active on server; now removing", object[@"videoName"]);
-                            [self deleteVideoFromDatabaseWithVideoId:object[@"videoId"]];
+                            [self deleteVideoFromDatabaseWithVideoId:object[kParseVideoIdKey]];
                         }
                     }
                 }
