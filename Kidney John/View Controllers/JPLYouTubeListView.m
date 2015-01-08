@@ -17,6 +17,8 @@
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
 @end
 
 @implementation JPLYouTubeListView {
@@ -130,6 +132,10 @@
     durationLabel.font = kjCustomFontDetailText;
     durationLabel.textColor = [UIColor grayColor];
     durationLabel.numberOfLines = 0;
+    
+    // TESTING
+    [self isNewVideo:cellVideo];
+    // END OF TESTING
     
     // Placeholder duration
     if (cellVideo.videoDuration == nil) {
@@ -294,6 +300,49 @@
             [self noNetworkConnection];
         }
     }
+}
+
+#pragma mark - Check if video is new or not method
+
+- (BOOL)isNewVideo:(KJVideo *)video {
+    
+    // Check date of video compared to today's date.
+    // If less than two weeks old then we'll class the video as 'new'.
+    
+    // Init date object from videoDate
+    NSDate *videoDate = [[self dateFormatter] dateFromString:video.videoDate];
+    
+    // Init date object for today's date
+    NSDate *todayDate = [NSDate date];
+    
+    // Get day components (number of days since video date)
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *dateComponents = [calendar components:NSCalendarUnitDay
+                                                   fromDate:videoDate
+                                                     toDate:todayDate
+                                                    options:NO];
+    
+    // Check if video is less than 14 days old
+    if (dateComponents.day < 15) {
+        DDLogVerbose(@"video is new!");
+        return YES;
+    } else {
+        DDLogVerbose(@"video is NOT new");
+        return NO;
+    }
+}
+
+#pragma mark Init date formatter method
+
+- (NSDateFormatter *)dateFormatter {
+    
+    if (_dateFormatter == nil) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+    }
+    
+    [_dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    
+    return _dateFormatter;
 }
 
 #pragma mark - Init methods
