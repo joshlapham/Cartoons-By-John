@@ -223,6 +223,31 @@
     }
 }
 
++ (void)deleteDoodleFromDatabaseWithUrl:(NSString *)imageUrl
+{
+    // Get the local context
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // NOTE - we're not checking if video is in database first (as  the checkIfvideoNeedsUpdate method does),
+    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchVideoData method
+    
+    KJRandomImage *doodleToDelete = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:localContext];
+    
+    if (doodleToDelete) {
+        // Delete object
+        [doodleToDelete MR_deleteInContext:localContext];
+        
+        // Save
+        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            if (success) {
+                DDLogVerbose(@"doodleStore: deleted doodle");
+            } else if (error) {
+                DDLogError(@"doodleStore: error deleting doodle: %@", [error localizedDescription]);
+            }
+        }];
+    }
+}
+
 + (void)fetchDoodleData
 {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
@@ -253,7 +278,15 @@
                         // Save Parse object to Core Data
                         [self persistNewRandomImageWithId:object[@"imageId"] description:object[@"imageDescription"] url:object[@"imageUrl"] date:object[@"date"]];
                     } else {
-                        DDLogVerbose(@"doodleStore: image not active: %@", object[@"imageUrl"]);
+                        DDLogVerbose(@"doodleStore: doodle not active: %@", object[@"imageUrl"]);
+                        
+                        // Check if doodle exists in database, and delete if so
+                        BOOL existInDatabase = [self checkIfRandomImageIsInDatabaseWithImageUrl:object[@"imageUrl"] context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                        
+                        if (existInDatabase) {
+                            DDLogVerbose(@"doodleStore: doodle URL %@ exists in database but is no longer active on server; now removing", object[@"imageUrl"]);
+                            [self deleteDoodleFromDatabaseWithUrl:object[@"imageUrl"]];
+                        }
                     }
                 }
                 // Set randomImagesFetchDone = YES in NSUserDefaults
