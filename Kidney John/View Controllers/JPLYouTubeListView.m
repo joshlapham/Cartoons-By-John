@@ -133,9 +133,10 @@
     durationLabel.textColor = [UIColor grayColor];
     durationLabel.numberOfLines = 0;
     
-    // TESTING
-    [self isNewVideo:cellVideo];
-    // END OF TESTING
+    // Check if new video, add 'New!' label if so
+    if ([self isNewVideo:cellVideo]) {
+        [cell addSubview:[self newVideoLabel]];
+    }
     
     // Placeholder duration
     if (cellVideo.videoDuration == nil) {
@@ -302,7 +303,9 @@
     }
 }
 
-#pragma mark - Check if video is new or not method
+#pragma mark - Highlight new videos methods
+
+#pragma mark Check if video is new or not method
 
 - (BOOL)isNewVideo:(KJVideo *)video {
     
@@ -324,10 +327,9 @@
     
     // Check if video is less than 14 days old
     if (dateComponents.day < 15) {
-        DDLogVerbose(@"video is new!");
+        DDLogVerbose(@"Videos: video %@ is new!", video.videoName);
         return YES;
     } else {
-        DDLogVerbose(@"video is NOT new");
         return NO;
     }
 }
@@ -343,6 +345,32 @@
     [_dateFormatter setDateFormat:@"YYYY-MM-dd"];
     
     return _dateFormatter;
+}
+
+#pragma mark Init 'new' label
+
+- (UILabel *)newVideoLabel {
+    
+    // Init frame for label
+    CGRect labelFrame = CGRectMake(10, 3, 30, 30);
+    
+    // Init label
+    UILabel *newVideoLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    newVideoLabel.font = [UIFont fontWithName:@"JohnRoderickPaine" size:12.0];
+    newVideoLabel.textColor = [UIColor whiteColor];
+    newVideoLabel.backgroundColor = [UIColor colorWithRed:92/255.0 green:184/255.0 blue:92/255.0 alpha:1];
+    newVideoLabel.numberOfLines = 0;
+    newVideoLabel.textAlignment = NSTextAlignmentCenter;
+    
+    // Make label round
+    newVideoLabel.layer.masksToBounds = YES;
+    newVideoLabel.layer.cornerRadius = newVideoLabel.frame.size.width / 2;
+    
+    // Init text
+    NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if a video is new");
+    newVideoLabel.text = labelText;
+    
+    return newVideoLabel;
 }
 
 #pragma mark - Init methods
