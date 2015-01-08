@@ -15,4 +15,8 @@
 + (UIColor *)kj_navbarTitleFontShadowColour;
 + (UIColor *)kj_navbarTitleFontColour;
 
+// Videos
++ (UIColor *)kj_videoDurationTextColour;
++ (UIColor *)kj_newVideoLabelColour;
+
 @end

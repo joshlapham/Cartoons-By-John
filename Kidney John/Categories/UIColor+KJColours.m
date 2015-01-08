@@ -26,4 +26,15 @@
     return [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
 }
 
+// Videos
++ (UIColor *)kj_videoDurationTextColour {
+    
+    return [UIColor grayColor];
+}
+
++ (UIColor *)kj_newVideoLabelColour {
+    
+    return [UIColor colorWithRed:92/255.0 green:184/255.0 blue:92/255.0 alpha:1];
+}
+
 @end

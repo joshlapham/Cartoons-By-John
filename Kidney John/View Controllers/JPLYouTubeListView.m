@@ -15,6 +15,7 @@
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
+#import "UIColor+KJColours.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
@@ -130,7 +131,7 @@
     
     // Video duration
     durationLabel.font = [UIFont kj_videoDurationFont];
-    durationLabel.textColor = [UIColor grayColor];
+    durationLabel.textColor = [UIColor kj_videoDurationTextColour];
     durationLabel.numberOfLines = 0;
     
     // Check if new video, add 'New!' label if so
@@ -358,7 +359,7 @@
     UILabel *newVideoLabel = [[UILabel alloc] initWithFrame:labelFrame];
     newVideoLabel.font = [UIFont kj_videoNewLabelFont];
     newVideoLabel.textColor = [UIColor whiteColor];
-    newVideoLabel.backgroundColor = [UIColor colorWithRed:92/255.0 green:184/255.0 blue:92/255.0 alpha:1];
+    newVideoLabel.backgroundColor = [UIColor kj_newVideoLabelColour];
     newVideoLabel.numberOfLines = 0;
     newVideoLabel.textAlignment = NSTextAlignmentCenter;
     
