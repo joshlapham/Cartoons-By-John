@@ -16,6 +16,7 @@
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "UIFont+KJFonts.h"
+#import "UIColor+KJColours.h"
 
 @implementation KJAppDelegate {
     NSString *parseAppId;
@@ -30,13 +31,15 @@
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
     // Set navbar colour
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor kj_navbarColour]];
+    
+    // Init shadow for navbar font
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [UIColor kj_navbarTitleFontShadowColour];
+    shadow.shadowOffset = CGSizeMake(0, 1);
     
     // Set navbar font
-    NSShadow *shadow = [[NSShadow alloc] init];
-    shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
-    shadow.shadowOffset = CGSizeMake(0, 1);
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName, shadow, NSShadowAttributeName, [UIFont kj_navbarFont], NSFontAttributeName, nil];
+    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor kj_navbarTitleFontColour], NSForegroundColorAttributeName, shadow, NSShadowAttributeName, [UIFont kj_navbarFont], NSFontAttributeName, nil];
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     
     // Set navbar items to white
