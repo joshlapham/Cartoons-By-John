@@ -13,7 +13,11 @@
 // Navbar
 + (UIColor *)kj_navbarColour {
     
+    // 'Kidney John' colour (Version 1.0)
     return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
+    
+    // 'JohnRodPaine' colour (Version ?)
+//    return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
 }
 
 + (UIColor *)kj_navbarTitleFontShadowColour {
@@ -29,7 +33,11 @@
 // Tab bar
 + (UIColor *)kj_tabBarBackgroundColour {
     
+    // 'Kidney John' colour (Version 1.0)
     return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
+    
+    // 'JohnRodPaine' colour (Version ?)
+//    return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
 }
 
 + (UIColor *)kj_tabBarItemFontStateNormalColour {
