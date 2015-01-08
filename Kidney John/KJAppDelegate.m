@@ -38,8 +38,12 @@
     shadow.shadowColor = [UIColor kj_navbarTitleFontShadowColour];
     shadow.shadowOffset = CGSizeMake(0, 1);
     
-    // Set navbar font
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor kj_navbarTitleFontColour], NSForegroundColorAttributeName, shadow, NSShadowAttributeName, [UIFont kj_navbarFont], NSFontAttributeName, nil];
+    // Set navbar title font, colour, shadow, etc
+    NSDictionary *titleAttributes = @{ NSForegroundColorAttributeName : [UIColor kj_navbarTitleFontColour],
+                                    NSShadowAttributeName : shadow,
+                                    NSFontAttributeName : [UIFont kj_navbarFont]
+                                    };
+    
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     
     // Set navbar items to white
