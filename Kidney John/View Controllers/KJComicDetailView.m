@@ -98,18 +98,11 @@
     // Get data for comic currently on screen
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
+    // TODO: do we really need this method?
     UIImage *comicImageToShare = [KJComicStore returnComicImageFromComicObject:cellData];
     
     // Init UIActivity
-    NSString *titleString;
-    
-    if (![KJComicStore checkIfComicIsAFavourite:cellData.comicName]) {
-        titleString = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
-    } else {
-        titleString = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
-    }
-    
-    KJComicFavouriteActivity *favouriteActivity = [[KJComicFavouriteActivity alloc] initWithActivityTitle:titleString andComicName:titleFromList];
+    KJComicFavouriteActivity *favouriteActivity = [[KJComicFavouriteActivity alloc] initWithComic:cellData];
     
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[comicImageToShare] applicationActivities:@[favouriteActivity]];
     activityVC.excludedActivityTypes = @[UIActivityTypeAssignToContact, UIActivityTypeAddToReadingList];
