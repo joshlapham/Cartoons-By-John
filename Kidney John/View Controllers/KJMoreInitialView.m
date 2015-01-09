@@ -332,10 +332,9 @@
     
     if (areWeTestingSocialLinksFromParseFeature == YES) {
         // Set up NSNotification receiving for when videoStore finishes data fetch
-        NSString *notificationName = @"KJSocialLinkDataFetchDidHappen";
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(didFetchSocialLinks)
-                                                     name:notificationName
+                                                     name:KJSocialLinkDataFetchDidHappenNotification
                                                    object:nil];
         
         // Reachability NSNotification
@@ -363,7 +362,7 @@
 - (void)dealloc
 {
     // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJSocialLinkDataFetchDidHappen" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJSocialLinkDataFetchDidHappenNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
