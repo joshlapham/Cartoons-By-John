@@ -9,6 +9,7 @@
 #import "KJSocialLinkStore.h"
 #import <Parse/Parse.h>
 #import "KJSocialLink.h"
+#import "NSUserDefaults+KJSettings.h"
 
 // Constant for NSNotification name
 NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkDataFetchDidHappen";
@@ -33,10 +34,10 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 
 + (BOOL)hasInitialDataFetchHappened
 {
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstSocialLinksFetchDone"]) {
-        return YES;
-    } else {
+    if (![NSUserDefaults kj_hasFirstSocialLinksFetchCompletedSetting]) {
         return NO;
+    } else {
+        return YES;
     }
 }
 
@@ -155,9 +156,12 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
                         DDLogVerbose(@"socialLinkStore: link not active: %@", object[@"title"]);
                     }
                 }
-                // Set firstSocialLinksFetchDone = YES in NSUserDefaults
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstSocialLinksFetchDone"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                // Set first fetch = YES in NSUserDefaults
+                if (![NSUserDefaults kj_hasFirstSocialLinksFetchCompletedSetting]) {
+                    [NSUserDefaults kj_setHasFirstSocialLinksFetchCompletedSetting:YES];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
                 
                 // Send NSNotification to say that data fetch is done
                 [[NSNotificationCenter defaultCenter] postNotificationName:KJSocialLinkDataFetchDidHappenNotification
