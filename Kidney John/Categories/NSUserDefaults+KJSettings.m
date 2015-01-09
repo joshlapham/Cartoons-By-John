@@ -11,6 +11,7 @@
 // Constants
 static NSString *kHasAppCompletedFirstLaunchSettingKey = @"kHasAppCompletedFirstLaunchSettingKey";
 static NSString *kHasFirstVideoFetchCompletedSettingKey = @"firstVideoFetchDone";
+static NSString *kHasFirstComicFetchCompletedSettingKey = @"firstComicFetchDone";
 
 @implementation NSUserDefaults (KJSettings)
 
@@ -33,6 +34,17 @@ static NSString *kHasFirstVideoFetchCompletedSettingKey = @"firstVideoFetchDone"
 + (void)kj_setHasFirstVideoFetchCompletedSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
                                             forKey:kHasFirstVideoFetchCompletedSettingKey];
+}
+
+// Comics
+// Has first comic fetch completed setting
++ (BOOL)kj_hasFirstComicFetchCompletedSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasFirstComicFetchCompletedSettingKey];
+}
+
++ (void)kj_setHasFirstComicFetchCompletedSetting:(BOOL)setting {
+    [[NSUserDefaults standardUserDefaults] setBool:setting
+                                            forKey:kHasFirstComicFetchCompletedSettingKey];
 }
 
 @end

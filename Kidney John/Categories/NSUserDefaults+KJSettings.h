@@ -19,4 +19,9 @@
 + (BOOL)kj_hasFirstVideoFetchCompletedSetting;
 + (void)kj_setHasFirstVideoFetchCompletedSetting:(BOOL)setting;
 
+// Comics
+// First comic fetch completed setting
++ (BOOL)kj_hasFirstComicFetchCompletedSetting;
++ (void)kj_setHasFirstComicFetchCompletedSetting:(BOOL)setting;
+
 @end

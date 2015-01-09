@@ -9,6 +9,7 @@
 #import "KJComicStore.h"
 #import "Parse.h"
 #import "SDWebImagePrefetcher.h"
+#import "NSUserDefaults+KJSettings.h"
 
 // Constants for Parse object keys
 static NSString *kParseComicNameKey = @"comicName";
@@ -207,10 +208,10 @@ static NSString *kParseComicNumberKey = @"comicNumber";
 
 + (BOOL)hasInitialDataFetchHappened
 {
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstComicFetchDone"]) {
-        return YES;
-    } else {
+    if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
         return NO;
+    } else {
+        return YES;
     }
 }
 
@@ -365,8 +366,10 @@ static NSString *kParseComicNumberKey = @"comicNumber";
             [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
             
             // Set firstLoad = YES in NSUserDefaults
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstComicFetchDone"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
+                [NSUserDefaults kj_setHasFirstComicFetchCompletedSetting:YES];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
             
             // Prefetch comic thumbnails
             // NOTE: does not need to be on wifi as comics are cached locally
