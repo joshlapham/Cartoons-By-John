@@ -7,17 +7,20 @@
 //
 
 #import "UIColor+KJColours.h"
+#import "NSUserDefaults+KJSettings.h"
 
 @implementation UIColor (KJColours)
 
 // Navbar
 + (UIColor *)kj_navbarColour {
     
-    // 'Kidney John' colour (Version 1.0)
-    return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
-    
-    // 'JohnRodPaine' colour (Version ?)
-//    return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        // 'Kidney John' colour (Version 1.0)
+        return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
+    } else {
+        // 'JohnRodPaine' colour (Version ?)
+        return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
+    }
 }
 
 + (UIColor *)kj_navbarTitleFontShadowColour {
@@ -33,11 +36,13 @@
 // Tab bar
 + (UIColor *)kj_tabBarBackgroundColour {
     
-    // 'Kidney John' colour (Version 1.0)
-    return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
-    
-    // 'JohnRodPaine' colour (Version ?)
-//    return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        // 'Kidney John' colour (Version 1.0)
+        return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
+    } else {
+        // 'JohnRodPaine' colour (Version ?)
+        return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
+    }
 }
 
 + (UIColor *)kj_tabBarItemFontStateNormalColour {
@@ -47,29 +52,35 @@
 
 + (UIColor *)kj_tabBarItemFontStateSelectedColour {
     
-    // 'Kidney John' colour (Version 1.0)
-    return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
-    
-    // 'JohnRodPaine' colour (Version ?)
-//    return [UIColor blackColor];
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        // 'Kidney John' colour (Version 1.0)
+        return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
+    } else {
+        // 'JohnRodPaine' colour (Version ?)
+        return [UIColor blackColor];
+    }
 }
 
 + (UIColor *)kj_tabBarItemIconStateNormalColour {
     
-    // 'Kidney John' colour (Version 1.0)
-    return [UIColor grayColor];
-    
-    // 'JohnRodPaine' colour (Version ?)
-//    return [UIColor whiteColor];
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        // 'Kidney John' colour (Version 1.0)
+        return [UIColor grayColor];
+    } else {
+        // 'JohnRodPaine' colour (Version ?)
+        return [UIColor whiteColor];
+    }
 }
 
 + (UIColor *)kj_tabBarItemIconStateSelectedColour {
     
-    // 'Kidney John' colour (Version 1.0)
-    return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
-    
-    // 'JohnRodPaine' colour (Version ?)
-//    return [UIColor blackColor];
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        // 'Kidney John' colour (Version 1.0)
+        return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
+    } else {
+        // 'JohnRodPaine' colour (Version ?)
+        return [UIColor blackColor];
+    }
 }
 
 // Videos
