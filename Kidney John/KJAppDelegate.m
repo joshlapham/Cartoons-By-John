@@ -17,6 +17,7 @@
 #import "DDTTYLogger.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "NSUserDefaults+KJSettings.h"
 
 @implementation KJAppDelegate {
     NSString *parseAppId;
@@ -27,6 +28,9 @@
 
 - (void)setupUI
 {
+    // TESTING - Version 2 colour scheme
+    [NSUserDefaults kj_setUsingVersion2ColourSchemeSetting:NO];
+    
     // Show status bar after app launch image has shown
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
