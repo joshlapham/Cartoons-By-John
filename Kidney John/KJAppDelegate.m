@@ -81,13 +81,13 @@
                                           errorDescription:&errorDesc];
     
     if (!temp) {
-        NSLog(@"Error reading plist: %@, format: %d", errorDesc, format);
+        DDLogError(@"Error reading Parse keys.plist: %@, format: %d", errorDesc, format);
     }
     
     parseAppId = [temp objectForKey:@"appId"];
     parseClientKey = [temp objectForKey:@"clientKey"];
     
-    DDLogVerbose(@"Parse App ID: %@, Client Key: %@", parseAppId, parseClientKey);
+//    DDLogVerbose(@"Parse App ID: %@, Client Key: %@", parseAppId, parseClientKey);
 }
 
 #pragma mark - Init methods
