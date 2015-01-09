@@ -30,6 +30,7 @@
 		68A2D6121A5EC43C000DA2CF /* UIColor+KJColours.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A2D6111A5EC43C000DA2CF /* UIColor+KJColours.m */; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
 		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
+		68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
 		68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CD185B272A008D3E36 /* KJFavouritesListView.m */; };
 		68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */; };
@@ -116,6 +117,8 @@
 		68CE160218BDDAF300127AA7 /* KJComicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicStore.m; path = Stores/KJComicStore.m; sourceTree = "<group>"; };
 		68CE160418BEAF7800127AA7 /* KJVideoStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoStore.h; path = Stores/KJVideoStore.h; sourceTree = "<group>"; };
 		68CE160518BEAF7800127AA7 /* KJVideoStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoStore.m; path = Stores/KJVideoStore.m; sourceTree = "<group>"; };
+		68DB8EFF1A5FE296005D33E2 /* NSUserDefaults+KJSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+KJSettings.h"; path = "Categories/NSUserDefaults+KJSettings.h"; sourceTree = "<group>"; };
+		68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+KJSettings.m"; path = "Categories/NSUserDefaults+KJSettings.m"; sourceTree = "<group>"; };
 		68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJMoreInitialView.h; path = "View Controllers/KJMoreInitialView.h"; sourceTree = "<group>"; };
 		68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJMoreInitialView.m; path = "View Controllers/KJMoreInitialView.m"; sourceTree = "<group>"; };
 		68E461CC185B272A008D3E36 /* KJFavouritesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJFavouritesListView.h; path = "View Controllers/KJFavouritesListView.h"; sourceTree = "<group>"; };
@@ -209,6 +212,8 @@
 				68A2D60D1A5EBB61000DA2CF /* UIFont+KJFonts.m */,
 				68A2D6101A5EC43C000DA2CF /* UIColor+KJColours.h */,
 				68A2D6111A5EC43C000DA2CF /* UIColor+KJColours.m */,
+				68DB8EFF1A5FE296005D33E2 /* NSUserDefaults+KJSettings.h */,
+				68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -550,6 +555,7 @@
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
 				6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */,
 				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
+				68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */,
 				68E48D28184A247D00600FA5 /* main.m in Sources */,
 				6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */,
 				68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */,
