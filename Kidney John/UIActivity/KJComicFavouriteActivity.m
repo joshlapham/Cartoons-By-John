@@ -8,22 +8,37 @@
 
 #import "KJComicFavouriteActivity.h"
 #import "KJComicStore.h"
+#import "KJComic.h"
 
 @implementation KJComicFavouriteActivity {
     NSString *titleOfActivity;
-    NSString *nameOfComic;
+    KJComic *comicObject;
 }
 
-- (id)initWithActivityTitle:(NSString *)activityTitle andComicName:(NSString *)comicName
+#pragma mark - Init method
+
+- (id)initWithComic:(KJComic *)comic
 {
     self = [super init];
     
     if (self) {
-        titleOfActivity = activityTitle;
-        nameOfComic = comicName;
+        
+        // Init comic object
+        comicObject = comic;
+        
+        // Init activity title, depending on favourite status of comic
+        if (!comicObject.isFavourite) {
+            titleOfActivity = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
+        } else {
+            titleOfActivity = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
+        }
+        
     }
+    
     return self;
 }
+
+#pragma mark - Other methods
 
 - (NSString *)activityType
 {
@@ -37,7 +52,7 @@
 
 - (UIImage *)activityImage
 {
-    if ([KJComicStore checkIfComicIsAFavourite:nameOfComic]) {
+    if (comicObject.isFavourite) {
         return [UIImage imageNamed:@"remove-from-fav.png"];
     } else {
         return [UIImage imageNamed:@"add-to-fav.png"];
@@ -51,12 +66,17 @@
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems
 {
-    // Check if comic is a favourite and update accordingly
-    if (![KJComicStore checkIfComicIsAFavourite:nameOfComic]) {
-        [KJComicStore updateComicFavouriteStatus:nameOfComic isFavourite:YES];
-    } else {
-        [KJComicStore updateComicFavouriteStatus:nameOfComic isFavourite:NO];
-    }
+    // Toggle favourite status for comicObject
+    comicObject.isFavourite = !comicObject.isFavourite;
+    
+    // Save
+    [comicObject.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        if (!error && success) {
+            DDLogVerbose(@"%@ - successfully updated favourite status for comic %@", self.class, comicObject.comicName);
+        } else {
+            DDLogError(@"%@ - error updating favourite status for comic %@: %@", self.class, comicObject.comicName, [error localizedDescription]);
+        }
+    }];
 }
 
 - (UIViewController *)activityViewController

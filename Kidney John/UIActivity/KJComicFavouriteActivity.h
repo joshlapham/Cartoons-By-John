@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class KJComic;
+
 @interface KJComicFavouriteActivity : UIActivity
 
-- (id)initWithActivityTitle:(NSString *)activityTitle andComicName:(NSString *)comicName;
+// Init method
+- (id)initWithComic:(KJComic *)comic;
 
 @end
