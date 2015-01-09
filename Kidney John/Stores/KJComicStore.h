@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "KJComic.h"
 
+// Constants
+extern NSString * const KJComicDataFetchDidHappenNotification;
+
 @interface KJComicStore : NSObject
 
 // Init method

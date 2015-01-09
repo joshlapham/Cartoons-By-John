@@ -17,6 +17,9 @@ static NSString *kParseComicFileKey = @"comicFile";
 static NSString *kParseComicFileNameKey = @"comicFileName";
 static NSString *kParseComicNumberKey = @"comicNumber";
 
+// Constant for NSNotification name
+NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHappen";
+
 @implementation KJComicStore
 
 #pragma mark - Init methods
@@ -361,9 +364,10 @@ static NSString *kParseComicNumberKey = @"comicNumber";
 
                 }
             }
+            
             // Send NSNotification to say that data fetch is done
-            NSString *notificationName = @"KJComicDataFetchDidHappen";
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KJComicDataFetchDidHappenNotification
+                                                                object:nil];
             
             // Set firstLoad = YES in NSUserDefaults
             if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
