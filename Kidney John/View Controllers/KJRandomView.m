@@ -267,7 +267,7 @@
     // Register for NSNotification
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(doodleFetchDidHappen)
-                                                 name:@"KJDoodleDataFetchDidHappen"
+                                                 name:KJDoodleFetchDidHappenNotification
                                                object:nil];
     
     // Reachability NSNotification
@@ -307,7 +307,7 @@
 - (void)dealloc
 {
     // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJDoodleDataFetchDidHappen" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJDoodleFetchDidHappenNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
