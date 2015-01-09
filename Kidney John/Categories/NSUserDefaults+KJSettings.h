@@ -29,4 +29,9 @@
 + (BOOL)kj_hasFirstDoodleFetchCompletedSetting;
 + (void)kj_setHasFirstDoodleFetchCompletedSetting:(BOOL)setting;
 
+// Social Links
+// Has first social links fetch completed setting
++ (BOOL)kj_hasFirstSocialLinksFetchCompletedSetting;
++ (void)kj_setHasFirstSocialLinksFetchCompletedSetting:(BOOL)setting;
+
 @end
