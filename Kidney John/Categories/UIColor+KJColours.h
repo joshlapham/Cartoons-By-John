@@ -19,6 +19,7 @@
 + (UIColor *)kj_tabBarBackgroundColour;
 + (UIColor *)kj_tabBarItemFontStateNormalColour;
 + (UIColor *)kj_tabBarItemFontStateSelectedColour;
++ (UIColor *)kj_tabBarItemIconStateNormalColour;
 + (UIColor *)kj_tabBarItemIconStateSelectedColour;
 
 // Videos

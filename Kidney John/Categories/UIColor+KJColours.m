@@ -47,12 +47,29 @@
 
 + (UIColor *)kj_tabBarItemFontStateSelectedColour {
     
+    // 'Kidney John' colour (Version 1.0)
     return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
+    
+    // 'JohnRodPaine' colour (Version ?)
+//    return [UIColor blackColor];
+}
+
++ (UIColor *)kj_tabBarItemIconStateNormalColour {
+    
+    // 'Kidney John' colour (Version 1.0)
+    return [UIColor grayColor];
+    
+    // 'JohnRodPaine' colour (Version ?)
+//    return [UIColor whiteColor];
 }
 
 + (UIColor *)kj_tabBarItemIconStateSelectedColour {
     
+    // 'Kidney John' colour (Version 1.0)
     return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
+    
+    // 'JohnRodPaine' colour (Version ?)
+//    return [UIColor blackColor];
 }
 
 // Videos
