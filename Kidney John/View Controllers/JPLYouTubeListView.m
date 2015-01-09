@@ -384,10 +384,9 @@
     self.title = NSLocalizedString(@"Videos", @"Title of Videos view");
     
     // Set up NSNotification receiving for when videoStore finishes data fetch
-    NSString *notificationName = @"KJVideoDataFetchDidHappen";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(videoFetchDidFinish)
-                                                 name:notificationName
+                                                 name:KJVideoDataFetchDidHappenNotification
                                                object:nil];
     
     // Reachability NSNotification
@@ -429,7 +428,7 @@
 - (void)dealloc
 {
     // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJVideoDataFetchDidHappen" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJVideoDataFetchDidHappenNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
