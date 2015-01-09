@@ -19,6 +19,9 @@ static NSString *kParseImageDescriptionKey = @"imageDescription";
 static NSString *kParseImageUrlKey = @"imageUrl";
 static NSString *kParseImageDateKey = @"date";
 
+// Constant for NSNotification name
+NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHappen";
+
 @implementation KJDoodleStore
 
 #pragma mark - Init methods
@@ -311,8 +314,7 @@ static NSString *kParseImageDateKey = @"date";
                 }
                 
                 // Send NSNotification to say that data fetch is done
-                NSString *notificationName = @"KJDoodleDataFetchDidHappen";
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KJDoodleFetchDidHappenNotification object:nil];
                 
                 // Prefetch doodles if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {

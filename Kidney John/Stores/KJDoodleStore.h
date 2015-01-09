@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "KJRandomImage.h"
 
+// Constants
+extern NSString * const KJDoodleFetchDidHappenNotification;
+
 @interface KJDoodleStore : NSObject
 
 // Init method
