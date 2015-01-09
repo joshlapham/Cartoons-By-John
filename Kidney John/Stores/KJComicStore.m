@@ -10,6 +10,8 @@
 #import "Parse.h"
 #import "SDWebImagePrefetcher.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "KJComic.h"
+#import "KJComic+Methods.h"
 
 // Constants for Parse object keys
 static NSString *kParseComicNameKey = @"comicName";
@@ -20,21 +22,16 @@ static NSString *kParseComicNumberKey = @"comicNumber";
 // Constant for NSNotification name
 NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHappen";
 
+// Constants for comic filepaths
+static NSString *kComicThumbnailFilepathFormat = @"%@/%@.jpg";
+static NSString *kComicFilepathFormat = @"%@/%@%@.jpg";
+static NSString *kComicsLocalDirectoryName = @"Comics";
+static NSString *kComicThumbnailsLocalDirectoryName = @"ComicThumbs";
+
+// Constant for Core Data attribute to find by
+static NSString *kComicAttributeComicNameKey = @"comicName";
+
 @implementation KJComicStore
-
-#pragma mark - Init methods
-
-+ (KJComicStore *)sharedStore
-{
-    static KJComicStore *_sharedStore = nil;
-    static dispatch_once_t oncePredicate;
-    
-    dispatch_once(&oncePredicate, ^{
-        _sharedStore = [[KJComicStore alloc] init];
-    });
-    
-    return _sharedStore;
-}
 
 #pragma mark - Prefetch comic thumbnails method
 
@@ -59,15 +56,15 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
 
 - (NSArray *)returnComicsFolderAsArray
 {
-    return [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"];
+    return [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:kComicsLocalDirectoryName];
 }
 
 + (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject
 {
-    NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"ComicThumbs"];
+    NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicThumbnailsLocalDirectoryName];
     
     // Filepath for jpeg comic thumbs
-    NSString *filePath = [NSString stringWithFormat:@"%@/%@.jpg", comicsFolderPath, comicObject.comicNumber];
+    NSString *filePath = [NSString stringWithFormat:kComicThumbnailFilepathFormat, comicsFolderPath, comicObject.comicNumber];
     
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     
@@ -83,11 +80,11 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
 
 + (NSString *)returnFilepathForComicObject:(KJComic *)comicObject
 {
-    NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Comics"];
+    NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicsLocalDirectoryName];
     
     // Filepath for jpeg comics
     NSString *filePath;
-    filePath = [NSString stringWithFormat:@"%@/%@%@.jpg", comicsFolderPath, comicObject.comicNumber, comicObject.comicFileName];
+    filePath = [NSString stringWithFormat:kComicFilepathFormat, comicsFolderPath, comicObject.comicNumber, comicObject.comicFileName];
     
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     
@@ -107,7 +104,7 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
     
-    DDLogVerbose(@"comicStore: comic image: %@", imageToReturn);
+//    DDLogVerbose(@"comicStore: comic image: %@", imageToReturn);
     
     return imageToReturn;
 }
@@ -118,7 +115,7 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnThumbnailFilepathForComicObject:comicObject]];
     
-    DDLogVerbose(@"comicStore: thumb image: %@", imageToReturn);
+//    DDLogVerbose(@"comicStore: thumb image: %@", imageToReturn);
     
     return imageToReturn;
 }
@@ -128,10 +125,10 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     // Load from resources path
     NSMutableArray *comicFileResults = [[NSMutableArray alloc] init];
     
-    NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"] count];
+    NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:kComicsLocalDirectoryName] count];
     DDLogVerbose(@"comicStore: bundle count: %d", pngCount);
     
-    for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:@"Comics"]) {
+    for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:kComicsLocalDirectoryName]) {
         //DDLogVerbose(@"%@", fileName);
         [comicFileResults addObject:fileName];
     }
@@ -140,6 +137,8 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
 }
 
 #pragma mark - Comic Favourites methods
+
+// TODO: update
 
 + (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
 {
@@ -150,7 +149,7 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
         // Comic is NOT a favourite
         DDLogVerbose(@"Comic is NOT already a favourite, adding now ..");
         
-        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey withValue:comicName inContext:localContext];
         comicToFavourite.isFavourite = isOrNot;
         
         // Save
@@ -165,8 +164,15 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
-        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+    // Init comic object
+    KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
+                                                       withValue:comicName
+                                                       inContext:localContext];
+    
+    // If object was found ..
+    if (comicToFavourite) {
+        
+        // Check if favourite
         if (!comicToFavourite.isFavourite) {
             DDLogVerbose(@"comicStore: comic IS NOT a favourite");
             return FALSE;
@@ -174,7 +180,10 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
             DDLogVerbose(@"comicStore: comic IS a favourite");
             return TRUE;
         }
+        
     } else {
+        // Failed to find a comic with the comicName parameter
+        DDLogError(@"comicStore: error checking if comic is a favourite; failed to find comic");
         return FALSE;
     }
 }
@@ -220,7 +229,7 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
 
 + (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
 {
-    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:context]) {
+    if ([KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey withValue:comicName inContext:context]) {
         //DDLogVerbose(@"COMICS LIST: yes, comic does exist in database");
         return TRUE;
     } else {
@@ -239,7 +248,8 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     
     // If comic does not exist in database then persist
     if (![self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
-        // Create a new comic in the current context
+        
+        // Init new comic object in localContext
         KJComic *newComic = [KJComic MR_createInContext:localContext];
         
         // Set attributes
@@ -265,10 +275,15 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     
     // If comic is in database ..
     if ([KJComicStore checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
-        KJComic *comicToCheck = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+        
+        // Init comic object
+        KJComic *comicToCheck = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
+                                                       withValue:comicName
+                                                       inContext:localContext];
         
         // Check if comicToCheck needs updating
         if (![comicToCheck.comicName isEqualToString:comicName] || ![comicToCheck.comicFileName isEqualToString:comicFileName] || ![comicToCheck.comicFileUrl isEqualToString:comicFileUrl] || ![comicToCheck.comicNumber isEqualToString:comicNumber]) {
+            
             // Comic needs updating
             DDLogVerbose(@"comicStore: comic needs update: %@", comicName);
             
@@ -297,9 +312,13 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     // NOTE - we're not checking if comic is in database first (as  the checkIfComicNeedsUpdate method does),
     // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchComicData method
     
-    KJComic *comicToDelete = [KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext];
+    // Init comic object
+    KJComic *comicToDelete = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
+                                                    withValue:comicName
+                                                    inContext:localContext];
     
     if (comicToDelete) {
+        
         // Delete object
         [comicToDelete MR_deleteInContext:localContext];
         
@@ -317,7 +336,7 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
 + (void)fetchComicData
 {
     // Setup query
-    PFQuery *comicsQuery = [PFQuery queryWithClassName:@"Comic"];
+    PFQuery *comicsQuery = [PFQuery queryWithClassName:[KJComic parseClassName]];
     
     // Query all comics
     [comicsQuery whereKey:kParseComicNameKey notEqualTo:@"LOL"];
@@ -327,12 +346,15 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
     
     // Start query with block
     [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        
         if (!error) {
+            
             // The find succeeded
             // Show network activity monitor
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
             
             for (PFObject *object in objects) {
+                
                 if ([object[@"is_active"] isEqual:@"1"]) {
                     // TODO:
                     // - check if PFFile is already saved on filesystem
@@ -381,9 +403,23 @@ NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHa
             
         } else {
             // Log details of the failure
-            DDLogVerbose(@"comicStore: error: %@ %@", error, [error userInfo]);
+            DDLogError(@"comicStore: error: %@ %@", error, [error userInfo]);
         }
     }];
+}
+
+#pragma mark - Init method
+
++ (KJComicStore *)sharedStore
+{
+    static KJComicStore *_sharedStore = nil;
+    static dispatch_once_t oncePredicate;
+    
+    dispatch_once(&oncePredicate, ^{
+        _sharedStore = [[KJComicStore alloc] init];
+    });
+    
+    return _sharedStore;
 }
 
 @end

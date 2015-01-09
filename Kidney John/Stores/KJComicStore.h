@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KJComic.h"
+
+@class KJComic;
 
 // Constants
 extern NSString * const KJComicDataFetchDidHappenNotification;
