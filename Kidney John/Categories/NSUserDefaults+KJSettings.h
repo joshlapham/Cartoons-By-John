@@ -34,4 +34,9 @@
 + (BOOL)kj_hasFirstSocialLinksFetchCompletedSetting;
 + (void)kj_setHasFirstSocialLinksFetchCompletedSetting:(BOOL)setting;
 
+// Testing/debugging
+// Colour schemes
++ (BOOL)kj_usingVersion2ColourSchemeSetting;
++ (void)kj_setUsingVersion2ColourSchemeSetting:(BOOL)setting;
+
 @end

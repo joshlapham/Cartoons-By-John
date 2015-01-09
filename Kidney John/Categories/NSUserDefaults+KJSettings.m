@@ -14,6 +14,8 @@ static NSString *kHasFirstVideoFetchCompletedSettingKey = @"firstVideoFetchDone"
 static NSString *kHasFirstComicFetchCompletedSettingKey = @"firstComicFetchDone";
 static NSString *kHasFirstDoodleFetchCompletedSettingKey = @"firstRandomImagesFetchDone";
 static NSString *kHasFirstSocialLinksFetchCompletedSettingKey = @"firstSocialLinksFetchDone";
+// Testing/debugging
+static NSString *kUsingVersion2ColourSchemeSettingKey = @"KJUsingVersion2ColourSchemeSetting";
 
 @implementation NSUserDefaults (KJSettings)
 
@@ -69,6 +71,17 @@ static NSString *kHasFirstSocialLinksFetchCompletedSettingKey = @"firstSocialLin
 + (void)kj_setHasFirstSocialLinksFetchCompletedSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
                                             forKey:kHasFirstSocialLinksFetchCompletedSettingKey];
+}
+
+// Testing/debugging
+// Colour schemes
++ (BOOL)kj_usingVersion2ColourSchemeSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kUsingVersion2ColourSchemeSettingKey];
+}
+
++ (void)kj_setUsingVersion2ColourSchemeSetting:(BOOL)setting {
+    [[NSUserDefaults standardUserDefaults] setBool:setting
+                                            forKey:kUsingVersion2ColourSchemeSettingKey];
 }
 
 @end
