@@ -9,6 +9,7 @@
 #import "KJTabBarController.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "UIImage+KJImageUtils.h"
 
 @interface KJTabBarController () <UITabBarControllerDelegate>
 
@@ -26,10 +27,10 @@
     self.delegate = self;
     
     // Set tab button titles
-    // NOTE: title for More button is set in Storyboard
     [[self.tabBar.items objectAtIndex:0] setTitle:NSLocalizedString(@"Videos", nil)];
     [[self.tabBar.items objectAtIndex:1] setTitle:NSLocalizedString(@"Comix", nil)];
     [[self.tabBar.items objectAtIndex:2] setTitle:NSLocalizedString(@"Doodles", nil)];
+    [[self.tabBar.items objectAtIndex:3] setTitle:NSLocalizedString(@"More", nil)];
     
     // Set tab bar background colour
     [[UITabBar appearance] setBarTintColor:[UIColor kj_tabBarBackgroundColour]];
@@ -54,6 +55,12 @@
     
     // Set colour of button icon when selected
     [[UITabBar appearance] setTintColor:[UIColor kj_tabBarItemIconStateSelectedColour]];
+    
+    // Set colour of button icons when not selected
+    for (UITabBarItem *item in self.tabBar.items) {
+        // Use the UIImage category code (KJImageUtils) for the imageWithColor: method
+        item.image = [[item.selectedImage imageWithColor:[UIColor kj_tabBarItemIconStateNormalColour]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    }
 }
 
 @end
