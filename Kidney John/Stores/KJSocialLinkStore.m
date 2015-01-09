@@ -10,6 +10,9 @@
 #import <Parse/Parse.h>
 #import "KJSocialLink.h"
 
+// Constant for NSNotification name
+NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkDataFetchDidHappen";
+
 @implementation KJSocialLinkStore
 
 #pragma mark - Init method
@@ -157,8 +160,8 @@
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 // Send NSNotification to say that data fetch is done
-                NSString *notificationName = @"KJSocialLinkDataFetchDidHappen";
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KJSocialLinkDataFetchDidHappenNotification
+                                                                    object:nil];
                 
             } else {
                 // Log details of the failure

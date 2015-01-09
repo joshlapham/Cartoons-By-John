@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+// Constants
+extern NSString * const KJSocialLinkDataFetchDidHappenNotification;
+
 @interface KJSocialLinkStore : NSObject
 
 // Init method
