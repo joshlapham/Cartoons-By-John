@@ -11,6 +11,7 @@
 #import "KJVideo.h"
 #import "JPLReachabilityManager.h"
 #import "SDWebImagePrefetcher.h"
+#import "NSUserDefaults+KJSettings.h"
 
 // Constants for Parse object keys
 static NSString *kParseVideoIdKey = @"videoId";
@@ -280,9 +281,12 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
                         }
                     }
                 }
+                
                 // Set firstLoad = YES in NSUserDefaults
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstVideoFetchDone"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
+                    [NSUserDefaults kj_setHasFirstVideoFetchCompletedSetting:YES];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
                 
                 // Post NSNotification that data fetch is done
                 NSString *notificationName = @"KJVideoDataFetchDidHappen";

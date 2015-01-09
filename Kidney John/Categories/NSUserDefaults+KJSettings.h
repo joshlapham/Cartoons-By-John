@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSUserDefaults_KJSettings : NSObject
+@interface NSUserDefaults (KJSettings)
+
+// App first launch setting
++ (BOOL)kj_hasAppCompletedFirstLaunchSetting;
++ (void)kj_setHasAppCompletedFirstLaunchSetting:(BOOL)setting;
+
+// Videos
+// First video fetch completed setting
++ (BOOL)kj_hasFirstVideoFetchCompletedSetting;
++ (void)kj_setHasFirstVideoFetchCompletedSetting:(BOOL)setting;
 
 @end
