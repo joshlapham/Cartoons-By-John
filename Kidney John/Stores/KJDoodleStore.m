@@ -11,6 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "SDWebImagePrefetcher.h"
 #import "JPLReachabilityManager.h"
+#import "NSUserDefaults+KJSettings.h"
 
 // Constants for Parse object keys
 static NSString *kParseImageIdKey = @"imageId";
@@ -152,10 +153,10 @@ static NSString *kParseImageDateKey = @"date";
 
 + (BOOL)hasInitialDataFetchHappened
 {
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstRandomImagesFetchDone"]) {
-        return YES;
-    } else {
+    if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
         return NO;
+    } else {
+        return YES;
     }
 }
 
@@ -302,9 +303,12 @@ static NSString *kParseImageDateKey = @"date";
                         }
                     }
                 }
-                // Set randomImagesFetchDone = YES in NSUserDefaults
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRandomImagesFetchDone"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                // Set first fetch = YES in NSUserDefaults
+                if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
+                    [NSUserDefaults kj_setHasFirstDoodleFetchCompletedSetting:YES];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
                 
                 // Send NSNotification to say that data fetch is done
                 NSString *notificationName = @"KJDoodleDataFetchDidHappen";
