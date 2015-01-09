@@ -24,4 +24,9 @@
 + (BOOL)kj_hasFirstComicFetchCompletedSetting;
 + (void)kj_setHasFirstComicFetchCompletedSetting:(BOOL)setting;
 
+// Doodles
+// First doodle fetch completed setting
++ (BOOL)kj_hasFirstDoodleFetchCompletedSetting;
++ (void)kj_setHasFirstDoodleFetchCompletedSetting:(BOOL)setting;
+
 @end

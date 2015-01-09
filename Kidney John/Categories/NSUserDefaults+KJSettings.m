@@ -12,6 +12,7 @@
 static NSString *kHasAppCompletedFirstLaunchSettingKey = @"kHasAppCompletedFirstLaunchSettingKey";
 static NSString *kHasFirstVideoFetchCompletedSettingKey = @"firstVideoFetchDone";
 static NSString *kHasFirstComicFetchCompletedSettingKey = @"firstComicFetchDone";
+static NSString *kHasFirstDoodleFetchCompletedSettingKey = @"firstRandomImagesFetchDone";
 
 @implementation NSUserDefaults (KJSettings)
 
@@ -45,6 +46,17 @@ static NSString *kHasFirstComicFetchCompletedSettingKey = @"firstComicFetchDone"
 + (void)kj_setHasFirstComicFetchCompletedSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
                                             forKey:kHasFirstComicFetchCompletedSettingKey];
+}
+
+// Doodles
+// Has first doodle fetch completed setting
++ (BOOL)kj_hasFirstDoodleFetchCompletedSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasFirstDoodleFetchCompletedSettingKey];
+}
+
++ (void)kj_setHasFirstDoodleFetchCompletedSetting:(BOOL)setting {
+    [[NSUserDefaults standardUserDefaults] setBool:setting
+                                            forKey:kHasFirstDoodleFetchCompletedSettingKey];
 }
 
 @end
