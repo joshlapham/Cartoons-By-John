@@ -98,6 +98,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     return filePath;
 }
 
+// TODO: do we really need this method?
+
 + (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject
 {
     // TODO: handle if filepath is nil
@@ -138,55 +140,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 #pragma mark - Comic Favourites methods
 
-// TODO: update
-
-+ (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    if ([KJComic MR_findFirstByAttribute:@"comicName" withValue:comicName inContext:localContext]) {
-        // Comic is NOT a favourite
-        DDLogVerbose(@"Comic is NOT already a favourite, adding now ..");
-        
-        KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey withValue:comicName inContext:localContext];
-        comicToFavourite.isFavourite = isOrNot;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    } else {
-        DDLogVerbose(@"comicStore: comic not found in database, not adding anything to favourites");
-    }
-}
-
-+ (BOOL)checkIfComicIsAFavourite:(NSString *)comicName
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // Init comic object
-    KJComic *comicToFavourite = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
-                                                       withValue:comicName
-                                                       inContext:localContext];
-    
-    // If object was found ..
-    if (comicToFavourite) {
-        
-        // Check if favourite
-        if (!comicToFavourite.isFavourite) {
-            DDLogVerbose(@"comicStore: comic IS NOT a favourite");
-            return FALSE;
-        } else {
-            DDLogVerbose(@"comicStore: comic IS a favourite");
-            return TRUE;
-        }
-        
-    } else {
-        // Failed to find a comic with the comicName parameter
-        DDLogError(@"comicStore: error checking if comic is a favourite; failed to find comic");
-        return FALSE;
-    }
-}
+// TODO: add init NSPredicate method using propety in this method, then refactor this method out
 
 + (NSArray *)returnFavouritesArray
 {
@@ -203,6 +157,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 #pragma mark - Return comic with comic name method
 
+// TODO: add init NSPredicate method using propety in this method, then refactor this method out
+
 + (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind
 {
     // Get the local context
@@ -218,6 +174,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 #pragma mark - Core Data methods
 
+// TODO: refactor this out and just use KJSettings category elsewhere
+
 + (BOOL)hasInitialDataFetchHappened
 {
     if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
@@ -226,6 +184,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
         return YES;
     }
 }
+
+// TODO: do we really need this method? Can just check Core Data for KJComic object elsewhere
 
 + (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
 {
@@ -237,6 +197,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
         return FALSE;
     }
 }
+
+// TODO: do we really need this method? Refactor
 
 + (void)persistNewComicWithName:(NSString *)comicName
                   comicFileName:(NSString *)comicFileName
@@ -264,6 +226,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
         [localContext MR_saveToPersistentStoreAndWait];
     }
 }
+
+// TODO: not even calling this method at the moment, review this
 
 - (void)checkIfComicNeedsUpdateWithComicName:(NSString *)comicName
                                comicFileName:(NSString *)comicFileName
@@ -303,6 +267,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
         }
     }
 }
+
+// TODO: do we really need this method?
 
 + (void)deleteComicFromDatabaseWithComicName:(NSString *)comicName
 {

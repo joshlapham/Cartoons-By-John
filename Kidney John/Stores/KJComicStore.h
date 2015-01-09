@@ -21,8 +21,6 @@ extern NSString * const KJComicDataFetchDidHappenNotification;
 // Class methods
 + (void)fetchComicData;
 + (KJComic *)returnComicWithComicName:(NSString *)comicName;
-+ (void)updateComicFavouriteStatus:(NSString *)comicName isFavourite:(BOOL)isOrNot;
-+ (BOOL)checkIfComicIsAFavourite:(NSString *)comicName;
 - (NSArray *)returnArrayOfComicFiles;
 + (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;
 + (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject;
