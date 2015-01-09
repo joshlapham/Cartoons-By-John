@@ -19,17 +19,16 @@
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
+@property (nonatomic, strong) NSArray *videoResults;
+@property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) UIAlertView *noNetworkAlertView;
+@property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
-@implementation JPLYouTubeListView {
-    NSArray *videoResults;
-    NSArray *searchResults;
-    MBProgressHUD *hud;
-    UIAlertView *noNetworkAlertView;
-    UITapGestureRecognizer *singleTap;
-}
+@implementation JPLYouTubeListView
 
 #pragma mark - UISearchBar methods
 
@@ -37,7 +36,7 @@
 {
     NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"self.videoName CONTAINS[cd] %@", searchText];
     
-    searchResults = [videoResults filteredArrayUsingPredicate:resultPredicate];
+    _searchResults = [_videoResults filteredArrayUsingPredicate:resultPredicate];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
@@ -54,11 +53,11 @@
     DDLogVerbose(@"Videos: did receive notification that data fetch is complete, reloading table ..");
     
     // Sort videos with newest at top
-    videoResults = [[NSArray alloc] init];
-    videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
+    _videoResults = [[NSArray alloc] init];
+    _videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
     // Hide progress
-    [hud hide:YES];
+    [_hud hide:YES];
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -70,7 +69,7 @@
     }
     
     // Remove tap gesture recognizer
-    [self.tableView removeGestureRecognizer:singleTap];
+    [self.tableView removeGestureRecognizer:_singleTap];
     
     // Reload tableView
     [self.tableView reloadData];
@@ -81,7 +80,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // If there is data ..
-    if ([videoResults count] > 0 || [searchResults count] > 0) {
+    if ([_videoResults count] > 0 || [_searchResults count] > 0) {
         return 1;
     } else {
         // No data
@@ -93,9 +92,9 @@
 {
     // Check if this is the video list or the search list
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return [searchResults count];
+        return [_searchResults count];
     } else {
-        return [videoResults count];
+        return [_videoResults count];
     }
 }
 
@@ -113,9 +112,9 @@
     
     // Check if this is the video list or the search results list
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        cellVideo = [searchResults objectAtIndex:indexPath.row];
+        cellVideo = [_searchResults objectAtIndex:indexPath.row];
     } else {
-        cellVideo = [videoResults objectAtIndex:indexPath.row];
+        cellVideo = [_videoResults objectAtIndex:indexPath.row];
     }
     
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
@@ -203,12 +202,12 @@
         
         if ([self.searchDisplayController isActive]) {
             indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
-            cellVideo = [searchResults objectAtIndex:indexPath.row];
+            cellVideo = [_searchResults objectAtIndex:indexPath.row];
             destViewController.videoIdFromList = cellVideo.videoId;
             destViewController.videoTitleFromList = cellVideo.videoName;
         } else {
             indexPath = [self.tableView indexPathForSelectedRow];
-            cellVideo = [videoResults objectAtIndex:indexPath.row];
+            cellVideo = [_videoResults objectAtIndex:indexPath.row];
             destViewController.videoIdFromList = cellVideo.videoId;
             destViewController.videoTitleFromList = cellVideo.videoName;
         }
@@ -241,7 +240,7 @@
     NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
     NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
     
-    noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
+    _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
                                                     message:messageString
                                                    delegate:self
                                           cancelButtonTitle:cancelButtonString
@@ -250,10 +249,10 @@
     if (![KJVideoStore hasInitialDataFetchHappened]) {
         
         // Hide progress
-        [hud hide:YES];
+        [_hud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
-        [noNetworkAlertView show];
+        [_noNetworkAlertView show];
     }
 }
 
@@ -265,7 +264,7 @@
         DDLogVerbose(@"Videos: network became available");
         
         // Dismiss no network UIAlertView
-        [noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        [_noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
         
         // Fetch data
         [KJVideoStore fetchVideoData];
@@ -276,11 +275,11 @@
 {
     // Show progress
     // Init MBProgressHUD
-    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.userInteractionEnabled = NO;
+    _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _hud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Videos ...", @"Message shown under progress wheel when videos are loading");
-    hud.labelText = progressHudString;
-    hud.labelFont = [UIFont kj_progressHudFont];
+    _hud.labelText = progressHudString;
+    _hud.labelFont = [UIFont kj_progressHudFont];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -409,9 +408,9 @@
         self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped
-        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
-        singleTap.numberOfTapsRequired = 1;
-        [self.tableView addGestureRecognizer:singleTap];
+        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        _singleTap.numberOfTapsRequired = 1;
+        [self.tableView addGestureRecognizer:_singleTap];
     }
     
     // Set placeholder and prompt text for UISearchBar
