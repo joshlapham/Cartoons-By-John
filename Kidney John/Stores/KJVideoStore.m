@@ -20,6 +20,9 @@ static NSString *kParseVideoDescriptionKey = @"videoDescription";
 static NSString *kParseVideoDateKey = @"date";
 static NSString *kParseVideoDurationKey = @"videoDuration";
 
+// Constant for NSNotification name
+NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHappen";
+
 @implementation KJVideoStore
 
 #pragma mark - Init methods
@@ -289,8 +292,8 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
                 }
                 
                 // Post NSNotification that data fetch is done
-                NSString *notificationName = @"KJVideoDataFetchDidHappen";
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KJVideoDataFetchDidHappenNotification
+                                                                    object:nil];
                 
                 // Prefetch video thumbnails if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {

@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+// Constants
+extern NSString * const KJVideoDataFetchDidHappenNotification;
+
 @interface KJVideoStore : NSObject
 
 // Init method
