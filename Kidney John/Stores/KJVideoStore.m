@@ -113,10 +113,10 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
 
 + (BOOL)hasInitialDataFetchHappened
 {
-    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"firstVideoFetchDone"]) {
-        return YES;
-    } else {
+    if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         return NO;
+    } else {
+        return YES;
     }
 }
 
