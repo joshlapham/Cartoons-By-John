@@ -3,11 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "vimeo.png"
+      "filename" : "727-more.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "727-more@2x.png"
     },
     {
       "idiom" : "universal",
