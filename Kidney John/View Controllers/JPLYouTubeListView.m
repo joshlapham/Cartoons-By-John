@@ -16,6 +16,11 @@
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "NSUserDefaults+KJSettings.h"
+
+// Constants
+static NSString *kCellIdentifier = @"videoResultCell";
+static NSString *kYouTubeVideoThumbnailUrl = @"https://img.youtube.com/vi/%@/default.jpg";
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
@@ -30,29 +35,87 @@
 
 @implementation JPLYouTubeListView
 
+#pragma mark - dealloc method
+
+- (void)dealloc {
+    // Remove NSNotification observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJVideoDataFetchDidHappenNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+}
+
+#pragma mark - Init method
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // Set title
+    self.title = NSLocalizedString(@"Videos", @"Title of Videos view");
+    
+    // Set up NSNotification receiving for when videoStore finishes data fetch
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoFetchDidFinish)
+                                                 name:KJVideoDataFetchDidHappenNotification
+                                               object:nil];
+    
+    // Reachability NSNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityDidChange)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    // Fetch video data
+    [self fetchDataWithNetworkCheck];
+    
+    // Set background if no network is available
+    if ([JPLReachabilityManager isUnreachable]) {
+        // Init image to use for table background
+        // TODO: change image to UILabel
+        UIImage *image = [UIImage imageNamed:@"no-data.png"];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        
+        // Add to tableView
+        [self.tableView addSubview:imageView];
+        self.tableView.backgroundView = imageView;
+        self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        // Gesture recognizer to reload data if tapped
+        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        _singleTap.numberOfTapsRequired = 1;
+        [self.tableView addGestureRecognizer:_singleTap];
+    }
+    
+    // Set placeholder and prompt text for UISearchBar
+    NSString *searchPlaceholderString = NSLocalizedString(@"Search videos", @"Text displayed in search bar on videos list view");
+    [self.searchDisplayController.searchBar setPlaceholder:searchPlaceholderString];
+    
+    // Set font of UISearchBar
+    [UITextField appearanceWhenContainedIn:[UISearchBar class], nil].font = [UIFont kj_videoSearchBarFont];
+    
+    // Set searchbar to only show when tableView is scrolled
+    self.tableView.contentOffset = CGPointMake(0.0, self.tableView.tableHeaderView.frame.size.height);
+}
+
 #pragma mark - UISearchBar methods
 
-- (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope
-{
+- (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope {
     NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"self.videoName CONTAINS[cd] %@", searchText];
-    
     _searchResults = [_videoResults filteredArrayUsingPredicate:resultPredicate];
 }
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-    [self filterContentForSearchText:searchString scope:[[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
     
     return YES;
 }
 
 #pragma mark - Data fetch did happen method
 
-- (void)videoFetchDidFinish
-{
+- (void)videoFetchDidFinish {
     DDLogVerbose(@"Videos: did receive notification that data fetch is complete, reloading table ..");
     
-    // Sort videos with newest at top
+    // Sort videos with newest at top (by videoDate)
     _videoResults = [[NSArray alloc] init];
     _videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
@@ -63,9 +126,8 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Set background of tableView to nil to remove any network error image showing
-    // Set background of collectionView to nil to remove any network error image showing
     if (![self.tableView.backgroundView isHidden]) {
-        [self.tableView setBackgroundView:nil];
+        self.tableView.backgroundView = nil;
     }
     
     // Remove tap gesture recognizer
@@ -77,37 +139,32 @@
 
 #pragma mark - UITableView delegate methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // If there is data ..
     if ([_videoResults count] > 0 || [_searchResults count] > 0) {
         return 1;
-    } else {
+    }
+    else {
         // No data
         return 0;
     }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Check if this is the video list or the search list
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return [_searchResults count];
-    } else {
+    }
+    else {
         return [_videoResults count];
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"videoResultCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Init cell
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
     
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    
-    // Init the cell
+    // Init cell data
     KJVideo *cellVideo;
     
     // Check if this is the video list or the search results list
@@ -117,11 +174,12 @@
         cellVideo = [_videoResults objectAtIndex:indexPath.row];
     }
     
+    // Init labels for cell
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
     UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
     UIImageView *thumbnailImageView = (UIImageView *)[cell viewWithTag:102];
     
-    // Init cell text
+    // Init label text
     // Video name
     titleLabel.font = [UIFont kj_videoNameFont];
     titleLabel.numberOfLines = 0;
@@ -145,8 +203,8 @@
         durationLabel.text = cellVideo.videoDuration;
     }
     
-    // SDWebImage
-    NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", cellVideo.videoId];
+    // Init video thumbnail
+    NSString *urlString = [NSString stringWithFormat:kYouTubeVideoThumbnailUrl, cellVideo.videoId];
     
     // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
@@ -169,8 +227,7 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat cellHeightFloat;
     
     //KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
@@ -190,10 +247,10 @@
 
 #pragma mark - Prepare for segue method
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"videoIdSegue"]) {
         // Set this in every view controller so that the back button displays back instead of the root view controller name
+        // TODO: review this, not really best practice
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
         NSIndexPath *indexPath;
@@ -205,7 +262,8 @@
             cellVideo = [_searchResults objectAtIndex:indexPath.row];
             destViewController.videoIdFromList = cellVideo.videoId;
             destViewController.videoTitleFromList = cellVideo.videoName;
-        } else {
+        }
+        else {
             indexPath = [self.tableView indexPathForSelectedRow];
             cellVideo = [_videoResults objectAtIndex:indexPath.row];
             destViewController.videoIdFromList = cellVideo.videoId;
@@ -216,14 +274,14 @@
 
 #pragma mark - UIAlertView delegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     DDLogVerbose(@"Button clicked: %ld", (long)buttonIndex);
     
     if (buttonIndex == 1) {
         // Retry was clicked
         [self fetchDataWithNetworkCheck];
-    } else if (buttonIndex == 0) {
+    }
+    else if (buttonIndex == 0) {
         // Cancel was clicked
         // TODO: implement a new view with a button to retry data refresh here?
         
@@ -233,33 +291,34 @@
     }
 }
 
-- (void)noNetworkConnection
-{
+- (void)noNetworkConnection {
+    // Init strings for noNetworkAlertView
     NSString *titleString = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
     NSString *messageString = NSLocalizedString(@"This app requires a network connection", @"Error message displayed when no network connection is available");
     NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
     NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
     
+    // Init alertView
     _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
                                                     message:messageString
                                                    delegate:self
                                           cancelButtonTitle:cancelButtonString
                                           otherButtonTitles:retryButtonString, nil];
     
-    if (![KJVideoStore hasInitialDataFetchHappened]) {
-        
+    // Check if first video data fetch has happened
+    if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         // Hide progress
         [_hud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
+        // Show alertView
         [_noNetworkAlertView show];
     }
 }
 
 #pragma mark - Reachability methods
 
-- (void)reachabilityDidChange
-{
+- (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Videos: network became available");
         
@@ -271,8 +330,7 @@
     }
 }
 
-- (void)fetchDataWithNetworkCheck
-{
+- (void)fetchDataWithNetworkCheck {
     // Show progress
     // Init MBProgressHUD
     _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -284,21 +342,23 @@
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    if ([KJVideoStore hasInitialDataFetchHappened]) {
+    // Check if first video data fetch has happened
+    if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
+        // Check if network is reachable
+        if ([JPLReachabilityManager isReachable]) {
+            [KJVideoStore fetchVideoData];
+        }
+        else if ([JPLReachabilityManager isUnreachable]) {
+            [self noNetworkConnection];
+        }
+    }
+    else {
         // We have data, so call this method to fetch from local DB and reload table
         [self videoFetchDidFinish];
         
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
             [KJVideoStore fetchVideoData];
-        }
-        
-    } else {
-        // Check if network is reachable
-        if ([JPLReachabilityManager isReachable]) {
-            [KJVideoStore fetchVideoData];
-        } else if ([JPLReachabilityManager isUnreachable]) {
-            [self noNetworkConnection];
         }
     }
 }
@@ -308,7 +368,6 @@
 #pragma mark Check if video is new or not method
 
 - (BOOL)isNewVideo:(KJVideo *)video {
-    
     // Check date of video compared to today's date.
     // If less than two weeks old then we'll class the video as 'new'.
     
@@ -329,7 +388,8 @@
     if (dateComponents.day < 15) {
         DDLogVerbose(@"Videos: video %@ is new!", video.videoName);
         return YES;
-    } else {
+    }
+    else {
         return NO;
     }
 }
@@ -337,7 +397,6 @@
 #pragma mark Init date formatter method
 
 - (NSDateFormatter *)dateFormatter {
-    
     if (_dateFormatter == nil) {
         _dateFormatter = [[NSDateFormatter alloc] init];
     }
@@ -350,7 +409,6 @@
 #pragma mark Init 'new' label
 
 - (UILabel *)newVideoLabel {
-    
     // Init frame for label
     CGRect labelFrame = CGRectMake(10, 3, 30, 30);
     
@@ -371,64 +429,6 @@
     newVideoLabel.text = labelText;
     
     return newVideoLabel;
-}
-
-#pragma mark - Init methods
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    // Set title
-    self.title = NSLocalizedString(@"Videos", @"Title of Videos view");
-    
-    // Set up NSNotification receiving for when videoStore finishes data fetch
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(videoFetchDidFinish)
-                                                 name:KJVideoDataFetchDidHappenNotification
-                                               object:nil];
-    
-    // Reachability NSNotification
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityDidChange)
-                                                 name:kReachabilityChangedNotification
-                                               object:nil];
-    
-    // Fetch video data
-    [self fetchDataWithNetworkCheck];
-    
-    // Set background if no network is available
-    if ([JPLReachabilityManager isUnreachable]) {
-        // Image to use for table background
-        UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        
-        [self.tableView addSubview:imageView];
-        self.tableView.backgroundView = imageView;
-        self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        // Gesture recognizer to reload data if tapped
-        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
-        _singleTap.numberOfTapsRequired = 1;
-        [self.tableView addGestureRecognizer:_singleTap];
-    }
-    
-    // Set placeholder and prompt text for UISearchBar
-    NSString *searchPlaceholderString = NSLocalizedString(@"Search videos", @"Text displayed in search bar on videos list view");
-    [self.searchDisplayController.searchBar setPlaceholder:searchPlaceholderString];
-    
-    // Set font of UISearchBar
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setFont:[UIFont kj_videoSearchBarFont]];
-    
-    // Set searchbar to only show when tableView is scrolled
-    [self.tableView setContentOffset:CGPointMake(0.0, self.tableView.tableHeaderView.frame.size.height) animated:YES];
-}
-
-- (void)dealloc
-{
-    // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJVideoDataFetchDidHappenNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 @end
