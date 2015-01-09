@@ -11,6 +11,12 @@
 #import "KJSocialLink.h"
 #import "NSUserDefaults+KJSettings.h"
 
+// Constants for Parse object keys
+static NSString *kParseSocialLinkTitleKey = @"title";
+static NSString *kParseSocialLinkUrlKey = @"url";
+static NSString *kParseSocialLinkImagePathKey = @"imagePath";
+static NSString *kParseSocialLinkImageKey = @"image";
+
 // Constant for NSNotification name
 NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkDataFetchDidHappen";
 
@@ -140,17 +146,23 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
                 for (PFObject *object in objects) {
                     // Check if social link is active or not
                     if ([object[@"is_active"] isEqual:@1]) {
-                        DDLogVerbose(@"socialLinkStore: link IS active: %@", object[@"title"]);
+                        DDLogVerbose(@"socialLinkStore: link IS active: %@", object[kParseSocialLinkTitleKey]);
                         
                         // Init PFFile so we can get the URL to the image file itself on Parse
-                        PFFile *imageFile = object[@"image"];
+                        PFFile *imageFile = object[kParseSocialLinkImageKey];
                         
                         // Check if link needs updating
                         // TODO: this keeps returning TRUE
-                        [self checkIfSocialLinkNeedsUpdateWithTitle:object[@"title"] url:object[@"url"] imageUrl:imageFile.url imagePath:object[@"imagePath"]];
+                        [self checkIfSocialLinkNeedsUpdateWithTitle:object[kParseSocialLinkTitleKey]
+                                                                url:object[kParseSocialLinkUrlKey]
+                                                           imageUrl:imageFile.url
+                                                          imagePath:object[kParseSocialLinkImagePathKey]];
                         
                         // Save Parse object to Core Data
-                        [self persistNewSocialLinkWithTitle:object[@"title"] url:object[@"url"] imageUrl:imageFile.url imagePath:object[@"imagePath"]];
+                        [self persistNewSocialLinkWithTitle:object[kParseSocialLinkTitleKey]
+                                                        url:object[kParseSocialLinkUrlKey]
+                                                   imageUrl:imageFile.url
+                                                  imagePath:object[kParseSocialLinkImagePathKey]];
                         
                     } else {
                         DDLogVerbose(@"socialLinkStore: link not active: %@", object[@"title"]);
