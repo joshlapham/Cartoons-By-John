@@ -238,7 +238,7 @@
     // Register NSNotifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(comicFetchDidHappen)
-                                                 name:@"KJComicDataFetchDidHappen"
+                                                 name:KJComicDataFetchDidHappenNotification
                                                object:nil];
     
     // Reachability NSNotification
@@ -270,7 +270,7 @@
 - (void)dealloc
 {
     // Remove NSNotificationCenter observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"KJComicDataFetchDidHappen" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJComicDataFetchDidHappenNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
