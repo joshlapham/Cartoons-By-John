@@ -1,0 +1,13 @@
+//
+//  KJComic+Methods.m
+//  Kidney John
+//
+//  Created by jl on 10/01/2015.
+//  Copyright (c) 2015 Josh Lapham. All rights reserved.
+//
+
+#import "KJComic+Methods.h"
+
+@implementation KJComic_Methods
+
+@end
