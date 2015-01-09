@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KJComic.h"
 
-@interface KJComic_Methods : NSObject
+@interface KJComic (Methods)
+
+// Parse helper methods
++ (NSString *)parseClassName;
 
 @end

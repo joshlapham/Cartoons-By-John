@@ -8,6 +8,12 @@
 
 #import "KJComic+Methods.h"
 
-@implementation KJComic_Methods
+@implementation KJComic (Methods)
+
+// Parse helper methods
++ (NSString *)parseClassName {
+    
+    return @"Comic";
+}
 
 @end
