@@ -29,7 +29,7 @@
 - (void)setupUI
 {
     // TESTING - Version 2 colour scheme
-    [NSUserDefaults kj_setUsingVersion2ColourSchemeSetting:NO];
+//    [NSUserDefaults kj_setUsingVersion2ColourSchemeSetting:NO];
     
     // Show status bar after app launch image has shown
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
