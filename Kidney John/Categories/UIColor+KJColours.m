@@ -25,12 +25,24 @@
 
 + (UIColor *)kj_navbarTitleFontShadowColour {
     
-    return [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        // 'Kidney John' colour (Version 1.0)
+        return [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+    } else {
+        // 'JohnRodPaine' colour (Version ?)
+        return [UIColor blackColor];
+    }
 }
 
 + (UIColor *)kj_navbarTitleFontColour {
     
-    return [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        // 'Kidney John' colour (Version 1.0)
+        return [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    } else {
+        // 'JohnRodPaine' colour (Version ?)
+        return [UIColor whiteColor];
+    }
 }
 
 // Tab bar

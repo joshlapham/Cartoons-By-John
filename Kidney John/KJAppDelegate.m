@@ -54,7 +54,13 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
     // Change status bar text to white
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    // TESTING - Version 2 colour scheme
+    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    } else {
+        // Version 2 colour
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
     
     // Set navbar items of UIActivityViews to white
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
@@ -98,6 +104,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Init prefs for Settings
+    NSDictionary *userDefaultsDefaults = @{ @"KJUsingVersion2ColourSchemeSetting" : [NSNumber numberWithBool:NO] };
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    
     // Customize UI
     [self setupUI];
     
