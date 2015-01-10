@@ -13,4 +13,9 @@ NSString * const KJYouTubeVideoThumbnailUrlString = @"https://img.youtube.com/vi
 
 @implementation KJVideo (Methods)
 
+// Parse helper methods
++ (NSString *)parseClassName {
+    return @"Video";
+}
+
 @end

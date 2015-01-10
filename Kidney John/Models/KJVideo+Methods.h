@@ -14,4 +14,7 @@ extern NSString * const KJYouTubeVideoThumbnailUrlString;
 
 @interface KJVideo (Methods)
 
+// Parse helper methods
++ (NSString *)parseClassName;
+
 @end
