@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KJRandomImage.h"
+
+@class KJRandomImage;
 
 @interface KJRandomView : UIViewController
 
