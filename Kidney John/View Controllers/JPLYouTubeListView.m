@@ -26,7 +26,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
 
 @property (nonatomic, strong) NSArray *videoResults;
 @property (nonatomic, strong) NSArray *searchResults;
-@property (nonatomic, strong) MBProgressHUD *hud;
+@property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
@@ -125,7 +125,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
     _videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
     
     // Hide progress
-    [_hud hide:YES];
+    [_progressHud hide:YES];
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -313,7 +313,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
     // Check if first video data fetch has happened
     if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         // Hide progress
-        [_hud hide:YES];
+        [_progressHud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         // Show alertView
@@ -338,11 +338,11 @@ static NSString *kCellIdentifier = @"videoResultCell";
 - (void)fetchDataWithNetworkCheck {
     // Show progress
     // Init MBProgressHUD
-    _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    _hud.userInteractionEnabled = NO;
+    _progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHud.userInteractionEnabled = NO;
     NSString *progressHudString = NSLocalizedString(@"Loading Videos ...", @"Message shown under progress wheel when videos are loading");
-    _hud.labelText = progressHudString;
-    _hud.labelFont = [UIFont kj_progressHudFont];
+    _progressHud.labelText = progressHudString;
+    _progressHud.labelFont = [UIFont kj_progressHudFont];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
