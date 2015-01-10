@@ -24,13 +24,12 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 
 @implementation KJDoodleStore
 
-#pragma mark - Init methods
+#pragma mark - Init method
 
-+ (KJDoodleStore *)sharedStore
-{
++ (KJDoodleStore *)sharedStore {
     static KJDoodleStore *_sharedStore = nil;
-    static dispatch_once_t oncePredicate;
     
+    static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedStore = [[KJDoodleStore alloc] init];
     });
@@ -40,15 +39,13 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 
 #pragma mark - Return results methods
 
-+ (NSArray *)returnArrayOfRandomImages
-{
++ (NSArray *)returnArrayOfRandomImages {
     NSArray *randomImagesArray = [[NSArray alloc] initWithArray:[KJRandomImage MR_findAll]];
     
     return randomImagesArray;
 }
 
-+ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject
-{
++ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject {
     UIImage *imageToReturn;
     
     // SDWebImage
@@ -56,7 +53,8 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl]) {
         //DDLogVerbose(@"found image in cache");
         imageToReturn = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl];
-    } else {
+    }
+    else {
         //DDLogVerbose(@"no image in cache");
         // TODO: implement fallback
     }
@@ -68,8 +66,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 
 #pragma mark - Favourite methods
 
-+ (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl
-{
++ (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -81,8 +78,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     return doodleToReturn;
 }
 
-+ (NSArray *)returnFavouritesArray
-{
++ (NSArray *)returnFavouritesArray {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -96,8 +92,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 
 #pragma mark - Prefetch doodles method
 
-+ (void)prefetchDoodles
-{
++ (void)prefetchDoodles {
     NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES]];
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
     
@@ -116,12 +111,12 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 
 #pragma mark - Core Data methods
 
-+ (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
-{
++ (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
         //DDLogVerbose(@"RANDOM: Yes, random image does exist in database");
         return TRUE;
-    } else {
+    }
+    else {
         //DDLogVerbose(@"RANDOM: No, random image does NOT exist in database");
         return FALSE;
     }
@@ -130,8 +125,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 + (void)persistNewRandomImageWithId:(NSString *)imageId
                         description:(NSString *)imageDescription
                                 url:(NSString *)imageUrl
-                               date:(NSString *)imageDate
-{
+                               date:(NSString *)imageDate {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -154,8 +148,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 + (void)checkIfImageNeedsUpdateWithId:(NSString *)imageId
                                description:(NSString *)imageDescription
                                 url:(NSString *)imageUrl
-                                 date:(NSString *)imageDate
-{
+                                 date:(NSString *)imageDate {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -178,7 +171,8 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
                     DDLogVerbose(@"doodleStore: updated doodle: %@", imageUrl);
-                } else if (error) {
+                }
+                else if (error) {
                     DDLogVerbose(@"doodleStore: error updating doodle: %@ - %@", imageUrl, [error localizedDescription]);
                 }
             }];
@@ -186,8 +180,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     }
 }
 
-+ (void)deleteDoodleFromDatabaseWithUrl:(NSString *)imageUrl
-{
++ (void)deleteDoodleFromDatabaseWithUrl:(NSString *)imageUrl {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -204,15 +197,15 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 DDLogVerbose(@"doodleStore: deleted doodle");
-            } else if (error) {
+            }
+            else if (error) {
                 DDLogError(@"doodleStore: error deleting doodle: %@", [error localizedDescription]);
             }
         }];
     }
 }
 
-+ (void)fetchDoodleData
-{
++ (void)fetchDoodleData {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"doodleStore: fetching doodle data ..");
@@ -246,7 +239,8 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                                               description:object[kParseImageDescriptionKey]
                                                       url:object[kParseImageUrlKey]
                                                      date:object[kParseImageDateKey]];
-                    } else {
+                    }
+                    else {
                         DDLogVerbose(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
                         
                         // Check if doodle exists in database, and delete if so
@@ -274,7 +268,8 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                     [KJDoodleStore prefetchDoodles];
                 }
                 
-            } else {
+            }
+            else {
                 // Log details of the failure
                 DDLogVerbose(@"doodleStore: error: %@ %@", error, [error userInfo]);
             }
