@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KJVideo.h"
 
-@interface KJVideo_Methods : NSObject
+// Constants
+extern NSString * const KJYouTubeVideoThumbnailUrlString;
+
+@interface KJVideo (Methods)
 
 @end

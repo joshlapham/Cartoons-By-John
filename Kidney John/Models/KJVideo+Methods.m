@@ -8,6 +8,9 @@
 
 #import "KJVideo+Methods.h"
 
-@implementation KJVideo_Methods
+// Constants
+NSString * const KJYouTubeVideoThumbnailUrlString = @"https://img.youtube.com/vi/%@/default.jpg";
+
+@implementation KJVideo (Methods)
 
 @end
