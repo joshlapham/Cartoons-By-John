@@ -12,7 +12,6 @@
 
 // Parse helper methods
 + (NSString *)parseClassName {
-    
     return @"Comic";
 }
 
