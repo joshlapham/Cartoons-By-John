@@ -10,18 +10,16 @@
 
 @implementation KJDoodleCell
 
-#pragma mark - Init methods
+#pragma mark - Init method
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    
     if (self) {
         // Init image view
         self.doodleImageView = [[UIImageView alloc] init];
         
         // Scale image to fit
-        [self.doodleImageView setContentMode:UIViewContentModeScaleAspectFit];
+        self.doodleImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Set frame to entire screen
         self.doodleImageView.frame = self.bounds;
@@ -29,6 +27,7 @@
         // Add image view to cell's view
         [self addSubview:self.doodleImageView];
     }
+    
     return self;
 }
 

@@ -12,12 +12,10 @@
 
 @synthesize comicImageView;
 
-#pragma mark - Init methods
+#pragma mark - Init method
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    
     if (self) {
         // Init imageView
         comicImageView = [[UIImageView alloc] initWithFrame:self.bounds];
@@ -28,6 +26,7 @@
         // Add imageView to view
         [self addSubview:comicImageView];
     }
+    
     return self;
 }
 
