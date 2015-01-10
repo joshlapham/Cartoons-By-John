@@ -12,6 +12,7 @@
 #import "JPLReachabilityManager.h"
 #import "SDWebImagePrefetcher.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "KJVideo+Methods.h"
 
 // Constants for Parse object keys
 static NSString *kParseVideoIdKey = @"videoId";
@@ -190,7 +191,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
         DDLogVerbose(@"videoStore: fetching video data ..");
         
         // Setup query with classname on Parse
-        PFQuery *query = [PFQuery queryWithClassName:@"Video"];
+        PFQuery *query = [PFQuery queryWithClassName:[KJVideo parseClassName]];
         
         // Query all videos
         [query whereKey:kParseVideoNameKey notEqualTo:@"LOL"];
@@ -224,7 +225,8 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                                          cellHeight:nil
                                       videoDuration:object[kParseVideoDurationKey]];
                         
-                    } else {
+                    }
+                    else {
                         DDLogVerbose(@"videoStore: video not active: %@", object[@"videoName"]);
                         
                         // Check if video exists in database, and delete if so
