@@ -14,12 +14,10 @@
 
 @property (nonatomic, strong) Reachability *reachability;
 
-#pragma mark - Shared manager
-
+// Shared manager
 + (JPLReachabilityManager *)sharedManager;
 
-#pragma mark - Class methods
-
+// Class methods
 + (BOOL)isReachable;
 + (BOOL)isUnreachable;
 + (BOOL)isReachableViaWWAN;
