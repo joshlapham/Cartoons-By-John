@@ -26,13 +26,12 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 @implementation KJVideoStore
 
-#pragma mark - Init methods
+#pragma mark - Init method
 
-+ (KJVideoStore *)sharedStore
-{
++ (KJVideoStore *)sharedStore {
     static KJVideoStore *_sharedStore = nil;
-    static dispatch_once_t oncePredicate;
     
+    static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedStore = [[KJVideoStore alloc] init];
     });
@@ -42,13 +41,12 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Prefetch video thumbnails method
 
-+ (void)prefetchVideoThumbnails
-{
++ (void)prefetchVideoThumbnails {
     NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO]];
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
     
     for (KJVideo *video in resultsArray) {
-        NSString *urlString = [NSString stringWithFormat:@"https://img.youtube.com/vi/%@/default.jpg", video.videoId];
+        NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, video.videoId];
         NSURL *urlToPrefetch = [NSURL URLWithString:urlString];
         [prefetchUrls addObject:urlToPrefetch];
     }
@@ -62,8 +60,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Favourites methods
 
-+ (NSArray *)returnFavouritesArray
-{
++ (NSArray *)returnFavouritesArray {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -77,24 +74,28 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Core Data methods
 
-+ (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
-{
+// TODO: refactor this method
+
++ (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId
+                                    context:(NSManagedObjectContext *)context {
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
         //DDLogVerbose(@"Yes, video does exist in database");
         return TRUE;
-    } else {
+    }
+    else {
         //DDLogVerbose(@"No, video does NOT exist in database");
         return FALSE;
     }
 }
+
+// TODO: refactor this method
 
 + (void)persistNewVideoWithId:(NSString *)videoId
                          name:(NSString *)videoName
                   description:(NSString *)videoDescription
                          date:(NSString *)videoDate
                    cellHeight:(NSString *)videoCellHeight
-                videoDuration:(NSString *)videoDuration
-{
+                videoDuration:(NSString *)videoDuration {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -115,7 +116,8 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
         [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 DDLogVerbose(@"videoStore: saved new video: %@", videoName);
-            } else if (error) {
+            }
+            else if (error) {
                 DDLogVerbose(@"videoStore: error saving: %@", [error localizedDescription]);
                 // TODO: implement alert view on error?
             }
@@ -123,12 +125,13 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     }
 }
 
+// TODO: refactor this method
+
 + (void)checkIfVideoNeedsUpdateWithVideoId:(NSString *)videoId
                                       name:(NSString *)videoName
                                description:(NSString *)videoDescription
                                       date:(NSString *)videoDate
-                             videoDuration:(NSString *)videoDuration
-{
+                             videoDuration:(NSString *)videoDuration {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -151,7 +154,8 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
                     DDLogVerbose(@"videoStore: updated video: %@", videoName);
-                } else if (error) {
+                }
+                else if (error) {
                     DDLogVerbose(@"videoStore: error updating video: %@ - %@", videoName, [error localizedDescription]);
                 }
             }];
@@ -159,8 +163,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     }
 }
 
-+ (void)deleteVideoFromDatabaseWithVideoId:(NSString *)videoId
-{
++ (void)deleteVideoFromDatabaseWithVideoId:(NSString *)videoId {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -177,15 +180,15 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
         [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 DDLogVerbose(@"videoStore: deleted video");
-            } else if (error) {
+            }
+            else if (error) {
                 DDLogError(@"videoStore: error deleting video: %@", [error localizedDescription]);
             }
         }];
     }
 }
 
-+ (void)fetchVideoData
-{
++ (void)fetchVideoData {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"videoStore: fetching video data ..");
@@ -254,8 +257,8 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
                     [KJVideoStore prefetchVideoThumbnails];
                 }
-                
-            } else {
+            }
+            else {
                 // Log details of the failure
                 DDLogVerbose(@"videoStore: error: %@ %@", error, [error userInfo]);
             }
