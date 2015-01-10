@@ -146,9 +146,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     return [NSArray arrayWithArray:comicFileResults];
 }
 
-#pragma mark - Comic Favourites methods
-
-// TODO: add init NSPredicate method using propety in this method, then refactor this method out
+#pragma mark - Core Data helper methods
 
 + (NSArray *)returnFavouritesArray {
     // Get the local context
@@ -162,38 +160,16 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     return arrayToReturn;
 }
 
-#pragma mark - Return comic with comic name method
-
-// TODO: add init NSPredicate method using propety in this method, then refactor this method out
-
 + (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
     // Find comic where comicNameToFind matches
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicNameToFind];
-    
     KJComic *comicToReturn = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
     
     return comicToReturn;
 }
-
-#pragma mark - Core Data methods
-
-// TODO: do we really need this method? Can just check Core Data for KJComic object elsewhere
-
-+ (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context {
-    if ([KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey withValue:comicName inContext:context]) {
-        //DDLogVerbose(@"COMICS LIST: yes, comic does exist in database");
-        return TRUE;
-    }
-    else {
-        //DDLogVerbose(@"COMICS LIST: no, comic does NOT exist in database");
-        return FALSE;
-    }
-}
-
-// TODO: do we really need this method? Refactor
 
 + (void)persistNewComicWithName:(NSString *)comicName
                   comicFileName:(NSString *)comicFileName
@@ -202,23 +178,26 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // If comic does not exist in database then persist
-    if (![self checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
-        
-        // Init new comic object in localContext
-        KJComic *newComic = [KJComic MR_createInContext:localContext];
-        
-        // Set attributes
-        newComic.comicName = comicName;
-        newComic.comicFileName = comicFileName;
-        newComic.comicFileUrl = comicFileUrl;
-        newComic.comicNumber = comicNumber;
-        
-        DDLogVerbose(@"comicStore: saved new comic: %@", comicName);
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    }
+    // NOTE - we check if comic exists in Core Data before calling this method
+    
+    // Init new comic object in localContext
+    KJComic *newComic = [KJComic MR_createInContext:localContext];
+    
+    // Set attributes
+    newComic.comicName = comicName;
+    newComic.comicFileName = comicFileName;
+    newComic.comicFileUrl = comicFileUrl;
+    newComic.comicNumber = comicNumber;
+    
+    // Save
+    [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        if (!error && success) {
+            DDLogVerbose(@"comicStore: saved new comic: %@", comicName);
+        }
+        else {
+            DDLogError(@"comicStore: error saving new comic: %@", comicName);
+        }
+    }];
 }
 
 // TODO: not even calling this method at the moment, review this
@@ -230,14 +209,15 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // If comic is in database ..
-    if ([KJComicStore checkIfComicIsInDatabaseWithName:comicName context:localContext]) {
-        
-        // Init comic object
-        KJComic *comicToCheck = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
-                                                       withValue:comicName
-                                                       inContext:localContext];
-        
+    // Init comic object
+    KJComic *comicToCheck = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
+                                                   withValue:comicName
+                                                   inContext:localContext];
+    
+    if (!comicToCheck) {
+        DDLogError(@"comicStore: error checking if comic needs update: %@ not found in database", comicName);
+    }
+    else {
         // Check if comicToCheck needs updating
         if (![comicToCheck.comicName isEqualToString:comicName] || ![comicToCheck.comicFileName isEqualToString:comicFileName] || ![comicToCheck.comicFileUrl isEqualToString:comicFileUrl] || ![comicToCheck.comicNumber isEqualToString:comicNumber]) {
             
@@ -262,38 +242,9 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     }
 }
 
-// TODO: do we really need this method?
+#pragma mark - Fetch data method
 
-+ (void)deleteComicFromDatabaseWithComicName:(NSString *)comicName {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // NOTE - we're not checking if comic is in database first (as  the checkIfComicNeedsUpdate method does),
-    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchComicData method
-    
-    // Init comic object
-    KJComic *comicToDelete = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
-                                                    withValue:comicName
-                                                    inContext:localContext];
-    
-    if (comicToDelete) {
-        // Delete object
-        [comicToDelete MR_deleteInContext:localContext];
-        
-        // Save
-        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            if (success) {
-                DDLogVerbose(@"comicStore: deleted comic");
-            }
-            else if (error) {
-                DDLogError(@"comicStore: error deleting comic: %@", [error localizedDescription]);
-            }
-        }];
-    }
-}
-
-+ (void)fetchComicData
-{
++ (void)fetchComicData {
     // Setup query
     PFQuery *comicsQuery = [PFQuery queryWithClassName:[KJComic parseClassName]];
     
@@ -302,6 +253,23 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     
     // Cache policy
     //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+    
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    
+    // Init array of all existing comics in Core Data.
+    // This will help speed things up.
+    NSArray *comicsInCoreData = [KJComic MR_findAll];
+    
+    // Init array of existing comic names in Core Data.
+    // This is so we can check value from Parse, rather than init a KJComic object and then check if it exists in comicsInCoreData array.
+    NSMutableArray *comicNamesInCoreData = [NSMutableArray new];
+    for (KJComic *comic in comicsInCoreData) {
+        NSString *comicName = comic.comicName;
+        [comicNamesInCoreData addObject:comicName];
+    }
+    
+//    DDLogInfo(@"comicStore: comicsInCoreData array count: %d", [comicsInCoreData count]);
+//    DDLogInfo(@"comicStore: comicNamesInCoreData array count: %d", [comicNamesInCoreData count]);
     
     // Start query with block
     [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -324,22 +292,45 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                     //[self checkIfComicNeedsUpdateWithComicName:object[@"comicName"] comicFileName:object[@"comicFileName"] comicFileUrl:comicImageFile.url comicNumber:object[@"comicNumber"]];
                     
                     // Save
-                    [self persistNewComicWithName:object[kParseComicNameKey]
-                                    comicFileName:object[kParseComicFileNameKey]
-                                     comicFileUrl:comicImageFile.url
-                                      comicNumber:object[kParseComicNumberKey]];
-                    
+                    NSString *comicNameFromParse = object[kParseComicNameKey];
+                    if (![comicNamesInCoreData containsObject:comicNameFromParse]) {
+                        // Not present, so save
+                        [self persistNewComicWithName:object[kParseComicNameKey]
+                                        comicFileName:object[kParseComicFileNameKey]
+                                         comicFileUrl:comicImageFile.url
+                                          comicNumber:object[kParseComicNumberKey]];
+                    }
+                    else {
+//                        DDLogVerbose(@"comicStore: we already have comic %@, so no use trying to persist it", object[kParseComicNameKey]);
+                    }
                 }
                 else {
-                    DDLogVerbose(@"comicStore: comic not active: %@", object[kParseComicNameKey]);
+                    DDLogInfo(@"comicStore: comic not active: %@", object[kParseComicNameKey]);
                     
                     // Check if comic exists in database, and delete if so
-                    BOOL existInDatabase = [self checkIfComicIsInDatabaseWithName:object[kParseComicNameKey]
-                                                                          context:[NSManagedObjectContext MR_contextForCurrentThread]];
-                    
-                    if (existInDatabase) {
-                        DDLogVerbose(@"comicStore: comic %@ exists in database but is no longer active on server; now removing", object[kParseComicNameKey]);
-                        [self deleteComicFromDatabaseWithComicName:object[kParseComicNameKey]];
+                    NSString *comicNameFromParse = object[kParseComicNameKey];
+                    if (![comicNamesInCoreData containsObject:comicNameFromParse]) {
+                        DDLogInfo(@"comicStore: comic %@ doesn't exist in database anyway, so it's all good", comicNameFromParse);
+                    }
+                    else {
+                        DDLogInfo(@"comicStore: comic %@ exists in database but is no longer active on server; now removing", object[kParseComicNameKey]);
+                        
+                        // Find comic where comicName matches
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicNameFromParse];
+                        KJComic *comicToDelete = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
+                        
+                        // Delete from Core Data
+                        [comicToDelete MR_deleteInContext:localContext];
+                        
+                        // Save
+                        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+                            if (!error && success) {
+                                DDLogInfo(@"comicStore: successfully deleted comic %@", comicNameFromParse);
+                            }
+                            else {
+                                DDLogError(@"comicStore: error deleting comic %@: %@", comicNameFromParse, [error localizedDescription]);
+                            }
+                        }];
                     }
                 }
             }
