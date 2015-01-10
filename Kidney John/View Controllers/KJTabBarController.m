@@ -19,8 +19,7 @@
 
 #pragma mark - Init methods
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     // Set delegate
