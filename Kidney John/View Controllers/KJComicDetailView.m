@@ -183,8 +183,8 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 
 - (void)notifyThatComicWasDoubleTapped {
     // Post NSNotification that comic was double tapped
-    NSString *notificationName = @"KJComicWasDoubleTapped";
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KJComicWasDoubleTappedNotification
+                                                        object:nil];
 }
 
 @end
