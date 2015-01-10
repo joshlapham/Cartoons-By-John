@@ -12,6 +12,9 @@
 #import "KJComicFavouriteActivity.h"
 #import "KJComic.h"
 
+// Constants
+static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
+
 @interface KJComicDetailView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -20,42 +23,90 @@
 
 @implementation KJComicDetailView
 
-@synthesize nameFromList, titleFromList, fileNameFromList, resultsArray, collectionViewIndexFromList;
+#pragma mark - viewDid methods
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // Set title
+    self.title = self.titleFromList;
+    
+    // Call method to setup collectionView and flow layout
+    [self setupCollectionView];
+    
+    // Register custom UICollectionViewCell with collectionView
+    [self.collectionView registerClass:[KJComicDetailCell class]
+            forCellWithReuseIdentifier:kComicDetailCellIdentifier];
+    
+    // Init action button in top right hand corner of navbar
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                           target:self
+                                                                                           action:@selector(showActivityView)];
+    
+    // Gesture recognizer to show navbar when comic is single tapped
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(comicWasTapped)];
+    
+    singleTap.numberOfTapsRequired = 1;
+    [self.collectionView addGestureRecognizer:singleTap];
+    
+    // Gesture recognizer to zoom comicScrollView on cell when double tapped
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(notifyThatComicWasDoubleTapped)];
+    
+    [doubleTap setNumberOfTapsRequired:2];
+    [self.collectionView addGestureRecognizer:doubleTap];
+    
+    // Differentiate between single tap and double tap
+    [singleTap requireGestureRecognizerToFail:doubleTap];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    // Hide navbar
+    self.navigationController.navigationBarHidden = YES;
+    //[self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    // Hide status bar
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
+    // Reload collectionView
+    [self.collectionView reloadData];
+}
 
 #pragma mark - UICollectionView methods
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self.resultsArray count];
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    KJComicDetailCell *cell = (KJComicDetailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"comicDetailCell" forIndexPath:indexPath];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    // Init cell
+    KJComicDetailCell *cell = (KJComicDetailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kComicDetailCellIdentifier
+                                                                                             forIndexPath:indexPath];
     
+    // Init cell data
     KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
     
+    // TODO: review comic image loading here
     cell.comicImageView.image = [KJComicStore returnComicImageFromComicObject:cellData];
     
-    DDLogVerbose(@"Comics List: image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
+//    DDLogVerbose(@"Comics List: image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
     
     return cell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return self.collectionView.bounds.size;
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     
+    // Init comic object for comic currently on-screen
     KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
     
     // Set title to comic after scroll has finished
@@ -63,13 +114,13 @@
     
     // Update titleFromList so that Favourites will function correctly,
     // as our Favourites methods use this ivar
-    titleFromList = cellData.comicName;
+    // TODO: update to use property (KJComic)comicOnScreen
+    self.titleFromList = cellData.comicName;
 }
 
 #pragma mark - Setup collectionView method
 
-- (void)setupCollectionView
-{
+- (void)setupCollectionView {
     // Init flow layout with options
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
@@ -85,7 +136,9 @@
     [self.collectionView setFrame:self.view.frame];
     
     // Scroll to comic that was selected in previous view controller
-    [self.collectionView scrollToItemAtIndexPath:collectionViewIndexFromList atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    [self.collectionView scrollToItemAtIndexPath:self.collectionViewIndexFromList
+                                atScrollPosition:UICollectionViewScrollPositionNone
+                                        animated:NO];
     
     // Reload collectionView
     [self.collectionView reloadData];
@@ -93,8 +146,7 @@
 
 #pragma mark - UIActivityView methods
 
-- (void)showActivityView
-{
+- (void)showActivityView {
     // Get data for comic currently on screen
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
@@ -104,7 +156,11 @@
     // Init UIActivity
     KJComicFavouriteActivity *favouriteActivity = [[KJComicFavouriteActivity alloc] initWithComic:cellData];
     
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[comicImageToShare] applicationActivities:@[favouriteActivity]];
+    // Init view controller for UIActivity
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[comicImageToShare]
+                                                                             applicationActivities:@[favouriteActivity]];
+    
+    // Set excluded activity types for UIActivity view controller
     activityVC.excludedActivityTypes = @[UIActivityTypeAssignToContact, UIActivityTypeAddToReadingList];
     
     // Present UIActivityController
@@ -113,8 +169,7 @@
 
 #pragma mark - Gesture recognizer methods
 
-- (void)comicWasTapped
-{
+- (void)comicWasTapped {
     DDLogVerbose(@"Comic Detail: comic was tapped");
     
     // Toggle navbar
@@ -126,56 +181,10 @@
 
 #pragma mark - NSNotification methods
 
-- (void)notifyThatComicWasDoubleTapped
-{
+- (void)notifyThatComicWasDoubleTapped {
     // Post NSNotification that comic was double tapped
     NSString *notificationName = @"KJComicWasDoubleTapped";
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-}
-
-#pragma mark - Init methods
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    // Set title
-    self.title = titleFromList;
-    
-    // Call method to setup collectionView and flow layout
-    [self setupCollectionView];
-    
-    // Register custom UICollectionViewCell
-    [self.collectionView registerClass:[KJComicDetailCell class] forCellWithReuseIdentifier:@"comicDetailCell"];
-    
-    // Init action button in top right hand corner of navbar
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showActivityView)];
-    
-    // Gesture recognizer to show navbar when comic is single tapped
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(comicWasTapped)];
-    singleTap.numberOfTapsRequired = 1;
-    [self.collectionView addGestureRecognizer:singleTap];
-    
-    // Gesture recognizer to zoom comicScrollView on cell when double tapped
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(notifyThatComicWasDoubleTapped)];
-    [doubleTap setNumberOfTapsRequired:2];
-    [self.collectionView addGestureRecognizer:doubleTap];
-    
-    // Differentiate between single tap and double tap 
-    [singleTap requireGestureRecognizerToFail:doubleTap];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    // Hide navbar
-    self.navigationController.navigationBarHidden = YES;
-    //[self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    // Hide status bar
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
-    // Reload collectionView
-    [self.collectionView reloadData];
 }
 
 @end

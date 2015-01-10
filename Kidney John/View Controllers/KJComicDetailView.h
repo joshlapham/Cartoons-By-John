@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KJComic.h"
 
 @interface KJComicDetailView : UIViewController
 
