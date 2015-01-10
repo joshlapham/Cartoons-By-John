@@ -260,7 +260,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
             }
             else {
                 // Log details of the failure
-                DDLogVerbose(@"videoStore: error: %@ %@", error, [error userInfo]);
+                DDLogError(@"videoStore: error: %@ %@", error, [error userInfo]);
             }
         }];
     });

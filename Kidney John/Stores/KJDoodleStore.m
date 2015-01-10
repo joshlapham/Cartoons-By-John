@@ -261,7 +261,8 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 }
                 
                 // Send NSNotification to say that data fetch is done
-                [[NSNotificationCenter defaultCenter] postNotificationName:KJDoodleFetchDidHappenNotification object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:KJDoodleFetchDidHappenNotification
+                                                                    object:nil];
                 
                 // Prefetch doodles if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
@@ -271,7 +272,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
             }
             else {
                 // Log details of the failure
-                DDLogVerbose(@"doodleStore: error: %@ %@", error, [error userInfo]);
+                DDLogError(@"doodleStore: error: %@ %@", error, [error userInfo]);
             }
         }];
     });
