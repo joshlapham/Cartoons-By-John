@@ -17,22 +17,19 @@
 
 #pragma mark - Init method
 
-- (id)initWithComic:(KJComic *)comic
-{
+- (id)initWithComic:(KJComic *)comic {
     self = [super init];
-    
     if (self) {
-        
         // Init comic object
         comicObject = comic;
         
         // Init activity title, depending on favourite status of comic
         if (!comicObject.isFavourite) {
             titleOfActivity = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
-        } else {
+        }
+        else {
             titleOfActivity = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
         }
-        
     }
     
     return self;
@@ -40,32 +37,28 @@
 
 #pragma mark - Other methods
 
-- (NSString *)activityType
-{
+- (NSString *)activityType {
     return @"com.joshlapham.Kidney-John favourite comic";
 }
 
-- (NSString *)activityTitle
-{
+- (NSString *)activityTitle {
     return titleOfActivity;
 }
 
-- (UIImage *)activityImage
-{
+- (UIImage *)activityImage {
     if (comicObject.isFavourite) {
         return [UIImage imageNamed:@"remove-from-fav.png"];
-    } else {
+    }
+    else {
         return [UIImage imageNamed:@"add-to-fav.png"];
     }
 }
 
-- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
-{
+- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
     return YES;
 }
 
-- (void)prepareWithActivityItems:(NSArray *)activityItems
-{
+- (void)prepareWithActivityItems:(NSArray *)activityItems {
     // Toggle favourite status for comicObject
     comicObject.isFavourite = !comicObject.isFavourite;
     
@@ -73,19 +66,18 @@
     [comicObject.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
         if (!error && success) {
             DDLogVerbose(@"%@ - successfully updated favourite status for comic %@", self.class, comicObject.comicName);
-        } else {
+        }
+        else {
             DDLogError(@"%@ - error updating favourite status for comic %@: %@", self.class, comicObject.comicName, [error localizedDescription]);
         }
     }];
 }
 
-- (UIViewController *)activityViewController
-{
+- (UIViewController *)activityViewController {
     return nil;
 }
 
-- (void)performActivity
-{
+- (void)performActivity {
     [self activityDidFinish:YES];
 }
 

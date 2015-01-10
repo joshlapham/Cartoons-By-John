@@ -59,7 +59,6 @@
 }
 
 - (void)prepareWithActivityItems:(NSArray *)activityItems {
-    
     // Toggle favourite status for doodleObject
     doodleObject.isFavourite = !doodleObject.isFavourite;
     
