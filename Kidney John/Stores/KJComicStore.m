@@ -33,10 +33,22 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 @implementation KJComicStore
 
+#pragma mark - Init method
+
++ (KJComicStore *)sharedStore {
+    static KJComicStore *_sharedStore = nil;
+    
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sharedStore = [[KJComicStore alloc] init];
+    });
+    
+    return _sharedStore;
+}
+
 #pragma mark - Prefetch comic thumbnails method
 
-+ (void)prefetchComicThumbnails
-{
++ (void)prefetchComicThumbnails {
     NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES]];
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
     
@@ -54,13 +66,12 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 #pragma mark - Comic files on filesystem methods
 
-- (NSArray *)returnComicsFolderAsArray
-{
-    return [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:kComicsLocalDirectoryName];
+- (NSArray *)returnComicsFolderAsArray {
+    return [[NSBundle mainBundle] pathsForResourcesOfType:@"png"
+                                              inDirectory:kComicsLocalDirectoryName];
 }
 
-+ (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject
-{
++ (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicThumbnailsLocalDirectoryName];
     
     // Filepath for jpeg comic thumbs
@@ -71,15 +82,15 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     // TODO: make this better, return nil if none found
     if (fileExists) {
         //DDLogVerbose(@"comicStore: comic thumb file exists");
-    } else {
+    }
+    else {
         //DDLogVerbose(@"comicStore: comic thumb file does not exist");
     }
     
     return filePath;
 }
 
-+ (NSString *)returnFilepathForComicObject:(KJComic *)comicObject
-{
++ (NSString *)returnFilepathForComicObject:(KJComic *)comicObject {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicsLocalDirectoryName];
     
     // Filepath for jpeg comics
@@ -91,7 +102,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     // TODO: make this better, return nil if none found
     if (fileExists) {
         //DDLogVerbose(@"comicStore: comic file exists");
-    } else {
+    }
+    else {
         //DDLogVerbose(@"comicStore: comic file does not exist");
     }
     
@@ -100,10 +112,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 // TODO: do we really need this method?
 
-+ (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject
-{
++ (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject {
     // TODO: handle if filepath is nil
-    
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
     
 //    DDLogVerbose(@"comicStore: comic image: %@", imageToReturn);
@@ -111,10 +121,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     return imageToReturn;
 }
 
-+ (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject
-{
++ (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject {
     // TODO: handle if filepath is nil
-    
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnThumbnailFilepathForComicObject:comicObject]];
     
 //    DDLogVerbose(@"comicStore: thumb image: %@", imageToReturn);
@@ -122,12 +130,12 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     return imageToReturn;
 }
 
-- (NSArray *)returnArrayOfComicFiles
-{
+- (NSArray *)returnArrayOfComicFiles {
     // Load from resources path
     NSMutableArray *comicFileResults = [[NSMutableArray alloc] init];
     
-    NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:kComicsLocalDirectoryName] count];
+    NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png"
+                                                              inDirectory:kComicsLocalDirectoryName] count];
     DDLogVerbose(@"comicStore: bundle count: %d", pngCount);
     
     for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:kComicsLocalDirectoryName]) {
@@ -142,8 +150,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 // TODO: add init NSPredicate method using propety in this method, then refactor this method out
 
-+ (NSArray *)returnFavouritesArray
-{
++ (NSArray *)returnFavouritesArray {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -159,8 +166,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 // TODO: add init NSPredicate method using propety in this method, then refactor this method out
 
-+ (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind
-{
++ (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -176,12 +182,12 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 // TODO: do we really need this method? Can just check Core Data for KJComic object elsewhere
 
-+ (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
-{
++ (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context {
     if ([KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey withValue:comicName inContext:context]) {
         //DDLogVerbose(@"COMICS LIST: yes, comic does exist in database");
         return TRUE;
-    } else {
+    }
+    else {
         //DDLogVerbose(@"COMICS LIST: no, comic does NOT exist in database");
         return FALSE;
     }
@@ -192,8 +198,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 + (void)persistNewComicWithName:(NSString *)comicName
                   comicFileName:(NSString *)comicFileName
                    comicFileUrl:(NSString *)comicFileUrl
-                    comicNumber:(NSString *)comicNumber
-{
+                    comicNumber:(NSString *)comicNumber {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -221,8 +226,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 - (void)checkIfComicNeedsUpdateWithComicName:(NSString *)comicName
                                comicFileName:(NSString *)comicFileName
                                 comicFileUrl:(NSString *)comicFileUrl
-                                 comicNumber:(NSString *)comicNumber
-{
+                                 comicNumber:(NSString *)comicNumber {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -249,7 +253,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
                     DDLogVerbose(@"comicStore: updated comic: %@", comicName);
-                } else if (error) {
+                }
+                else if (error) {
                     DDLogError(@"comicStore: error updating comic: %@ - %@", comicName, [error localizedDescription]);
                 }
             }];
@@ -259,8 +264,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 // TODO: do we really need this method?
 
-+ (void)deleteComicFromDatabaseWithComicName:(NSString *)comicName
-{
++ (void)deleteComicFromDatabaseWithComicName:(NSString *)comicName {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -273,7 +277,6 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                                                     inContext:localContext];
     
     if (comicToDelete) {
-        
         // Delete object
         [comicToDelete MR_deleteInContext:localContext];
         
@@ -281,7 +284,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
         [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             if (success) {
                 DDLogVerbose(@"comicStore: deleted comic");
-            } else if (error) {
+            }
+            else if (error) {
                 DDLogError(@"comicStore: error deleting comic: %@", [error localizedDescription]);
             }
         }];
@@ -301,7 +305,6 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     
     // Start query with block
     [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        
         if (!error) {
             
             // The find succeeded
@@ -309,7 +312,6 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
             
             for (PFObject *object in objects) {
-                
                 if ([object[@"is_active"] isEqual:@"1"]) {
                     // TODO:
                     // - check if PFFile is already saved on filesystem
@@ -327,7 +329,8 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                                      comicFileUrl:comicImageFile.url
                                       comicNumber:object[kParseComicNumberKey]];
                     
-                } else {
+                }
+                else {
                     DDLogVerbose(@"comicStore: comic not active: %@", object[kParseComicNameKey]);
                     
                     // Check if comic exists in database, and delete if so
@@ -338,7 +341,6 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                         DDLogVerbose(@"comicStore: comic %@ exists in database but is no longer active on server; now removing", object[kParseComicNameKey]);
                         [self deleteComicFromDatabaseWithComicName:object[kParseComicNameKey]];
                     }
-
                 }
             }
             
@@ -356,25 +358,12 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             // NOTE: does not need to be on wifi as comics are cached locally
             [self prefetchComicThumbnails];
             
-        } else {
+        }
+        else {
             // Log details of the failure
             DDLogError(@"comicStore: error: %@ %@", error, [error userInfo]);
         }
     }];
-}
-
-#pragma mark - Init method
-
-+ (KJComicStore *)sharedStore
-{
-    static KJComicStore *_sharedStore = nil;
-    static dispatch_once_t oncePredicate;
-    
-    dispatch_once(&oncePredicate, ^{
-        _sharedStore = [[KJComicStore alloc] init];
-    });
-    
-    return _sharedStore;
 }
 
 @end
