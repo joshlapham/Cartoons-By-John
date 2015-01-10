@@ -154,15 +154,6 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 
 #pragma mark - Core Data methods
 
-+ (BOOL)hasInitialDataFetchHappened
-{
-    if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
-        return NO;
-    } else {
-        return YES;
-    }
-}
-
 + (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context
 {
     if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
