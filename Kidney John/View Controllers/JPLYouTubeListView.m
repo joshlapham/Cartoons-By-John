@@ -17,10 +17,10 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "KJVideo+Methods.h"
 
 // Constants
 static NSString *kCellIdentifier = @"videoResultCell";
-static NSString *kYouTubeVideoThumbnailUrl = @"https://img.youtube.com/vi/%@/default.jpg";
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
@@ -209,7 +209,7 @@ static NSString *kYouTubeVideoThumbnailUrl = @"https://img.youtube.com/vi/%@/def
     }
     
     // Init video thumbnail
-    NSString *urlString = [NSString stringWithFormat:kYouTubeVideoThumbnailUrl, cellVideo.videoId];
+    NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, cellVideo.videoId];
     
     // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
