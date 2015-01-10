@@ -61,43 +61,43 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Favourites methods
 
-+ (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
-        // Video is NOT a favourite
-        DDLogVerbose(@"Video is NOT already a favourite, adding now ..");
-        
-        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
-        videoToFavourite.isFavourite = isOrNot;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    } else {
-        DDLogVerbose(@"videoStore: video not found in database, not adding anything to favourites");
-    }
-}
+//+ (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot
+//{
+//    // Get the local context
+//    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+//    
+//    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
+//        // Video is NOT a favourite
+//        DDLogVerbose(@"Video is NOT already a favourite, adding now ..");
+//        
+//        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+//        videoToFavourite.isFavourite = isOrNot;
+//        
+//        // Save
+//        [localContext MR_saveToPersistentStoreAndWait];
+//    } else {
+//        DDLogVerbose(@"videoStore: video not found in database, not adding anything to favourites");
+//    }
+//}
 
-+ (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
-        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
-        if (!videoToFavourite.isFavourite) {
-            DDLogVerbose(@"videoStore: video IS NOT a favourite");
-            return FALSE;
-        } else {
-            DDLogVerbose(@"videoStore: video IS a favourite");
-            return TRUE;
-        }
-    } else {
-        return FALSE;
-    }
-}
+//+ (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId
+//{
+//    // Get the local context
+//    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+//    
+//    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext]) {
+//        KJVideo *videoToFavourite = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+//        if (!videoToFavourite.isFavourite) {
+//            DDLogVerbose(@"videoStore: video IS NOT a favourite");
+//            return FALSE;
+//        } else {
+//            DDLogVerbose(@"videoStore: video IS a favourite");
+//            return TRUE;
+//        }
+//    } else {
+//        return FALSE;
+//    }
+//}
 
 + (NSArray *)returnFavouritesArray
 {

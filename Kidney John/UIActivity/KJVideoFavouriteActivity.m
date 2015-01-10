@@ -8,65 +8,76 @@
 
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
+#import "KJVideo.h"
 
 @implementation KJVideoFavouriteActivity {
     NSString *titleOfActivity;
-    NSString *idOfVideo;
-    BOOL addOrNot;
+    KJVideo *videoObject;
 }
 
-- (id)initWithActivityTitle:(NSString *)activityTitle andVideoId:(NSString *)videoId
-{
+#pragma mark - Init method
+
+- (id)initWithVideo:(KJVideo *)video {
     self = [super init];
-    
     if (self) {
-        titleOfActivity = activityTitle;
-        idOfVideo = videoId;
+        // Init video object
+        videoObject = video;
+        
+        // Init activity title, depending on favourite status of video
+        if (!videoObject.isFavourite) {
+            titleOfActivity = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
+        }
+        else {
+            titleOfActivity = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
+        }
     }
+    
     return self;
 }
 
-- (NSString *)activityType
-{
+#pragma mark - Other methods
+
+- (NSString *)activityType {
     return @"com.joshlapham.Kidney-John favourite video";
 }
 
-- (NSString *)activityTitle
-{
+- (NSString *)activityTitle {
     return titleOfActivity;
 }
 
-- (UIImage *)activityImage
-{
-    if ([KJVideoStore checkIfVideoIdIsAFavourite:idOfVideo]) {
-        return [UIImage imageNamed:@"remove-from-fav.png"];
-    } else {
+- (UIImage *)activityImage {
+    if (!videoObject.isFavourite) {
         return [UIImage imageNamed:@"add-to-fav.png"];
+    }
+    else {
+        return [UIImage imageNamed:@"remove-from-fav.png"];
     }
 }
 
-- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
-{
+- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
     return YES;
 }
 
-- (void)prepareWithActivityItems:(NSArray *)activityItems
-{
-    // Check if video is a favourite and update accordingly
-    if (![KJVideoStore checkIfVideoIdIsAFavourite:idOfVideo]) {
-        [KJVideoStore updateVideoFavouriteStatus:idOfVideo isFavourite:YES];
-    } else {
-        [KJVideoStore updateVideoFavouriteStatus:idOfVideo isFavourite:NO];
-    }
+- (void)prepareWithActivityItems:(NSArray *)activityItems {
+    // Toggle favourite status for videoObject
+    videoObject.isFavourite = !videoObject.isFavourite;
+    
+    // Save
+    [videoObject.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        if (!error && success) {
+            DDLogVerbose(@"%@ - successfully updated favourite status for video %@", self.class, videoObject.videoName);
+        }
+        else {
+            DDLogError(@"%@ - error updating favourite status for video %@: %@", self.class, videoObject.videoName, [error localizedDescription]);
+        }
+    }];
 }
 
-- (UIViewController *)activityViewController
-{
+- (UIViewController *)activityViewController {
     return nil;
 }
 
-- (void)performActivity
-{
+- (void)performActivity {
     [self activityDidFinish:YES];
 }
 

@@ -18,8 +18,8 @@ extern NSString * const KJVideoDataFetchDidHappenNotification;
 
 // Class methods
 + (void)fetchVideoData;
-+ (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot;
-+ (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId;
+//+ (void)updateVideoFavouriteStatus:(NSString *)videoId isFavourite:(BOOL)isOrNot;
+//+ (BOOL)checkIfVideoIdIsAFavourite:(NSString *)videoId;
 + (NSArray *)returnFavouritesArray;
 + (BOOL)hasInitialDataFetchHappened;
 

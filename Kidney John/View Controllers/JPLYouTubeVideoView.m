@@ -45,7 +45,7 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     [super viewDidLoad];
     
     // Set title to video title
-    self.title = self.videoTitleFromList;
+    self.title = self.chosenVideo.videoName;
     
     // Init action button in top right hand corner
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
@@ -60,7 +60,7 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     _videoView.mediaPlaybackRequiresUserAction = NO;
     
     // Call play video method
-    [self playVideoWithId:self.videoIdFromList];
+    [self playVideoWithId:self.chosenVideo.videoId];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -163,21 +163,13 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
 #pragma mark - UIActivityView methods
 
 - (void)showActivityView {
-    NSString *titleString;
-    
-    // TODO: refactor this as per Comics UIActivity
-    if (![KJVideoStore checkIfVideoIdIsAFavourite:self.videoIdFromList]) {
-        titleString = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
-    } else {
-        titleString = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
-    }
-    
     // Init UIActivity
-    KJVideoFavouriteActivity *favouriteActivity = [[KJVideoFavouriteActivity alloc] initWithActivityTitle:titleString
-                                                                                               andVideoId:self.videoIdFromList];
+    KJVideoFavouriteActivity *favouriteActivity = [[KJVideoFavouriteActivity alloc] initWithVideo:self.chosenVideo];
     
-    NSURL *activityUrl = [NSURL URLWithString:[NSString stringWithFormat:kYouTubeVideoUrlForSharing, self.videoIdFromList]];
+    // Init URL for UIActivity (for social sharing)
+    NSURL *activityUrl = [NSURL URLWithString:[NSString stringWithFormat:kYouTubeVideoUrlForSharing, self.chosenVideo.videoId]];
     
+    // Init view controller for UIActivity
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[activityUrl]
                                                                              applicationActivities:@[favouriteActivity]];
     

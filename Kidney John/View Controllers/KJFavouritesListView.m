@@ -176,8 +176,7 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
     if ([segue.identifier isEqualToString:@"favouritesVideoSegue"]) {
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
         KJVideo *cellVideo = [cellResults objectAtIndex:indexPath.row];
-        destViewController.videoIdFromList = cellVideo.videoId;
-        destViewController.videoTitleFromList = cellVideo.videoName;
+        destViewController.chosenVideo = cellVideo;
         
     } else if ([segue.identifier isEqualToString:@"comicDetailSegueFromFavourites"]) {
         

@@ -257,18 +257,18 @@ static NSString *kYouTubeVideoThumbnailUrl = @"https://img.youtube.com/vi/%@/def
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
         KJVideo *cellVideo;
         
+        // If search results ..
         if ([self.searchDisplayController isActive]) {
             indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
             cellVideo = [_searchResults objectAtIndex:indexPath.row];
-            destViewController.videoIdFromList = cellVideo.videoId;
-            destViewController.videoTitleFromList = cellVideo.videoName;
         }
         else {
             indexPath = [self.tableView indexPathForSelectedRow];
             cellVideo = [_videoResults objectAtIndex:indexPath.row];
-            destViewController.videoIdFromList = cellVideo.videoId;
-            destViewController.videoTitleFromList = cellVideo.videoName;
         }
+        
+        // Set chosen video on destination VC
+        destViewController.chosenVideo = cellVideo;
     }
 }
 
