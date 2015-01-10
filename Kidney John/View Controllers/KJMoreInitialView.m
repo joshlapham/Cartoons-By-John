@@ -20,47 +20,101 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 
+// Constants
+static NSString *kCellIdentifier = @"Cell";
+static NSString *kSocialCellIdentifier = @"SocialLinkCell";
+
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) NSArray *cellArray;
+@property (nonatomic) NSInteger chosenRow;
+@property (nonatomic, strong) NSMutableArray *socialLinksArray;
+@property (nonatomic) BOOL areWeTestingSocialLinksFromParseFeature;
 
 @end
 
-@implementation KJMoreInitialView {
-    NSArray *cellArray;
-    NSInteger chosenRow;
-    NSMutableArray *socialLinksArray;
-    BOOL areWeTestingSocialLinksFromParseFeature;
+@implementation KJMoreInitialView
+
+#pragma mark - dealloc method
+
+- (void)dealloc {
+    // Remove NSNotification observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:KJSocialLinkDataFetchDidHappenNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kReachabilityChangedNotification
+                                                  object:nil];
+}
+
+
+#pragma mark - viewDid methods
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // Set title
+    self.title = NSLocalizedString(@"More", @"Title of More view");
+    
+    // FOR TESTING of fetching Social Link data from Parse
+    _areWeTestingSocialLinksFromParseFeature = NO;
+    
+    if (_areWeTestingSocialLinksFromParseFeature == YES) {
+        // Set up NSNotification receiving for when socialLinkStore finishes data fetch
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didFetchSocialLinks)
+                                                     name:KJSocialLinkDataFetchDidHappenNotification
+                                                   object:nil];
+        
+        // Reachability NSNotification
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reachabilityDidChange)
+                                                     name:kReachabilityChangedNotification
+                                                   object:nil];
+        
+        // Init cell array
+        [self initSocialLinksArrayFromParse];
+    }
+    else {
+        // Use hardcoded links
+        [self initHardcodedSocialLinksArray];
+    }
+    
+    // Init strings for Favourites cells
+    // NOTE: these strings will be used as titles for their respective views when tapped
+    NSString *videosString = NSLocalizedString(@"Videos", @"Title of Videos button for Favourites list");
+    NSString *comicString = NSLocalizedString(@"Comix", @"Title of Comics button for Favourites list");
+    NSString *doodlesString = NSLocalizedString(@"Doodles", @"Title of Doodles button for Favourites list");
+    
+    // Init array of titles for Favourites cells
+    _cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
 }
 
 #pragma mark - UITableView delegate methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            {
-                return [cellArray count];
-            }
+            return [_cellArray count];
             break;
         
         case 1:
-            {
-                return [socialLinksArray count];
-            }
+            return [_socialLinksArray count];
             break;
             
         default:
             break;
     }
+    
     return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0:
             return NSLocalizedString(@"Favourites", @"Header title for Favourites buttons in More view");
@@ -77,13 +131,11 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 35;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UILabel *headerLabel = [[UILabel alloc] init];
     
     headerLabel.frame = CGRectMake(20, 8, 320, 20);
@@ -97,24 +149,27 @@
     return headerView;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    static NSString *SocialCellIdentifier = @"SocialLinkCell";
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Init cell
     UITableViewCell *cell;
     
     if (!cell) {
         if (indexPath.section == 1) {
             // Social links section
-            [tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell" bundle:nil] forCellReuseIdentifier:SocialCellIdentifier];
-            cell = [tableView dequeueReusableCellWithIdentifier:SocialCellIdentifier forIndexPath:indexPath];
-        } else {
+            [tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell" bundle:nil]
+            forCellReuseIdentifier:kSocialCellIdentifier];
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:kSocialCellIdentifier
+                                                   forIndexPath:indexPath];
+        }
+        else {
             // Other sections (like Favourites)
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+            cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier
+                                                   forIndexPath:indexPath];
         }
     }
     
+    // Init cell labels
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
     UIImageView *thumbImage = (UIImageView *)[cell viewWithTag:102];
     
@@ -124,7 +179,7 @@
     // If Favourites section ..
     if (indexPath.section == 0) {
         // Set the cell text
-        titleLabel.text = [cellArray objectAtIndex:indexPath.row];
+        titleLabel.text = [_cellArray objectAtIndex:indexPath.row];
         
         // Set Favourites icon
         if (indexPath.row == 0) {
@@ -132,48 +187,49 @@
             thumbImage.image = [UIImage imageNamed:@"video-tab-icon.png"];
             // Fix the look of the Video thumbnail when in tableView
             thumbImage.contentMode = UIViewContentModeScaleAspectFit;
-        } else if (indexPath.row == 1) {
+        }
+        else if (indexPath.row == 1) {
             // Comix
             thumbImage.image = [UIImage imageNamed:@"comic-tab-icon.png"];
-        } else if (indexPath.row == 2) {
+        }
+        else if (indexPath.row == 2) {
             // Doodles
             thumbImage.image = [UIImage imageNamed:@"doodle-tab-icon.png"];
         }
-        
+    }
     // If Social Links section ..
-    } else {
+    else {
         // Set the cell text
         
         // FOR TESTING
-        if (areWeTestingSocialLinksFromParseFeature == YES) {
+        if (_areWeTestingSocialLinksFromParseFeature == YES) {
             // From Parse
-            KJSocialLink *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+            KJSocialLink *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
             titleLabel.text = socialLink.title;
             thumbImage.image = [UIImage imageNamed:socialLink.imagePath];
-        } else {
+        }
+        else {
             // Use hardcoded social links
-            NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+            NSDictionary *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
             titleLabel.text = [socialLink objectForKey:@"title"];
             thumbImage.image = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
         }
         
         // Give the social icons a bit of opacity to match Favourites icons
         thumbImage.alpha = 0.5;
-        
     }
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0:
             {
-                chosenRow = indexPath.row;
+                _chosenRow = indexPath.row;
                 
                 // If Doodles was tapped ..
-                if (chosenRow == 2) {
+                if (_chosenRow == 2) {
                     // Doodles was chosen
                     [self performSegueWithIdentifier:@"doodleFavouriteSegue" sender:self];
                 } else {
@@ -187,20 +243,22 @@
             {
                 // Social media links
                 // Set back button to have no text
+                // TODO: review this, not really best practice
                 self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
                 
                 // Initialize the web view controller and set it's URL
                 PBWebViewController *webViewController = [[PBWebViewController alloc] init];
                 
                 // FOR TESTING
-                if (areWeTestingSocialLinksFromParseFeature == YES) {
+                if (_areWeTestingSocialLinksFromParseFeature == YES) {
                     // Use Parse
-                    KJSocialLink *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+                    KJSocialLink *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
                     webViewController.URL = [NSURL URLWithString:socialLink.url];
                     webViewController.title = socialLink.title;
-                } else {
+                }
+                else {
                     // Use hardcoded social links
-                    NSDictionary *socialLink = [socialLinksArray objectAtIndex:indexPath.row];
+                    NSDictionary *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
                     webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
                     webViewController.title = [socialLink objectForKey:@"title"];
                 }
@@ -220,31 +278,32 @@
 
 #pragma mark - Prepare for segue method
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Set this in every view controller so that the back button displays back instead of the root view controller name
+    // TODO: review this, not really best practice
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     if ([[segue identifier] isEqualToString:@"favouritesSegue"]) {
         //DDLogVerbose(@"in segue method ..");
-        NSString *typeOfFavourite = [cellArray objectAtIndex:chosenRow];
+        NSString *typeOfFavourite = [_cellArray objectAtIndex:_chosenRow];
         //DDLogVerbose(@"type of fav: %@", typeOfFavourite);
         NSArray *favouritesDataToPass;
         
         KJFavouritesListView *destViewController = segue.destinationViewController;
         destViewController.titleForView = typeOfFavourite;
         
-        if (chosenRow == 0) {
+        if (_chosenRow == 0) {
             // Videos
             favouritesDataToPass = [KJVideoStore returnFavouritesArray];
-        } else if (chosenRow == 1) {
+        }
+        else if (_chosenRow == 1) {
             // Comix
             favouritesDataToPass = [KJComicStore returnFavouritesArray];
         }
         
         destViewController.cellResults = favouritesDataToPass;
-        
-    } else if ([segue.identifier isEqualToString:@"doodleFavouriteSegue"]) {
+    }
+    else if ([segue.identifier isEqualToString:@"doodleFavouriteSegue"]) {
         // If Doodles ..
         // NOTE: don't need to set anything here
         //KJFavDoodlesListView *destViewController = segue.destinationViewController;
@@ -253,8 +312,7 @@
 
 #pragma mark - Reachability methods
 
-- (void)reachabilityDidChange
-{
+- (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"More: network became available");
         
@@ -265,15 +323,14 @@
 
 #pragma mark - Did fetch Social Links method
 
-- (void)didFetchSocialLinks
-{
+- (void)didFetchSocialLinks {
     DDLogVerbose(@"More: did fetch social links");
     
     // Clear out existing links
-    [socialLinksArray removeAllObjects];
+    [_socialLinksArray removeAllObjects];
     
     // Get links from Core Data
-    socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
     
     // Reload tableView
     [self.tableView reloadData];
@@ -284,10 +341,9 @@
 // NOTE - since we are still testing fetching of Social Links from Parse,
 // these methods are here for that purpose
 
-- (void)initSocialLinksArrayFromParse
-{
+- (void)initSocialLinksArrayFromParse {
     // Init social link data source array
-    socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
     
     // Reload tableView
     [self.tableView reloadData];
@@ -299,8 +355,8 @@
     }
 }
 
-- (void)initHardcodedSocialLinksArray
-{
+- (void)initHardcodedSocialLinksArray {
+    // TODO: load these from a .plist included with app, so there are initial values?
     NSDictionary *facebookLink = @{@"title" : @"Facebook", @"url" : @"https://www.facebook.com/kidneyjohn", @"image" : @"facebook.png"};
     NSDictionary *twitterLink = @{@"title" : @"Twitter", @"url" : @"https://twitter.com/johnrodpaine", @"image" : @"twitter.png"};
     NSDictionary *tumblrLink = @{@"title" : @"Tumblr", @"url" : @"http://johnroderickpaine.tumblr.com", @"image" : @"tumblr.png"};
@@ -309,61 +365,14 @@
     NSDictionary *instaLink = @{@"title" : @"Instagram", @"url" : @"http://instagram.com/johnroderickpaine", @"image" : @"instagram.png"};
     NSDictionary *societyLink = @{@"title" : @"Society6", @"url" : @"http://society6.com/kidneyjohn", @"image" : @"society6.png"};
     
-    socialLinksArray = [[NSMutableArray alloc] init];
-    [socialLinksArray addObject:facebookLink];
-    [socialLinksArray addObject:twitterLink];
-    [socialLinksArray addObject:tumblrLink];
-    [socialLinksArray addObject:youtubeLink];
-    [socialLinksArray addObject:vimeoLink];
-    [socialLinksArray addObject:instaLink];
-    [socialLinksArray addObject:societyLink];
-}
-
-#pragma mark - Init methods
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.title = NSLocalizedString(@"More", @"Title of More view");
-    
-    // FOR TESTING of fetching Social Link data from Parse
-    areWeTestingSocialLinksFromParseFeature = NO;
-    
-    if (areWeTestingSocialLinksFromParseFeature == YES) {
-        // Set up NSNotification receiving for when videoStore finishes data fetch
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didFetchSocialLinks)
-                                                     name:KJSocialLinkDataFetchDidHappenNotification
-                                                   object:nil];
-        
-        // Reachability NSNotification
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reachabilityDidChange)
-                                                     name:kReachabilityChangedNotification
-                                                   object:nil];
-        
-        // Init cell array
-        [self initSocialLinksArrayFromParse];
-    } else {
-        // Use hardcoded links
-        [self initHardcodedSocialLinksArray];
-    }
-    
-    
-    // Array of titles for Favourites cells
-    // NOTE: these strings will be used as titles for their respective views when tapped
-    NSString *videosString = NSLocalizedString(@"Videos", @"Title of Videos button for Favourites list");
-    NSString *comicString = NSLocalizedString(@"Comix", @"Title of Comics button for Favourites list");
-    NSString *doodlesString = NSLocalizedString(@"Doodles", @"Title of Doodles button for Favourites list");
-    cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
-}
-
-- (void)dealloc
-{
-    // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJSocialLinkDataFetchDidHappenNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+    _socialLinksArray = [[NSMutableArray alloc] init];
+    [_socialLinksArray addObject:facebookLink];
+    [_socialLinksArray addObject:twitterLink];
+    [_socialLinksArray addObject:tumblrLink];
+    [_socialLinksArray addObject:youtubeLink];
+    [_socialLinksArray addObject:vimeoLink];
+    [_socialLinksArray addObject:instaLink];
+    [_socialLinksArray addObject:societyLink];
 }
 
 @end
