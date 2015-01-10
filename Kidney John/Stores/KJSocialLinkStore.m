@@ -24,11 +24,10 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 
 #pragma mark - Init method
 
-+ (KJSocialLinkStore *)sharedStore
-{
++ (KJSocialLinkStore *)sharedStore {
     static KJSocialLinkStore *_sharedStore = nil;
-    static dispatch_once_t oncePredicate;
     
+    static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedStore = [[KJSocialLinkStore alloc] init];
     });
@@ -38,21 +37,23 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 
 #pragma mark - Core Data methods
 
-+ (BOOL)hasInitialDataFetchHappened
-{
+// TODO: move this to KJSettings category
+
++ (BOOL)hasInitialDataFetchHappened {
     if (![NSUserDefaults kj_hasFirstSocialLinksFetchCompletedSetting]) {
         return NO;
-    } else {
+    }
+    else {
         return YES;
     }
 }
 
-+ (BOOL)checkIfSocialLinkIsInDatabaseWithUrl:(NSString *)urlToCheck context:(NSManagedObjectContext *)context
-{
++ (BOOL)checkIfSocialLinkIsInDatabaseWithUrl:(NSString *)urlToCheck context:(NSManagedObjectContext *)context {
     if ([KJSocialLink MR_findFirstByAttribute:@"url" withValue:urlToCheck inContext:context]) {
         //DDLogVerbose(@"socialLinkStore: Yes, social link does exist in database");
         return TRUE;
-    } else {
+    }
+    else {
         //DDLogVerbose(@"socialLinkStore: No, social link does NOT exist in database");
         return FALSE;
     }
@@ -61,8 +62,7 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 + (void)persistNewSocialLinkWithTitle:(NSString *)titleValue
                                   url:(NSString *)urlValue
                              imageUrl:(NSString *)imageUrlValue
-                            imagePath:(NSString *)imagePathValue
-{
+                            imagePath:(NSString *)imagePathValue {
     // Get the local context
     NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
@@ -85,8 +85,7 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 + (void)checkIfSocialLinkNeedsUpdateWithTitle:(NSString *)titleValue
                                           url:(NSString *)urlValue
                                      imageUrl:(NSString *)imageUrlValue
-                                    imagePath:(NSString *)imagePathValue
-{
+                                    imagePath:(NSString *)imagePathValue {
     // TODO: this keeps returning TRUE
     
     // Get the local context
@@ -110,7 +109,8 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
             [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
                 if (success) {
                     DDLogVerbose(@"socialLinkStore: updated link: %@", linkToCheck.title);
-                } else if (error) {
+                }
+                else if (error) {
                     DDLogVerbose(@"socialLinkStore: error updating link: %@ - %@", linkToCheck.title, [error localizedDescription]);
                 }
             }];
@@ -120,8 +120,7 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 
 #pragma mark - Fetch data method
 
-+ (void)fetchSocialLinkData
-{
++ (void)fetchSocialLinkData {
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"socialLinkStore: fetching social link data ..");
@@ -164,7 +163,8 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
                                                    imageUrl:imageFile.url
                                                   imagePath:object[kParseSocialLinkImagePathKey]];
                         
-                    } else {
+                    }
+                    else {
                         DDLogVerbose(@"socialLinkStore: link not active: %@", object[@"title"]);
                     }
                 }
@@ -179,9 +179,10 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
                 [[NSNotificationCenter defaultCenter] postNotificationName:KJSocialLinkDataFetchDidHappenNotification
                                                                     object:nil];
                 
-            } else {
+            }
+            else {
                 // Log details of the failure
-                DDLogVerbose(@"socialLinkStore: error: %@ %@", error, [error userInfo]);
+                DDLogError(@"socialLinkStore: error: %@ %@", error, [error userInfo]);
             }
         }];
     });
