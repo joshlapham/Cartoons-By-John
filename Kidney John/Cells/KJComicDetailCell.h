@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+// Constants
+extern NSString * const KJComicWasDoubleTappedNotification;
+
 @interface KJComicDetailCell : UICollectionViewCell <UIScrollViewDelegate>
 
 @property (strong, nonatomic) UIImageView *comicImageView;

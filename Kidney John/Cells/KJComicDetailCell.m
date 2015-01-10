@@ -8,23 +8,38 @@
 
 #import "KJComicDetailCell.h"
 
+// Constants
+// Constant for NSNotification name
+NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
+
 @implementation KJComicDetailCell
 
 @synthesize comicImageView, comicScrollView;
 
-#pragma mark - Init methods
+#pragma mark - dealloc method
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (void)dealloc {
+    // Remove NSNotification observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:KJComicWasDoubleTappedNotification
+                                                  object:nil];
+}
+
+#pragma mark - Init method
+
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    
     if (self) {
         // Register for NSNotifications
-        NSString *notificationName = @"KJComicWasDoubleTapped";
         // Remove as observer first, just to be sure
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:KJComicWasDoubleTappedNotification
+                                                      object:nil];
         // Add as observer
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDoubleTap:) name:notificationName object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleDoubleTap:)
+                                                     name:KJComicWasDoubleTappedNotification
+                                                   object:nil];
         
         // Init scrollView
         comicScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
@@ -43,32 +58,23 @@
         // Add scrollView to view
         [self addSubview:comicScrollView];
     }
+    
     return self;
-}
-
-- (void)dealloc
-{
-    // Remove NSNotification observer
-    NSString *notificationName = @"KJComicWasDoubleTapped";
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 }
 
 #pragma mark - UIScrollView delegate methods
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
-{
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return comicImageView;
 }
 
 #pragma mark - UIGestureRecognizer methods
 
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer {
-    
     if(comicScrollView.zoomScale > comicScrollView.minimumZoomScale)
         [comicScrollView setZoomScale:comicScrollView.minimumZoomScale animated:YES];
     else
         [comicScrollView setZoomScale:comicScrollView.maximumZoomScale animated:YES];
-    
 }
 
 @end
