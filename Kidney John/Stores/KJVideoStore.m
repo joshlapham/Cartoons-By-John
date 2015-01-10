@@ -76,15 +76,6 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Core Data methods
 
-+ (BOOL)hasInitialDataFetchHappened
-{
-    if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
-        return NO;
-    } else {
-        return YES;
-    }
-}
-
 + (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId context:(NSManagedObjectContext *)context
 {
     if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {

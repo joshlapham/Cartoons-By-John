@@ -19,6 +19,5 @@ extern NSString * const KJVideoDataFetchDidHappenNotification;
 // Class methods
 + (void)fetchVideoData;
 + (NSArray *)returnFavouritesArray;
-+ (BOOL)hasInitialDataFetchHappened;
 
 @end

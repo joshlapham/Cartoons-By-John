@@ -27,6 +27,5 @@ extern NSString * const KJComicDataFetchDidHappenNotification;
 + (NSString *)returnFilepathForComicObject:(KJComic *)comicObject;
 + (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject;
 + (NSArray *)returnFavouritesArray;
-+ (BOOL)hasInitialDataFetchHappened;
 
 @end

@@ -174,17 +174,6 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 #pragma mark - Core Data methods
 
-// TODO: refactor this out and just use KJSettings category elsewhere
-
-+ (BOOL)hasInitialDataFetchHappened
-{
-    if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
-        return NO;
-    } else {
-        return YES;
-    }
-}
-
 // TODO: do we really need this method? Can just check Core Data for KJComic object elsewhere
 
 + (BOOL)checkIfComicIsInDatabaseWithName:(NSString *)comicName context:(NSManagedObjectContext *)context
