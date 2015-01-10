@@ -39,8 +39,13 @@ static NSString *kYouTubeVideoThumbnailUrl = @"https://img.youtube.com/vi/%@/def
 
 - (void)dealloc {
     // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJVideoDataFetchDidHappenNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:KJVideoDataFetchDidHappenNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kReachabilityChangedNotification
+                                                  object:nil];
 }
 
 #pragma mark - Init method

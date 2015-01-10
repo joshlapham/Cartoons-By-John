@@ -38,8 +38,13 @@ static NSString *kComicCellIdentifier = @"comicCell";
 
 - (void)dealloc {
     // Remove NSNotificationCenter observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:KJComicDataFetchDidHappenNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:KJComicDataFetchDidHappenNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kReachabilityChangedNotification
+                                                  object:nil];
 }
 
 #pragma mark - viewDid methods
