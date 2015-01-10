@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class KJRandomImage;
+
 @interface KJRandomFavouriteActivity : UIActivity
 
-- (id)initWithActivityTitle:(NSString *)activityTitle andImageUrl:(NSString *)imageUrl;
+// Init method
+- (id)initWithDoodle:(KJRandomImage *)doodle;
 
 @end

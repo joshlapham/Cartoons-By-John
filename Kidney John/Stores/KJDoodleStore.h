@@ -21,8 +21,6 @@ extern NSString * const KJDoodleFetchDidHappenNotification;
 + (void)fetchDoodleData;
 + (NSArray *)returnArrayOfRandomImages;
 + (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl;
-+ (void)updateDoodleFavouriteStatus:(NSString *)doodleUrl isFavourite:(BOOL)isOrNot;
-+ (BOOL)checkIfDoodleIsAFavourite:(NSString *)doodleUrl;
 + (NSArray *)returnFavouritesArray;
 + (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject;
 

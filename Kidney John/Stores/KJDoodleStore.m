@@ -81,44 +81,6 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     return doodleToReturn;
 }
 
-+ (void)updateDoodleFavouriteStatus:(NSString *)doodleUrl isFavourite:(BOOL)isOrNot
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext]) {
-        // Doodle is NOT a favourite
-        DDLogVerbose(@"doodleStore: doodle is NOT already a favourite, adding now ..");
-        
-        KJRandomImage *doodleToFavourite = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext];
-        doodleToFavourite.isFavourite = isOrNot;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    } else {
-        DDLogVerbose(@"doodleStore: doodle not found in database, not adding anything to favourites");
-    }
-}
-
-+ (BOOL)checkIfDoodleIsAFavourite:(NSString *)doodleUrl
-{
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext]) {
-        KJRandomImage *doodleToFavourite = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:doodleUrl inContext:localContext];
-        if (!doodleToFavourite.isFavourite) {
-            DDLogVerbose(@"doodleStore: doodle IS NOT a favourite");
-            return FALSE;
-        } else {
-            DDLogVerbose(@"doodleStore: doodle IS a favourite");
-            return TRUE;
-        }
-    } else {
-        return FALSE;
-    }
-}
-
 + (NSArray *)returnFavouritesArray
 {
     // Get the local context

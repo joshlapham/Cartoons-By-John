@@ -208,6 +208,8 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     KJRandomImage *cellData = [_randomImagesResults objectAtIndex:currentCellIndex.row];
     
+    // TODO: review these image methods
+    
     // Image to share
     UIImage *doodleImageToShare = [[UIImage alloc] init];
     
@@ -221,17 +223,13 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     }
     
     // Init UIActivity
-    NSString *titleString;
+    KJRandomFavouriteActivity *favouriteActivity = [[KJRandomFavouriteActivity alloc] initWithDoodle:cellData];
     
-    if (![KJDoodleStore checkIfDoodleIsAFavourite:cellData.imageUrl]) {
-        titleString = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
-    } else {
-        titleString = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
-    }
+    // Init view controller for UIActivity
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[doodleImageToShare]
+                                                                             applicationActivities:@[favouriteActivity]];
     
-    KJRandomFavouriteActivity *favouriteActivity = [[KJRandomFavouriteActivity alloc] initWithActivityTitle:titleString andImageUrl:cellData.imageUrl];
-    
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[doodleImageToShare] applicationActivities:@[favouriteActivity]];
+    // Set excluded activities for UIActivity
     activityVC.excludedActivityTypes = @[UIActivityTypeAddToReadingList];
     
     // Present UIActivityController

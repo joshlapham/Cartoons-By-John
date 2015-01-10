@@ -8,64 +8,77 @@
 
 #import "KJRandomFavouriteActivity.h"
 #import "KJDoodleStore.h"
+#import "KJRandomImage.h"
 
 @implementation KJRandomFavouriteActivity {
     NSString *titleOfActivity;
-    NSString *urlOfImage;
+    KJRandomImage *doodleObject;
 }
 
-- (id)initWithActivityTitle:(NSString *)activityTitle andImageUrl:(NSString *)imageUrl
-{
+#pragma mark - Init method
+
+- (id)initWithDoodle:(KJRandomImage *)doodle {
     self = [super init];
-    
     if (self) {
-        titleOfActivity = activityTitle;
-        urlOfImage = imageUrl;
+        // Init doodle object
+        doodleObject = doodle;
+        
+        // Init activity title, depending on favourite status of doodle
+        if (!doodleObject.isFavourite) {
+            titleOfActivity = NSLocalizedString(@"Add To Favourites", @"Title of button to favourite an item");
+        }
+        else {
+            titleOfActivity = NSLocalizedString(@"Remove From Favourites", @"Title of button to remove an item as a favourite");
+        }
     }
+    
     return self;
 }
 
-- (NSString *)activityType
-{
+#pragma mark - Other methods
+
+- (NSString *)activityType {
     return @"com.joshlapham.Kidney-John favourite doodle";
 }
 
-- (NSString *)activityTitle
-{
+- (NSString *)activityTitle {
     return titleOfActivity;
 }
 
-- (UIImage *)activityImage
-{
-    if ([KJDoodleStore checkIfDoodleIsAFavourite:urlOfImage]) {
-        return [UIImage imageNamed:@"remove-from-fav.png"];
-    } else {
+- (UIImage *)activityImage {
+    if (!doodleObject.isFavourite) {
         return [UIImage imageNamed:@"add-to-fav.png"];
+    }
+    else {
+        return [UIImage imageNamed:@"remove-from-fav.png"];
     }
 }
 
-- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
-{
+- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems {
     return YES;
 }
 
-- (void)prepareWithActivityItems:(NSArray *)activityItems
-{
-    // Check if comic is a favourite and update accordingly
-    if (![KJDoodleStore checkIfDoodleIsAFavourite:urlOfImage]) {
-        [KJDoodleStore updateDoodleFavouriteStatus:urlOfImage isFavourite:YES];
-    } else {
-        [KJDoodleStore updateDoodleFavouriteStatus:urlOfImage isFavourite:NO];
-    }
+- (void)prepareWithActivityItems:(NSArray *)activityItems {
+    
+    // Toggle favourite status for doodleObject
+    doodleObject.isFavourite = !doodleObject.isFavourite;
+    
+    // Save
+    [doodleObject.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        if (!error && success) {
+            DDLogVerbose(@"%@ - successfully updated favourite status for doodle %@", self.class, doodleObject.imageUrl);
+        }
+        else {
+            DDLogError(@"%@ - error updating favourite status for doodle %@: %@", self.class, doodleObject.imageUrl, [error localizedDescription]);
+        }
+    }];
 }
 
-- (UIViewController *)activityViewController
-{
+- (UIViewController *)activityViewController {
     return nil;
 }
 
-- (void)performActivity
-{
+- (void)performActivity {
     [self activityDidFinish:YES];
 }
 
