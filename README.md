@@ -22,7 +22,13 @@ Run `pod install` in the project directory to install these dependencies.
 
 __NOTE__: This project uses Parse.com for the backend database, and does not include the required API keys for privacy reasons. The app will not run without them.
 
-### Third-Party Libraries
+### Other Info
+
+#### Style Guide
+
+This project adheres to the [NYTimes Objective-C Style Guide](https://github.com/NYTimes/objective-c-style-guide).
+
+#### Third-Party Libraries
 
 The following libraries were used to create this app -
 
