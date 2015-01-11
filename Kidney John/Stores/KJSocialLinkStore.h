@@ -28,6 +28,5 @@ typedef NS_ENUM(NSUInteger, KJSocialLinkStoreConnectionState) {
 
 // Class methods
 - (void)fetchSocialLinkData;
-+ (BOOL)hasInitialDataFetchHappened;
 
 @end

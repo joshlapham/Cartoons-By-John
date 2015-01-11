@@ -36,18 +36,9 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
     return _sharedStore;
 }
 
-#pragma mark - Core Data methods
+#pragma mark - Core Data helper methods
 
-// TODO: move this to KJSettings category
-
-+ (BOOL)hasInitialDataFetchHappened {
-    if (![NSUserDefaults kj_hasFirstSocialLinksFetchCompletedSetting]) {
-        return NO;
-    }
-    else {
-        return YES;
-    }
-}
+// TODO: refactor methods to use vanilla Core Data
 
 + (BOOL)checkIfSocialLinkIsInDatabaseWithUrl:(NSString *)urlToCheck context:(NSManagedObjectContext *)context {
     if ([KJSocialLink MR_findFirstByAttribute:@"url" withValue:urlToCheck inContext:context]) {
