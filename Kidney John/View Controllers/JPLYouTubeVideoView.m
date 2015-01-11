@@ -44,6 +44,10 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // NSAssert if chosenVideo is nil.
+    // NOTE - this is for debugging purposes, will never happen in production.
+    NSAssert(self.chosenVideo, @"Cannot init Video View without a chosenVideo!");
+    
     // Set title to video title
     self.title = self.chosenVideo.videoName;
     
