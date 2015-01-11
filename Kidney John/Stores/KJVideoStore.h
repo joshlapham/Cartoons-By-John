@@ -13,11 +13,22 @@ extern NSString * const KJVideoDataFetchDidHappenNotification;
 
 @interface KJVideoStore : NSObject
 
+// Connection state
+typedef NS_ENUM(NSUInteger, KJVideoStoreConnectionState) {
+    KJVideoStoreStateDisconnected,
+    KJVideoStoreStateConnecting,
+    KJVideoStoreStateConnected,
+};
+
+// Properties
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic) KJVideoStoreConnectionState connectionState;
+
 // Init method
 + (KJVideoStore *)sharedStore;
 
 // Class methods
-+ (void)fetchVideoData;
+- (void)fetchVideoData;
 + (NSArray *)returnFavouritesArray;
 
 @end

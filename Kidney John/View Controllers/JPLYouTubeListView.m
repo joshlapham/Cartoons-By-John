@@ -22,7 +22,7 @@
 // Constants
 static NSString *kCellIdentifier = @"videoResultCell";
 
-@interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSArray *videoResults;
 @property (nonatomic, strong) NSArray *searchResults;
@@ -30,6 +30,8 @@ static NSString *kCellIdentifier = @"videoResultCell";
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *searchFetchedResultsController;
 
 @end
 
@@ -67,7 +69,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
                                              selector:@selector(reachabilityDidChange)
                                                  name:kReachabilityChangedNotification
                                                object:nil];
-    
+
     // Fetch video data
     [self fetchDataWithNetworkCheck];
     
@@ -84,7 +86,8 @@ static NSString *kCellIdentifier = @"videoResultCell";
         self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped
-        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                             action:@selector(fetchDataWithNetworkCheck)];
         _singleTap.numberOfTapsRequired = 1;
         [self.tableView addGestureRecognizer:_singleTap];
     }
@@ -100,176 +103,32 @@ static NSString *kCellIdentifier = @"videoResultCell";
     self.tableView.contentOffset = CGPointMake(0.0, self.tableView.tableHeaderView.frame.size.height);
 }
 
-#pragma mark - UISearchBar methods
-
-- (void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope {
-    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"self.videoName CONTAINS[cd] %@", searchText];
-    _searchResults = [_videoResults filteredArrayUsingPredicate:resultPredicate];
-}
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-    [self filterContentForSearchText:searchString
-                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
-                                      objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
-    
-    return YES;
-}
-
-#pragma mark - Data fetch did happen method
-
-- (void)videoFetchDidFinish {
-    DDLogVerbose(@"Videos: did receive notification that data fetch is complete, reloading table ..");
-    
-    // Sort videos with newest at top (by videoDate)
-    _videoResults = [[NSArray alloc] init];
-    _videoResults = [KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO];
-    
-    // Hide progress
-    [_progressHud hide:YES];
-    
-    // Hide network activity monitor
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    
-    // Set background of tableView to nil to remove any network error image showing
-    if (![self.tableView.backgroundView isHidden]) {
-        self.tableView.backgroundView = nil;
-    }
-    
-    // Remove tap gesture recognizer
-    [self.tableView removeGestureRecognizer:_singleTap];
-    
-    // Reload tableView
-    [self.tableView reloadData];
-}
-
-#pragma mark - UITableView delegate methods
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // If there is data ..
-    if ([_videoResults count] > 0 || [_searchResults count] > 0) {
-        return 1;
-    }
-    else {
-        // No data
-        return 0;
-    }
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Check if this is the video list or the search list
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return [_searchResults count];
-    }
-    else {
-        return [_videoResults count];
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Init cell
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
-    
-    // Init cell data
-    KJVideo *cellVideo;
-    
-    // Check if this is the video list or the search results list
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        cellVideo = [_searchResults objectAtIndex:indexPath.row];
-    } else {
-        cellVideo = [_videoResults objectAtIndex:indexPath.row];
-    }
-    
-    // Init labels for cell
-    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
-    UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
-    UIImageView *thumbnailImageView = (UIImageView *)[cell viewWithTag:102];
-    
-    // Init label text
-    // Video name
-    titleLabel.font = [UIFont kj_videoNameFont];
-    titleLabel.numberOfLines = 0;
-    titleLabel.adjustsFontSizeToFitWidth = YES;
-    titleLabel.text = cellVideo.videoName;
-    
-    // Video duration
-    durationLabel.font = [UIFont kj_videoDurationFont];
-    durationLabel.textColor = [UIColor kj_videoDurationTextColour];
-    durationLabel.numberOfLines = 0;
-    
-    // Check if new video, add 'New!' label if so
-    if ([self isNewVideo:cellVideo]) {
-        [cell addSubview:[self newVideoLabel]];
-    }
-    
-    // Placeholder duration
-    if (cellVideo.videoDuration == nil) {
-        durationLabel.text = @"0:30";
-    } else {
-        durationLabel.text = cellVideo.videoDuration;
-    }
-    
-    // Init video thumbnail
-    NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, cellVideo.videoId];
-    
-    // Check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
-        //DDLogVerbose(@"found image in cache");
-    } else {
-        //DDLogVerbose(@"no image in cache");
-        // TODO: implement fallback if image not in cache
-    }
-    
-    [thumbnailImageView sd_setImageWithURL:[NSURL URLWithString:urlString]
-                         placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
-                                    if (cellImage && !error) {
-                                        DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
-                                    } else {
-                                        DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
-                                    }
-                                }];
-    
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat cellHeightFloat;
-    
-    //KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
-    
-    // If no cell height value is found, then use default of 160
-    // DISABLED for now. Not needed as we aren't using a video description
-//    if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
-//        cellHeightFloat = 160;
-//    } else {
-//        cellHeightFloat = [cellVideo.videoCellHeight floatValue];
-//    }
-    
-    cellHeightFloat = 120;
-    
-    return cellHeightFloat;
-}
-
 #pragma mark - Prepare for segue method
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue
+                 sender:(id)sender {
     if ([segue.identifier isEqualToString:@"videoIdSegue"]) {
         // Set this in every view controller so that the back button displays back instead of the root view controller name
         // TODO: review this, not really best practice
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         
-        NSIndexPath *indexPath;
+        // Init destination VC
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
+        
+        NSFetchedResultsController *resultsController;
+        NSIndexPath *indexPath;
         KJVideo *cellVideo;
         
         // If search results ..
         if ([self.searchDisplayController isActive]) {
+            resultsController = [self fetchedResultsControllerForTableView:self.searchDisplayController.searchResultsTableView];
             indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
-            cellVideo = [_searchResults objectAtIndex:indexPath.row];
+            cellVideo = [resultsController objectAtIndexPath:indexPath];
         }
         else {
+            resultsController = [self fetchedResultsControllerForTableView:self.tableView];
             indexPath = [self.tableView indexPathForSelectedRow];
-            cellVideo = [_videoResults objectAtIndex:indexPath.row];
+            cellVideo = [resultsController objectAtIndexPath:indexPath];
         }
         
         // Set chosen video on destination VC
@@ -279,7 +138,8 @@ static NSString *kCellIdentifier = @"videoResultCell";
 
 #pragma mark - UIAlertView delegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+-       (void)alertView:(UIAlertView *)alertView
+   clickedButtonAtIndex:(NSInteger)buttonIndex {
     DDLogVerbose(@"Button clicked: %ld", (long)buttonIndex);
     
     if (buttonIndex == 1) {
@@ -331,7 +191,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
         [_noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
         
         // Fetch data
-        [KJVideoStore fetchVideoData];
+        [[KJVideoStore sharedStore] fetchVideoData];
     }
 }
 
@@ -351,7 +211,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
     if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {
-            [KJVideoStore fetchVideoData];
+            [[KJVideoStore sharedStore] fetchVideoData];
         }
         else if ([JPLReachabilityManager isUnreachable]) {
             [self noNetworkConnection];
@@ -363,7 +223,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
         
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
-            [KJVideoStore fetchVideoData];
+            [[KJVideoStore sharedStore] fetchVideoData];
         }
     }
 }
@@ -402,10 +262,12 @@ static NSString *kCellIdentifier = @"videoResultCell";
 #pragma mark Init date formatter method
 
 - (NSDateFormatter *)dateFormatter {
-    if (_dateFormatter == nil) {
-        _dateFormatter = [[NSDateFormatter alloc] init];
+    if (_dateFormatter != nil) {
+        return _dateFormatter;
     }
     
+    // Init date formatter
+    _dateFormatter = [[NSDateFormatter alloc] init];
     [_dateFormatter setDateFormat:@"YYYY-MM-dd"];
     
     return _dateFormatter;
@@ -434,6 +296,327 @@ static NSString *kCellIdentifier = @"videoResultCell";
     newVideoLabel.text = labelText;
     
     return newVideoLabel;
+}
+
+#pragma mark - Data fetch did happen method
+
+- (void)videoFetchDidFinish {
+    DDLogVerbose(@"Videos: did receive notification that data fetch is complete");
+    
+    // Hide progress
+    [_progressHud hide:YES];
+    
+    // Hide network activity monitor
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    // Set background of tableView to nil to remove any network error image showing
+    if (![self.tableView.backgroundView isHidden]) {
+        self.tableView.backgroundView = nil;
+    }
+    
+    // Remove tap gesture recognizer
+    [self.tableView removeGestureRecognizer:_singleTap];
+}
+
+#pragma mark - NSFetchedResultsController
+#pragma mark -
+
+#pragma mark Init controller methods
+
+- (NSFetchedResultsController *)newFetchedResultsControllerWithSearch:(NSString *)searchString {
+    // Init fetch request for the entity
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *videoEntity = [NSEntityDescription entityForName:@"KJVideo"
+                                                   inManagedObjectContext:self.managedObjectContext];
+    fetchRequest.entity = videoEntity;
+    
+    // Init predicate if there is a search string
+    NSPredicate *filterPredicate;
+    
+    if (searchString.length) {
+        // Search by video name
+        filterPredicate = [NSPredicate predicateWithFormat:@"videoName CONTAINS[cd] %@", searchString];
+        fetchRequest.predicate = filterPredicate;
+    }
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    fetchRequest.fetchBatchSize = 20;
+    
+    // Set sort descriptor (by video date, newest at top)
+    NSSortDescriptor *videoDateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"videoDate"
+                                                                              ascending:NO];
+    fetchRequest.sortDescriptors = @[ videoDateSortDescriptor ];
+    
+    // Init fetched results controller
+    NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                                               managedObjectContext:self.managedObjectContext
+                                                                                                 sectionNameKeyPath:nil
+                                                                                                          cacheName:nil];
+    
+    // Set delegate
+    fetchedResultsController.delegate = self;
+    
+    // Perform fetch
+    NSError *error = nil;
+    if (![fetchedResultsController performFetch:&error]) {
+        // TODO: handle this error
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+         */
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return fetchedResultsController;
+}
+
+- (NSFetchedResultsController *)fetchedResultsController {
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    _fetchedResultsController = [self newFetchedResultsControllerWithSearch:nil];
+    
+    return _fetchedResultsController;
+}
+
+- (NSFetchedResultsController *)searchFetchedResultsController {
+    if (_searchFetchedResultsController != nil) {
+        return _searchFetchedResultsController;
+    }
+    
+    // Init with search text
+    _searchFetchedResultsController = [self newFetchedResultsControllerWithSearch:self.searchDisplayController.searchBar.text];
+    
+    return _searchFetchedResultsController;
+}
+
+// Helper method to return appropriate NSFetchedResultsController
+- (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)tableView {
+    return tableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
+}
+
+#pragma mark Delegate methods
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+    UITableView *tableView = controller == self.fetchedResultsController ? self.tableView : self.searchDisplayController.searchResultsTableView;
+    [tableView beginUpdates];
+}
+
+// didChangeSection
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type {
+    UITableView *tableView = controller == self.fetchedResultsController ? self.tableView : self.searchDisplayController.searchResultsTableView;
+    
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                     withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+                     withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+// didChangeObject
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    UITableView *tableView = controller == self.fetchedResultsController ? self.tableView : self.searchDisplayController.searchResultsTableView;
+    
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:@[newIndexPath]
+                             withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:@[indexPath]
+                             withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self fetchedResultsController:controller configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:@[indexPath]
+                             withRowAnimation:UITableViewRowAnimationAutomatic];
+            [tableView insertRowsAtIndexPaths:@[newIndexPath]
+                             withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+    UITableView *tableView = controller == self.fetchedResultsController ? self.tableView : self.searchDisplayController.searchResultsTableView;
+    [tableView endUpdates];
+}
+
+#pragma mark - UISearchDisplayController
+#pragma mark -
+
+#pragma mark Content Filtering
+
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSInteger)scope
+{
+    // update the filter, in this case just blow away the FRC and let lazy evaluation create another with the relevant search info
+    self.searchFetchedResultsController.delegate = nil;
+    self.searchFetchedResultsController = nil;
+    // if you care about the scope save off the index to be used by the serchFetchedResultsController
+    //self.savedScopeButtonIndex = scope;
+}
+
+#pragma mark -
+#pragma mark Search Bar
+
+-   (void)searchDisplayController:(UISearchDisplayController *)controller
+ willUnloadSearchResultsTableView:(UITableView *)tableView; {
+    // search is done so get rid of the search fetched results controller and reclaim memory
+    self.searchFetchedResultsController.delegate = nil;
+    self.searchFetchedResultsController = nil;
+}
+
+-  (BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchString:(NSString *)searchString {
+    [self filterContentForSearchText:searchString
+                               scope:[self.searchDisplayController.searchBar selectedScopeButtonIndex]];
+    
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchScope:(NSInteger)searchOption {
+    [self filterContentForSearchText:[self.searchDisplayController.searchBar text]
+                               scope:[self.searchDisplayController.searchBar selectedScopeButtonIndex]];
+    
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+#pragma mark - UITableView delegate methods
+#pragma mark -
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    NSInteger count = [[[self fetchedResultsControllerForTableView:tableView] sections] count];
+    
+    return count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section {
+    NSInteger numberOfRows = 0;
+    NSFetchedResultsController *fetchController = [self fetchedResultsControllerForTableView:tableView];
+    NSArray *sections = fetchController.sections;
+    
+    if (sections.count > 0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [sections objectAtIndex:section];
+        numberOfRows = [sectionInfo numberOfObjects];
+    }
+    
+    return numberOfRows;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Init cell
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
+    
+    // Configure cell
+    [self fetchedResultsController:[self fetchedResultsControllerForTableView:tableView]
+                     configureCell:cell
+                       atIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (void)fetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
+                   configureCell:(UITableViewCell *)cell
+                     atIndexPath:(NSIndexPath *)indexPath {
+    // Init cell data
+    KJVideo *cellVideo = [fetchedResultsController objectAtIndexPath:indexPath];
+    
+    // Init labels for cell
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
+    UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
+    UIImageView *thumbnailImageView = (UIImageView *)[cell viewWithTag:102];
+    
+    // Init label text
+    // Video name
+    titleLabel.font = [UIFont kj_videoNameFont];
+    titleLabel.numberOfLines = 0;
+    titleLabel.adjustsFontSizeToFitWidth = YES;
+    titleLabel.text = cellVideo.videoName;
+    
+    // Video duration
+    durationLabel.font = [UIFont kj_videoDurationFont];
+    durationLabel.textColor = [UIColor kj_videoDurationTextColour];
+    durationLabel.numberOfLines = 0;
+    
+    // Check if new video, add 'New!' label if so
+    if ([self isNewVideo:cellVideo]) {
+        [cell addSubview:[self newVideoLabel]];
+    }
+    
+    // Placeholder duration
+    if (cellVideo.videoDuration == nil) {
+        durationLabel.text = @"0:30";
+    } else {
+        durationLabel.text = cellVideo.videoDuration;
+    }
+    
+    // Init video thumbnail
+    NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, cellVideo.videoId];
+    
+    // Check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
+        //DDLogVerbose(@"found image in cache");
+    } else {
+        //DDLogVerbose(@"no image in cache");
+        // TODO: implement fallback if image not in cache
+    }
+    
+    [thumbnailImageView sd_setImageWithURL:[NSURL URLWithString:urlString]
+                          placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                 completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
+                                     if (cellImage && !error) {
+                                         DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
+                                     } else {
+                                         DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
+                                     }
+                                 }];
+}
+
+-       (CGFloat)tableView:(UITableView *)tableView
+   heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat cellHeightFloat;
+    
+    //KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
+    
+    // If no cell height value is found, then use default of 160
+    // DISABLED for now. Not needed as we aren't using a video description
+    //    if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
+    //        cellHeightFloat = 160;
+    //    } else {
+    //        cellHeightFloat = [cellVideo.videoCellHeight floatValue];
+    //    }
+    
+    cellHeightFloat = 120;
+    
+    return cellHeightFloat;
 }
 
 @end

@@ -72,58 +72,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     return arrayToReturn;
 }
 
-#pragma mark - Core Data methods
-
-// TODO: refactor this method
-
-+ (BOOL)checkIfVideoIsInDatabaseWithVideoId:(NSString *)videoId
-                                    context:(NSManagedObjectContext *)context {
-    if ([KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:context]) {
-        //DDLogVerbose(@"Yes, video does exist in database");
-        return TRUE;
-    }
-    else {
-        //DDLogVerbose(@"No, video does NOT exist in database");
-        return FALSE;
-    }
-}
-
-// TODO: refactor this method
-
-+ (void)persistNewVideoWithId:(NSString *)videoId
-                         name:(NSString *)videoName
-                  description:(NSString *)videoDescription
-                         date:(NSString *)videoDate
-                   cellHeight:(NSString *)videoCellHeight
-                videoDuration:(NSString *)videoDuration {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // If video does not exist in database then persist
-    if (![self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
-        // Create a new video in the current context
-        KJVideo *newVideo = [KJVideo MR_createInContext:localContext];
-        
-        // Set attributes
-        newVideo.videoId = videoId;
-        newVideo.videoName = videoName;
-        newVideo.videoDescription = videoDescription;
-        newVideo.videoDate = videoDate;
-        newVideo.videoCellHeight = videoCellHeight;
-        newVideo.videoDuration = videoDuration;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            if (success) {
-                DDLogVerbose(@"videoStore: saved new video: %@", videoName);
-            }
-            else if (error) {
-                DDLogVerbose(@"videoStore: error saving: %@", [error localizedDescription]);
-                // TODO: implement alert view on error?
-            }
-        }];
-    }
-}
+#pragma mark - Core Data helper methods
 
 // TODO: refactor this method
 
@@ -132,11 +81,9 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                                description:(NSString *)videoDescription
                                       date:(NSString *)videoDate
                              videoDuration:(NSString *)videoDuration {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
     // If video is in database ..
-    if ([self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
+    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+//    if ([self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
         KJVideo *videoToCheck = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
         
         // Check if videoToCheck needs updating
@@ -160,35 +107,63 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 }
             }];
         }
-    }
+//    }
 }
 
-+ (void)deleteVideoFromDatabaseWithVideoId:(NSString *)videoId {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+- (NSArray *)alreadyFetchedVideoIdsArray {
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+                                              inManagedObjectContext:self.managedObjectContext];
     
-    // NOTE - we're not checking if video is in database first (as  the checkIfvideoNeedsUpdate method does),
-    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchVideoData method
+    // Init fetch request for only the video ID property of KJVideo
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = entity;
+    request.resultType = NSDictionaryResultType;
+    request.returnsDistinctResults = YES;
+    request.propertiesToFetch = @[@"videoId"];
     
-    KJVideo *videoToDelete = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+    // Init array for video ID strings
+    NSMutableArray *videoIdStrings = [NSMutableArray new];
     
-    if (videoToDelete) {
-        // Delete object
-        [videoToDelete MR_deleteInContext:localContext];
-        
-        // Save
-        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            if (success) {
-                DDLogVerbose(@"videoStore: deleted video");
-            }
-            else if (error) {
-                DDLogError(@"videoStore: error deleting video: %@", [error localizedDescription]);
-            }
-        }];
+    // Execute the fetch
+    NSError *error;
+    NSArray *videosInCoreData = [self.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if (videosInCoreData == nil) {
+        // Handle the error
+        return nil;
     }
+    else {
+        // Get video ID strings
+        for (NSDictionary *dict in videosInCoreData) {
+            NSString *videoId = [dict valueForKey:@"videoId"];
+            [videoIdStrings addObject:videoId];
+        }
+    }
+    
+    return [videoIdStrings copy];
 }
 
-+ (void)fetchVideoData {
+- (void)fetchVideoData {
+    // Check connection state
+    switch (self.connectionState) {
+        case KJVideoStoreStateConnected:
+            DDLogInfo(@"videoStore: we're already connected, so aborting fetchVideoData method call");
+            return;
+            break;
+            
+        case KJVideoStoreStateConnecting:
+            DDLogInfo(@"videoStore: we're already connecting, so aborting fetchVideoData method call");
+            return;
+            break;
+            
+        case KJVideoStoreStateDisconnected:
+            break;
+    }
+    
+    // Set connection state to CONNECTING
+    self.connectionState = KJVideoStoreStateConnecting;
+    DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
+    
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"videoStore: fetching video data ..");
@@ -202,45 +177,103 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
         // Cache policy
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
         
+        // Check for already fetched videos in Core data
+        NSArray *alreadyFetchedVideoIds = [NSArray arrayWithArray:[self alreadyFetchedVideoIdsArray]];
+        
         // Start query with block
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 // The find succeeded
+                
+                // Set video store connection state to CONNECTED
+                self.connectionState = KJVideoStoreStateConnected;
+                DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
+                
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
                 for (PFObject *object in objects) {
+                    // Init strings for video ID and name
+                    NSString *videoId = object[kParseVideoIdKey];
+                    NSString *videoName = object[kParseVideoNameKey];
+                    
+                    // Check if video is set to 'active' on server
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // Check if video needs update
-                        // TODO: review this, maybe call after firstFetchHasHappened from NSUserDefaults?
-                        [self checkIfVideoNeedsUpdateWithVideoId:object[kParseVideoIdKey]
-                                                            name:object[kParseVideoNameKey]
-                                                     description:object[kParseVideoDescriptionKey]
-                                                            date:object[kParseVideoDateKey]
-                                                   videoDuration:object[kParseVideoDurationKey]];
+                        // TODO: refactor this
+//                        [self checkIfVideoNeedsUpdateWithVideoId:object[kParseVideoIdKey]
+//                                                            name:object[kParseVideoNameKey]
+//                                                     description:object[kParseVideoDescriptionKey]
+//                                                            date:object[kParseVideoDateKey]
+//                                                   videoDuration:object[kParseVideoDurationKey]];
                         
-                        // Save Parse object to Core Data
-                        // NOTE - not using cellHeight parameter anymore
-                        [self persistNewVideoWithId:object[kParseVideoIdKey]
-                                               name:object[kParseVideoNameKey]
-                                        description:object[kParseVideoDescriptionKey]
-                                               date:object[kParseVideoDateKey]
-                                         cellHeight:nil
-                                      videoDuration:object[kParseVideoDurationKey]];
-                        
-                    }
-                    else {
-                        DDLogVerbose(@"videoStore: video not active: %@", object[@"videoName"]);
-                        
-                        // Check if video exists in database, and delete if so
-                        BOOL existInDatabase = [self checkIfVideoIsInDatabaseWithVideoId:object[kParseVideoIdKey]
-                                                                                 context:[NSManagedObjectContext MR_contextForCurrentThread]];
-                        
-                        if (existInDatabase) {
-                            DDLogVerbose(@"videoStore: video %@ exists in database but is no longer active on server; now removing", object[@"videoName"]);
-                            [self deleteVideoFromDatabaseWithVideoId:object[kParseVideoIdKey]];
+                        // If video doesn't aleady exist locally in Core Data, then create
+                        if (![alreadyFetchedVideoIds containsObject:videoId]) {
+                            DDLogInfo(@"videoStore: haven't fetched video %@", videoName);
+                            
+                            // Init new video
+                            KJVideo *newVideo = [NSEntityDescription insertNewObjectForEntityForName:@"KJVideo"
+                                                                              inManagedObjectContext:self.managedObjectContext];
+                            
+                            newVideo.videoId = object[kParseVideoIdKey];
+                            newVideo.videoName = object[kParseVideoNameKey];
+                            newVideo.videoDescription = object[kParseVideoDescriptionKey];
+                            newVideo.videoDate = object[kParseVideoDateKey];
+                            newVideo.videoDuration = object[kParseVideoDurationKey];
+                        }
+                        else {
+//                            DDLogInfo(@"videoStore: already fetched video %@", videoId);
                         }
                     }
+                    
+                    // Video is NOT active
+                    // Check if it exists locally in Core Data, and delete if so
+                    else {
+                        DDLogInfo(@"videoStore: video not active: %@", object[@"videoName"]);
+                        
+                        if (![alreadyFetchedVideoIds containsObject:videoId]) {
+//                            DDLogInfo(@"videoStore: video %@ isn't active but isn't in database, so it's all good", videoName);
+                        }
+                        
+                        // Video IS in Core Data, so delete
+                        else {
+                            DDLogInfo(@"videoStore: video %@ isn't active and is in database; deleting now", videoName);
+                            
+                            // Init fetch request for video to delete
+                            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(videoId == %@)", videoId];
+                            fetchRequest.entity = [NSEntityDescription entityForName:@"KJVideo"
+                                                              inManagedObjectContext:self.managedObjectContext];
+                            
+                            // Execute the fetch
+                            NSError *fetchError;
+                            NSArray *itemsToDelete = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                                              error:&fetchError];
+                            
+                            // If we found video to delete ..
+                            if ([itemsToDelete count] > 0) {
+                                DDLogInfo(@"videoStore: found %d video to delete", [itemsToDelete count]);
+                                
+                                // Delete
+                                KJVideo *videoToDelete = [itemsToDelete firstObject];
+                                [self.managedObjectContext deleteObject:videoToDelete];
+                            }
+                            else {
+                                DDLogError(@"videoStore: failed to find video to delete from Core Data: %@", videoName);
+                            }
+                        }
+                    }
+                }
+                
+                // Save managedObjectContext
+                // TODO: only save if we have changes (use property for this)
+                NSError *error;
+                if (![self.managedObjectContext save:&error]) {
+                    // Handle the error.
+                    DDLogError(@"videoStore: failed to save managedObjectContext: %@", [error debugDescription]);
+                }
+                else {
+                    DDLogInfo(@"videoStore: saved managedObjectContext");
                 }
                 
                 // Set firstLoad = YES in NSUserDefaults
@@ -253,6 +286,10 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 [[NSNotificationCenter defaultCenter] postNotificationName:KJVideoDataFetchDidHappenNotification
                                                                     object:nil];
                 
+                // Set connection state to DISCONNECTED
+                self.connectionState = KJVideoStoreStateDisconnected;
+                DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
+                
                 // Prefetch video thumbnails if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
                     [KJVideoStore prefetchVideoThumbnails];
@@ -261,6 +298,10 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
             else {
                 // Log details of the failure
                 DDLogError(@"videoStore: error: %@ %@", error, [error userInfo]);
+                
+                // Set connection state to DISCONNECTED
+                self.connectionState = KJVideoStoreStateDisconnected;
+                DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
             }
         }];
     });
