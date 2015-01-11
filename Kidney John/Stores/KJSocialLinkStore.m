@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "KJSocialLink.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "KJSocialLink+Methods.h"
 
 // Constants for Parse object keys
 static NSString *kParseSocialLinkTitleKey = @"title";
@@ -126,7 +127,7 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
         DDLogVerbose(@"socialLinkStore: fetching social link data ..");
         
         // Setup query
-        PFQuery *query = [PFQuery queryWithClassName:@"SocialLink"];
+        PFQuery *query = [PFQuery queryWithClassName:[KJSocialLink parseClassName]];
         
         // Query all social link URLs
         [query whereKey:@"title" notEqualTo:@"LOL"];

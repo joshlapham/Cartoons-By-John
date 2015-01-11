@@ -12,6 +12,7 @@
 #import "SDWebImagePrefetcher.h"
 #import "JPLReachabilityManager.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "KJRandomImage+Methods.h"
 
 // Constants for Parse object keys
 static NSString *kParseImageIdKey = @"imageId";
@@ -211,7 +212,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         DDLogVerbose(@"doodleStore: fetching doodle data ..");
         
         // Setup query
-        PFQuery *randomQuery = [PFQuery queryWithClassName:@"RandomImage"];
+        PFQuery *randomQuery = [PFQuery queryWithClassName:[KJRandomImage parseClassName]];
         
         // Query all random image urls
         [randomQuery whereKey:kParseImageUrlKey notEqualTo:@"LOL"];
