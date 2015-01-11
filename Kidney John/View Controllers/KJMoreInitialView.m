@@ -294,7 +294,7 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
         
         if (_chosenRow == 0) {
             // Videos
-            favouritesDataToPass = [KJVideoStore returnFavouritesArray];
+            favouritesDataToPass = [[KJVideoStore sharedStore] returnFavouritesArray];
         }
         else if (_chosenRow == 1) {
             // Comix

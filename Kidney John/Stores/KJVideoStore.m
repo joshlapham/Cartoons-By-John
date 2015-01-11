@@ -60,16 +60,42 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Favourites methods
 
-+ (NSArray *)returnFavouritesArray {
+- (NSArray *)returnFavouritesArray {
     // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+//    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
     
-    // Find videos where isFavourite is TRUE
+    // Init predicate for videos where isFavourite is TRUE
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
     
-    NSArray *arrayToReturn = [KJVideo MR_findAllWithPredicate:predicate inContext:localContext];
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+                                              inManagedObjectContext:self.managedObjectContext];
     
-    return arrayToReturn;
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by video date; newest at the top)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"videoDate"
+                                                                   ascending:NO];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+
+    // Set predicate
+    fetchRequest.predicate = predicate;
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"videoStore: error fetching favourites: %@", [error localizedDescription]);
+        return nil;
+    } else {
+        return fetchedObjects;
+    }
 }
 
 #pragma mark - Core Data helper methods

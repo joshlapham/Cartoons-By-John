@@ -62,15 +62,15 @@
     // Toggle favourite status for videoObject
     videoObject.isFavourite = !videoObject.isFavourite;
     
-    // Save
-    [videoObject.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        if (!error && success) {
-            DDLogVerbose(@"%@ - successfully updated favourite status for video %@", self.class, videoObject.videoName);
-        }
-        else {
-            DDLogError(@"%@ - error updating favourite status for video %@: %@", self.class, videoObject.videoName, [error localizedDescription]);
-        }
-    }];
+    // Save managedObjectContext
+    NSError *error;
+    if (![videoObject.managedObjectContext save:&error]) {
+        // Handle the error.
+        DDLogError(@"Video: failed to save managedObjectContext: %@", [error debugDescription]);
+    }
+    else {
+        DDLogInfo(@"Video: saved managedObjectContext");
+    }
 }
 
 - (UIViewController *)activityViewController {

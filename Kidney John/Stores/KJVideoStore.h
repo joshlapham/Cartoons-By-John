@@ -29,6 +29,6 @@ typedef NS_ENUM(NSUInteger, KJVideoStoreConnectionState) {
 
 // Class methods
 - (void)fetchVideoData;
-+ (NSArray *)returnFavouritesArray;
+- (NSArray *)returnFavouritesArray;
 
 @end
