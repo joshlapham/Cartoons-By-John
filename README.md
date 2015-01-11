@@ -1,4 +1,4 @@
-## Kidney John
+## Cartoons! By John
 
 By Josh Lapham [josh@joshlapham.com]
 
