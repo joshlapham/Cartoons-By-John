@@ -271,7 +271,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
         [_noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
         
         // Fetch data
-        [KJDoodleStore fetchDoodleData];
+        [[KJDoodleStore sharedStore] fetchDoodleData];
     }
 }
 
@@ -291,7 +291,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {
-            [KJDoodleStore fetchDoodleData];
+            [[KJDoodleStore sharedStore] fetchDoodleData];
         }
         else if ([JPLReachabilityManager isUnreachable]) {
             // Show noNetworkAlertView
@@ -304,7 +304,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
         
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
-            [KJDoodleStore fetchDoodleData];
+            [[KJDoodleStore sharedStore] fetchDoodleData];
         }
     }
 }

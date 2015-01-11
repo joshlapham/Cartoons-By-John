@@ -206,7 +206,27 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     }
 }
 
-+ (void)fetchDoodleData {
+- (void)fetchDoodleData {
+    // Check connection state
+    switch (self.connectionState) {
+        case KJDoodleStoreStateConnected:
+            DDLogInfo(@"doodleStore: we're already connected, so aborting fetchDoodleData method call");
+            return;
+            break;
+            
+        case KJDoodleStoreStateConnecting:
+            DDLogInfo(@"doodleStore: we're already connecting, so aborting fetchDoodleData method call");
+            return;
+            break;
+            
+        case KJDoodleStoreStateDisconnected:
+            break;
+    }
+    
+    // Set connection state to CONNECTING
+    self.connectionState = KJDoodleStoreStateConnecting;
+    DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
+    
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"doodleStore: fetching doodle data ..");
@@ -224,19 +244,23 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         [randomQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 // The find succeeded
+                // Set doodle store connection state to CONNECTED
+                self.connectionState = KJDoodleStoreStateConnected;
+                DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
+                
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
                 for (PFObject *object in objects) {
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // Check if image needs updating
-                        [self checkIfImageNeedsUpdateWithId:object[kParseImageIdKey]
+                        [KJDoodleStore checkIfImageNeedsUpdateWithId:object[kParseImageIdKey]
                                                 description:object[kParseImageDescriptionKey]
                                                         url:object[kParseImageUrlKey]
                                                        date:object[kParseImageDateKey]];
                         
                         // Save Parse object to Core Data
-                        [self persistNewRandomImageWithId:object[kParseImageIdKey]
+                        [KJDoodleStore persistNewRandomImageWithId:object[kParseImageIdKey]
                                               description:object[kParseImageDescriptionKey]
                                                       url:object[kParseImageUrlKey]
                                                      date:object[kParseImageDateKey]];
@@ -245,12 +269,12 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                         DDLogVerbose(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
                         
                         // Check if doodle exists in database, and delete if so
-                        BOOL existInDatabase = [self checkIfRandomImageIsInDatabaseWithImageUrl:object[kParseImageUrlKey]
+                        BOOL existInDatabase = [KJDoodleStore checkIfRandomImageIsInDatabaseWithImageUrl:object[kParseImageUrlKey]
                                                                                         context:[NSManagedObjectContext MR_contextForCurrentThread]];
                         
                         if (existInDatabase) {
                             DDLogVerbose(@"doodleStore: doodle URL %@ exists in database but is no longer active on server; now removing", object[kParseImageUrlKey]);
-                            [self deleteDoodleFromDatabaseWithUrl:object[kParseImageUrlKey]];
+                            [KJDoodleStore deleteDoodleFromDatabaseWithUrl:object[kParseImageUrlKey]];
                         }
                     }
                 }
@@ -264,6 +288,10 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 // Send NSNotification to say that data fetch is done
                 [[NSNotificationCenter defaultCenter] postNotificationName:KJDoodleFetchDidHappenNotification
                                                                     object:nil];
+                
+                // Set connection state to DISCONNECTED
+                self.connectionState = KJDoodleStoreStateDisconnected;
+                DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
                 
                 // Prefetch doodles if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {

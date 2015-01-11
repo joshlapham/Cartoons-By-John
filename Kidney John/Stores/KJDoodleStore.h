@@ -14,11 +14,21 @@ extern NSString * const KJDoodleFetchDidHappenNotification;
 
 @interface KJDoodleStore : NSObject
 
+// Connection state
+typedef NS_ENUM(NSUInteger, KJDoodleStoreConnectionState) {
+    KJDoodleStoreStateDisconnected,
+    KJDoodleStoreStateConnecting,
+    KJDoodleStoreStateConnected,
+};
+
+// Properties
+@property (nonatomic) KJDoodleStoreConnectionState connectionState;
+
 // Init method
 + (KJDoodleStore *)sharedStore;
 
 // Class methods
-+ (void)fetchDoodleData;
+- (void)fetchDoodleData;
 + (NSArray *)returnArrayOfRandomImages;
 + (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl;
 + (NSArray *)returnFavouritesArray;
