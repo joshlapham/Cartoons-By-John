@@ -52,16 +52,20 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
 #pragma mark - UICollectionView delegate methods
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+-   (void)collectionView:(UICollectionView *)collectionView
+didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 //    DDLogVerbose(@"Doodle Favs: selected item - %ld", (long)indexPath.row);
     [self performSegueWithIdentifier:@"doodleDetailSegueFromFavourites" sender:self];
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(20, 20, 20, 20);
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section {
     return [_cellResults count];
 }
 
@@ -69,11 +73,14 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
     return 1;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return CGSizeMake(75, 75);
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
     KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kDoodleFavouriteCellIdentifier
                                                                                    forIndexPath:indexPath];
@@ -92,7 +99,6 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
     
     return cell;
 }
-
 
 - (void)thereAreNoFavourites {
     // Init strings for noFavouritesAlertView
@@ -113,7 +119,8 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
 #pragma mark - UIAlertView delegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+-       (void)alertView:(UIAlertView *)alertView
+   clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     // Go back to previous view controller
@@ -122,7 +129,8 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
 #pragma mark - Prepare for segue method
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue
+                 sender:(id)sender {
     if ([segue.identifier isEqualToString:@"doodleDetailSegueFromFavourites"]) {
         KJRandomView *destViewController = segue.destinationViewController;
         NSIndexPath *selectedIndex = [[self.collectionView indexPathsForSelectedItems] firstObject];
