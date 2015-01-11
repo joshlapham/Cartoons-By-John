@@ -13,7 +13,7 @@
 
 // Navbar
 + (UIFont *)kj_navbarFont {
-    return [self kj_kidneyJohnFontOfSize:21];
+    return [self kj_kidneyJohnFontOfSize:20];
 //    return [UIFont fontWithDescriptor:[UIFontDescriptor preferredJohnRoderickPaineFontDescriptorWithTextStyle:UIFontTextStyleHeadline] size: 0];
 }
 
@@ -29,7 +29,7 @@
 
 // Videos
 + (UIFont *)kj_videoNameFont {
-    return [self kj_kidneyJohnFontOfSize:22];
+    return [self kj_kidneyJohnFontOfSize:20];
 //    return [UIFont fontWithDescriptor:[UIFontDescriptor preferredJohnRoderickPaineFontDescriptorWithTextStyle:UIFontTextStyleHeadline] size: 0];
 }
 
@@ -50,7 +50,7 @@
 
 // 'More' view
 + (UIFont *)kj_sectionHeaderFont {
-    return [self kj_kidneyJohnFontOfSize:17];
+    return [self kj_kidneyJohnFontOfSize:16];
 //    return [UIFont fontWithDescriptor:[UIFontDescriptor preferredJohnRoderickPaineFontDescriptorWithTextStyle:UIFontTextStyleCaption1] size: 0];
 }
 

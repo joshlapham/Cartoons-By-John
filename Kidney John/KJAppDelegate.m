@@ -7,7 +7,7 @@
 //
 
 #import "KJAppDelegate.h"
-#import "Parse.h"
+#import <Parse/Parse.h>
 #import "JPLReachabilityManager.h"
 #import "KJVideoStore.h"
 #import "KJComicStore.h"
@@ -21,6 +21,9 @@
 #import "JPLYouTubeListView.h"
 #import "KJTabBarController.h"
 
+// Constants
+static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours";
+
 @implementation KJAppDelegate {
     NSString *parseAppId;
     NSString *parseClientKey;
@@ -29,7 +32,7 @@
 #pragma mark - UI methods
 
 - (void)setupUI {
-    // TESTING - Version 2 colour scheme
+    // TESTING - Version 1.1 colour scheme
 //    [NSUserDefaults kj_setUsingVersion2ColourSchemeSetting:NO];
     
     // Show status bar after app launch image has shown
@@ -55,12 +58,12 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
     // Change status bar text to white
-    // TESTING - Version 2 colour scheme
-    if (![NSUserDefaults kj_usingVersion2ColourSchemeSetting]) {
+    // TESTING - Version 1.1 colour scheme
+    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     }
     else {
-        // Version 2 colour
+        // Version 1.1 colour
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     }
     
@@ -68,7 +71,9 @@
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
 }
 
-#pragma mark - Read Parse.com API keys from plist method
+#pragma mark - Parse.com helper methods
+
+#pragma mark Read Parse API keys from plist method
 
 - (void)readAPIKeysFromPlist
 {
@@ -100,6 +105,26 @@
     parseClientKey = [temp objectForKey:@"clientKey"];
     
 //    DDLogVerbose(@"Parse App ID: %@, Client Key: %@", parseAppId, parseClientKey);
+}
+
+#pragma mark Fetch Parse PFConfig method
+
+- (void)setupPFConfigFromParse {
+    // Get PFConfig object in background
+    [PFConfig getConfigInBackgroundWithBlock:^(PFConfig *config, NSError *error) {
+        if (!error && config) {
+            // Init should use version 1.1 colours
+            if (config[kKJParsePFConfigUseVersion11ColoursKey]) {
+                NSNumber *shouldUseVersion11Colours = config[kKJParsePFConfigUseVersion11ColoursKey];
+                DDLogInfo(@"PFConfig: should use version 1.1 colours: %@", [shouldUseVersion11Colours boolValue] ? @"YES" : @"NO");
+                [NSUserDefaults kj_setShouldUseVersion11ColourSchemeSetting:[shouldUseVersion11Colours boolValue]];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+        else {
+            DDLogError(@"Error fetching PFConfig from Parse");
+        }
+    }];
 }
 
 #pragma mark - Init methods
@@ -158,6 +183,9 @@
     
     // Parse analytics
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    // Init PFConfig
+    [self setupPFConfigFromParse];
     
     // Init item stores
     [KJVideoStore sharedStore];

@@ -1,6 +1,6 @@
 platform :ios, '7.0'
 
-pod 'Parse-iOS-SDK', '1.2.19'
+pod 'Parse', '1.6.1'
 pod 'MBProgressHUD', '0.8'
 pod 'PBWebViewController', '0.2'
 pod 'SDWebImage', '3.7.1'

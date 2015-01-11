@@ -36,7 +36,7 @@
 
 // Testing/debugging
 // Colour schemes
-+ (BOOL)kj_usingVersion2ColourSchemeSetting;
-+ (void)kj_setUsingVersion2ColourSchemeSetting:(BOOL)setting;
++ (BOOL)kj_shouldUseVersion11ColourSchemeSetting;
++ (void)kj_setShouldUseVersion11ColourSchemeSetting:(BOOL)setting;
 
 @end
