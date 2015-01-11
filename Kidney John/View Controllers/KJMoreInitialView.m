@@ -314,7 +314,7 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
         DDLogVerbose(@"More: network became available");
         
         // Fetch data
-        [KJSocialLinkStore fetchSocialLinkData];
+        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
     }
 }
 
@@ -348,7 +348,7 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     // Check if network is reachable
     if ([JPLReachabilityManager isReachable]) {
         // Fetch social links from Parse
-        [KJSocialLinkStore fetchSocialLinkData];
+        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
     }
 }
 

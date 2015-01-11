@@ -121,7 +121,27 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 
 #pragma mark - Fetch data method
 
-+ (void)fetchSocialLinkData {
+- (void)fetchSocialLinkData {
+    // Check connection state
+    switch (self.connectionState) {
+        case KJSocialLinkStoreStateConnected:
+            DDLogInfo(@"socialLinkStore: we're already connected, so aborting fetchSocialLinkData method call");
+            return;
+            break;
+            
+        case KJSocialLinkStoreStateConnecting:
+            DDLogInfo(@"socialLinkStore: we're already connecting, so aborting fetchSocialLinkData method call");
+            return;
+            break;
+            
+        case KJSocialLinkStoreStateDisconnected:
+            break;
+    }
+    
+    // Set connection state to CONNECTING
+    self.connectionState = KJSocialLinkStoreStateConnecting;
+    DDLogInfo(@"socialLinkStore: connection state: %u", self.connectionState);
+    
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
         DDLogVerbose(@"socialLinkStore: fetching social link data ..");
@@ -139,6 +159,10 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 // The find succeeded
+                // Set connection state to CONNECTED
+                self.connectionState = KJSocialLinkStoreStateConnected;
+                DDLogInfo(@"socialLinkStore: connection state: %u", self.connectionState);
+                
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
@@ -153,13 +177,13 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
                         
                         // Check if link needs updating
                         // TODO: this keeps returning TRUE
-                        [self checkIfSocialLinkNeedsUpdateWithTitle:object[kParseSocialLinkTitleKey]
+                        [KJSocialLinkStore checkIfSocialLinkNeedsUpdateWithTitle:object[kParseSocialLinkTitleKey]
                                                                 url:object[kParseSocialLinkUrlKey]
                                                            imageUrl:imageFile.url
                                                           imagePath:object[kParseSocialLinkImagePathKey]];
                         
                         // Save Parse object to Core Data
-                        [self persistNewSocialLinkWithTitle:object[kParseSocialLinkTitleKey]
+                        [KJSocialLinkStore persistNewSocialLinkWithTitle:object[kParseSocialLinkTitleKey]
                                                         url:object[kParseSocialLinkUrlKey]
                                                    imageUrl:imageFile.url
                                                   imagePath:object[kParseSocialLinkImagePathKey]];
@@ -180,10 +204,17 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
                 [[NSNotificationCenter defaultCenter] postNotificationName:KJSocialLinkDataFetchDidHappenNotification
                                                                     object:nil];
                 
+                // Set connection state to DISCONNECTED
+                self.connectionState = KJSocialLinkStoreStateDisconnected;
+                DDLogInfo(@"socialLinkStore: connection state: %u", self.connectionState);
             }
             else {
                 // Log details of the failure
                 DDLogError(@"socialLinkStore: error: %@ %@", error, [error userInfo]);
+                
+                // Set connection state to DISCONNECTED
+                self.connectionState = KJSocialLinkStoreStateDisconnected;
+                DDLogInfo(@"socialLinkStore: connection state: %u", self.connectionState);
             }
         }];
     });

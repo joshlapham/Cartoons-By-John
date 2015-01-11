@@ -13,11 +13,21 @@ extern NSString * const KJSocialLinkDataFetchDidHappenNotification;
 
 @interface KJSocialLinkStore : NSObject
 
+// Connection state
+typedef NS_ENUM(NSUInteger, KJSocialLinkStoreConnectionState) {
+    KJSocialLinkStoreStateDisconnected,
+    KJSocialLinkStoreStateConnecting,
+    KJSocialLinkStoreStateConnected,
+};
+
+// Properties
+@property (nonatomic) KJSocialLinkStoreConnectionState connectionState;
+
 // Init method
 + (KJSocialLinkStore *)sharedStore;
 
 // Class methods
-+ (void)fetchSocialLinkData;
+- (void)fetchSocialLinkData;
 + (BOOL)hasInitialDataFetchHappened;
 
 @end
