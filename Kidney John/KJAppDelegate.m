@@ -171,6 +171,9 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
     // Read from Keys.plist (not checked into Git)
     [self readAPIKeysFromPlist];
     
+    // If parseAppId is nil then Keys.plist is most likely missing from the project
+    NSAssert(parseAppId, @"Failed to load Parse.com keys from Keys.plist. Is the file present?");
+    
     // Set keys after method reads from Keys.plist
     [Parse setApplicationId:parseAppId
                   clientKey:parseClientKey];
