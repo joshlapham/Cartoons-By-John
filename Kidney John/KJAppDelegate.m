@@ -131,8 +131,9 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Init prefs for Settings
-    NSDictionary *userDefaultsDefaults = @{ @"KJUsingVersion2ColourSchemeSetting" : [NSNumber numberWithBool:NO] };
-    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    // NOTE - IMPORTANT to comment this out for App Store release!
+//    NSDictionary *userDefaultsDefaults = @{ @"KJUsingVersion2ColourSchemeSetting" : [NSNumber numberWithBool:NO] };
+//    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
     
     // Customize UI
     [self setupUI];
