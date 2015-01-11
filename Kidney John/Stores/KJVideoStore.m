@@ -24,7 +24,9 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
 // Constant for NSNotification name
 NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHappen";
 
-@implementation KJVideoStore
+@implementation KJVideoStore {
+    BOOL __block changesToVideosWereMade;
+}
 
 #pragma mark - Init method
 
@@ -147,7 +149,9 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
             videoToCheck.videoDate = videoDate;
             videoToCheck.videoDuration = videoDuration;
             
-            // NOTE - fetchVideoData method saves managedObjectContext after fetching and checking is complete, no need to do so here
+            // Set changes to videos were made property so that we can trigger a managedObjectContext save later.
+            // This saves us from triggering a save every time we fetch data from the server.
+            changesToVideosWereMade = YES;
         }
         else {
 //            DDLogInfo(@"videoStore: video doesn't need update: %@", videoName);
@@ -259,6 +263,10 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                             newVideo.videoDescription = object[kParseVideoDescriptionKey];
                             newVideo.videoDate = object[kParseVideoDateKey];
                             newVideo.videoDuration = object[kParseVideoDurationKey];
+                            
+                            // Set changes to videos were made property so that we can trigger a managedObjectContext save later.
+                            // This saves us from triggering a save every time we fetch data from the server.
+                            changesToVideosWereMade = YES;
                         }
                         else {
 //                            DDLogInfo(@"videoStore: already fetched video %@", videoId);
@@ -299,6 +307,10 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                                 // Delete
                                 KJVideo *videoToDelete = [itemsToDelete firstObject];
                                 [self.managedObjectContext deleteObject:videoToDelete];
+                                
+                                // Set changes to videos were made property so that we can trigger a managedObjectContext save later.
+                                // This saves us from triggering a save every time we fetch data from the server.
+                                changesToVideosWereMade = YES;
                             }
                             else {
                                 DDLogError(@"videoStore: failed to find video to delete from Core Data: %@", videoName);
@@ -308,14 +320,25 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 }
                 
                 // Save managedObjectContext
-                // TODO: only save if we have changes (use property for this)
-                NSError *error;
-                if (![self.managedObjectContext save:&error]) {
-                    // Handle the error.
-                    DDLogError(@"videoStore: failed to save managedObjectContext: %@", [error debugDescription]);
+                // Only save if we have changes
+                
+                // TODO: is this check really required? Will there be a huge performance hit if we're saving the managedObjectContext each time?
+                // Also, does creating or updating an entity even if the properties are the same do anything to the managedObjectContext?
+                
+                if (!changesToVideosWereMade) {
+                    DDLogInfo(@"videoStore: no changes to videos were found, so no save managedObjectContext is required");
                 }
                 else {
-                    DDLogInfo(@"videoStore: saved managedObjectContext");
+                    // Changes were made.
+                    // This could have been new videos added, existing video info updated, or video deleted from Core Data.
+                    NSError *error;
+                    if (![self.managedObjectContext save:&error]) {
+                        // Handle the error.
+                        DDLogError(@"videoStore: failed to save managedObjectContext: %@", [error debugDescription]);
+                    }
+                    else {
+                        DDLogInfo(@"videoStore: saved managedObjectContext");
+                    }
                 }
                 
                 // Set firstLoad = YES in NSUserDefaults
