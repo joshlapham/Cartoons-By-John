@@ -65,9 +65,6 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 // TODO: remove this method once KJFavouritesList VC is updated to use NSFetchedResultsController
 
 - (NSArray *)returnFavouritesArray {
-    // Get the local context
-//    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
     // Init predicate for videos where isFavourite is TRUE
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
     
@@ -104,40 +101,58 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Core Data helper methods
 
-// TODO: update this to use vanilla Core Data
-
-+ (void)checkIfVideoNeedsUpdateWithVideoId:(NSString *)videoId
-                                      name:(NSString *)videoName
-                               description:(NSString *)videoDescription
-                                      date:(NSString *)videoDate
-                             videoDuration:(NSString *)videoDuration {
-    // If video is in database ..
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-//    if ([self checkIfVideoIsInDatabaseWithVideoId:videoId context:localContext]) {
-        KJVideo *videoToCheck = [KJVideo MR_findFirstByAttribute:@"videoId" withValue:videoId inContext:localContext];
+- (void)checkIfVideoNeedsUpdateWithParseObject:(PFObject *)fetchedParseObject {
+    // Init strings with values from Parse
+    NSString *videoId = fetchedParseObject[kParseVideoIdKey];
+    NSString *videoName = fetchedParseObject[kParseVideoNameKey];
+    NSString *videoDescription = fetchedParseObject[kParseVideoDescriptionKey];
+    NSString *videoDate = fetchedParseObject[kParseVideoDateKey];
+    NSString *videoDuration = fetchedParseObject[kParseVideoDurationKey];
+    
+    // Init fetch request for video matching video ID
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Init predicate for videos matching video ID
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"videoId == %@", videoId];
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Set fetch request properties
+    fetchRequest.predicate = predicate;
+    fetchRequest.entity = entity;
+    
+    // Execute the fetch
+    NSError *error;
+    NSArray *videosInCoreData = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                         error:&error];
+    
+    // If we found a matching video
+    if ([videosInCoreData count] > 0) {
+        // Checking videos one at a time, so firstObject works here
+        KJVideo *videoToCheck  = [videosInCoreData firstObject];
         
-        // Check if videoToCheck needs updating
-        if (![videoToCheck.videoId isEqualToString:videoId] || ![videoToCheck.videoName isEqualToString:videoName] || ![videoToCheck.videoDescription isEqualToString:videoDescription] || ![videoToCheck.videoDate isEqualToString:videoDate] || ![videoToCheck.videoDuration isEqualToString:videoDuration]) {
-            // Video needs updating
-            DDLogVerbose(@"videoStore: video needs update: %@", videoName);
+        if (![videoToCheck.videoId isEqualToString:videoId] ||
+            ![videoToCheck.videoName isEqualToString:videoName] ||
+            ![videoToCheck.videoDescription isEqualToString:videoDescription] ||
+            ![videoToCheck.videoDate isEqualToString:videoDate] ||
+            ![videoToCheck.videoDuration isEqualToString:videoDuration]) {
+            DDLogInfo(@"videoStore: video needs update: %@", videoName);
             
+            // Update properties
             videoToCheck.videoId = videoId;
             videoToCheck.videoName = videoName;
             videoToCheck.videoDescription = videoDescription;
             videoToCheck.videoDate = videoDate;
             videoToCheck.videoDuration = videoDuration;
             
-            // Save
-            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                if (success) {
-                    DDLogVerbose(@"videoStore: updated video: %@", videoName);
-                }
-                else if (error) {
-                    DDLogVerbose(@"videoStore: error updating video: %@ - %@", videoName, [error localizedDescription]);
-                }
-            }];
+            // NOTE - fetchVideoData method saves managedObjectContext after fetching and checking is complete, no need to do so here
         }
-//    }
+        else {
+//            DDLogInfo(@"videoStore: video doesn't need update: %@", videoName);
+        }
+    }
 }
 
 // Method to get all video ID strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if a video ID exists in the array returned by this method.
@@ -232,14 +247,6 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                     
                     // Check if video is set to 'active' on server
                     if ([object[@"is_active"] isEqual:@"1"]) {
-                        // Check if video needs update
-                        // TODO: refactor this
-//                        [self checkIfVideoNeedsUpdateWithVideoId:object[kParseVideoIdKey]
-//                                                            name:object[kParseVideoNameKey]
-//                                                     description:object[kParseVideoDescriptionKey]
-//                                                            date:object[kParseVideoDateKey]
-//                                                   videoDuration:object[kParseVideoDurationKey]];
-                        
                         // If video doesn't aleady exist locally in Core Data, then create
                         if (![alreadyFetchedVideoIds containsObject:videoId]) {
                             DDLogInfo(@"videoStore: haven't fetched video %@", videoName);
@@ -256,6 +263,9 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                         }
                         else {
 //                            DDLogInfo(@"videoStore: already fetched video %@", videoId);
+                            
+                            // Check if video needs update
+                            [self checkIfVideoNeedsUpdateWithParseObject:object];
                         }
                     }
                     
