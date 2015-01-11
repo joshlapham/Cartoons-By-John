@@ -15,11 +15,21 @@ extern NSString * const KJComicDataFetchDidHappenNotification;
 
 @interface KJComicStore : NSObject
 
+// Connection state
+typedef NS_ENUM(NSUInteger, KJComicStoreConnectionState) {
+    KJComicStoreStateDisconnected,
+    KJComicStoreStateConnecting,
+    KJComicStoreStateConnected,
+};
+
+// Properties
+@property (nonatomic) KJComicStoreConnectionState connectionState;
+
 // Init method
 + (KJComicStore *)sharedStore;
 
 // Class methods
-+ (void)fetchComicData;
+- (void)fetchComicData;
 + (KJComic *)returnComicWithComicName:(NSString *)comicName;
 - (NSArray *)returnArrayOfComicFiles;
 + (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;

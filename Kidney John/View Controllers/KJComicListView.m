@@ -201,7 +201,7 @@ static NSString *kComicCellIdentifier = @"comicCell";
         [_noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
         
         // Fetch data
-        [KJComicStore fetchComicData];
+        [[KJComicStore sharedStore] fetchComicData];
     }
 }
 
@@ -246,7 +246,7 @@ static NSString *kComicCellIdentifier = @"comicCell";
     if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {
-            [KJComicStore fetchComicData];
+            [[KJComicStore sharedStore] fetchComicData];
         }
         else if ([JPLReachabilityManager isUnreachable]) {
             // Show noNetworkAlertView
@@ -259,7 +259,7 @@ static NSString *kComicCellIdentifier = @"comicCell";
         
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
-            [KJComicStore fetchComicData];
+            [[KJComicStore sharedStore] fetchComicData];
         }
     }
 }

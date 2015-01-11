@@ -232,8 +232,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 // The find succeeded
-                
-                // Set video store connection state to CONNECTED
+                // Set connection state to CONNECTED
                 self.connectionState = KJVideoStoreStateConnected;
                 DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
                 

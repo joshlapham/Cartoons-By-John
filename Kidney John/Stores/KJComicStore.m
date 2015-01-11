@@ -244,7 +244,27 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 #pragma mark - Fetch data method
 
-+ (void)fetchComicData {
+- (void)fetchComicData {
+    // Check connection state
+    switch (self.connectionState) {
+        case KJComicStoreStateConnected:
+            DDLogInfo(@"comicStore: we're already connected, so aborting fetchComicData method call");
+            return;
+            break;
+            
+        case KJComicStoreStateConnecting:
+            DDLogInfo(@"comicStore: we're already connecting, so aborting fetchComicData method call");
+            return;
+            break;
+            
+        case KJComicStoreStateDisconnected:
+            break;
+    }
+    
+    // Set connection state to CONNECTING
+    self.connectionState = KJComicStoreStateConnecting;
+    DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+    
     // Setup query
     PFQuery *comicsQuery = [PFQuery queryWithClassName:[KJComic parseClassName]];
     
@@ -274,8 +294,11 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     // Start query with block
     [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {
-            
             // The find succeeded
+            // Set connection state to CONNECTED
+            self.connectionState = KJComicStoreStateConnected;
+            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+            
             // Show network activity monitor
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
             
@@ -295,7 +318,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                     NSString *comicNameFromParse = object[kParseComicNameKey];
                     if (![comicNamesInCoreData containsObject:comicNameFromParse]) {
                         // Not present, so save
-                        [self persistNewComicWithName:object[kParseComicNameKey]
+                        [KJComicStore persistNewComicWithName:object[kParseComicNameKey]
                                         comicFileName:object[kParseComicFileNameKey]
                                          comicFileUrl:comicImageFile.url
                                           comicNumber:object[kParseComicNumberKey]];
@@ -339,6 +362,10 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             [[NSNotificationCenter defaultCenter] postNotificationName:KJComicDataFetchDidHappenNotification
                                                                 object:nil];
             
+            // Set connection state to DISCONNECTED
+            self.connectionState = KJComicStoreStateDisconnected;
+            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+            
             // Set firstLoad = YES in NSUserDefaults
             if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
                 [NSUserDefaults kj_setHasFirstComicFetchCompletedSetting:YES];
@@ -347,12 +374,15 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             
             // Prefetch comic thumbnails
             // NOTE: does not need to be on wifi as comics are cached locally
-            [self prefetchComicThumbnails];
+            [KJComicStore prefetchComicThumbnails];
             
         }
         else {
             // Log details of the failure
             DDLogError(@"comicStore: error: %@ %@", error, [error userInfo]);
+            // Set connection state to DISCONNECTED
+            self.connectionState = KJComicStoreStateDisconnected;
+            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
         }
     }];
 }

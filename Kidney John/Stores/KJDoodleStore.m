@@ -244,7 +244,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         [randomQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 // The find succeeded
-                // Set doodle store connection state to CONNECTED
+                // Set connection state to CONNECTED
                 self.connectionState = KJDoodleStoreStateConnected;
                 DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
                 
@@ -302,6 +302,9 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
             else {
                 // Log details of the failure
                 DDLogError(@"doodleStore: error: %@ %@", error, [error userInfo]);
+                // Set connection state to DISCONNECTED
+                self.connectionState = KJDoodleStoreStateDisconnected;
+                DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
             }
         }];
     });
