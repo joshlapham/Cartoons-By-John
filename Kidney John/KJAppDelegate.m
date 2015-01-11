@@ -32,9 +32,6 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
 #pragma mark - UI methods
 
 - (void)setupUI {
-    // TESTING - Version 1.1 colour scheme
-//    [NSUserDefaults kj_setUsingVersion2ColourSchemeSetting:NO];
-    
     // Show status bar after app launch image has shown
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
@@ -48,10 +45,11 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
     
     // Set navbar title font, colour, shadow, etc
     NSDictionary *titleAttributes = @{ NSForegroundColorAttributeName : [UIColor kj_navbarTitleFontColour],
-                                    NSShadowAttributeName : shadow,
-                                    NSFontAttributeName : [UIFont kj_navbarFont]
-                                    };
+                                       NSShadowAttributeName : shadow,
+                                       NSFontAttributeName : [UIFont kj_navbarFont]
+                                       };
     
+    // Set title attributes
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     
     // Set navbar items to white
@@ -127,6 +125,20 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
     }];
 }
 
+#pragma mark - App version check helper methods
+
+// Helper method to set NSUserDefaults on app launch
+- (void)checkAppVersion {
+    // TESTING - Version 1.1 colour scheme
+    if (![NSUserDefaults kj_hasAppCompletedVersion11FirstLaunchSetting]) {
+        // Force Version 1.1 colour scheme.
+        // After this, value can be changed from PFConfig.
+        [NSUserDefaults kj_setShouldUseVersion11ColourSchemeSetting:YES];
+        [NSUserDefaults kj_setHasAppCompletedVersion11FirstLaunchSetting:YES];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
 #pragma mark - Init methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -134,6 +146,9 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
     // NOTE - IMPORTANT to comment this out for App Store release!
 //    NSDictionary *userDefaultsDefaults = @{ @"KJUsingVersion2ColourSchemeSetting" : [NSNumber numberWithBool:NO] };
 //    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    
+    // Do app version checks
+    [self checkAppVersion];
     
     // Customize UI
     [self setupUI];

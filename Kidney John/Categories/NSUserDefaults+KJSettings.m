@@ -14,7 +14,9 @@ static NSString *kHasFirstVideoFetchCompletedSettingKey = @"firstVideoFetchDone"
 static NSString *kHasFirstComicFetchCompletedSettingKey = @"firstComicFetchDone";
 static NSString *kHasFirstDoodleFetchCompletedSettingKey = @"firstRandomImagesFetchDone";
 static NSString *kHasFirstSocialLinksFetchCompletedSettingKey = @"firstSocialLinksFetchDone";
-// Testing/debugging
+
+// Version 1.1
+static NSString *kHasAppCompletedVersion11FirstLaunchSettingKey = @"kHasAppCompletedVersion11FirstLaunchSettingKey";
 static NSString *kShouldUseVersion11ColourSchemeKey = @"KJShouldUseVersion11ColourScheme";
 
 @implementation NSUserDefaults (KJSettings)
@@ -25,6 +27,16 @@ static NSString *kShouldUseVersion11ColourSchemeKey = @"KJShouldUseVersion11Colo
 }
 
 + (void)kj_setHasAppCompletedFirstLaunchSetting:(BOOL)setting {
+    [[NSUserDefaults standardUserDefaults] setBool:setting
+                                            forKey:kHasAppCompletedFirstLaunchSettingKey];
+}
+
+// Version 1.1 first launch setting
++ (BOOL)kj_hasAppCompletedVersion11FirstLaunchSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasAppCompletedFirstLaunchSettingKey];
+}
+
++ (void)kj_setHasAppCompletedVersion11FirstLaunchSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
                                             forKey:kHasAppCompletedFirstLaunchSettingKey];
 }

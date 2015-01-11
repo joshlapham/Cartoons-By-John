@@ -30,7 +30,7 @@
     }
     else {
         // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor blackColor];
+        return [UIColor lightGrayColor];
     }
 }
 
@@ -41,7 +41,7 @@
     }
     else {
         // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor whiteColor];
+        return [UIColor blackColor];
     }
 }
 

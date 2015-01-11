@@ -13,7 +13,7 @@
 
 // Navbar
 + (UIFont *)kj_navbarFont {
-    return [self kj_kidneyJohnFontOfSize:20];
+    return [self kj_kidneyJohnFontOfSize:22];
 //    return [UIFont fontWithDescriptor:[UIFontDescriptor preferredJohnRoderickPaineFontDescriptorWithTextStyle:UIFontTextStyleHeadline] size: 0];
 }
 

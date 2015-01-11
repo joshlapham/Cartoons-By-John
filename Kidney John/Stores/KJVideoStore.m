@@ -41,6 +41,8 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Prefetch video thumbnails method
 
+// TODO: update this to use vanilla Core Data
+
 + (void)prefetchVideoThumbnails {
     NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO]];
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
@@ -58,7 +60,9 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     }];
 }
 
-#pragma mark - Favourites methods
+#pragma mark - Return favourite videos method
+
+// TODO: remove this method once KJFavouritesList VC is updated to use NSFetchedResultsController
 
 - (NSArray *)returnFavouritesArray {
     // Get the local context
@@ -100,7 +104,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Core Data helper methods
 
-// TODO: refactor this method
+// TODO: update this to use vanilla Core Data
 
 + (void)checkIfVideoNeedsUpdateWithVideoId:(NSString *)videoId
                                       name:(NSString *)videoName
@@ -136,6 +140,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 //    }
 }
 
+// Method to get all video ID strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if a video ID exists in the array returned by this method.
 - (NSArray *)alreadyFetchedVideoIdsArray {
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
                                               inManagedObjectContext:self.managedObjectContext];
@@ -168,6 +173,8 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     
     return [videoIdStrings copy];
 }
+
+#pragma mark - Fetch videos from server method
 
 - (void)fetchVideoData {
     // Check connection state

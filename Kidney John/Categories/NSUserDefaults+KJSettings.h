@@ -14,6 +14,10 @@
 + (BOOL)kj_hasAppCompletedFirstLaunchSetting;
 + (void)kj_setHasAppCompletedFirstLaunchSetting:(BOOL)setting;
 
+// Version 1.1 first launch setting
++ (BOOL)kj_hasAppCompletedVersion11FirstLaunchSetting;
++ (void)kj_setHasAppCompletedVersion11FirstLaunchSetting:(BOOL)setting;
+
 // Videos
 // First video fetch completed setting
 + (BOOL)kj_hasFirstVideoFetchCompletedSetting;
