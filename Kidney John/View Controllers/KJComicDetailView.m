@@ -64,7 +64,6 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 - (void)viewWillAppear:(BOOL)animated {
     // Hide navbar
     self.navigationController.navigationBarHidden = YES;
-    //[self.navigationController setNavigationBarHidden:YES animated:YES];
     
     // Hide status bar
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
@@ -75,7 +74,8 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 
 #pragma mark - UICollectionView methods
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section {
     return [self.resultsArray count];
 }
 
@@ -83,7 +83,8 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     return 1;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
     KJComicDetailCell *cell = (KJComicDetailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kComicDetailCellIdentifier
                                                                                              forIndexPath:indexPath];
@@ -99,7 +100,9 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     return cell;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return self.collectionView.bounds.size;
 }
 
@@ -123,17 +126,17 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 - (void)setupCollectionView {
     // Init flow layout with options
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    [flowLayout setMinimumInteritemSpacing:0.0f];
-    [flowLayout setMinimumLineSpacing:0.0f];
-    [flowLayout setItemSize:self.collectionView.bounds.size];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    flowLayout.minimumInteritemSpacing = 0.0f;
+    flowLayout.minimumLineSpacing = 0.0f;
+    flowLayout.itemSize = self.collectionView.bounds.size;
     
     // Set collectionView flow layout
-    [self.collectionView setCollectionViewLayout:flowLayout];
+    self.collectionView.collectionViewLayout = flowLayout;
     
     // Set collectionView options
-    [self.collectionView setPagingEnabled:YES];
-    [self.collectionView setFrame:self.view.frame];
+    self.collectionView.pagingEnabled = YES;
+    self.collectionView.frame = self.view.frame;
     
     // Scroll to comic that was selected in previous view controller
     [self.collectionView scrollToItemAtIndexPath:self.collectionViewIndexFromList
@@ -173,10 +176,12 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     DDLogVerbose(@"Comic Detail: comic was tapped");
     
     // Toggle navbar
-    [self.navigationController setNavigationBarHidden:!self.navigationController.isNavigationBarHidden animated:YES];
+    [self.navigationController setNavigationBarHidden:!self.navigationController.isNavigationBarHidden
+                                             animated:YES];
     
     // Toggle status bar
-    [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden] withAnimation:UIStatusBarAnimationSlide];
+    [[UIApplication sharedApplication] setStatusBarHidden:![[UIApplication sharedApplication] isStatusBarHidden]
+                                            withAnimation:UIStatusBarAnimationSlide];
 }
 
 #pragma mark - NSNotification methods
