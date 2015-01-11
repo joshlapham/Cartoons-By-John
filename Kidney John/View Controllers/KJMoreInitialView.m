@@ -279,16 +279,13 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
 #pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Set this in every view controller so that the back button displays back instead of the root view controller name
-    // TODO: review this, not really best practice
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
     if ([[segue identifier] isEqualToString:@"favouritesSegue"]) {
         //DDLogVerbose(@"in segue method ..");
         NSString *typeOfFavourite = [_cellArray objectAtIndex:_chosenRow];
         //DDLogVerbose(@"type of fav: %@", typeOfFavourite);
         NSArray *favouritesDataToPass;
         
+        // Init destination view controller
         KJFavouritesListView *destViewController = segue.destinationViewController;
         destViewController.titleForView = typeOfFavourite;
         

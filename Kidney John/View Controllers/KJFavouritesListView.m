@@ -189,11 +189,8 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
 #pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Init index path
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    
-    // Set this in every view controller so that the back button displays back instead of the root view controller name
-    // TODO: review this, not really best practice
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     if ([segue.identifier isEqualToString:@"favouritesVideoSegue"]) {
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;

@@ -139,13 +139,11 @@ static NSString *kComicCellIdentifier = @"comicCell";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"comicDetailSegue"]) {
-        // Set this in every view controller so that the back button displays back instead of the root view controller name
-        // TODO: review this, not really best practice
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-        
-        NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
+        // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
         
+        // Init cell data
+        NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
         KJComic *comicCell = [_comicResults objectAtIndex:selectedIndexPath.row];
         
         destViewController.nameFromList = comicCell.comicName;
