@@ -26,6 +26,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 @implementation KJVideoStore {
     BOOL __block changesToVideosWereMade;
+    NSArray __block *existingVideosInCoreDataBeforeFetch;
 }
 
 #pragma mark - Init method
@@ -159,6 +160,34 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     }
 }
 
+// Method to get all existing videos in Core Data. We do this before the data fetch to help speed things up.
+- (NSArray *)fetchExistingVideosInCoreData {
+    if (existingVideosInCoreDataBeforeFetch != nil) {
+        DDLogInfo(@"videoStore: have already init'd existing videos in Core Data array");
+        return existingVideosInCoreDataBeforeFetch;
+    }
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request for only the video ID property of KJVideo
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = entity;
+    
+    // Execute the fetch
+    NSError *error;
+    existingVideosInCoreDataBeforeFetch = [self.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if (!existingVideosInCoreDataBeforeFetch) {
+        // Handle the error
+        return nil;
+    }
+    else {
+        return existingVideosInCoreDataBeforeFetch;
+    }
+}
+
 // Method to get all video ID strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if a video ID exists in the array returned by this method.
 - (NSArray *)alreadyFetchedVideoIdsArray {
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
@@ -170,6 +199,10 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     request.resultType = NSDictionaryResultType;
     request.returnsDistinctResults = YES;
     request.propertiesToFetch = @[@"videoId"];
+    
+    // Init predicate for pre-fetched existing videos in Core Data array
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", existingVideosInCoreDataBeforeFetch];
+    request.predicate = predicate;
     
     // Init array for video ID strings
     NSMutableArray *videoIdStrings = [NSMutableArray new];
@@ -230,6 +263,9 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
         
         // Check for already fetched videos in Core data
+        existingVideosInCoreDataBeforeFetch = [self fetchExistingVideosInCoreData];
+        
+        // Already fetched video ID strings
         NSArray *alreadyFetchedVideoIds = [NSArray arrayWithArray:[self alreadyFetchedVideoIdsArray]];
         
         // Start query with block
@@ -279,7 +315,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                     // Video is NOT active
                     // Check if it exists locally in Core Data, and delete if so
                     else {
-                        DDLogInfo(@"videoStore: video not active: %@", object[@"videoName"]);
+//                        DDLogInfo(@"videoStore: video not active: %@", object[@"videoName"]);
                         
                         if (![alreadyFetchedVideoIds containsObject:videoId]) {
 //                            DDLogInfo(@"videoStore: video %@ isn't active but isn't in database, so it's all good", videoName);
