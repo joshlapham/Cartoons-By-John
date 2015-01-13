@@ -24,6 +24,7 @@
 
 // Constants
 static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours";
+static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFromParse";
 
 @implementation KJAppDelegate {
     NSString *parseAppId;
@@ -117,6 +118,14 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
                 NSNumber *shouldUseVersion11Colours = config[kKJParsePFConfigUseVersion11ColoursKey];
                 DDLogInfo(@"PFConfig: should use version 1.1 colours: %@", [shouldUseVersion11Colours boolValue] ? @"YES" : @"NO");
                 [NSUserDefaults kj_setShouldUseVersion11ColourSchemeSetting:[shouldUseVersion11Colours boolValue]];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
+            // Init should use social links from Parse
+            if (config[kKJParsePFConfigUseSocialLinksFromParseKey]) {
+                NSNumber *shouldUseSocialLinks = config[kKJParsePFConfigUseSocialLinksFromParseKey];
+                DDLogInfo(@"PFConfig: should use social links from Parse: %@", [shouldUseSocialLinks boolValue] ? @"YES" : @"NO");
+                [NSUserDefaults kj_setShouldUseSocialLinksFromParseSetting:[shouldUseSocialLinks boolValue]];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
         }

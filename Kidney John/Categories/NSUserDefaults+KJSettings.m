@@ -19,6 +19,9 @@ static NSString *kHasFirstSocialLinksFetchCompletedSettingKey = @"firstSocialLin
 static NSString *kHasAppCompletedVersion11FirstLaunchSettingKey = @"kHasAppCompletedVersion11FirstLaunchSettingKey";
 static NSString *kShouldUseVersion11ColourSchemeKey = @"KJShouldUseVersion11ColourScheme";
 
+// Testing social links from Parse
+static NSString *kShouldUseSocialLinksFromParseSettingKey = @"KJShouldUseSocialLinksFromParseSettingKey";
+
 @implementation NSUserDefaults (KJSettings)
 
 // App first launch setting
@@ -94,6 +97,17 @@ static NSString *kShouldUseVersion11ColourSchemeKey = @"KJShouldUseVersion11Colo
 + (void)kj_setShouldUseVersion11ColourSchemeSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
                                             forKey:kShouldUseVersion11ColourSchemeKey];
+}
+
+// Testing social links from Parse
++ (BOOL)kj_shouldUseSocialLinksFromParseSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldUseSocialLinksFromParseSettingKey];
+    
+}
+
++ (void)kj_setShouldUseSocialLinksFromParseSetting:(BOOL)setting {
+    [[NSUserDefaults standardUserDefaults] setBool:setting
+                                            forKey:kShouldUseSocialLinksFromParseSettingKey];
 }
 
 @end
