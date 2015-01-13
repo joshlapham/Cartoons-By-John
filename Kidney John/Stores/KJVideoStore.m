@@ -44,15 +44,20 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Prefetch video thumbnails method
 
-// TODO: update this to use vanilla Core Data
-
-+ (void)prefetchVideoThumbnails {
-    NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJVideo MR_findAllSortedBy:@"videoDate" ascending:NO]];
+- (void)prefetchVideoThumbnails {
+    // Perform fetch for videos in Core Data
+    NSArray *resultsArray = [self fetchExistingVideosInCoreData];
+    
+    // Init array for video thumbnail URLs
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
     
+    // Loop over videos in results array to get video ID to form URL
     for (KJVideo *video in resultsArray) {
-        NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, video.videoId];
+        NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString,
+                               video.videoId];
         NSURL *urlToPrefetch = [NSURL URLWithString:urlString];
+        
+        // Add URL to array
         [prefetchUrls addObject:urlToPrefetch];
     }
     
@@ -67,6 +72,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 // TODO: remove this method once KJFavouritesList VC is updated to use NSFetchedResultsController
 
+// Method to return array of videos that have their attribute isFavourite set to YES.
 - (NSArray *)returnFavouritesArray {
     // Init predicate for videos where isFavourite is TRUE
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
@@ -167,32 +173,48 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     }
 }
 
-// Method to get all existing videos in Core Data. We do this before the data fetch to help speed things up.
+// Method to fetch all existing videos in Core Data. We do this before the data fetch to help speed things up.
 - (NSArray *)fetchExistingVideosInCoreData {
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init sort descriptor by video date, newest at the top
+    // NOTE - we do this just so the prefetchVideoThumbnails method can better prefetch, starting with newest video
+    NSSortDescriptor *videoDateDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"videoDate"
+                                                                          ascending:NO];
+    
+    // Init fetch request for only the video ID property of KJVideo
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = entity;
+    request.sortDescriptors = @[ videoDateDescriptor ];
+    
+    // Execute the fetch
+    NSError *error;
+    NSArray *videosInCoreData = [self.managedObjectContext executeFetchRequest:request
+                                                                         error:&error];
+    
+    if (!videosInCoreData) {
+        // Handle the error
+        return nil;
+    }
+    else {
+        return videosInCoreData;
+    }
+}
+
+// Method to lazy init existingVideosInCoreDataBeforeFetch array.
+- (NSArray *)setupExistingVideosInCoreDataBeforeFetchArray {
+    // If we have already init'd, then return existing array
     if (existingVideosInCoreDataBeforeFetch != nil) {
         DDLogInfo(@"videoStore: have already init'd existing videos in Core Data array");
         return existingVideosInCoreDataBeforeFetch;
     }
     
-    // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
-                                              inManagedObjectContext:self.managedObjectContext];
+    // Init array with fetchExistingVideosInCoreData method
+    existingVideosInCoreDataBeforeFetch = [self fetchExistingVideosInCoreData];
     
-    // Init fetch request for only the video ID property of KJVideo
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    request.entity = entity;
-    
-    // Execute the fetch
-    NSError *error;
-    existingVideosInCoreDataBeforeFetch = [self.managedObjectContext executeFetchRequest:request error:&error];
-    
-    if (!existingVideosInCoreDataBeforeFetch) {
-        // Handle the error
-        return nil;
-    }
-    else {
-        return existingVideosInCoreDataBeforeFetch;
-    }
+    return existingVideosInCoreDataBeforeFetch;
 }
 
 // Method to get all video ID strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if a video ID exists in the array returned by this method.
@@ -270,7 +292,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
         
         // Check for already fetched videos in Core data
-        existingVideosInCoreDataBeforeFetch = [self fetchExistingVideosInCoreData];
+        existingVideosInCoreDataBeforeFetch = [self setupExistingVideosInCoreDataBeforeFetchArray];
         
         // Already fetched video ID strings
         NSArray *alreadyFetchedVideoIds = [NSArray arrayWithArray:[self alreadyFetchedVideoIdsArray]];
@@ -400,7 +422,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 
                 // Prefetch video thumbnails if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
-                    [KJVideoStore prefetchVideoThumbnails];
+                    [self prefetchVideoThumbnails];
                 }
             }
             else {
