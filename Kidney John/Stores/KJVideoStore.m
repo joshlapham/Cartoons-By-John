@@ -104,6 +104,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 #pragma mark - Core Data helper methods
 
+// Method to check if existing videos in Core Data need updating if values from server have changed since last data fetch.
 - (void)checkIfVideoNeedsUpdateWithParseObject:(PFObject *)fetchedParseObject {
     // Init strings with values from Parse
     NSString *videoId = fetchedParseObject[kParseVideoIdKey];
@@ -116,7 +117,13 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     // Init predicate for videos matching video ID
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"videoId == %@", videoId];
+    NSPredicate *videoIdPredicate = [NSPredicate predicateWithFormat:@"videoId == %@", videoId];
+    
+    // Init predicate for videos in pre-fetched videos array
+    NSPredicate *prefetchedVideosPredicate = [NSPredicate predicateWithFormat:@"self IN %@", existingVideosInCoreDataBeforeFetch];
+    
+    // Init final combined predicate to use
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[ videoIdPredicate, prefetchedVideosPredicate ]];
     
     // Init entity
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
