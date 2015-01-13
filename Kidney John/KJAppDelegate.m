@@ -20,6 +20,7 @@
 #import "NSUserDefaults+KJSettings.h"
 #import "JPLYouTubeListView.h"
 #import "KJTabBarController.h"
+#import <ParseCrashReporting/ParseCrashReporting.h>
 
 // Constants
 static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours";
@@ -188,6 +189,9 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
     
     // If parseAppId is nil then Keys.plist is most likely missing from the project
     NSAssert(parseAppId, @"Failed to load Parse.com keys from Keys.plist. Is the file present?");
+    
+    // Init Parse crash reporting
+    [ParseCrashReporting enable];
     
     // Set keys after method reads from Keys.plist
     [Parse setApplicationId:parseAppId
