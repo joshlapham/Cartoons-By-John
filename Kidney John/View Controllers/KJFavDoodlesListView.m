@@ -132,9 +132,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
     if ([segue.identifier isEqualToString:@"doodleDetailSegueFromFavourites"]) {
+        // Init destination view controller
         KJRandomView *destViewController = segue.destinationViewController;
+        
+        // Init cell data
         NSIndexPath *selectedIndex = [[self.collectionView indexPathsForSelectedItems] firstObject];
         KJRandomImage *doodleCell = [_cellResults objectAtIndex:selectedIndex.row];
+        
+        // Pass doodle to destination VC.
+        // Destination VC then checks if selectedImage property is nil when it inits, and loads things appropriately.
         destViewController.selectedImageFromFavouritesList = doodleCell;
     }
 }
