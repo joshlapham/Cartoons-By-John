@@ -22,12 +22,6 @@ static NSString *kParseComicNumberKey = @"comicNumber";
 // Constant for NSNotification name
 NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHappen";
 
-// Constants for comic filepaths
-static NSString *kComicThumbnailFilepathFormat = @"%@/%@.jpg";
-static NSString *kComicFilepathFormat = @"%@/%@%@.jpg";
-static NSString *kComicsLocalDirectoryName = @"Comics";
-static NSString *kComicThumbnailsLocalDirectoryName = @"ComicThumbs";
-
 // Constant for Core Data attribute to find by
 static NSString *kComicAttributeComicNameKey = @"comicName";
 
@@ -60,7 +54,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     
     // Loop over comics in results array to get imageURL
     for (KJComic *comic in resultsArray) {
-        NSURL *urlToPrefetch = [NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:comic]];
+        NSURL *urlToPrefetch = [NSURL fileURLWithPath:[comic returnThumbnailFilepathForComic]];
         
         // Add URL to array
         [prefetchUrls addObject:urlToPrefetch];
@@ -71,65 +65,6 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
         DDLogVerbose(@"comicstore: prefetched comics count: %d, skipped: %d", finishedCount, skippedCount);
     }];
-}
-
-#pragma mark - Comic files on filesystem methods
-
-+ (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject {
-    // TODO: handle if filepath is nil
-    UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnThumbnailFilepathForComicObject:comicObject]];
-    
-    //    DDLogVerbose(@"comicStore: thumb image: %@", imageToReturn);
-    
-    return imageToReturn;
-}
-
-+ (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject {
-    NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicThumbnailsLocalDirectoryName];
-    
-    // Filepath for jpeg comic thumbs
-    NSString *filePath = [NSString stringWithFormat:kComicThumbnailFilepathFormat, comicsFolderPath, comicObject.comicNumber];
-    
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-    
-    // TODO: make this better, return nil if none found
-    if (fileExists) {
-        //DDLogVerbose(@"comicStore: comic thumb file exists");
-    }
-    else {
-        //DDLogVerbose(@"comicStore: comic thumb file does not exist");
-    }
-    
-    return filePath;
-}
-
-+ (NSString *)returnFilepathForComicObject:(KJComic *)comicObject {
-    NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicsLocalDirectoryName];
-    
-    // Filepath for jpeg comics
-    NSString *filePath;
-    filePath = [NSString stringWithFormat:kComicFilepathFormat, comicsFolderPath, comicObject.comicNumber, comicObject.comicFileName];
-    
-    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-    
-    // TODO: make this better, return nil if none found
-    if (fileExists) {
-        //DDLogVerbose(@"comicStore: comic file exists");
-    }
-    else {
-        //DDLogVerbose(@"comicStore: comic file does not exist");
-    }
-    
-    return filePath;
-}
-
-+ (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject {
-    // TODO: handle if filepath is nil
-    UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
-    
-    //    DDLogVerbose(@"comicStore: comic image: %@", imageToReturn);
-    
-    return imageToReturn;
 }
 
 #pragma mark - Return favourite comics method

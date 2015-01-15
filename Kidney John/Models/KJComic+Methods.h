@@ -14,4 +14,9 @@
 // Parse helper methods
 + (NSString *)parseClassName;
 
+// Filepath for comics methods
+- (NSString *)returnThumbnailFilepathForComic;
+- (UIImage *)returnComicThumbImageFromComic;
+- (UIImage *)returnComicImageFromComic;
+
 @end

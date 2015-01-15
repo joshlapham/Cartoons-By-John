@@ -10,6 +10,7 @@
 #import "KJComicCell.h"
 #import "KJComicDetailView.h"
 #import "KJComic.h"
+#import "KJComic+Methods.h"
 #import "MBProgressHUD.h"
 #import "KJComicStore.h"
 #import <SDWebImage/UIImageView+WebCache.h>
@@ -121,7 +122,7 @@ static NSString *kComicCellIdentifier = @"comicCell";
     KJComic *cellData = [_comicResults objectAtIndex:indexPath.row];
 
     // Set comic thumbnail using SDWebImage
-    [cell.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:cellData]]
+    [cell.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
                        placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                               completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
                                   if (cellImage && !error) {

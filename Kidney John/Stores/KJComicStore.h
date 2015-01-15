@@ -31,9 +31,6 @@ typedef NS_ENUM(NSUInteger, KJComicStoreConnectionState) {
 
 // Class methods
 - (void)fetchComicData;
-+ (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;
-+ (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject;
-+ (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject;
 - (NSArray *)returnFavouritesArray;
 
 @end

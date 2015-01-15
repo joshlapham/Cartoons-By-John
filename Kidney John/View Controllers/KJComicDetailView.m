@@ -11,6 +11,7 @@
 #import "KJComicStore.h"
 #import "KJComicFavouriteActivity.h"
 #import "KJComic.h"
+#import "KJComic+Methods.h"
 
 // Constants
 static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
@@ -92,8 +93,8 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     // Init cell data
     KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
     
-    // TODO: review comic image loading here
-    cell.comicImageView.image = [KJComicStore returnComicImageFromComicObject:cellData];
+    // Init comic image
+    cell.comicImageView.image = [cellData returnComicImageFromComic];
     
 //    DDLogVerbose(@"Comics List: image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
     
@@ -153,8 +154,10 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     // Get data for comic currently on screen
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
+    
+    // Init comic image
     // TODO: do we really need this method?
-    UIImage *comicImageToShare = [KJComicStore returnComicImageFromComicObject:cellData];
+    UIImage *comicImageToShare = [cellData returnComicImageFromComic];
     
     // Init UIActivity
     KJComicFavouriteActivity *favouriteActivity = [[KJComicFavouriteActivity alloc] initWithComic:cellData];

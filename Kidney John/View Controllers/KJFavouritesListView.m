@@ -9,7 +9,9 @@
 #import "KJFavouritesListView.h"
 #import "JPLYouTubeVideoView.h"
 #import "KJVideo.h"
+#import "KJVideo+Methods.h"
 #import "KJComic.h"
+#import "KJComic+Methods.h"
 #import "KJRandomImage.h"
 #import "KJComicDetailView.h"
 #import "KJComicStore.h"
@@ -17,7 +19,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
-#import "KJVideo+Methods.h"
 
 static NSString *VideoCellIdentifier = @"favouriteCell";
 static NSString *ComicCellIdentifier = @"comicFavouriteCell";
@@ -159,7 +160,7 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
         
         titleLabel.text = cellData.comicName;
         
-        thumbImage.image = [KJComicStore returnComicThumbImageFromComicObject:cellData];
+        thumbImage.image = [cellData returnComicThumbImageFromComic];
         thumbImage.contentMode = UIViewContentModeScaleAspectFit;
     }
     else if ([self.titleForView isEqualToString:@"Doodles"]) {
