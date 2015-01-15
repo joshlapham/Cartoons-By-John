@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, KJDoodleStoreConnectionState) {
 };
 
 // Properties
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) KJDoodleStoreConnectionState connectionState;
 
 // Init method
@@ -29,9 +30,6 @@ typedef NS_ENUM(NSUInteger, KJDoodleStoreConnectionState) {
 
 // Class methods
 - (void)fetchDoodleData;
-+ (NSArray *)returnArrayOfRandomImages;
-+ (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl;
-+ (NSArray *)returnFavouritesArray;
-+ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject;
+- (NSArray *)returnFavouritesArray;
 
 @end

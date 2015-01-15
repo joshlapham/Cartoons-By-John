@@ -232,8 +232,9 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     JPLYouTubeListView *initialViewController = (JPLYouTubeListView *)navController.topViewController;
     initialViewController.managedObjectContext = self.managedObjectContext;
     
-    // Pass managedObjectContext to KJVideoStore
+    // Pass managedObjectContext to stores
     [KJVideoStore sharedStore].managedObjectContext = self.managedObjectContext;
+    [KJDoodleStore sharedStore].managedObjectContext = self.managedObjectContext;
     
     // Reachability
     [JPLReachabilityManager sharedManager];

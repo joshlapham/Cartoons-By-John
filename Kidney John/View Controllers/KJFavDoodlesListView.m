@@ -39,7 +39,7 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
     
     // Init data source array
     // TODO: review this, init another way using Core Data
-    _cellResults = [KJDoodleStore returnFavouritesArray];
+    _cellResults = [[KJDoodleStore sharedStore] returnFavouritesArray];
     
     // Check for Favourites results
     if ([_cellResults count] == 0) {

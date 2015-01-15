@@ -23,7 +23,10 @@ static NSString *kParseImageDateKey = @"date";
 // Constant for NSNotification name
 NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHappen";
 
-@implementation KJDoodleStore
+@implementation KJDoodleStore {
+    BOOL __block changesToDoodlesWereMade;
+    NSArray __block *existingDoodlesInCoreDataBeforeFetch;
+}
 
 #pragma mark - Init method
 
@@ -38,173 +41,215 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     return _sharedStore;
 }
 
-#pragma mark - Return results methods
-
-+ (NSArray *)returnArrayOfRandomImages {
-    NSArray *randomImagesArray = [[NSArray alloc] initWithArray:[KJRandomImage MR_findAll]];
-    
-    return randomImagesArray;
-}
-
-+ (UIImage *)returnDoodleImageFromDoodleObject:(KJRandomImage *)doodleObject {
-    UIImage *imageToReturn;
-    
-    // SDWebImage
-    // check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl]) {
-        //DDLogVerbose(@"found image in cache");
-        imageToReturn = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:doodleObject.imageUrl];
-    }
-    else {
-        //DDLogVerbose(@"no image in cache");
-        // TODO: implement fallback
-    }
-    
-    DDLogVerbose(@"doodleStore: returning doodle image from cache: %@", imageToReturn);
-    
-    return imageToReturn;
-}
-
-#pragma mark - Favourite methods
-
-+ (KJRandomImage *)returnDoodleWithDoodleUrl:(NSString *)doodleUrl {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // Find Doodle where imageUrl matches
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"imageUrl == %@", doodleUrl];
-    
-    KJRandomImage *doodleToReturn = [KJRandomImage MR_findFirstWithPredicate:predicate inContext:localContext];
-    
-    return doodleToReturn;
-}
-
-+ (NSArray *)returnFavouritesArray {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // Find videos where isFavourite is TRUE
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
-    
-    NSArray *arrayToReturn = [KJRandomImage MR_findAllWithPredicate:predicate inContext:localContext];
-    
-    return arrayToReturn;
-}
-
 #pragma mark - Prefetch doodles method
 
-+ (void)prefetchDoodles {
-    NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES]];
+- (void)prefetchDoodles {
+    // Perform fetch for doodles in Core Data
+    NSArray *resultsArray = [self fetchExistingDoodlesInCoreData];
+    
+    // Init array for doodle image URLs
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
     
+    // Loop over doodles in results array to get imageURL
     for (KJRandomImage *image in resultsArray) {
-        NSString *urlString = image.imageUrl;
-        NSURL *urlToPrefetch = [NSURL URLWithString:urlString];
+        NSURL *urlToPrefetch = [NSURL URLWithString:image.imageUrl];
+        
+        // Add URL to array
         [prefetchUrls addObject:urlToPrefetch];
     }
     
     // Cache URL for SDWebImage
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
-        DDLogVerbose(@"doodleStore: prefetched images count: %d, skipped: %d", finishedCount, skippedCount);
+        DDLogVerbose(@"doodleStore: prefetched doodles count: %d, skipped: %d", finishedCount, skippedCount);
     }];
 }
 
-#pragma mark - Core Data methods
+#pragma mark - Return favourite doodles method
 
-+ (BOOL)checkIfRandomImageIsInDatabaseWithImageUrl:(NSString *)imageUrl context:(NSManagedObjectContext *)context {
-    if ([KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:context]) {
-        //DDLogVerbose(@"RANDOM: Yes, random image does exist in database");
-        return TRUE;
-    }
-    else {
-        //DDLogVerbose(@"RANDOM: No, random image does NOT exist in database");
-        return FALSE;
+// Method to return array of doodles that have their attribute isFavourite set to YES.
+- (NSArray *)returnFavouritesArray {
+    // Init predicate for doodles where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by doodle date; newest at the top)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"imageDate"
+                                                                   ascending:NO];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+    
+    // Set predicate
+    fetchRequest.predicate = predicate;
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"doodleStore: error fetching favourites: %@", [error localizedDescription]);
+        return nil;
+    } else {
+        return fetchedObjects;
     }
 }
 
-+ (void)persistNewRandomImageWithId:(NSString *)imageId
-                        description:(NSString *)imageDescription
-                                url:(NSString *)imageUrl
-                               date:(NSString *)imageDate {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // If Doodle does not exist in database then persist
-    if (![self checkIfRandomImageIsInDatabaseWithImageUrl:imageUrl context:localContext]) {
-        // Create a new Doodle in the current context
-        KJRandomImage *newRandomImage = [KJRandomImage MR_createInContext:localContext];
-        
-        // Set attributes
-        newRandomImage.imageId = imageId;
-        newRandomImage.imageDescription = imageDescription;
-        newRandomImage.imageUrl = imageUrl;
-        newRandomImage.imageDate = imageDate;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    }
-}
+#pragma mark - Core data helper methods
 
-+ (void)checkIfImageNeedsUpdateWithId:(NSString *)imageId
-                               description:(NSString *)imageDescription
-                                url:(NSString *)imageUrl
-                                 date:(NSString *)imageDate {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+// Method to check if existing doodles in Core Data need updating if values from server have changed since last data fetch.
+- (void)checkIfDoodleNeedsUpdateWithParseObject:(PFObject *)fetchedParseObject {
+    // Init strings with values from Parse
+    NSString *imageId = fetchedParseObject[kParseImageIdKey];
+    NSString *imageUrl = fetchedParseObject[kParseImageUrlKey];
+    NSString *imageDescription = fetchedParseObject[kParseImageDescriptionKey];
+    NSString *imageDate = fetchedParseObject[kParseImageDateKey];
     
-    // If image is in database ..
-    if ([self checkIfRandomImageIsInDatabaseWithImageUrl:imageUrl context:localContext]) {
-        KJRandomImage *imageToCheck = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:localContext];
+    // Init fetch request for doodle matching image URL
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    // Init predicate for doodles matching image URL
+    NSPredicate *imageUrlPredicate = [NSPredicate predicateWithFormat:@"imageUrl == %@", imageUrl];
+    
+    // Init predicate for doodles in pre-fetched doodles array
+    NSPredicate *prefetchedDoodlesPredicate = [NSPredicate predicateWithFormat:@"self IN %@", existingDoodlesInCoreDataBeforeFetch];
+    
+    // Init final combined predicate to use
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[ imageUrlPredicate,
+                                                                                   prefetchedDoodlesPredicate ]];
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Set fetch request properties
+    fetchRequest.predicate = predicate;
+    fetchRequest.entity = entity;
+    
+    // Execute the fetch
+    NSError *error;
+    NSArray *doodlesInCoreData = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                          error:&error];
+    
+    // If we found a matching doodle
+    if ([doodlesInCoreData count] > 0) {
+        // Checking doodles one at a time, so firstObject works here
+        KJRandomImage *doodleToCheck  = [doodlesInCoreData firstObject];
         
-        // Check if imageToCheck needs updating
-        if (![imageToCheck.imageId isEqualToString:imageId] || ![imageToCheck.imageDescription isEqualToString:imageDescription] || ![imageToCheck.imageUrl isEqualToString:imageUrl] || ![imageToCheck.imageDate isEqualToString:imageDate]) {
-            // Image needs updating
-            DDLogVerbose(@"doodleStore: doodle needs update: %@", imageUrl);
+        if (![doodleToCheck.imageId isEqualToString:imageId] ||
+            ![doodleToCheck.imageUrl isEqualToString:imageUrl] ||
+            ![doodleToCheck.imageDescription isEqualToString:imageDescription] ||
+            ![doodleToCheck.imageDate isEqualToString:imageDate]) {
+            DDLogInfo(@"doodleStore: doodle needs update: %@", imageUrl);
             
-            imageToCheck.imageId = imageId;
-            imageToCheck.imageDescription = imageDescription;
-            imageToCheck.imageUrl = imageUrl;
-            imageToCheck.imageDate = imageDate;
+            // Update properties
+            doodleToCheck.imageId = imageId;
+            doodleToCheck.imageUrl = imageUrl;
+            doodleToCheck.imageDescription = imageDescription;
+            doodleToCheck.imageDate = imageDate;
             
-            // Save
-            //[localContext MR_saveToPersistentStoreAndWait];
-            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                if (success) {
-                    DDLogVerbose(@"doodleStore: updated doodle: %@", imageUrl);
-                }
-                else if (error) {
-                    DDLogVerbose(@"doodleStore: error updating doodle: %@ - %@", imageUrl, [error localizedDescription]);
-                }
-            }];
+            // Set changes to doodles were made property so that we can trigger a managedObjectContext save later.
+            // This saves us from triggering a save every time we fetch data from the server.
+            changesToDoodlesWereMade = YES;
+        }
+        else {
+            DDLogInfo(@"doodleStore: doodle doesn't need update: %@", imageUrl);
         }
     }
 }
 
-+ (void)deleteDoodleFromDatabaseWithUrl:(NSString *)imageUrl {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+// Method to fetch all existing doodles in Core Data. We do this before the data fetch to help speed things up.
+- (NSArray *)fetchExistingDoodlesInCoreData {
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+                                              inManagedObjectContext:self.managedObjectContext];
     
-    // NOTE - we're not checking if doodle is in database first (as  the checkIfImageNeedsUpdate method does),
-    // we're doing that before calling this method, just so it's a bit more clear what we're doing in the fetchDoodleData method
+    // Init sort descriptor by video date, newest at the top
+    // NOTE - we do this just so the prefetchVideoThumbnails method can better prefetch, starting with newest video
+//    NSSortDescriptor *videoDateDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"videoDate"
+//                                                                          ascending:NO];
     
-    KJRandomImage *doodleToDelete = [KJRandomImage MR_findFirstByAttribute:@"imageUrl" withValue:imageUrl inContext:localContext];
+    // Init fetch request for only the video ID property of KJVideo
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = entity;
+//    request.sortDescriptors = @[ videoDateDescriptor ];
     
-    if (doodleToDelete) {
-        // Delete object
-        [doodleToDelete MR_deleteInContext:localContext];
-        
-        // Save
-        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            if (success) {
-                DDLogVerbose(@"doodleStore: deleted doodle");
-            }
-            else if (error) {
-                DDLogError(@"doodleStore: error deleting doodle: %@", [error localizedDescription]);
-            }
-        }];
+    // Execute the fetch
+    NSError *error;
+    NSArray *doodlesInCoreData = [self.managedObjectContext executeFetchRequest:request
+                                                                          error:&error];
+    
+    if (!doodlesInCoreData) {
+        // Handle the error
+        return nil;
+    }
+    else {
+        return doodlesInCoreData;
     }
 }
+
+// Method to lazy init existingDoodlesInCoreDataBeforeFetch array.
+- (NSArray *)setupExistingDoodlesInCoreDataBeforeFetchArray {
+    // If we have already init'd, then return existing array
+    if (existingDoodlesInCoreDataBeforeFetch != nil) {
+        DDLogInfo(@"doodleStore: have already init'd existing doodles in Core Data array");
+        return existingDoodlesInCoreDataBeforeFetch;
+    }
+    
+    // Init array with fetchExistingDoodlesInCoreData method
+    existingDoodlesInCoreDataBeforeFetch = [self fetchExistingDoodlesInCoreData];
+    
+    return existingDoodlesInCoreDataBeforeFetch;
+}
+
+// Method to get all image URL strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if an image URL exists in the array returned by this method.
+- (NSArray *)alreadyFetchedImageUrlsArray {
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request for only the image URL property of KJRandomImage
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = entity;
+    request.resultType = NSDictionaryResultType;
+    request.returnsDistinctResults = YES;
+    request.propertiesToFetch = @[ @"imageUrl" ];
+    
+    // Init predicate for pre-fetched existing doodles in Core Data array
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", existingDoodlesInCoreDataBeforeFetch];
+    request.predicate = predicate;
+    
+    // Init array for image URL strings
+    NSMutableArray *imageUrlStrings = [NSMutableArray new];
+    
+    // Execute the fetch
+    NSError *error;
+    NSArray *doodlesInCoreData = [self.managedObjectContext executeFetchRequest:request
+                                                                          error:&error];
+    
+    if (doodlesInCoreData == nil) {
+        // Handle the error
+        return nil;
+    }
+    else {
+        // Get video ID strings
+        for (NSDictionary *dict in doodlesInCoreData) {
+            NSString *imageUrl = [dict valueForKey:@"imageUrl"];
+            [imageUrlStrings addObject:imageUrl];
+        }
+    }
+    
+    return [imageUrlStrings copy];
+}
+
+#pragma mark - Fetch data method
 
 - (void)fetchDoodleData {
     // Check connection state
@@ -240,6 +285,12 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         // Cache policy
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
         
+        // Check for already fetched doodles in Core Data
+        existingDoodlesInCoreDataBeforeFetch = [self setupExistingDoodlesInCoreDataBeforeFetchArray];
+        
+        // Already fetched image URL strings
+        NSArray *alreadyFetchedImageUrls = [NSArray arrayWithArray:[self alreadyFetchedImageUrlsArray]];
+        
         // Start query with block
         [randomQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
@@ -252,33 +303,101 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
                 for (PFObject *object in objects) {
+                    // Init string for image URL
+                    NSString *imageUrl = object[kParseImageUrlKey];
+                    
                     if ([object[@"is_active"] isEqual:@"1"]) {
-                        // Check if image needs updating
-                        [KJDoodleStore checkIfImageNeedsUpdateWithId:object[kParseImageIdKey]
-                                                description:object[kParseImageDescriptionKey]
-                                                        url:object[kParseImageUrlKey]
-                                                       date:object[kParseImageDateKey]];
                         
-                        // Save Parse object to Core Data
-                        [KJDoodleStore persistNewRandomImageWithId:object[kParseImageIdKey]
-                                              description:object[kParseImageDescriptionKey]
-                                                      url:object[kParseImageUrlKey]
-                                                     date:object[kParseImageDateKey]];
+                        // If doodle doesn't aleady exist locally in Core Data, then create
+                        if (![alreadyFetchedImageUrls containsObject:imageUrl]) {
+                            DDLogInfo(@"doodleStore: haven't fetched doodle %@", imageUrl);
+                            
+                            // Init new doodle
+                            KJRandomImage *newDoodle = [NSEntityDescription insertNewObjectForEntityForName:@"KJRandomImage"
+                                                                              inManagedObjectContext:self.managedObjectContext];
+                            
+                            newDoodle.imageId = object[kParseImageIdKey];
+                            newDoodle.imageUrl = object[kParseImageUrlKey];
+                            newDoodle.imageDescription = object[kParseImageDescriptionKey];
+                            newDoodle.imageDate = object[kParseImageDateKey];
+                            
+                            // Set changes to doodles were made property so that we can trigger a managedObjectContext save later.
+                            // This saves us from triggering a save every time we fetch data from the server.
+                            changesToDoodlesWereMade = YES;
+                        }
+                        else {
+                            DDLogInfo(@"doodleStore: already fetched doodle %@", imageUrl);
+                            
+                            // Check if doodle needs update
+                            [self checkIfDoodleNeedsUpdateWithParseObject:object];
+                        }
                     }
+                    
+                    // Doodle is NOT active
+                    // Check if it exists locally in Core Data, and delete if so
                     else {
-                        DDLogVerbose(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
+                            DDLogInfo(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
                         
-                        // Check if doodle exists in database, and delete if so
-                        BOOL existInDatabase = [KJDoodleStore checkIfRandomImageIsInDatabaseWithImageUrl:object[kParseImageUrlKey]
-                                                                                        context:[NSManagedObjectContext MR_contextForCurrentThread]];
+                        if (![alreadyFetchedImageUrls containsObject:imageUrl]) {
+                            DDLogInfo(@"doodleStore: doodle %@ isn't active but isn't in database, so it's all good", imageUrl);
+                        }
                         
-                        if (existInDatabase) {
-                            DDLogVerbose(@"doodleStore: doodle URL %@ exists in database but is no longer active on server; now removing", object[kParseImageUrlKey]);
-                            [KJDoodleStore deleteDoodleFromDatabaseWithUrl:object[kParseImageUrlKey]];
+                        // Video IS in Core Data, so delete
+                        else {
+                            DDLogInfo(@"doodleStore: doodle %@ isn't active and is in database; deleting now", imageUrl);
+                            
+                            // Init fetch request for video to delete
+                            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(imageUrl == %@)", imageUrl];
+                            fetchRequest.entity = [NSEntityDescription entityForName:@"KJRandomImage"
+                                                              inManagedObjectContext:self.managedObjectContext];
+                            
+                            // Execute the fetch
+                            NSError *fetchError;
+                            NSArray *itemsToDelete = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                                              error:&fetchError];
+                            
+                            // If we found doodle to delete ..
+                            if ([itemsToDelete count] > 0) {
+                                DDLogInfo(@"doodleStore: found %d doodle to delete", [itemsToDelete count]);
+                                
+                                // Delete
+                                KJRandomImage *doodleToDelete = [itemsToDelete firstObject];
+                                [self.managedObjectContext deleteObject:doodleToDelete];
+                                
+                                // Set changes to doodles were made property so that we can trigger a managedObjectContext save later.
+                                // This saves us from triggering a save every time we fetch data from the server.
+                                changesToDoodlesWereMade = YES;
+                            }
+                            else {
+                                DDLogError(@"doodleStore: failed to find doodle to delete from Core Data: %@", imageUrl);
+                            }
                         }
                     }
                 }
                 
+                // Save managedObjectContext
+                // Only save if we have changes
+                
+                // TODO: is this check really required? Will there be a huge performance hit if we're saving the managedObjectContext each time?
+                // Also, does creating or updating an entity even if the properties are the same do anything to the managedObjectContext?
+                
+                if (!changesToDoodlesWereMade) {
+                    DDLogInfo(@"doodleStore: no changes to doodles were found, so no save managedObjectContext is required");
+                }
+                else {
+                    // Changes were made.
+                    // This could have been new doodles added, existing doodle info updated, or doodle deleted from Core Data.
+                    NSError *error;
+                    if (![self.managedObjectContext save:&error]) {
+                        // Handle the error.
+                        DDLogError(@"doodleStore: failed to save managedObjectContext: %@", [error debugDescription]);
+                    }
+                    else {
+                        DDLogInfo(@"doodleStore: saved managedObjectContext");
+                    }
+                }
+
                 // Set first fetch = YES in NSUserDefaults
                 if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
                     [NSUserDefaults kj_setHasFirstDoodleFetchCompletedSetting:YES];
@@ -295,7 +414,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 
                 // Prefetch doodles if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
-                    [KJDoodleStore prefetchDoodles];
+                    [self prefetchDoodles];
                 }
                 
             }
