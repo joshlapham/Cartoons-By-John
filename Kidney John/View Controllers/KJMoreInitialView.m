@@ -295,7 +295,7 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
         }
         else if (_chosenRow == 1) {
             // Comix
-            favouritesDataToPass = [KJComicStore returnFavouritesArray];
+            favouritesDataToPass = [[KJComicStore sharedStore] returnFavouritesArray];
         }
         
         destViewController.cellResults = favouritesDataToPass;

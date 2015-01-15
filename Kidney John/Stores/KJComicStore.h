@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, KJComicStoreConnectionState) {
 };
 
 // Properties
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) KJComicStoreConnectionState connectionState;
 
 // Init method
@@ -30,12 +31,9 @@ typedef NS_ENUM(NSUInteger, KJComicStoreConnectionState) {
 
 // Class methods
 - (void)fetchComicData;
-+ (KJComic *)returnComicWithComicName:(NSString *)comicName;
-- (NSArray *)returnArrayOfComicFiles;
 + (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject;
 + (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject;
-+ (NSString *)returnFilepathForComicObject:(KJComic *)comicObject;
 + (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject;
-+ (NSArray *)returnFavouritesArray;
+- (NSArray *)returnFavouritesArray;
 
 @end

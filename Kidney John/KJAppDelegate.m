@@ -234,6 +234,7 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     
     // Pass managedObjectContext to stores
     [KJVideoStore sharedStore].managedObjectContext = self.managedObjectContext;
+    [KJComicStore sharedStore].managedObjectContext = self.managedObjectContext;
     [KJDoodleStore sharedStore].managedObjectContext = self.managedObjectContext;
     
     // Reachability

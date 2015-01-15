@@ -31,7 +31,10 @@ static NSString *kComicThumbnailsLocalDirectoryName = @"ComicThumbs";
 // Constant for Core Data attribute to find by
 static NSString *kComicAttributeComicNameKey = @"comicName";
 
-@implementation KJComicStore
+@implementation KJComicStore {
+    BOOL __block changesToComicsWereMade;
+    NSArray __block *existingComicsInCoreDataBeforeFetch;
+}
 
 #pragma mark - Init method
 
@@ -48,27 +51,37 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 #pragma mark - Prefetch comic thumbnails method
 
-+ (void)prefetchComicThumbnails {
-    NSArray *resultsArray = [[NSArray alloc] initWithArray:[KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES]];
+- (void)prefetchComicThumbnails {
+    // Perform fetch for comics in Core Data
+    NSArray *resultsArray = [self fetchExistingComicsInCoreData];
+    
+    // Init array for doodle image URLs
     NSMutableArray *prefetchUrls = [[NSMutableArray alloc] init];
     
+    // Loop over comics in results array to get imageURL
     for (KJComic *comic in resultsArray) {
         NSURL *urlToPrefetch = [NSURL fileURLWithPath:[KJComicStore returnThumbnailFilepathForComicObject:comic]];
+        
+        // Add URL to array
         [prefetchUrls addObject:urlToPrefetch];
     }
     
     // Cache URL for SDWebImage
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
-        DDLogVerbose(@"comicStore: prefetched comic thumbs count: %d, skipped: %d", finishedCount, skippedCount);
+        DDLogVerbose(@"comicstore: prefetched comics count: %d, skipped: %d", finishedCount, skippedCount);
     }];
 }
 
 #pragma mark - Comic files on filesystem methods
 
-- (NSArray *)returnComicsFolderAsArray {
-    return [[NSBundle mainBundle] pathsForResourcesOfType:@"png"
-                                              inDirectory:kComicsLocalDirectoryName];
++ (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject {
+    // TODO: handle if filepath is nil
+    UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnThumbnailFilepathForComicObject:comicObject]];
+    
+    //    DDLogVerbose(@"comicStore: thumb image: %@", imageToReturn);
+    
+    return imageToReturn;
 }
 
 + (NSString *)returnThumbnailFilepathForComicObject:(KJComic *)comicObject {
@@ -110,136 +123,194 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     return filePath;
 }
 
-// TODO: do we really need this method?
-
 + (UIImage *)returnComicImageFromComicObject:(KJComic *)comicObject {
     // TODO: handle if filepath is nil
     UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnFilepathForComicObject:comicObject]];
     
-//    DDLogVerbose(@"comicStore: comic image: %@", imageToReturn);
+    //    DDLogVerbose(@"comicStore: comic image: %@", imageToReturn);
     
     return imageToReturn;
 }
 
-+ (UIImage *)returnComicThumbImageFromComicObject:(KJComic *)comicObject {
-    // TODO: handle if filepath is nil
-    UIImage *imageToReturn = [[UIImage alloc] initWithContentsOfFile:[self returnThumbnailFilepathForComicObject:comicObject]];
-    
-//    DDLogVerbose(@"comicStore: thumb image: %@", imageToReturn);
-    
-    return imageToReturn;
-}
+#pragma mark - Return favourite comics method
 
-- (NSArray *)returnArrayOfComicFiles {
-    // Load from resources path
-    NSMutableArray *comicFileResults = [[NSMutableArray alloc] init];
+// Method to return array of comics that have their attribute isFavourite set to YES.
+- (NSArray *)returnFavouritesArray {
+    // Init predicate for comics where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
     
-    NSUInteger pngCount = [[[NSBundle mainBundle] pathsForResourcesOfType:@"png"
-                                                              inDirectory:kComicsLocalDirectoryName] count];
-    DDLogVerbose(@"comicStore: bundle count: %d", pngCount);
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+                                              inManagedObjectContext:self.managedObjectContext];
     
-    for (NSString *fileName in [[NSBundle mainBundle] pathsForResourcesOfType:@"png" inDirectory:kComicsLocalDirectoryName]) {
-        //DDLogVerbose(@"%@", fileName);
-        [comicFileResults addObject:fileName];
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by comic name)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"comicName"
+                                                                   ascending:NO];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+    
+    // Set predicate
+    fetchRequest.predicate = predicate;
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"comicStore: error fetching favourites: %@", [error localizedDescription]);
+        return nil;
+    } else {
+        return fetchedObjects;
     }
-    
-    return [NSArray arrayWithArray:comicFileResults];
 }
 
 #pragma mark - Core Data helper methods
 
-+ (NSArray *)returnFavouritesArray {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+// Method to check if existing comics in Core Data need updating if values from server have changed since last data fetch.
+- (void)checkIfComicNeedsUpdateWithParseObject:(PFObject *)fetchedParseObject {
+    // Init strings with values from Parse
+    NSString *comicFileName = fetchedParseObject[kParseComicFileNameKey];
+    NSString *comicName = fetchedParseObject[kParseComicNameKey];
+    NSString *comicNumber = fetchedParseObject[kParseComicNumberKey];
     
-    // Find videos where isFavourite is TRUE
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    // Init PFFile to get comic file URL
+    PFFile *comicFile = fetchedParseObject[kParseComicFileKey];
+    NSString *comicFileUrl = comicFile.url;
     
-    NSArray *arrayToReturn = [KJComic MR_findAllWithPredicate:predicate inContext:localContext];
+    // Init fetch request for comic matching image URL
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    return arrayToReturn;
-}
-
-+ (KJComic *)returnComicWithComicName:(NSString *)comicNameToFind {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    // Init predicate for comics matching comic name
+    NSPredicate *comicNamePredicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicName];
     
-    // Find comic where comicNameToFind matches
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicNameToFind];
-    KJComic *comicToReturn = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
+    // Init predicate for comics in pre-fetched comics array
+    NSPredicate *prefetchedComicsPredicate = [NSPredicate predicateWithFormat:@"self IN %@", existingComicsInCoreDataBeforeFetch];
     
-    return comicToReturn;
-}
-
-+ (void)persistNewComicWithName:(NSString *)comicName
-                  comicFileName:(NSString *)comicFileName
-                   comicFileUrl:(NSString *)comicFileUrl
-                    comicNumber:(NSString *)comicNumber {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    // Init final combined predicate to use
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[ comicNamePredicate,
+                                                                                   prefetchedComicsPredicate ]];
     
-    // NOTE - we check if comic exists in Core Data before calling this method
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+                                              inManagedObjectContext:self.managedObjectContext];
     
-    // Init new comic object in localContext
-    KJComic *newComic = [KJComic MR_createInContext:localContext];
+    // Set fetch request properties
+    fetchRequest.predicate = predicate;
+    fetchRequest.entity = entity;
     
-    // Set attributes
-    newComic.comicName = comicName;
-    newComic.comicFileName = comicFileName;
-    newComic.comicFileUrl = comicFileUrl;
-    newComic.comicNumber = comicNumber;
+    // Execute the fetch
+    NSError *error;
+    NSArray *comicsInCoreData = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                         error:&error];
     
-    // Save
-    [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        if (!error && success) {
-            DDLogVerbose(@"comicStore: saved new comic: %@", comicName);
-        }
-        else {
-            DDLogError(@"comicStore: error saving new comic: %@", comicName);
-        }
-    }];
-}
-
-// TODO: not even calling this method at the moment, review this
-
-- (void)checkIfComicNeedsUpdateWithComicName:(NSString *)comicName
-                               comicFileName:(NSString *)comicFileName
-                                comicFileUrl:(NSString *)comicFileUrl
-                                 comicNumber:(NSString *)comicNumber {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // Init comic object
-    KJComic *comicToCheck = [KJComic MR_findFirstByAttribute:kComicAttributeComicNameKey
-                                                   withValue:comicName
-                                                   inContext:localContext];
-    
-    if (!comicToCheck) {
-        DDLogError(@"comicStore: error checking if comic needs update: %@ not found in database", comicName);
-    }
-    else {
-        // Check if comicToCheck needs updating
-        if (![comicToCheck.comicName isEqualToString:comicName] || ![comicToCheck.comicFileName isEqualToString:comicFileName] || ![comicToCheck.comicFileUrl isEqualToString:comicFileUrl] || ![comicToCheck.comicNumber isEqualToString:comicNumber]) {
+    // If we found a matching comic
+    if ([comicsInCoreData count] > 0) {
+        // Checking comics one at a time, so firstObject works here
+        KJComic *comicToCheck  = [comicsInCoreData firstObject];
+        
+        if (![comicToCheck.comicFileName isEqualToString:comicFileName] ||
+            ![comicToCheck.comicName isEqualToString:comicName] ||
+            ![comicToCheck.comicFileUrl isEqualToString:comicFileUrl] ||
+            ![comicToCheck.comicNumber isEqualToString:comicNumber]) {
+            DDLogInfo(@"comicStore: comic needs update: %@", comicName);
             
-            // Comic needs updating
-            DDLogVerbose(@"comicStore: comic needs update: %@", comicName);
-            
-            comicToCheck.comicName = comicName;
+            // Update properties
             comicToCheck.comicFileName = comicFileName;
+            comicToCheck.comicName = comicName;
             comicToCheck.comicFileUrl = comicFileUrl;
             comicToCheck.comicNumber = comicNumber;
             
-            // Save
-            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                if (success) {
-                    DDLogVerbose(@"comicStore: updated comic: %@", comicName);
-                }
-                else if (error) {
-                    DDLogError(@"comicStore: error updating comic: %@ - %@", comicName, [error localizedDescription]);
-                }
-            }];
+            // Set changes to comics were made property so that we can trigger a managedObjectContext save later.
+            // This saves us from triggering a save every time we fetch data from the server.
+            changesToComicsWereMade = YES;
+        }
+        else {
+            DDLogInfo(@"comicStore: comic doesn't need update: %@", comicName);
         }
     }
+}
+
+// Method to fetch all existing comics in Core Data. We do this before the data fetch to help speed things up.
+- (NSArray *)fetchExistingComicsInCoreData {
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request for only the video ID property of KJComic
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = entity;
+    
+    // Execute the fetch
+    NSError *error;
+    NSArray *comicsInCoreData = [self.managedObjectContext executeFetchRequest:request
+                                                                         error:&error];
+    
+    if (!comicsInCoreData) {
+        // Handle the error
+        return nil;
+    }
+    else {
+        return comicsInCoreData;
+    }
+}
+
+// Method to lazy init existingComicsInCoreDataBeforeFetch array.
+- (NSArray *)setupExistingComicsInCoreDataBeforeFetchArray {
+    // If we have already init'd, then return existing array
+    if (existingComicsInCoreDataBeforeFetch != nil) {
+        DDLogInfo(@"comicStore: have already init'd existing comics in Core Data array");
+        return existingComicsInCoreDataBeforeFetch;
+    }
+    
+    // Init array with fetchExistingComicsInCoreData method
+    existingComicsInCoreDataBeforeFetch = [self fetchExistingComicsInCoreData];
+    
+    return existingComicsInCoreDataBeforeFetch;
+}
+
+// Method to get all image URL strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if an image URL exists in the array returned by this method.
+- (NSArray *)alreadyFetchedComicNamesArray {
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request for only the image URL property of KJComic
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    request.entity = entity;
+    request.resultType = NSDictionaryResultType;
+    request.returnsDistinctResults = YES;
+    request.propertiesToFetch = @[ @"comicName" ];
+    
+    // Init predicate for pre-fetched existing comics in Core Data array
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", existingComicsInCoreDataBeforeFetch];
+    request.predicate = predicate;
+    
+    // Init array for image URL strings
+    NSMutableArray *comicNameStrings = [NSMutableArray new];
+    
+    // Execute the fetch
+    NSError *error;
+    NSArray *comicsInCoreData = [self.managedObjectContext executeFetchRequest:request
+                                                                         error:&error];
+    
+    if (comicsInCoreData == nil) {
+        // Handle the error
+        return nil;
+    }
+    else {
+        // Get video ID strings
+        for (NSDictionary *dict in comicsInCoreData) {
+            NSString *comicName = [dict valueForKey:@"comicName"];
+            [comicNameStrings addObject:comicName];
+        }
+    }
+    
+    return [comicNameStrings copy];
 }
 
 #pragma mark - Fetch data method
@@ -274,22 +345,11 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     // Cache policy
     //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
     
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+    // Check for already fetched comics in Core Data
+    existingComicsInCoreDataBeforeFetch = [self setupExistingComicsInCoreDataBeforeFetchArray];
     
-    // Init array of all existing comics in Core Data.
-    // This will help speed things up.
-    NSArray *comicsInCoreData = [KJComic MR_findAll];
-    
-    // Init array of existing comic names in Core Data.
-    // This is so we can check value from Parse, rather than init a KJComic object and then check if it exists in comicsInCoreData array.
-    NSMutableArray *comicNamesInCoreData = [NSMutableArray new];
-    for (KJComic *comic in comicsInCoreData) {
-        NSString *comicName = comic.comicName;
-        [comicNamesInCoreData addObject:comicName];
-    }
-    
-//    DDLogInfo(@"comicStore: comicsInCoreData array count: %d", [comicsInCoreData count]);
-//    DDLogInfo(@"comicStore: comicNamesInCoreData array count: %d", [comicNamesInCoreData count]);
+    // Already fetched comic name strings
+    NSArray *alreadyFetchedComicNames = [NSArray arrayWithArray:[self alreadyFetchedComicNamesArray]];
     
     // Start query with block
     [comicsQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
@@ -303,68 +363,106 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
             
             for (PFObject *object in objects) {
+                // Init string for comic name
+                NSString *comicName = object[kParseComicNameKey];
+                
                 if ([object[@"is_active"] isEqual:@"1"]) {
+                    
                     // TODO:
                     // - check if PFFile is already saved on filesystem
                     
                     // Save Parse object to Core Data
                     PFFile *comicImageFile = [object objectForKey:kParseComicFileKey];
                     
-                    // Check if comic needs updating
-                    // NOTE: disabled as app will break if comics are updated
-                    //[self checkIfComicNeedsUpdateWithComicName:object[@"comicName"] comicFileName:object[@"comicFileName"] comicFileUrl:comicImageFile.url comicNumber:object[@"comicNumber"]];
-                    
-                    // Save
-                    NSString *comicNameFromParse = object[kParseComicNameKey];
-                    if (![comicNamesInCoreData containsObject:comicNameFromParse]) {
-                        // Not present, so save
-                        [KJComicStore persistNewComicWithName:object[kParseComicNameKey]
-                                        comicFileName:object[kParseComicFileNameKey]
-                                         comicFileUrl:comicImageFile.url
-                                          comicNumber:object[kParseComicNumberKey]];
+                    // If comic doesn't aleady exist locally in Core Data, then create
+                    if (![alreadyFetchedComicNames containsObject:comicName]) {
+                        DDLogInfo(@"comicStore: haven't fetched comic %@", comicName);
+                        
+                        // Init new comic
+                        KJComic *newComic = [NSEntityDescription insertNewObjectForEntityForName:@"KJComic"
+                                                                          inManagedObjectContext:self.managedObjectContext];
+                        
+                        newComic.comicFileName = object[kParseComicFileNameKey];
+                        newComic.comicName = object[kParseComicNameKey];
+                        newComic.comicFileUrl = object[kParseComicFileKey];
+                        newComic.comicNumber = object[kParseComicNumberKey];
+                        
+                        // Set changes to comics were made property so that we can trigger a managedObjectContext save later.
+                        // This saves us from triggering a save every time we fetch data from the server.
+                        changesToComicsWereMade = YES;
                     }
                     else {
-//                        DDLogVerbose(@"comicStore: we already have comic %@, so no use trying to persist it", object[kParseComicNameKey]);
+                        DDLogInfo(@"comicStore: already fetched comic %@", comicName);
+                        
+                        // Check if comic needs update
+                        [self checkIfComicNeedsUpdateWithParseObject:object];
                     }
                 }
+                
+                // Comic is NOT active
+                // Check if it exists locally in Core Data, and delete if so
                 else {
                     DDLogInfo(@"comicStore: comic not active: %@", object[kParseComicNameKey]);
                     
-                    // Check if comic exists in database, and delete if so
-                    NSString *comicNameFromParse = object[kParseComicNameKey];
-                    if (![comicNamesInCoreData containsObject:comicNameFromParse]) {
-                        DDLogInfo(@"comicStore: comic %@ doesn't exist in database anyway, so it's all good", comicNameFromParse);
+                    if (![alreadyFetchedComicNames containsObject:comicName]) {
+                        DDLogInfo(@"comicStore: comic %@ isn't active but isn't in database, so it's all good", comicName);
                     }
+                    
+                    // Video IS in Core Data, so delete
                     else {
-                        DDLogInfo(@"comicStore: comic %@ exists in database but is no longer active on server; now removing", object[kParseComicNameKey]);
+                        DDLogInfo(@"comicStore: comic %@ isn't active and is in database; deleting now", comicName);
                         
-                        // Find comic where comicName matches
-                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicNameFromParse];
-                        KJComic *comicToDelete = [KJComic MR_findFirstWithPredicate:predicate inContext:localContext];
+                        // Init fetch request for video to delete
+                        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+                        fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(comicName == %@)", comicName];
+                        fetchRequest.entity = [NSEntityDescription entityForName:@"KJComic"
+                                                          inManagedObjectContext:self.managedObjectContext];
                         
-                        // Delete from Core Data
-                        [comicToDelete MR_deleteInContext:localContext];
+                        // Execute the fetch
+                        NSError *fetchError;
+                        NSArray *itemsToDelete = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                                          error:&fetchError];
                         
-                        // Save
-                        [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                            if (!error && success) {
-                                DDLogInfo(@"comicStore: successfully deleted comic %@", comicNameFromParse);
-                            }
-                            else {
-                                DDLogError(@"comicStore: error deleting comic %@: %@", comicNameFromParse, [error localizedDescription]);
-                            }
-                        }];
+                        // If we found comic to delete ..
+                        if ([itemsToDelete count] > 0) {
+                            DDLogInfo(@"comicStore: found %d comic to delete", [itemsToDelete count]);
+                            
+                            // Delete
+                            KJComic *comicToDelete = [itemsToDelete firstObject];
+                            [self.managedObjectContext deleteObject:comicToDelete];
+                            
+                            // Set changes to comics were made property so that we can trigger a managedObjectContext save later.
+                            // This saves us from triggering a save every time we fetch data from the server.
+                            changesToComicsWereMade = YES;
+                        }
+                        else {
+                            DDLogError(@"comicStore: failed to find comic to delete from Core Data: %@", comicName);
+                        }
                     }
                 }
             }
             
-            // Send NSNotification to say that data fetch is done
-            [[NSNotificationCenter defaultCenter] postNotificationName:KJComicDataFetchDidHappenNotification
-                                                                object:nil];
+            // Save managedObjectContext
+            // Only save if we have changes
             
-            // Set connection state to DISCONNECTED
-            self.connectionState = KJComicStoreStateDisconnected;
-            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+            // TODO: is this check really required? Will there be a huge performance hit if we're saving the managedObjectContext each time?
+            // Also, does creating or updating an entity even if the properties are the same do anything to the managedObjectContext?
+            
+            if (!changesToComicsWereMade) {
+                DDLogInfo(@"comicStore: no changes to comics were found, so no save managedObjectContext is required");
+            }
+            else {
+                // Changes were made.
+                // This could have been new comics added, existing comic info updated, or comic deleted from Core Data.
+                NSError *error;
+                if (![self.managedObjectContext save:&error]) {
+                    // Handle the error.
+                    DDLogError(@"comicStore: failed to save managedObjectContext: %@", [error debugDescription]);
+                }
+                else {
+                    DDLogInfo(@"comicStore: saved managedObjectContext");
+                }
+            }
             
             // Set firstLoad = YES in NSUserDefaults
             if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
@@ -372,9 +470,17 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
             
+            // Set connection state to DISCONNECTED
+            self.connectionState = KJComicStoreStateDisconnected;
+            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+            
+            // Send NSNotification to say that data fetch is done
+            [[NSNotificationCenter defaultCenter] postNotificationName:KJComicDataFetchDidHappenNotification
+                                                                object:nil];
+            
             // Prefetch comic thumbnails
             // NOTE: does not need to be on wifi as comics are cached locally
-            [KJComicStore prefetchComicThumbnails];
+            [self prefetchComicThumbnails];
             
         }
         else {

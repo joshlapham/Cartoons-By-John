@@ -207,9 +207,7 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
         destViewController.fileNameFromList = comicCell.comicFileName;
         
         // Pass a results array to dest VC containing only one object, our chosen one
-        if ([KJComicStore returnComicWithComicName:comicCell.comicName] != nil) {
-            destViewController.resultsArray = [NSArray arrayWithObject:[KJComicStore returnComicWithComicName:comicCell.comicName]];
-        }
+        destViewController.resultsArray = @[ comicCell ];
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
