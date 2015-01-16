@@ -199,16 +199,14 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
         destViewController.chosenVideo = cellVideo;
     }
     else if ([segue.identifier isEqualToString:@"comicDetailSegueFromFavourites"]) {
+        // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
         
+        // Init cell data
         KJComic *comicCell = [self.cellResults objectAtIndex:indexPath.row];
         
-        destViewController.nameFromList = comicCell.comicName;
-        destViewController.titleFromList = comicCell.comicName;
-        destViewController.fileNameFromList = comicCell.comicFileName;
-        
-        // Pass a results array to dest VC containing only one object, our chosen one
-        destViewController.resultsArray = @[ comicCell ];
+        // Pass chosen comic to detail view
+        destViewController.initialComicToShow = comicCell;
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;

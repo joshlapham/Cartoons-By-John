@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class KJComic;
+
 @interface KJComicDetailView : UIViewController
 
-@property (nonatomic, weak) NSString *nameFromList;
-@property (nonatomic, weak) NSString *titleFromList;
-@property (nonatomic, weak) NSString *fileNameFromList;
-@property (nonatomic, strong) NSArray *resultsArray;
 @property (nonatomic, strong) NSIndexPath *collectionViewIndexFromList;
+@property (nonatomic, strong) KJComic *initialComicToShow;
 
 @end

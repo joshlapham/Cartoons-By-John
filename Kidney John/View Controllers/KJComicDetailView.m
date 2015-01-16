@@ -19,6 +19,7 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 @interface KJComicDetailView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) NSArray *cellDataSource;
 
 @end
 
@@ -30,7 +31,21 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     [super viewDidLoad];
     
     // Set title
-    self.title = self.titleFromList;
+    self.title = self.initialComicToShow.comicName;
+    
+    // Init cell data source array
+    // NOTE - we check if we're coming from KJComicList VC or KJFavList VC here, so we can best init data source array.
+    // ALSO NOTE - this is hacky, and a major refactor of this view controller is on its' way soon anyway.
+    // If collectionViewIndexFromList property is nil, that means we're coming from KJFavList
+    if (!self.collectionViewIndexFromList) {
+        // Init array with just initialComicToShow object, as that's all we need
+        _cellDataSource = @[ self.initialComicToShow ];
+    }
+    // Coming from KJComicList VC
+    else {
+        // Init array of all comics in Core Data
+        _cellDataSource = [[KJComicStore sharedStore] returnComicsArray];
+    }
     
     // Call method to setup collectionView and flow layout
     [self setupCollectionView];
@@ -77,7 +92,7 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section {
-    return [self.resultsArray count];
+    return [_cellDataSource count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -91,12 +106,12 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
                                                                                              forIndexPath:indexPath];
     
     // Init cell data
-    KJComic *cellData = [self.resultsArray objectAtIndex:indexPath.row];
+    KJComic *cellData = [_cellDataSource objectAtIndex:indexPath.row];
     
     // Init comic image
     cell.comicImageView.image = [cellData returnComicImageFromComic];
     
-//    DDLogVerbose(@"Comics List: image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
+    //    DDLogVerbose(@"Comics List: image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
     
     return cell;
 }
@@ -111,15 +126,13 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     
     // Init comic object for comic currently on-screen
-    KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
+    KJComic *cellData = [_cellDataSource objectAtIndex:currentCellIndex.row];
     
     // Set title to comic after scroll has finished
     self.title = cellData.comicName;
     
-    // Update titleFromList so that Favourites will function correctly,
-    // as our Favourites methods use this ivar
-    // TODO: update to use property (KJComic)comicOnScreen
-    self.titleFromList = cellData.comicName;
+    // Update initialComic so that Favourites will function correctly, as our Favourites methods use this property
+    self.initialComicToShow = cellData;
 }
 
 #pragma mark - Setup collectionView method
@@ -153,7 +166,7 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 - (void)showActivityView {
     // Get data for comic currently on screen
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
-    KJComic *cellData = [self.resultsArray objectAtIndex:currentCellIndex.row];
+    KJComic *cellData = [_cellDataSource objectAtIndex:currentCellIndex.row];
     
     // Init comic image
     // TODO: do we really need this method?

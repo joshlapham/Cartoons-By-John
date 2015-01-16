@@ -32,5 +32,6 @@ typedef NS_ENUM(NSUInteger, KJComicStoreConnectionState) {
 // Class methods
 - (void)fetchComicData;
 - (NSArray *)returnFavouritesArray;
+- (NSArray *)returnComicsArray;
 
 @end

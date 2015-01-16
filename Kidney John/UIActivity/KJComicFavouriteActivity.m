@@ -62,15 +62,15 @@
     // Toggle favourite status for comicObject
     comicObject.isFavourite = !comicObject.isFavourite;
     
-    // Save
-    [comicObject.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        if (!error && success) {
-            DDLogVerbose(@"%@ - successfully updated favourite status for comic %@", self.class, comicObject.comicName);
-        }
-        else {
-            DDLogError(@"%@ - error updating favourite status for comic %@: %@", self.class, comicObject.comicName, [error localizedDescription]);
-        }
-    }];
+    // Save managedObjectContext
+    NSError *error;
+    if (![comicObject.managedObjectContext save:&error]) {
+        // Handle the error.
+        DDLogError(@"Comic: failed to save managedObjectContext: %@", [error debugDescription]);
+    }
+    else {
+        DDLogInfo(@"Comic: saved managedObjectContext");
+    }
 }
 
 - (UIViewController *)activityViewController {

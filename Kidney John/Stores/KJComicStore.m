@@ -105,6 +105,40 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     }
 }
 
+#pragma mark - Return comics method
+
+// Method to return all comics in Core Data.
+// NOTE - this method won't be around for long, as it's only used for KJComicDetail VC.
+// Will be refactoring that view shortly, which then won't need this method.
+- (NSArray *)returnComicsArray {
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by comic number)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"comicNumber"
+                                                                   ascending:YES];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"comicStore: error fetching all comics: %@", [error localizedDescription]);
+        return nil;
+    } else {
+        return fetchedObjects;
+    }
+}
+
 #pragma mark - Core Data helper methods
 
 // Method to check if existing comics in Core Data need updating if values from server have changed since last data fetch.

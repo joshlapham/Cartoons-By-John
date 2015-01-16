@@ -19,6 +19,7 @@
 #import "UIColor+KJColours.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "JPLYouTubeListView.h"
+#import "KJComicListView.h"
 #import "KJTabBarController.h"
 #import <ParseCrashReporting/ParseCrashReporting.h>
 
@@ -231,6 +232,11 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     UINavigationController *navController = (UINavigationController *)[tabBarController.viewControllers objectAtIndex:0];
     JPLYouTubeListView *initialViewController = (JPLYouTubeListView *)navController.topViewController;
     initialViewController.managedObjectContext = self.managedObjectContext;
+    
+    // Pass to comics list view
+    UINavigationController *comicsNavController = (UINavigationController *)[tabBarController.viewControllers objectAtIndex:1];
+    KJComicListView *comicListViewController = (KJComicListView *)comicsNavController.topViewController;
+    comicListViewController.managedObjectContext = self.managedObjectContext;
     
     // Pass managedObjectContext to stores
     [KJVideoStore sharedStore].managedObjectContext = self.managedObjectContext;

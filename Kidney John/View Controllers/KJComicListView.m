@@ -22,7 +22,7 @@
 // Constants
 static NSString *kComicCellIdentifier = @"comicCell";
 
-@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate>
+@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *comicResults;
@@ -30,6 +30,11 @@ static NSString *kComicCellIdentifier = @"comicCell";
 @property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
+
+// NSFetchedResultsController
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *sectionChanges;
+@property (nonatomic, strong) NSMutableArray *itemChanges;
 
 @end
 
@@ -72,6 +77,18 @@ static NSString *kComicCellIdentifier = @"comicCell";
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
+    // Core Data
+    NSError *error;
+    if (![[self fetchedResultsController] performFetch:&error]) {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+         */
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
     // Fetch comic data
     [self fetchDataWithNetworkCheck];
     
@@ -87,73 +104,191 @@ static NSString *kComicCellIdentifier = @"comicCell";
         self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Init gesture recognizer to reload data if tapped
-        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                             action:@selector(fetchDataWithNetworkCheck)];
         _singleTap.numberOfTapsRequired = 1;
         [self.collectionView addGestureRecognizer:_singleTap];
     }
 }
 
+#pragma mark - NSFetchedResultsController
+
+#pragma mark Init fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController {
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init sort descriptor
+    NSSortDescriptor *comicNumberDescriptor = [[NSSortDescriptor alloc] initWithKey:@"comicNumber"
+                                                                          ascending:YES];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    fetchRequest.sortDescriptors = @[ comicNumberDescriptor ];
+    
+    // Init fetched results controller
+    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                    managedObjectContext:self.managedObjectContext
+                                                                      sectionNameKeyPath:nil
+                                                                               cacheName:nil];
+    _fetchedResultsController.delegate = self;
+    
+    return _fetchedResultsController;
+}
+
+#pragma mark Delegate methods
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    _sectionChanges = [[NSMutableArray alloc] init];
+    _itemChanges = [[NSMutableArray alloc] init];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type {
+    NSMutableDictionary *change = [[NSMutableDictionary alloc] init];
+    change[@(type)] = @(sectionIndex);
+    [_sectionChanges addObject:change];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    NSMutableDictionary *change = [[NSMutableDictionary alloc] init];
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            change[@(type)] = newIndexPath;
+            break;
+        case NSFetchedResultsChangeDelete:
+            change[@(type)] = indexPath;
+            break;
+        case NSFetchedResultsChangeUpdate:
+            change[@(type)] = indexPath;
+            break;
+        case NSFetchedResultsChangeMove:
+            change[@(type)] = @[indexPath, newIndexPath];
+            break;
+    }
+    [_itemChanges addObject:change];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.collectionView performBatchUpdates:^{
+        for (NSDictionary *change in _sectionChanges) {
+            [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+                switch(type) {
+                    case NSFetchedResultsChangeInsert:
+                        [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
+                        break;
+                    case NSFetchedResultsChangeDelete:
+                        [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
+                        break;
+                }
+            }];
+        }
+        for (NSDictionary *change in _itemChanges) {
+            [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                NSFetchedResultsChangeType type = [key unsignedIntegerValue];
+                switch(type) {
+                    case NSFetchedResultsChangeInsert:
+                        [self.collectionView insertItemsAtIndexPaths:@[obj]];
+                        break;
+                    case NSFetchedResultsChangeDelete:
+                        [self.collectionView deleteItemsAtIndexPaths:@[obj]];
+                        break;
+                    case NSFetchedResultsChangeUpdate:
+                        [self.collectionView reloadItemsAtIndexPaths:@[obj]];
+                        break;
+                    case NSFetchedResultsChangeMove:
+                        [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
+                        break;
+                }
+            }];
+        }
+    } completion:^(BOOL finished) {
+        _sectionChanges = nil;
+        _itemChanges = nil;
+    }];
+}
+
 #pragma mark - UICollectionView delegate methods
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    DDLogVerbose(@"Comix: selected item - %ld", (long)indexPath.row);
-    [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
-    
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(20, 20, 20, 20);
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [_comicResults count];
-}
-
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return [[self.fetchedResultsController sections] count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    return [sectionInfo numberOfObjects];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
     KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kComicCellIdentifier
                                                                                  forIndexPath:indexPath];
     
     // Init cell data
-    KJComic *cellData = [_comicResults objectAtIndex:indexPath.row];
-
+    KJComic *cellData = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
     // Set comic thumbnail using SDWebImage
     [cell.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
-                       placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                              completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
-                                  if (cellImage && !error) {
-                                      DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
-                                  } else {
-                                      DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
-                                      // TODO: implement fallback
-                                  }
-                              }];
+                           placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                  completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
+                                      if (cellImage && !error) {
+                                          DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
+                                      } else {
+                                          DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
+                                          // TODO: implement fallback
+                                      }
+                                  }];
     
     return cell;
 }
 
+-   (void)collectionView:(UICollectionView *)collectionView
+didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    DDLogVerbose(@"Comix: selected item - %ld", (long)indexPath.row);
+    [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
+    
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(20, 20, 20, 20);
+}
+
 #pragma mark - Prepare for segue method
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue
+                 sender:(id)sender {
     if ([segue.identifier isEqualToString:@"comicDetailSegue"]) {
         // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
         
-        // Init cell data
+        // Init path to chosen cell
         NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
-        KJComic *comicCell = [_comicResults objectAtIndex:selectedIndexPath.row];
         
-        destViewController.nameFromList = comicCell.comicName;
-        destViewController.titleFromList = comicCell.comicName;
-        destViewController.fileNameFromList = comicCell.comicFileName;
-        // TODO: figure out a better way to pass data to dest VC rather than an array,
-        // as this screws up segue from Favourites list
-        // TODO: change this resultsArray for loading from filesystem
-        destViewController.resultsArray = [NSArray arrayWithArray:_comicResults];
+        // Init cell data
+        KJComic *comicCell = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+        
+        // Pass comic to destination VC
+        destViewController.initialComicToShow = comicCell;
+        
+        // Pass selected index path to destination VC
         destViewController.collectionViewIndexFromList = selectedIndexPath;
         
         DDLogVerbose(@"Comix: selected comic row: %d", selectedIndexPath.row);
@@ -168,8 +303,11 @@ static NSString *kComicCellIdentifier = @"comicCell";
 - (void)comicFetchDidHappen {
     DDLogVerbose(@"Comic fetch did happen ..");
     
-    _comicResults = [[NSArray alloc] init];
-    _comicResults = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
+    // TODO: update to use vanilla Core Data
+    
+    //    _comicResults = [[NSArray alloc] init];
+    //    _comicResults = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
+    
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -187,9 +325,9 @@ static NSString *kComicCellIdentifier = @"comicCell";
     [self.collectionView removeGestureRecognizer:_singleTap];
     
     // Reload collectionview with data just fetched on main thread
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.collectionView reloadData];
-    });
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        [self.collectionView reloadData];
+    //    });
 }
 
 #pragma mark - Reachability methods
@@ -215,10 +353,10 @@ static NSString *kComicCellIdentifier = @"comicCell";
     
     // Init alertView
     _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                    message:messageString
-                                                   delegate:self
-                                          cancelButtonTitle:cancelButtonString
-                                          otherButtonTitles:retryButtonString, nil];
+                                                     message:messageString
+                                                    delegate:self
+                                           cancelButtonTitle:cancelButtonString
+                                           otherButtonTitles:retryButtonString, nil];
     
     // Check if first comic data fetch has happened
     if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
@@ -267,7 +405,8 @@ static NSString *kComicCellIdentifier = @"comicCell";
 
 #pragma mark - UIAlertView delegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+-       (void)alertView:(UIAlertView *)alertView
+   clickedButtonAtIndex:(NSInteger)buttonIndex {
     DDLogVerbose(@"Comix List: alert button clicked: %d", buttonIndex);
     
     if (buttonIndex == 1) {

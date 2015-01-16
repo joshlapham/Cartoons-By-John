@@ -62,15 +62,15 @@
     // Toggle favourite status for doodleObject
     doodleObject.isFavourite = !doodleObject.isFavourite;
     
-    // Save
-    [doodleObject.managedObjectContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-        if (!error && success) {
-            DDLogVerbose(@"%@ - successfully updated favourite status for doodle %@", self.class, doodleObject.imageUrl);
-        }
-        else {
-            DDLogError(@"%@ - error updating favourite status for doodle %@: %@", self.class, doodleObject.imageUrl, [error localizedDescription]);
-        }
-    }];
+    // Save managedObjectContext
+    NSError *error;
+    if (![doodleObject.managedObjectContext save:&error]) {
+        // Handle the error.
+        DDLogError(@"Doodle: failed to save managedObjectContext: %@", [error debugDescription]);
+    }
+    else {
+        DDLogInfo(@"Doodle: saved managedObjectContext");
+    }
 }
 
 - (UIViewController *)activityViewController {
