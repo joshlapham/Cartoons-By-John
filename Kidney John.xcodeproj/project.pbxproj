@@ -223,6 +223,58 @@
 			name = UIActivity;
 			sourceTree = "<group>";
 		};
+		6834315A1A69A37C0050745D /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */,
+				68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */,
+				68E48D56184BE89300600FA5 /* JPLYouTubeVideoView.h */,
+				68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */,
+			);
+			name = Videos;
+			sourceTree = "<group>";
+		};
+		6834315B1A69A3830050745D /* Comix */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D66184C20A500600FA5 /* KJComicListView.h */,
+				68E48D67184C20A500600FA5 /* KJComicListView.m */,
+				687BC377184EB75500F45970 /* KJComicDetailView.h */,
+				687BC378184EB75500F45970 /* KJComicDetailView.m */,
+			);
+			name = Comix;
+			sourceTree = "<group>";
+		};
+		6834315C1A69A38B0050745D /* Doodles */ = {
+			isa = PBXGroup;
+			children = (
+				68E48D6C184D874500600FA5 /* KJRandomView.h */,
+				68E48D6D184D874500600FA5 /* KJRandomView.m */,
+			);
+			name = Doodles;
+			sourceTree = "<group>";
+		};
+		6834315D1A69A3940050745D /* More */ = {
+			isa = PBXGroup;
+			children = (
+				68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */,
+				68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */,
+				6834315E1A69A3A60050745D /* Favourites */,
+			);
+			name = More;
+			sourceTree = "<group>";
+		};
+		6834315E1A69A3A60050745D /* Favourites */ = {
+			isa = PBXGroup;
+			children = (
+				68E461CC185B272A008D3E36 /* KJFavouritesListView.h */,
+				68E461CD185B272A008D3E36 /* KJFavouritesListView.m */,
+				6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */,
+				6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */,
+			);
+			name = Favourites;
+			sourceTree = "<group>";
+		};
 		68A2D60F1A5EBB65000DA2CF /* Categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,24 +295,12 @@
 		68A7920A18BD58FE009F9CC7 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */,
-				68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */,
-				68E48D56184BE89300600FA5 /* JPLYouTubeVideoView.h */,
-				68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */,
-				68E48D66184C20A500600FA5 /* KJComicListView.h */,
-				68E48D67184C20A500600FA5 /* KJComicListView.m */,
-				687BC377184EB75500F45970 /* KJComicDetailView.h */,
-				687BC378184EB75500F45970 /* KJComicDetailView.m */,
-				68E48D6C184D874500600FA5 /* KJRandomView.h */,
-				68E48D6D184D874500600FA5 /* KJRandomView.m */,
-				68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */,
-				68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */,
-				68E461CC185B272A008D3E36 /* KJFavouritesListView.h */,
-				68E461CD185B272A008D3E36 /* KJFavouritesListView.m */,
-				6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */,
-				6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */,
 				68E461FF1865CCC1008D3E36 /* KJTabBarController.h */,
 				68E462001865CCC1008D3E36 /* KJTabBarController.m */,
+				6834315A1A69A37C0050745D /* Videos */,
+				6834315B1A69A3830050745D /* Comix */,
+				6834315C1A69A38B0050745D /* Doodles */,
+				6834315D1A69A3940050745D /* More */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
