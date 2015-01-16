@@ -16,8 +16,8 @@
 @property (nonatomic, retain) NSString * videoName;
 @property (nonatomic, retain) NSString * videoDescription;
 @property (nonatomic, retain) NSString * videoDate;
-@property (nonatomic, retain) NSString * videoCellHeight;
 @property (nonatomic) BOOL isFavourite;
+@property (nonatomic) BOOL isActive;
 @property (nonatomic, retain) NSString * videoDuration;
 
 @end

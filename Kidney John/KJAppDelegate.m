@@ -168,9 +168,6 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     // Setup XCode console logger
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     
-    // Magical Record
-    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"kj.sqlite"];
-    
     // Push notifications
     // Check which iOS version is running
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
@@ -323,13 +320,19 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
         return _persistentStoreCoordinator;
     }
     
+    // Init options for persistent store to handle lightweight migrations
+    NSDictionary *persistentStoreOptions = @{
+                              NSMigratePersistentStoresAutomaticallyOption : @YES,
+                              NSInferMappingModelAutomaticallyOption : @YES
+                              };
+    
     // Create the coordinator and store
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"kj.sqlite"];
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:persistentStoreOptions error:&error]) {
         // Report any error we got.
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";

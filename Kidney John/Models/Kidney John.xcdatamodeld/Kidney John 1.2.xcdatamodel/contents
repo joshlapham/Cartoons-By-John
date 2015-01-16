@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="KJComic" representedClassName="KJComic" syncable="YES">
         <attribute name="comicFileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comicFileUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comicName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="comicNumber" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isActive" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="KJRandomImage" representedClassName="KJRandomImage" syncable="YES">
@@ -13,20 +12,18 @@
         <attribute name="imageDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isActive" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <entity name="KJSocialLink" representedClassName="KJSocialLink" syncable="YES">
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imagePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isActive" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="KJVideo" representedClassName="KJVideo" syncable="YES">
-        <attribute name="isActive" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isFavourite" optional="YES" attributeType="Boolean" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="videoCellHeight" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoDuration" optional="YES" attributeType="String" syncable="YES"/>
@@ -34,9 +31,9 @@
         <attribute name="videoName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="KJComic" positionX="0" positionY="0" width="128" height="133"/>
-        <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="133"/>
-        <element name="KJSocialLink" positionX="0" positionY="54" width="128" height="133"/>
-        <element name="KJVideo" positionX="0" positionY="0" width="128" height="148"/>
+        <element name="KJComic" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="KJRandomImage" positionX="0" positionY="0" width="128" height="118"/>
+        <element name="KJVideo" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="KJSocialLink" positionX="0" positionY="54" width="128" height="120"/>
     </elements>
 </model>

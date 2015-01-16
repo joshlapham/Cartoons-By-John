@@ -96,6 +96,7 @@
 		68211A221927A95000B24BF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68211A241927A98400B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6832C3741924B91E00E94788 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
+		683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.2.xcdatamodel"; sourceTree = "<group>"; };
 		683CAE5718C77DF2006173FA /* KJDoodleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJDoodleCell.h; path = Cells/KJDoodleCell.h; sourceTree = "<group>"; };
 		683CAE5818C77DF2006173FA /* KJDoodleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJDoodleCell.m; path = Cells/KJDoodleCell.m; sourceTree = "<group>"; };
 		68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJDoodleStore.h; path = Stores/KJDoodleStore.h; sourceTree = "<group>"; };
@@ -900,9 +901,10 @@
 		68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */,
 				68E461DA18604EBB008D3E36 /* Kidney John.xcdatamodel */,
 			);
-			currentVersion = 68E461DA18604EBB008D3E36 /* Kidney John.xcdatamodel */;
+			currentVersion = 683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */;
 			name = "Kidney John.xcdatamodeld";
 			path = "Models/Kidney John.xcdatamodeld";
 			sourceTree = "<group>";

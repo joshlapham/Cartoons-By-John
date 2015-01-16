@@ -15,6 +15,7 @@
 @property (nonatomic, retain) NSString * comicFileName;
 @property (nonatomic, retain) NSString * comicName;
 @property (nonatomic) BOOL isFavourite;
+@property (nonatomic) BOOL isActive;
 @property (nonatomic, retain) NSString * comicFileUrl;
 @property (nonatomic, retain) NSString * comicNumber;
 

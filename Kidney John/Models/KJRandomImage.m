@@ -16,5 +16,6 @@
 @dynamic imageDescription;
 @dynamic imageDate;
 @dynamic isFavourite;
+@dynamic isActive;
 
 @end

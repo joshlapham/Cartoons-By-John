@@ -15,8 +15,8 @@
 @dynamic videoName;
 @dynamic videoDescription;
 @dynamic videoDate;
-@dynamic videoCellHeight;
 @dynamic isFavourite;
+@dynamic isActive;
 @dynamic videoDuration;
 
 @end
