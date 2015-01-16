@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, KJDoodleStoreConnectionState) {
 
 // Class methods
 - (void)fetchDoodleData;
+- (NSArray *)returnDoodlesArray;
 - (NSArray *)returnFavouritesArray;
 
 @end

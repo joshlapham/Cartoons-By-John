@@ -24,8 +24,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 @interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray *randomImagesResults;
-@property (nonatomic, strong) NSString *currentRandomImageUrl;
+@property (nonatomic, strong) NSArray *cellDataSource;
 @property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -124,17 +123,19 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     return 1;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [_randomImagesResults count];
+- (NSInteger)collectionView:(UICollectionView *)collectionView
+     numberOfItemsInSection:(NSInteger)section {
+    return [_cellDataSource count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
     KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kDoodleCellIdentifier
                                                                                    forIndexPath:indexPath];
     
     // Init cell data
-    KJRandomImage *cellData = [_randomImagesResults objectAtIndex:indexPath.row];
+    KJRandomImage *cellData = [_cellDataSource objectAtIndex:indexPath.row];
     
     // SDWebImage
     // Check if image is in cache
@@ -147,14 +148,14 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     
     // Set doodle image
     [cell.doodleImageView sd_setImageWithURL:[NSURL URLWithString:cellData.imageUrl]
-                         placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
-                                    if (cellImage && !error) {
-                                        DDLogVerbose(@"Doodles: fetched image from URL: %@", url);
-                                    } else {
-                                        DDLogError(@"Doodles: error fetching image: %@", [error localizedDescription]);
-                                    }
-    }];
+                            placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                   completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
+                                       if (cellImage && !error) {
+                                           DDLogVerbose(@"Doodles: fetched image from URL: %@", url);
+                                       } else {
+                                           DDLogError(@"Doodles: error fetching image: %@", [error localizedDescription]);
+                                       }
+                                   }];
     
     return cell;
 }
@@ -164,15 +165,16 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 - (void)doodleFetchDidHappen {
     DDLogVerbose(@"Doodles: data fetch did happen");
     
+    // Init data source array
     // Check if coming from Favourites list ..
-    // TODO: update this to use chosenDoodle property (or something -- there has to be a better way)
+    // Is coming from favourites list, so init data source array with just that one image
     if (self.selectedImageFromFavouritesList != nil) {
-        // Is coming from favourites list
-        _randomImagesResults = [[NSArray alloc] initWithObjects:self.selectedImageFromFavouritesList, nil];
-    } else {
-        // Not coming from favourites list
-        _randomImagesResults = [[NSArray alloc] init];
-        _randomImagesResults = [KJRandomImage MR_findAllSortedBy:@"imageId" ascending:YES];
+        _cellDataSource = @[ self.selectedImageFromFavouritesList ];
+    }
+    
+    // Not coming from favourites list, so init data source array with all doodles
+    else {
+        _cellDataSource = [[KJDoodleStore sharedStore] returnDoodlesArray];
     }
     
     // Init action button in top right hand corner of navbar
@@ -201,12 +203,10 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 
 #pragma mark - UIActivityView methods
 
-// TODO: refactor as per other UIActivities
-
 - (void)showActivityView {
     // Get data for doodle currently on screen
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
-    KJRandomImage *cellData = [_randomImagesResults objectAtIndex:currentCellIndex.row];
+    KJRandomImage *cellData = [_cellDataSource objectAtIndex:currentCellIndex.row];
     
     // TODO: review these image methods
     
@@ -247,10 +247,10 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     
     // Init alertView
     _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                    message:messageString
-                                                   delegate:self
-                                          cancelButtonTitle:cancelButtonString
-                                          otherButtonTitles:retryButtonString, nil];
+                                                     message:messageString
+                                                    delegate:self
+                                           cancelButtonTitle:cancelButtonString
+                                           otherButtonTitles:retryButtonString, nil];
     
     // Check if first doodle data fetch has happened
     if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
@@ -311,13 +311,15 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 
 #pragma mark - UIAlertView delegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+-       (void)alertView:(UIAlertView *)alertView
+   clickedButtonAtIndex:(NSInteger)buttonIndex {
+    // Retry was clicked
     if (buttonIndex == 1) {
-        // Retry was clicked
         [self fetchDataWithNetworkCheck];
     }
+    
+    // Cancel was clicked
     else if (buttonIndex == 0) {
-        // Cancel was clicked
         // TODO: implement a new view with a button to retry data refresh here?
         
         // Reload collectionView data to check for empty data source

@@ -65,6 +65,40 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     }];
 }
 
+#pragma mark - Return all doodles method
+
+// Method to return all doodles.
+// NOTE - we need this for KJRandomView, as it isn't using NSFetchedResultsController due to how it loads favourites.
+// Method to return array of doodles that have their attribute isFavourite set to YES.
+- (NSArray *)returnDoodlesArray {
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by doodle date; newest at the top)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"imageId"
+                                                                   ascending:YES];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"doodleStore: error fetching doodles: %@", [error localizedDescription]);
+        return nil;
+    } else {
+        return fetchedObjects;
+    }
+}
+
 #pragma mark - Return favourite doodles method
 
 // Method to return array of doodles that have their attribute isFavourite set to YES.
