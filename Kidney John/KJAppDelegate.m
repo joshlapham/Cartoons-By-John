@@ -170,24 +170,18 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     
     // Push notifications
     // Check which iOS version is running
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    // iOS 8
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        // iOS 8
         // use registerUserNotificationSettings
         UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
         [application registerUserNotificationSettings:notificationSettings];
     }
+    // iOS 7
     else {
-        // iOS 7
+        // NOTE - iOS 7 is the lowest OS version this app supports
         // use registerForRemoteNotifications
         [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];
     }
-#else
-    // iOS 7
-    // NOTE - iOS 7 is the lowest OS version this app supports
-    // use registerForRemoteNotifications
-    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];
-#endif
     
     // Parse
     // Parse App and client ID
