@@ -89,6 +89,10 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     
     // Init array of titles for Favourites cells
     _cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
+    
+    // Allow for dynamic sized cells
+    self.tableView.estimatedRowHeight = 44;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 #pragma mark - UITableView delegate methods
@@ -97,12 +101,13 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     return 2;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
             return [_cellArray count];
             break;
-        
+            
         case 1:
             return [_socialLinksArray count];
             break;
@@ -114,42 +119,8 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch (section) {
-        case 0:
-            return NSLocalizedString(@"Favourites", @"Header title for Favourites buttons in More view");
-            break;
-            
-        case 1:
-            return NSLocalizedString(@"Like, Comment, Subscribe", @"Header title for social media buttons in More view");
-            break;
-            
-        default:
-            // TODO: review this
-            return [NSString stringWithFormat:@"LOL error"];
-            break;
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 35;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *headerLabel = [[UILabel alloc] init];
-    
-    headerLabel.frame = CGRectMake(20, 8, 320, 20);
-    headerLabel.font = [UIFont kj_sectionHeaderFont];
-    headerLabel.textColor = [UIColor kj_moreViewSectionTextColour];
-    headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
-    
-    UIView *headerView = [[UIView alloc] init];
-    [headerView addSubview:headerLabel];
-    
-    return headerView;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
     UITableViewCell *cell;
     
@@ -222,53 +193,60 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+-       (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0:
-            {
-                _chosenRow = indexPath.row;
-                
-                // If Doodles was tapped ..
-                if (_chosenRow == 2) {
-                    // Doodles was chosen
-                    [self performSegueWithIdentifier:@"doodleFavouriteSegue" sender:self];
-                } else {
-                    // Videos or Comix was chosen
-                    [self performSegueWithIdentifier:@"favouritesSegue" sender:self];
-                }
+        {
+            _chosenRow = indexPath.row;
+            
+            // If Doodles was tapped ..
+            if (_chosenRow == 2) {
+                // Doodles was chosen
+                [self performSegueWithIdentifier:@"doodleFavouriteSegue"
+                                          sender:self];
+            } else {
+                // Videos or Comix was chosen
+                [self performSegueWithIdentifier:@"favouritesSegue"
+                                          sender:self];
             }
+        }
             break;
             
         case 1:
-            {
-                // Social media links
-                // Set back button to have no text
-                // TODO: review this, not really best practice
-                self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-                
-                // Initialize the web view controller and set it's URL
-                PBWebViewController *webViewController = [[PBWebViewController alloc] init];
-                
-                // FOR TESTING
-                if (_areWeTestingSocialLinksFromParseFeature == YES) {
-                    // Use Parse
-                    KJSocialLink *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
-                    webViewController.URL = [NSURL URLWithString:socialLink.url];
-                    webViewController.title = socialLink.title;
-                }
-                else {
-                    // Use hardcoded social links
-                    NSDictionary *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
-                    webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
-                    webViewController.title = [socialLink objectForKey:@"title"];
-                }
-                
-                // Hide tabbar on detail view
-                webViewController.hidesBottomBarWhenPushed = YES;
-                
-                // Push it
-                [self.navigationController pushViewController:webViewController animated:YES];
+        {
+            // Social media links
+            // Set back button to have no text
+            // TODO: review this, not really best practice
+            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                                     style:UIBarButtonItemStylePlain
+                                                                                    target:nil
+                                                                                    action:nil];
+            
+            // Initialize the web view controller and set it's URL
+            PBWebViewController *webViewController = [[PBWebViewController alloc] init];
+            
+            // FOR TESTING
+            if (_areWeTestingSocialLinksFromParseFeature == YES) {
+                // Use Parse
+                KJSocialLink *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
+                webViewController.URL = [NSURL URLWithString:socialLink.url];
+                webViewController.title = socialLink.title;
             }
+            else {
+                // Use hardcoded social links
+                NSDictionary *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
+                webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
+                webViewController.title = [socialLink objectForKey:@"title"];
+            }
+            
+            // Hide tabbar on detail view
+            webViewController.hidesBottomBarWhenPushed = YES;
+            
+            // Push it
+            [self.navigationController pushViewController:webViewController
+                                                 animated:YES];
+        }
             break;
             
         default:
@@ -278,7 +256,8 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
 
 #pragma mark - Prepare for segue method
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue
+                 sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"favouritesSegue"]) {
         //DDLogVerbose(@"in segue method ..");
         NSString *typeOfFavourite = [_cellArray objectAtIndex:_chosenRow];
@@ -305,6 +284,46 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
         // NOTE: don't need to set anything here
         //KJFavDoodlesListView *destViewController = segue.destinationViewController;
     }
+}
+
+#pragma mark TableView header views
+
+- (NSString *)tableView:(UITableView *)tableView
+titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case 0:
+            return NSLocalizedString(@"Favourites", @"Header title for Favourites buttons in More view");
+            break;
+            
+        case 1:
+            return NSLocalizedString(@"Like, Comment, Subscribe", @"Header title for social media buttons in More view");
+            break;
+            
+        default:
+            // TODO: review this
+            return [NSString stringWithFormat:@"LOL error"];
+            break;
+    }
+}
+
+-       (CGFloat)tableView:(UITableView *)tableView
+  heightForHeaderInSection:(NSInteger)section {
+    return 35;
+}
+
+-   (UIView *)tableView:(UITableView *)tableView
+ viewForHeaderInSection:(NSInteger)section {
+    UILabel *headerLabel = [[UILabel alloc] init];
+    
+    headerLabel.frame = CGRectMake(20, 8, 320, 20);
+    headerLabel.font = [UIFont kj_sectionHeaderFont];
+    headerLabel.textColor = [UIColor kj_moreViewSectionTextColour];
+    headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    UIView *headerView = [[UIView alloc] init];
+    [headerView addSubview:headerLabel];
+    
+    return headerView;
 }
 
 #pragma mark - Reachability methods
