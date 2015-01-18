@@ -32,6 +32,15 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     NSString *parseClientKey;
 }
 
+#pragma mark - dealloc method
+
+- (void)dealloc {
+    // Remove NSNotification observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIContentSizeCategoryDidChangeNotification
+                                                  object:nil];
+}
+
 #pragma mark - UI methods
 
 - (void)setupUI {
@@ -163,6 +172,14 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     
     // Customize UI
     [self setupUI];
+    
+    // Init NSNotification observer if dynamic type font size changes.
+    // This would be done by the user in Settings.
+    // All this does is call setupUI method on App Delegate to re-apply navbar font size.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setupUI)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
     
     // CocoaLumberjack
     // Setup XCode console logger
