@@ -16,6 +16,7 @@
 		68211A211927A95000B24BF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68211A231927A95000B24BF1 /* Localizable.strings */; };
 		6832C3751924B91E00E94788 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6832C3741924B91E00E94788 /* Keys.plist */; };
 		683CAE5918C77DF2006173FA /* KJDoodleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683CAE5818C77DF2006173FA /* KJDoodleCell.m */; };
+		683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */; };
 		68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */; };
 		685C171118E2745A00088D26 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 685C171018E2745A00088D26 /* Comics */; };
 		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
@@ -99,6 +100,8 @@
 		683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.2.xcdatamodel"; sourceTree = "<group>"; };
 		683CAE5718C77DF2006173FA /* KJDoodleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJDoodleCell.h; path = Cells/KJDoodleCell.h; sourceTree = "<group>"; };
 		683CAE5818C77DF2006173FA /* KJDoodleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJDoodleCell.m; path = Cells/KJDoodleCell.m; sourceTree = "<group>"; };
+		683DC0321A6B5DF40051A7DB /* KJVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoViewController.h; path = "View Controllers/KJVideoViewController.h"; sourceTree = "<group>"; };
+		683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoViewController.m; path = "View Controllers/KJVideoViewController.m"; sourceTree = "<group>"; };
 		68493EF818BD69BE004D5CB3 /* KJDoodleStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJDoodleStore.h; path = Stores/KJDoodleStore.h; sourceTree = "<group>"; };
 		68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJDoodleStore.m; path = Stores/KJDoodleStore.m; sourceTree = "<group>"; };
 		685C164518E21A4900088D26 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -231,6 +234,8 @@
 				68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */,
 				68E48D56184BE89300600FA5 /* JPLYouTubeVideoView.h */,
 				68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */,
+				683DC0321A6B5DF40051A7DB /* KJVideoViewController.h */,
+				683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */,
 			);
 			name = Videos;
 			sourceTree = "<group>";
@@ -620,6 +625,7 @@
 				68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */,
 				68024D311A628D0900D2A900 /* KJRandomImage+Methods.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
+				683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */,
 				68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */,
 				68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */,
 				68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */,

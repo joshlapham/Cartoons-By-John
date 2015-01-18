@@ -14,6 +14,7 @@ PODS:
   - ParseCrashReporting (1.6.1):
     - Parse (~> 1.6.1)
   - PBWebViewController (0.2)
+  - PBYouTubeVideoViewController (1.0.1)
   - Reachability (3.1.1)
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
@@ -26,6 +27,7 @@ DEPENDENCIES:
   - Parse (= 1.6.1)
   - ParseCrashReporting (= 1.6.1)
   - PBWebViewController (= 0.2)
+  - PBYouTubeVideoViewController (= 1.0.1)
   - Reachability (= 3.1.1)
   - SDWebImage (= 3.7.1)
 
@@ -37,6 +39,7 @@ SPEC CHECKSUMS:
   Parse: b0ec7666167e212edb6fc94f60ba170248bd1869
   ParseCrashReporting: 28fc412d554828f3e892e9e99817e3a9a348e751
   PBWebViewController: 4ce33129c0f0adfce9cec105be4d48c7c9b70026
+  PBYouTubeVideoViewController: e4f216c38c7cf2772ba8e8b0ca45d2998fcc9588
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   SDWebImage: 116e88633b5b416ea0ca4b334a4ac59cf72dd38d
 

@@ -73,9 +73,6 @@
                                         <constraint firstItem="fGm-iH-0aW" firstAttribute="leading" secondItem="8mp-XW-JMj" secondAttribute="leading" id="wjT-2u-W3v"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="vXZ-lx-hvc" kind="push" identifier="videoIdSegue" id="DNT-W0-zyw"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -576,6 +573,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="ZUx-I9-M53"/>
         <segue reference="GK9-vj-efI"/>
-        <segue reference="DNT-W0-zyw"/>
     </inferredMetricsTieBreakers>
 </document>

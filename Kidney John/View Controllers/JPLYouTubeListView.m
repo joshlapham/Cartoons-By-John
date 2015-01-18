@@ -18,6 +18,7 @@
 #import "UIColor+KJColours.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "KJVideo+Methods.h"
+#import "KJVideoViewController.h"
 
 // Constants
 static NSString *kCellIdentifier = @"videoResultCell";
@@ -605,6 +606,38 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
                                          DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
                                      }
                                  }];
+}
+
+-       (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Init cell data
+    KJVideo *cellData;
+    NSFetchedResultsController *resultsController;
+    
+    // If search results ..
+    if ([self.searchDisplayController isActive]) {
+        resultsController = [self fetchedResultsControllerForTableView:self.searchDisplayController.searchResultsTableView];
+        cellData = [resultsController objectAtIndexPath:indexPath];
+    }
+    else {
+        resultsController = [self fetchedResultsControllerForTableView:self.tableView];
+        cellData = [resultsController objectAtIndexPath:indexPath];
+    }
+
+    // Init destination VC
+    KJVideoViewController *destViewController = [[KJVideoViewController alloc] initWithVideoId:cellData.videoId];
+    destViewController.title = cellData.videoName;
+    destViewController.chosenVideo = cellData;
+    
+    // Init back button
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Videos", nil)
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:nil
+                                                                            action:nil];
+    
+    // Push it
+    [self.navigationController pushViewController:destViewController
+                                         animated:YES];
 }
 
 @end
