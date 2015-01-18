@@ -33,6 +33,11 @@
 //    return [UIFont fontWithDescriptor:[UIFontDescriptor preferredJohnRoderickPaineFontDescriptorWithTextStyle:UIFontTextStyleHeadline] size: 0];
 }
 
++ (UIFont *)kj_videoDescriptionFont {
+    return [self kj_kidneyJohnFontOfSize:18];
+    //    return [UIFont fontWithDescriptor:[UIFontDescriptor preferredJohnRoderickPaineFontDescriptorWithTextStyle:UIFontTextStyleHeadline] size: 0];
+}
+
 + (UIFont *)kj_videoDurationFont {
     return [self kj_kidneyJohnFontOfSize:18];
 //    return [UIFont fontWithDescriptor:[UIFontDescriptor preferredJohnRoderickPaineFontDescriptorWithTextStyle:UIFontTextStyleSubheadline] size: 0];

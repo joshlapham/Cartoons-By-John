@@ -21,6 +21,7 @@
 
 // Videos
 + (UIFont *)kj_videoNameFont;
++ (UIFont *)kj_videoDescriptionFont;
 + (UIFont *)kj_videoDurationFont;
 + (UIFont *)kj_videoNewLabelFont;
 + (UIFont *)kj_videoSearchBarFont;

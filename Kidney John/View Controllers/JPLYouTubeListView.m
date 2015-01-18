@@ -551,6 +551,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
     
     // Init labels for cell
     UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
+    UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:104];
     UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
     UIImageView *thumbnailImageView = (UIImageView *)[cell viewWithTag:102];
     
@@ -561,9 +562,15 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
     titleLabel.preferredMaxLayoutWidth = 130;
     titleLabel.text = cellVideo.videoName;
     
+    // Video description
+    descriptionLabel.font = [UIFont kj_videoDescriptionFont];
+    descriptionLabel.textColor = [UIColor kj_videoDurationTextColour];
+    descriptionLabel.numberOfLines = 0;
+    descriptionLabel.preferredMaxLayoutWidth = 130;
+    descriptionLabel.text = cellVideo.videoDescription;
+    
     // Video duration
     durationLabel.font = [UIFont kj_videoDurationFont];
-    durationLabel.textColor = [UIColor kj_videoDurationTextColour];
     durationLabel.numberOfLines = 0;
     
     // Check if new video, add 'New!' label if so
