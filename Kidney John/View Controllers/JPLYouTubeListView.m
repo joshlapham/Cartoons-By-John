@@ -69,7 +69,7 @@ static NSString *kCellIdentifier = @"videoResultCell";
                                              selector:@selector(reachabilityDidChange)
                                                  name:kReachabilityChangedNotification
                                                object:nil];
-
+    
     // Fetch video data
     [self fetchDataWithNetworkCheck];
     
@@ -101,6 +101,10 @@ static NSString *kCellIdentifier = @"videoResultCell";
     
     // Set searchbar to only show when tableView is scrolled
     self.tableView.contentOffset = CGPointMake(0.0, self.tableView.tableHeaderView.frame.size.height);
+    
+    // Set tableView row height
+    self.tableView.estimatedRowHeight = 120;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 #pragma mark - Prepare for segue method
@@ -161,10 +165,10 @@ static NSString *kCellIdentifier = @"videoResultCell";
     
     // Init alertView
     _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                    message:messageString
-                                                   delegate:self
-                                          cancelButtonTitle:cancelButtonString
-                                          otherButtonTitles:retryButtonString, nil];
+                                                     message:messageString
+                                                    delegate:self
+                                           cancelButtonTitle:cancelButtonString
+                                           otherButtonTitles:retryButtonString, nil];
     
     // Check if first video data fetch has happened
     if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
@@ -554,7 +558,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
     // Video name
     titleLabel.font = [UIFont kj_videoNameFont];
     titleLabel.numberOfLines = 0;
-    titleLabel.adjustsFontSizeToFitWidth = YES;
+    titleLabel.preferredMaxLayoutWidth = 130;
     titleLabel.text = cellVideo.videoName;
     
     // Video duration
@@ -594,25 +598,6 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
                                          DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
                                      }
                                  }];
-}
-
--       (CGFloat)tableView:(UITableView *)tableView
-   heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat cellHeightFloat;
-    
-    //KJVideo *cellVideo = [videoResults objectAtIndex:indexPath.row];
-    
-    // If no cell height value is found, then use default of 160
-    // DISABLED for now. Not needed as we aren't using a video description
-    //    if ([cellVideo.videoCellHeight isEqual:@"<null>"]) {
-    //        cellHeightFloat = 160;
-    //    } else {
-    //        cellHeightFloat = [cellVideo.videoCellHeight floatValue];
-    //    }
-    
-    cellHeightFloat = 120;
-    
-    return cellHeightFloat;
 }
 
 @end

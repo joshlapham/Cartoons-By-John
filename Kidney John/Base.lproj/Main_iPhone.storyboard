@@ -30,22 +30,38 @@
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="119"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iN6-UN-obO">
+                                        <imageView userInteractionEnabled="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iN6-UN-obO">
                                             <rect key="frame" x="20" y="10" width="120" height="99"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="120" id="3uo-pr-RfU"/>
+                                                <constraint firstAttribute="height" constant="99" id="f1k-X9-b0l"/>
+                                            </constraints>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGm-iH-0aW">
-                                            <rect key="frame" x="156" y="20" width="131" height="50"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fGm-iH-0aW">
+                                            <rect key="frame" x="151" y="36" width="33" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="qz8-7g-Rf2"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="103" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAa-c1-HaI">
-                                            <rect key="frame" x="156" y="78" width="131" height="21"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="103" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3:00" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAa-c1-HaI">
+                                            <rect key="frame" x="152" y="65" width="30" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="iN6-UN-obO" firstAttribute="leading" secondItem="QoS-Zg-8YA" secondAttribute="leadingMargin" constant="12" id="5nY-o0-pFu"/>
+                                        <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="fGm-iH-0aW" secondAttribute="bottom" constant="54" id="Fb5-uo-tYl"/>
+                                        <constraint firstAttribute="centerY" secondItem="iN6-UN-obO" secondAttribute="centerY" id="P1i-ZT-Bic"/>
+                                        <constraint firstItem="fGm-iH-0aW" firstAttribute="leading" secondItem="iN6-UN-obO" secondAttribute="trailing" constant="11" id="TWO-vu-QH9"/>
+                                        <constraint firstItem="fGm-iH-0aW" firstAttribute="top" secondItem="QoS-Zg-8YA" secondAttribute="topMargin" constant="28" id="fFv-N1-Uba"/>
+                                        <constraint firstItem="fGm-iH-0aW" firstAttribute="leading" secondItem="EAa-c1-HaI" secondAttribute="leading" constant="-1" id="g9K-Z1-Z1G"/>
+                                        <constraint firstItem="EAa-c1-HaI" firstAttribute="top" secondItem="fGm-iH-0aW" secondAttribute="bottom" constant="8" id="kJ0-MR-STN"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="vXZ-lx-hvc" kind="push" identifier="videoIdSegue" id="DNT-W0-zyw"/>
