@@ -15,7 +15,6 @@
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
-#import "UIColor+KJColours.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "KJVideo+Methods.h"
 #import "KJVideoViewController.h"
