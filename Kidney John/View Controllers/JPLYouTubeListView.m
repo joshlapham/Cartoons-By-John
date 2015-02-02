@@ -19,9 +19,7 @@
 #import "NSUserDefaults+KJSettings.h"
 #import "KJVideo+Methods.h"
 #import "KJVideoViewController.h"
-
-// Constants
-static NSString *kCellIdentifier = @"videoResultCell";
+#import "KJVideoCell.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 
@@ -70,6 +68,10 @@ static NSString *kCellIdentifier = @"videoResultCell";
                                              selector:@selector(reachabilityDidChange)
                                                  name:kReachabilityChangedNotification
                                                object:nil];
+    
+    // Register cell with tableView
+    [self.tableView registerNib:[UINib nibWithNibName:[KJVideoCell cellIdentifier] bundle:nil]
+         forCellReuseIdentifier:[KJVideoCell cellIdentifier]];
     
     // Fetch video data
     [self fetchDataWithNetworkCheck];
@@ -275,6 +277,8 @@ static NSString *kCellIdentifier = @"videoResultCell";
 }
 
 #pragma mark Init 'new' label
+
+// TODO: move to KJVideoCell
 
 - (UILabel *)newVideoLabel {
     // Init frame for label
@@ -534,7 +538,8 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier forIndexPath:indexPath];
+    KJVideoCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[KJVideoCell cellIdentifier]
+                                                             forIndexPath:indexPath];
     
     // Configure cell
     [self fetchedResultsController:[self fetchedResultsControllerForTableView:tableView]
@@ -545,45 +550,29 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
 }
 
 - (void)fetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
-                   configureCell:(UITableViewCell *)cell
+                   configureCell:(KJVideoCell *)cell
                      atIndexPath:(NSIndexPath *)indexPath {
     // Init cell data
     KJVideo *cellVideo = [fetchedResultsController objectAtIndexPath:indexPath];
     
-    // Init labels for cell
-    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
-    UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:104];
-    UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
-    UIImageView *thumbnailImageView = (UIImageView *)[cell viewWithTag:102];
-    
     // Init label text
     // Video name
-    titleLabel.font = [UIFont kj_videoNameFont];
-    titleLabel.numberOfLines = 0;
-    titleLabel.preferredMaxLayoutWidth = 130;
-    titleLabel.text = cellVideo.videoName;
+    cell.videoTitle.text = cellVideo.videoName;
     
     // Video description
-    descriptionLabel.font = [UIFont kj_videoDescriptionFont];
-    descriptionLabel.textColor = [UIColor kj_videoDurationTextColour];
-    descriptionLabel.numberOfLines = 0;
-    descriptionLabel.preferredMaxLayoutWidth = 130;
-    descriptionLabel.text = cellVideo.videoDescription;
-    
-    // Video duration
-    durationLabel.font = [UIFont kj_videoDurationFont];
-    durationLabel.numberOfLines = 0;
+    cell.videoDescription.text = cellVideo.videoDescription;
     
     // Check if new video, add 'New!' label if so
     if ([self isNewVideo:cellVideo]) {
         [cell addSubview:[self newVideoLabel]];
     }
     
+    // Video duration
     // Placeholder duration
     if (cellVideo.videoDuration == nil) {
-        durationLabel.text = @"0:30";
+        cell.videoDuration.text = @"0:30";
     } else {
-        durationLabel.text = cellVideo.videoDuration;
+        cell.videoDuration.text = cellVideo.videoDuration;
     }
     
     // Init video thumbnail
@@ -597,15 +586,15 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
         // TODO: implement fallback if image not in cache
     }
     
-    [thumbnailImageView sd_setImageWithURL:[NSURL URLWithString:urlString]
-                          placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                 completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
-                                     if (cellImage && !error) {
-                                         DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
-                                     } else {
-                                         DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
-                                     }
-                                 }];
+    [cell.videoThumbnail sd_setImageWithURL:[NSURL URLWithString:urlString]
+                           placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                  completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
+                                      if (cellImage && !error) {
+                                          DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
+                                      } else {
+                                          DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
+                                      }
+                                  }];
 }
 
 -       (void)tableView:(UITableView *)tableView
@@ -623,7 +612,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         resultsController = [self fetchedResultsControllerForTableView:self.tableView];
         cellData = [resultsController objectAtIndexPath:indexPath];
     }
-
+    
     // Init destination VC
     KJVideoViewController *destViewController = [[KJVideoViewController alloc] initWithVideoId:cellData.videoId];
     destViewController.title = cellData.videoName;
