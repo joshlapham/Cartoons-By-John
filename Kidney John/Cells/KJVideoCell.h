@@ -18,5 +18,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *videoDescription;
 @property (weak, nonatomic) IBOutlet UILabel *videoDuration;
 @property (weak, nonatomic) IBOutlet UIImageView *videoThumbnail;
+@property (weak, nonatomic) IBOutlet UILabel *videoIsNew;
 
 @end

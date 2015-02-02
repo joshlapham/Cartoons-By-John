@@ -29,6 +29,29 @@
     // Video duration
     self.videoDuration.font = [UIFont kj_videoDurationFont];
     self.videoDuration.numberOfLines = 0;
+    
+    // New! label
+    self.videoIsNew.font = [UIFont kj_videoNewLabelFont];
+    self.videoIsNew.textColor = [UIColor whiteColor];
+    self.videoIsNew.backgroundColor = [UIColor kj_newVideoLabelColour];
+    self.videoIsNew.numberOfLines = 0;
+    self.videoIsNew.textAlignment = NSTextAlignmentCenter;
+    
+    // Make label round
+    self.videoIsNew.layer.masksToBounds = YES;
+    self.videoIsNew.layer.cornerRadius = self.videoIsNew.frame.size.width / 2;
+    
+    // Init text
+    NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if a video is new");
+    self.videoIsNew.text = labelText;
+}
+
+#pragma mark - Prepare for reuse method
+
+- (void)prepareForReuse {
+    // Set videoIsNew label to hidden, so label won't show every few cells as tableView is scrolled.
+    // NOTE - we toggle hidden property in tableView configureCell method.
+    self.videoIsNew.hidden = YES;
 }
 
 #pragma mark - Cell reuse identifer method

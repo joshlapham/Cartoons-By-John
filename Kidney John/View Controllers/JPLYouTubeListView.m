@@ -73,6 +73,10 @@
     [self.tableView registerNib:[UINib nibWithNibName:[KJVideoCell cellIdentifier] bundle:nil]
          forCellReuseIdentifier:[KJVideoCell cellIdentifier]];
     
+    // Register cell with search results tableView
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:[KJVideoCell cellIdentifier] bundle:nil]
+                                              forCellReuseIdentifier:[KJVideoCell cellIdentifier]];
+    
     // Fetch video data
     [self fetchDataWithNetworkCheck];
     
@@ -108,6 +112,8 @@
     // Set tableView row height
     self.tableView.estimatedRowHeight = 120;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.searchDisplayController.searchResultsTableView.estimatedRowHeight = 120;
+    self.searchDisplayController.searchResultsTableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 #pragma mark - Prepare for segue method
@@ -276,33 +282,6 @@
     return _dateFormatter;
 }
 
-#pragma mark Init 'new' label
-
-// TODO: move to KJVideoCell
-
-- (UILabel *)newVideoLabel {
-    // Init frame for label
-    CGRect labelFrame = CGRectMake(10, 3, 30, 30);
-    
-    // Init label
-    UILabel *newVideoLabel = [[UILabel alloc] initWithFrame:labelFrame];
-    newVideoLabel.font = [UIFont kj_videoNewLabelFont];
-    newVideoLabel.textColor = [UIColor whiteColor];
-    newVideoLabel.backgroundColor = [UIColor kj_newVideoLabelColour];
-    newVideoLabel.numberOfLines = 0;
-    newVideoLabel.textAlignment = NSTextAlignmentCenter;
-    
-    // Make label round
-    newVideoLabel.layer.masksToBounds = YES;
-    newVideoLabel.layer.cornerRadius = newVideoLabel.frame.size.width / 2;
-    
-    // Init text
-    NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if a video is new");
-    newVideoLabel.text = labelText;
-    
-    return newVideoLabel;
-}
-
 #pragma mark - Data fetch did happen method
 
 - (void)videoFetchDidFinish {
@@ -452,7 +431,8 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self fetchedResultsController:controller configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self fetchedResultsController:controller configureCell:(KJVideoCell *)[tableView cellForRowAtIndexPath:indexPath]
+                               atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -538,8 +518,8 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
-    KJVideoCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[KJVideoCell cellIdentifier]
-                                                             forIndexPath:indexPath];
+    KJVideoCell *cell = [tableView dequeueReusableCellWithIdentifier:[KJVideoCell cellIdentifier]
+                                                        forIndexPath:indexPath];
     
     // Configure cell
     [self fetchedResultsController:[self fetchedResultsControllerForTableView:tableView]
@@ -563,8 +543,14 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
     cell.videoDescription.text = cellVideo.videoDescription;
     
     // Check if new video, add 'New!' label if so
-    if ([self isNewVideo:cellVideo]) {
-        [cell addSubview:[self newVideoLabel]];
+    // NOT a new video, so hide label
+    if (![self isNewVideo:cellVideo]) {
+        cell.videoIsNew.hidden = YES;
+    }
+    
+    // IS a new video, so show label
+    else {
+        cell.videoIsNew.hidden = NO;
     }
     
     // Video duration

@@ -44,13 +44,28 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wU4-eM-aTh">
+                        <rect key="frame" x="10" y="3" width="30" height="30"/>
+                        <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="Dr6-If-yZY"/>
+                            <constraint firstAttribute="width" constant="30" id="bB9-sb-mHT"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="wU4-eM-aTh" firstAttribute="top" secondItem="sEC-O7-lRZ" secondAttribute="topMargin" constant="-5" id="0sw-1t-rBY"/>
                     <constraint firstItem="1Jf-Jd-KOI" firstAttribute="top" secondItem="pA5-5D-tWo" secondAttribute="bottom" constant="8" id="16N-rk-at0"/>
                     <constraint firstItem="tUf-6b-Xzr" firstAttribute="top" secondItem="ahD-8N-kjs" secondAttribute="top" id="7ZN-pX-iw1"/>
                     <constraint firstItem="tUf-6b-Xzr" firstAttribute="leading" secondItem="pA5-5D-tWo" secondAttribute="leading" id="DZ8-t6-qnS"/>
                     <constraint firstItem="pA5-5D-tWo" firstAttribute="top" secondItem="tUf-6b-Xzr" secondAttribute="bottom" constant="8" id="TY1-NS-mkJ"/>
+                    <constraint firstItem="tUf-6b-Xzr" firstAttribute="leading" secondItem="wU4-eM-aTh" secondAttribute="trailing" constant="111" id="YuS-pv-GP2"/>
                     <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="pA5-5D-tWo" secondAttribute="bottom" constant="40" id="hbF-2c-Qw6"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="wU4-eM-aTh" secondAttribute="bottom" constant="80" id="hn0-Sv-Lac"/>
+                    <constraint firstItem="wU4-eM-aTh" firstAttribute="leading" secondItem="sEC-O7-lRZ" secondAttribute="leadingMargin" constant="2" id="ibP-gn-mqn"/>
                     <constraint firstItem="tUf-6b-Xzr" firstAttribute="leading" secondItem="1Jf-Jd-KOI" secondAttribute="leading" id="iuP-DM-c0e"/>
                     <constraint firstItem="ahD-8N-kjs" firstAttribute="top" secondItem="sEC-O7-lRZ" secondAttribute="topMargin" constant="4" id="jOE-53-Ugx"/>
                     <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="tUf-6b-Xzr" secondAttribute="bottom" constant="68" id="oA2-bp-hrE"/>
@@ -61,6 +76,7 @@
             <connections>
                 <outlet property="videoDescription" destination="pA5-5D-tWo" id="iD9-sO-0Rs"/>
                 <outlet property="videoDuration" destination="1Jf-Jd-KOI" id="1uU-KV-P4b"/>
+                <outlet property="videoIsNew" destination="wU4-eM-aTh" id="jU7-Hj-SO4"/>
                 <outlet property="videoThumbnail" destination="ahD-8N-kjs" id="Cbf-1l-eg2"/>
                 <outlet property="videoTitle" destination="tUf-6b-Xzr" id="z8y-hL-I9o"/>
             </connections>
