@@ -353,7 +353,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                         
                         newComic.comicFileName = object[kParseComicFileNameKey];
                         newComic.comicName = object[kParseComicNameKey];
-                        newComic.comicFileUrl = object[kParseComicFileKey];
+                        newComic.comicFileUrl = comicImageFile.url;
                         newComic.comicNumber = object[kParseComicNumberKey];
                         
                         // Set changes to comics were made property so that we can trigger a managedObjectContext save later.
