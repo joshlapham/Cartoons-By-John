@@ -25,6 +25,7 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
 
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 
+// Properties
 @property (nonatomic, strong) NSArray *cellArray;
 @property (nonatomic) NSInteger chosenRow;
 @property (nonatomic, strong) NSMutableArray *socialLinksArray;
