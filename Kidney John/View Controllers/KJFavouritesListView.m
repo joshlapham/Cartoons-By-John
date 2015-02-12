@@ -61,15 +61,23 @@
     NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in No Favourites error alert");
     
     // Init alertView
-    UIAlertView *noFavouritesAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                                    message:messageString
-                                                                   delegate:self
-                                                          cancelButtonTitle:Nil
-                                                          otherButtonTitles:okButtonString,
-                                          nil];
+    UIAlertController *noFavouritesAlertView = [UIAlertController alertControllerWithTitle:titleString
+                                                                                   message:messageString
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions for alertView
+    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonString
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction *action) {
+                                                           // Go back to previous view controller
+                                                           [self.navigationController popViewControllerAnimated:YES];
+                                                       }];
+    [noFavouritesAlertView addAction:okayAction];
     
     // Show alertView
-    [noFavouritesAlertView show];
+    [self presentViewController:noFavouritesAlertView
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - UIAlertView delegate methods
