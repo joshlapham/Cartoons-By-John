@@ -340,16 +340,16 @@ titleForHeaderInSection:(NSInteger)section {
 #pragma mark - Did fetch Social Links method
 
 - (void)didFetchSocialLinks {
-    DDLogVerbose(@"More: did fetch social links");
-    
-    // Clear out existing links
-    [_socialLinksArray removeAllObjects];
-    
-    // Get links from Core Data
-    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
-    
-    // Reload tableView
-    [self.tableView reloadData];
+//    DDLogVerbose(@"More: did fetch social links");
+//    
+//    // Clear out existing links
+//    [_socialLinksArray removeAllObjects];
+//    
+//    // Get links from Core Data
+//    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+//    
+//    // Reload tableView
+//    [self.tableView reloadData];
 }
 
 #pragma mark - Init cell array methods
@@ -358,17 +358,17 @@ titleForHeaderInSection:(NSInteger)section {
 // these methods are here for that purpose
 
 - (void)initSocialLinksArrayFromParse {
-    // Init social link data source array
-    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
-    
-    // Reload tableView
-    [self.tableView reloadData];
-    
-    // Check if network is reachable
-    if ([JPLReachabilityManager isReachable]) {
-        // Fetch social links from Parse
-        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
-    }
+//    // Init social link data source array
+//    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+//    
+//    // Reload tableView
+//    [self.tableView reloadData];
+//    
+//    // Check if network is reachable
+//    if ([JPLReachabilityManager isReachable]) {
+//        // Fetch social links from Parse
+//        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
+//    }
 }
 
 - (void)initHardcodedSocialLinksArray {

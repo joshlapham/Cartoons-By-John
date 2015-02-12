@@ -19,9 +19,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
-
-static NSString *VideoCellIdentifier = @"favouriteCell";
-static NSString *ComicCellIdentifier = @"comicFavouriteCell";
+#import "KJVideoCell.h"
+#import "KJComicListCell.h"
 
 @interface KJFavouritesListView () <UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -36,6 +35,16 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
     
     // Set title
     self.title = self.titleForView;
+    
+    // Register cells with tableView
+    [self.tableView registerNib:[UINib nibWithNibName:[KJComicListCell cellIdentifier] bundle:nil]
+         forCellReuseIdentifier:[KJComicListCell cellIdentifier]];
+    [self.tableView registerNib:[UINib nibWithNibName:[KJVideoCell cellIdentifier] bundle:nil]
+         forCellReuseIdentifier:[KJVideoCell cellIdentifier]];
+    
+    // Set auto row height for cells
+    self.tableView.estimatedRowHeight = 122;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     // Check for Favourites results
     if ([self.cellResults count] == 0) {
@@ -53,10 +62,11 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
     
     // Init alertView
     UIAlertView *noFavouritesAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                 message:messageString
-                                                delegate:self
-                                       cancelButtonTitle:Nil
-                                       otherButtonTitles:okButtonString, nil];
+                                                                    message:messageString
+                                                                   delegate:self
+                                                          cancelButtonTitle:Nil
+                                                          otherButtonTitles:okButtonString,
+                                          nil];
     
     // Show alertView
     [noFavouritesAlertView show];
@@ -64,8 +74,10 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
 
 #pragma mark - UIAlertView delegate methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+-       (void)alertView:(UIAlertView *)alertView
+   clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [alertView dismissWithClickedButtonIndex:buttonIndex
+                                    animated:YES];
     
     // Go back to previous view controller
     [self.navigationController popViewControllerAnimated:YES];
@@ -77,69 +89,33 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section {
     return [self.cellResults count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([[self.cellResults firstObject] isKindOfClass:[KJComic class]]) {
-        return 100;
-    } else {
-        return 120;
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Init cell
-    UITableViewCell *cell;
-    
-    if (!cell) {
-        if ([[self.cellResults firstObject] isKindOfClass:[KJComic class]]) {
-            // Comics
-            [tableView registerNib:[UINib nibWithNibName:@"KJComicFavouriteCell" bundle:nil]
-            forCellReuseIdentifier:ComicCellIdentifier];
-            
-            cell = [tableView dequeueReusableCellWithIdentifier:ComicCellIdentifier
-                                                   forIndexPath:indexPath];
-        }
-        else {
-            // Videos
-            cell = [tableView dequeueReusableCellWithIdentifier:VideoCellIdentifier
-                                                   forIndexPath:indexPath];
-        }
-    }
-    
-    // Init cell labels
-    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
-    UIImageView *thumbImage = (UIImageView *)[cell viewWithTag:102];
-    UILabel *durationLabel = (UILabel *)[cell viewWithTag:103];
-    
-    // Video name
-    titleLabel.font = [UIFont kj_videoNameFont];
-    titleLabel.numberOfLines = 0;
-    titleLabel.adjustsFontSizeToFitWidth = YES;
-    
-    // If Video ..
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Video cell
     if ([[self.cellResults firstObject] isKindOfClass:[KJVideo class]]) {
+        // Init KJVideoCell
+        KJVideoCell *videoCell = [tableView dequeueReusableCellWithIdentifier:[KJVideoCell cellIdentifier]
+                                                                 forIndexPath:indexPath];
         
         // Init cell data
         KJVideo *cellData = [self.cellResults objectAtIndex:indexPath.row];
         
         // Video name
-        titleLabel.text = cellData.videoName;
+        videoCell.videoTitle.text = cellData.videoName;
         
-        // Video duration
-        UIFont *kjCustomFontDetailText = [UIFont kj_videoDurationFont];
-        durationLabel.font = kjCustomFontDetailText;
-        durationLabel.textColor = [UIColor kj_videoDurationTextColour];
-        durationLabel.numberOfLines = 0;
+        // Video description
+        videoCell.videoDescription.text = cellData.videoDescription;
         
         // Placeholder duration
-        // TODO: review this
         if (cellData.videoDuration == nil) {
-            durationLabel.text = @"0:30";
+            videoCell.videoDuration.text = @"0:30";
         } else {
-            durationLabel.text = cellData.videoDuration;
+            videoCell.videoDuration.text = cellData.videoDuration;
         }
         
         // SDWebImage
@@ -148,56 +124,65 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
         // Check if image is in cache
         if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
             //DDLogVerbose(@"found image in cache");
-            thumbImage.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString];
+            videoCell.videoThumbnail.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString];
         } else {
             // TODO: fallback if not in cache
             //DDLogVerbose(@"no image in cache");
         }
         
-    }
-    else if ([[self.cellResults firstObject] isKindOfClass:[KJComic class]]) {
-        KJComic *cellData = [self.cellResults objectAtIndex:indexPath.row];
-        
-        titleLabel.text = cellData.comicName;
-        
-        thumbImage.image = [cellData returnComicThumbImageFromComic];
-        thumbImage.contentMode = UIViewContentModeScaleAspectFit;
-    }
-    else if ([self.titleForView isEqualToString:@"Doodles"]) {
-        // TODO: do we need this else-if statement for Doodles?
-        KJRandomImage *cellData = [self.cellResults objectAtIndex:indexPath.row];
-        titleLabel.text = cellData.imageDescription;
+        // Return cell
+        return videoCell;
     }
     
-    return cell;
+    // Comic cell
+    else if ([[self.cellResults firstObject] isKindOfClass:[KJComic class]]) {
+        // Init KJComicListCell
+        KJComicListCell *comicCell = [tableView dequeueReusableCellWithIdentifier:[KJComicListCell cellIdentifier]
+                                                                     forIndexPath:indexPath];
+        
+        // Init cell data
+        KJComic *cellData = [self.cellResults objectAtIndex:indexPath.row];
+        
+        // Set cell label text
+        comicCell.comicTitle.text = cellData.comicName;
+        comicCell.comicThumbnail.image = [cellData returnComicThumbImageFromComic];
+        
+        // Return cell
+        return comicCell;
+    }
+    
+    // NOTE - returning nil by default
+    return nil;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+-       (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Videos
     if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-        // Video
         [self performSegueWithIdentifier:@"favouritesVideoSegue" sender:self];
     }
+    
+    // Comics
     else if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
-        // Comix
         [self performSegueWithIdentifier:@"comicDetailSegueFromFavourites" sender:self];
-    }
-    else if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJRandomImage class]]) {
-        // Doodles
-        [self performSegueWithIdentifier:@"doodleDetailSegueFromFavourites" sender:self];
     }
 }
 
 #pragma mark - Prepare for segue method
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue
+                 sender:(id)sender {
     // Init index path
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
+    // Videos
     if ([segue.identifier isEqualToString:@"favouritesVideoSegue"]) {
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
         KJVideo *cellVideo = [self.cellResults objectAtIndex:indexPath.row];
         destViewController.chosenVideo = cellVideo;
     }
+    
+    // Comics
     else if ([segue.identifier isEqualToString:@"comicDetailSegueFromFavourites"]) {
         // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
@@ -210,11 +195,6 @@ static NSString *ComicCellIdentifier = @"comicFavouriteCell";
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
-    }
-    else if ([segue.identifier isEqualToString:@"doodleDetailSegueFromFavourites"]) {
-        KJRandomView *destViewController = segue.destinationViewController;
-        KJRandomImage *cellData = [self.cellResults objectAtIndex:indexPath.row];
-        destViewController.selectedImageFromFavouritesList = cellData;
     }
 }
 

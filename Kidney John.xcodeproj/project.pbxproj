@@ -68,6 +68,8 @@
 		68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */; };
 		68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4691A16D73D00D3D51B /* KJSocialLink.m */; };
 		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
+		C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C968D7D71A8C482800C3B621 /* KJComicListCell.m */; };
+		C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C968D7D81A8C482800C3B621 /* KJComicListCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,6 +194,9 @@
 		68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicFavouriteActivity.h; path = UIActivity/KJComicFavouriteActivity.h; sourceTree = "<group>"; };
 		68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicFavouriteActivity.m; path = UIActivity/KJComicFavouriteActivity.m; sourceTree = "<group>"; };
 		AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		C968D7D61A8C482800C3B621 /* KJComicListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListCell.h; path = Cells/KJComicListCell.h; sourceTree = "<group>"; };
+		C968D7D71A8C482800C3B621 /* KJComicListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicListCell.m; path = Cells/KJComicListCell.m; sourceTree = "<group>"; };
+		C968D7D81A8C482800C3B621 /* KJComicListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJComicListCell.xib; path = Cells/KJComicListCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,6 +344,9 @@
 				680CF0C31A7F730F009250E3 /* KJVideoCell.h */,
 				680CF0C41A7F730F009250E3 /* KJVideoCell.m */,
 				680CF0C51A7F730F009250E3 /* KJVideoCell.xib */,
+				C968D7D61A8C482800C3B621 /* KJComicListCell.h */,
+				C968D7D71A8C482800C3B621 /* KJComicListCell.m */,
+				C968D7D81A8C482800C3B621 /* KJComicListCell.xib */,
 				687BC372184D9C8900F45970 /* KJComicCell.h */,
 				687BC373184D9C8900F45970 /* KJComicCell.m */,
 				680CF06F190F8DBD00A0E296 /* KJComicDetailCell.h */,
@@ -559,6 +567,7 @@
 			files = (
 				68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */,
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
+				C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */,
 				68211A211927A95000B24BF1 /* Localizable.strings in Resources */,
 				6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */,
 				68659F3E1A5E99240048A887 /* Settings.bundle in Resources */,
@@ -645,6 +654,7 @@
 				685C171718E29B5300088D26 /* KJComic.m in Sources */,
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
 				6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */,
+				C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */,
 				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
 				68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */,
 				68E48D28184A247D00600FA5 /* main.m in Sources */,
@@ -817,6 +827,55 @@
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-l\"Pods-Bolts\"",
+					"-l\"Pods-CocoaLumberjack\"",
+					"-l\"Pods-MBProgressHUD\"",
+					"-l\"Pods-MagicalRecord\"",
+					"-l\"Pods-PBWebViewController\"",
+					"-l\"Pods-PBYouTubeVideoViewController\"",
+					"-l\"Pods-Parse\"",
+					"-l\"Pods-ParseCrashReporting\"",
+					"-l\"Pods-Reachability\"",
+					"-l\"Pods-SDWebImage\"",
+					"-l\"sqlite3\"",
+					"-l\"stdc++.6\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AudioToolbox\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreData\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Parse\"",
+					"-framework",
+					"\"ParseCrashReporting\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"Accounts\"",
+					"-weak_framework",
+					"\"Social\"",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "EE12BE2C-8A91-4427-9A27-C388BDB3F47D";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -836,6 +895,55 @@
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-l\"Pods-Bolts\"",
+					"-l\"Pods-CocoaLumberjack\"",
+					"-l\"Pods-MBProgressHUD\"",
+					"-l\"Pods-MagicalRecord\"",
+					"-l\"Pods-PBWebViewController\"",
+					"-l\"Pods-PBYouTubeVideoViewController\"",
+					"-l\"Pods-Parse\"",
+					"-l\"Pods-ParseCrashReporting\"",
+					"-l\"Pods-Reachability\"",
+					"-l\"Pods-SDWebImage\"",
+					"-l\"sqlite3\"",
+					"-l\"stdc++.6\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AudioToolbox\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreData\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Parse\"",
+					"-framework",
+					"\"ParseCrashReporting\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"Accounts\"",
+					"-weak_framework",
+					"\"Social\"",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "7E480498-5969-4C1D-B5FB-C7ACFCD46B02";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -845,6 +953,7 @@
 		};
 		68E48D51184A247D00600FA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Kidney John.app/Kidney John";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -867,6 +976,7 @@
 		};
 		68E48D52184A247D00600FA5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D94687170B9557CDE67339B /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Kidney John.app/Kidney John";
 				FRAMEWORK_SEARCH_PATHS = (

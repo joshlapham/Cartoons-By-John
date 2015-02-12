@@ -40,74 +40,74 @@ NSString * const KJSocialLinkDataFetchDidHappenNotification = @"KJSocialLinkData
 
 // TODO: refactor methods to use vanilla Core Data
 
-+ (BOOL)checkIfSocialLinkIsInDatabaseWithUrl:(NSString *)urlToCheck context:(NSManagedObjectContext *)context {
-    if ([KJSocialLink MR_findFirstByAttribute:@"url" withValue:urlToCheck inContext:context]) {
-        //DDLogVerbose(@"socialLinkStore: Yes, social link does exist in database");
-        return TRUE;
-    }
-    else {
-        //DDLogVerbose(@"socialLinkStore: No, social link does NOT exist in database");
-        return FALSE;
-    }
-}
+//+ (BOOL)checkIfSocialLinkIsInDatabaseWithUrl:(NSString *)urlToCheck context:(NSManagedObjectContext *)context {
+//    if ([KJSocialLink MR_findFirstByAttribute:@"url" withValue:urlToCheck inContext:context]) {
+//        //DDLogVerbose(@"socialLinkStore: Yes, social link does exist in database");
+//        return TRUE;
+//    }
+//    else {
+//        //DDLogVerbose(@"socialLinkStore: No, social link does NOT exist in database");
+//        return FALSE;
+//    }
+//}
 
 + (void)persistNewSocialLinkWithTitle:(NSString *)titleValue
                                   url:(NSString *)urlValue
                              imageUrl:(NSString *)imageUrlValue
                             imagePath:(NSString *)imagePathValue {
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // If Social Link does not exist in database then persist
-    if (![self checkIfSocialLinkIsInDatabaseWithUrl:urlValue context:localContext]) {
-        // Create a new Social Link in the current context
-        KJSocialLink *newSocialLink = [KJSocialLink MR_createInContext:localContext];
-        
-        // Set attributes
-        newSocialLink.title = titleValue;
-        newSocialLink.url = urlValue;
-        newSocialLink.imageUrl = imageUrlValue;
-        newSocialLink.imagePath = imagePathValue;
-        
-        // Save
-        [localContext MR_saveToPersistentStoreAndWait];
-    }
+//    // Get the local context
+//    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+//    
+//    // If Social Link does not exist in database then persist
+//    if (![self checkIfSocialLinkIsInDatabaseWithUrl:urlValue context:localContext]) {
+//        // Create a new Social Link in the current context
+//        KJSocialLink *newSocialLink = [KJSocialLink MR_createInContext:localContext];
+//        
+//        // Set attributes
+//        newSocialLink.title = titleValue;
+//        newSocialLink.url = urlValue;
+//        newSocialLink.imageUrl = imageUrlValue;
+//        newSocialLink.imagePath = imagePathValue;
+//        
+//        // Save
+//        [localContext MR_saveToPersistentStoreAndWait];
+//    }
 }
 
 + (void)checkIfSocialLinkNeedsUpdateWithTitle:(NSString *)titleValue
                                           url:(NSString *)urlValue
                                      imageUrl:(NSString *)imageUrlValue
                                     imagePath:(NSString *)imagePathValue {
-    // TODO: this keeps returning TRUE
-    
-    // Get the local context
-    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
-    
-    // If link is in database ..
-    if ([self checkIfSocialLinkIsInDatabaseWithUrl:urlValue context:localContext]) {
-        KJSocialLink *linkToCheck = [KJSocialLink MR_findFirstByAttribute:@"url" withValue:urlValue inContext:localContext];
-        
-        // Check if linkToCheck needs updating
-        if (![linkToCheck.title isEqualToString:titleValue] || ![linkToCheck.url isEqualToString:urlValue] || ![linkToCheck.imageUrl isEqualToString:imageUrlValue] || ![linkToCheck.imagePath isEqualToString:imagePathValue]) {
-            // Link needs updating
-            DDLogVerbose(@"socialLinkStore: social link needs update: %@", linkToCheck.title);
-            
-            linkToCheck.title = titleValue;
-            linkToCheck.url = urlValue;
-            linkToCheck.imageUrl = imageUrlValue;
-            linkToCheck.imagePath = imagePathValue;
-            
-            // Save
-            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-                if (success) {
-                    DDLogVerbose(@"socialLinkStore: updated link: %@", linkToCheck.title);
-                }
-                else if (error) {
-                    DDLogVerbose(@"socialLinkStore: error updating link: %@ - %@", linkToCheck.title, [error localizedDescription]);
-                }
-            }];
-        }
-    }
+//    // TODO: this keeps returning TRUE
+//    
+//    // Get the local context
+//    NSManagedObjectContext *localContext = [NSManagedObjectContext MR_contextForCurrentThread];
+//    
+//    // If link is in database ..
+//    if ([self checkIfSocialLinkIsInDatabaseWithUrl:urlValue context:localContext]) {
+//        KJSocialLink *linkToCheck = [KJSocialLink MR_findFirstByAttribute:@"url" withValue:urlValue inContext:localContext];
+//        
+//        // Check if linkToCheck needs updating
+//        if (![linkToCheck.title isEqualToString:titleValue] || ![linkToCheck.url isEqualToString:urlValue] || ![linkToCheck.imageUrl isEqualToString:imageUrlValue] || ![linkToCheck.imagePath isEqualToString:imagePathValue]) {
+//            // Link needs updating
+//            DDLogVerbose(@"socialLinkStore: social link needs update: %@", linkToCheck.title);
+//            
+//            linkToCheck.title = titleValue;
+//            linkToCheck.url = urlValue;
+//            linkToCheck.imageUrl = imageUrlValue;
+//            linkToCheck.imagePath = imagePathValue;
+//            
+//            // Save
+//            [localContext MR_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+//                if (success) {
+//                    DDLogVerbose(@"socialLinkStore: updated link: %@", linkToCheck.title);
+//                }
+//                else if (error) {
+//                    DDLogVerbose(@"socialLinkStore: error updating link: %@ - %@", linkToCheck.title, [error localizedDescription]);
+//                }
+//            }];
+//        }
+//    }
 }
 
 #pragma mark - Fetch data method
