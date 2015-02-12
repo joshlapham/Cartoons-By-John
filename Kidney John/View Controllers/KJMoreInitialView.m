@@ -21,7 +21,6 @@
 #import "UIColor+KJColours.h"
 
 // Constants
-static NSString *kCellIdentifier = @"Cell";
 static NSString *kSocialCellIdentifier = @"SocialLinkCell";
 
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
@@ -60,6 +59,7 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     // FOR TESTING of fetching Social Link data from Parse
     _areWeTestingSocialLinksFromParseFeature = NO;
     
+    // Use links from Parse
     if (_areWeTestingSocialLinksFromParseFeature == YES) {
         // Set up NSNotification receiving for when socialLinkStore finishes data fetch
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -76,8 +76,9 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
         // Init cell array
         [self initSocialLinksArrayFromParse];
     }
+    
+    // Use hardcoded links
     else {
-        // Use hardcoded links
         [self initHardcodedSocialLinksArray];
     }
     
@@ -89,6 +90,10 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     
     // Init array of titles for Favourites cells
     _cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
+    
+    // Register cells with tableView
+    [self.tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell" bundle:nil]
+         forCellReuseIdentifier:kSocialCellIdentifier];
     
     // Allow for dynamic sized cells
     self.tableView.estimatedRowHeight = 44;
@@ -125,19 +130,8 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     UITableViewCell *cell;
     
     if (!cell) {
-        if (indexPath.section == 1) {
-            // Social links section
-            [tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell" bundle:nil]
-            forCellReuseIdentifier:kSocialCellIdentifier];
-            
-            cell = [tableView dequeueReusableCellWithIdentifier:kSocialCellIdentifier
-                                                   forIndexPath:indexPath];
-        }
-        else {
-            // Other sections (like Favourites)
-            cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier
-                                                   forIndexPath:indexPath];
-        }
+        cell = [tableView dequeueReusableCellWithIdentifier:kSocialCellIdentifier
+                                               forIndexPath:indexPath];
     }
     
     // Init cell labels
@@ -153,34 +147,38 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
         titleLabel.text = [_cellArray objectAtIndex:indexPath.row];
         
         // Set Favourites icon
+        // Videos
         if (indexPath.row == 0) {
-            // Videos
             thumbImage.image = [UIImage imageNamed:@"video-tab-icon.png"];
             // Fix the look of the Video thumbnail when in tableView
             thumbImage.contentMode = UIViewContentModeScaleAspectFit;
         }
+        
+        // Comics
         else if (indexPath.row == 1) {
-            // Comix
             thumbImage.image = [UIImage imageNamed:@"comic-tab-icon.png"];
         }
+        
+        // Doodles
         else if (indexPath.row == 2) {
-            // Doodles
             thumbImage.image = [UIImage imageNamed:@"doodle-tab-icon.png"];
         }
     }
+    
     // If Social Links section ..
     else {
         // Set the cell text
         
         // FOR TESTING
+        // Use links from Parse
         if (_areWeTestingSocialLinksFromParseFeature == YES) {
-            // From Parse
             KJSocialLink *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
             titleLabel.text = socialLink.title;
             thumbImage.image = [UIImage imageNamed:socialLink.imagePath];
         }
+        
+        // Use hardcoded social links
         else {
-            // Use hardcoded social links
             NSDictionary *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
             titleLabel.text = [socialLink objectForKey:@"title"];
             thumbImage.image = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
@@ -205,8 +203,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 // Doodles was chosen
                 [self performSegueWithIdentifier:@"doodleFavouriteSegue"
                                           sender:self];
-            } else {
-                // Videos or Comix was chosen
+            }
+            
+            // Videos or Comix was chosen
+            else {
                 [self performSegueWithIdentifier:@"favouritesSegue"
                                           sender:self];
             }
@@ -268,19 +268,21 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         KJFavouritesListView *destViewController = segue.destinationViewController;
         destViewController.titleForView = typeOfFavourite;
         
+        // Videos
         if (_chosenRow == 0) {
-            // Videos
             favouritesDataToPass = [[KJVideoStore sharedStore] returnFavouritesArray];
         }
+        
+        // Comix
         else if (_chosenRow == 1) {
-            // Comix
             favouritesDataToPass = [[KJComicStore sharedStore] returnFavouritesArray];
         }
         
         destViewController.cellResults = favouritesDataToPass;
     }
+    
+    // Doodles
     else if ([segue.identifier isEqualToString:@"doodleFavouriteSegue"]) {
-        // If Doodles ..
         // NOTE: don't need to set anything here
         //KJFavDoodlesListView *destViewController = segue.destinationViewController;
     }
@@ -340,16 +342,16 @@ titleForHeaderInSection:(NSInteger)section {
 #pragma mark - Did fetch Social Links method
 
 - (void)didFetchSocialLinks {
-//    DDLogVerbose(@"More: did fetch social links");
-//    
-//    // Clear out existing links
-//    [_socialLinksArray removeAllObjects];
-//    
-//    // Get links from Core Data
-//    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
-//    
-//    // Reload tableView
-//    [self.tableView reloadData];
+    //    DDLogVerbose(@"More: did fetch social links");
+    //
+    //    // Clear out existing links
+    //    [_socialLinksArray removeAllObjects];
+    //
+    //    // Get links from Core Data
+    //    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+    //
+    //    // Reload tableView
+    //    [self.tableView reloadData];
 }
 
 #pragma mark - Init cell array methods
@@ -358,17 +360,17 @@ titleForHeaderInSection:(NSInteger)section {
 // these methods are here for that purpose
 
 - (void)initSocialLinksArrayFromParse {
-//    // Init social link data source array
-//    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
-//    
-//    // Reload tableView
-//    [self.tableView reloadData];
-//    
-//    // Check if network is reachable
-//    if ([JPLReachabilityManager isReachable]) {
-//        // Fetch social links from Parse
-//        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
-//    }
+    //    // Init social link data source array
+    //    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+    //
+    //    // Reload tableView
+    //    [self.tableView reloadData];
+    //
+    //    // Check if network is reachable
+    //    if ([JPLReachabilityManager isReachable]) {
+    //        // Fetch social links from Parse
+    //        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
+    //    }
 }
 
 - (void)initHardcodedSocialLinksArray {
