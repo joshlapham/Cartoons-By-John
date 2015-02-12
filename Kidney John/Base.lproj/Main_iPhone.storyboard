@@ -376,37 +376,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="zm2-XV-ECj">
-                                <rect key="frame" x="0.0" y="119" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zm2-XV-ECj" id="z5I-K6-9Gq">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KfD-jI-hWm">
-                                            <rect key="frame" x="58" y="11" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="o20-oM-hPF">
-                                            <rect key="frame" x="20" y="7" width="30" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="30" id="9Ua-9q-ExT"/>
-                                                <constraint firstAttribute="height" constant="30" id="fhp-XY-a7w"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="centerY" secondItem="o20-oM-hPF" secondAttribute="centerY" id="IKO-Sh-xMh"/>
-                                        <constraint firstAttribute="centerY" secondItem="KfD-jI-hWm" secondAttribute="centerY" id="OsH-yb-WRB"/>
-                                        <constraint firstItem="KfD-jI-hWm" firstAttribute="leading" secondItem="o20-oM-hPF" secondAttribute="trailing" constant="8" id="Xce-fR-U4K"/>
-                                        <constraint firstItem="o20-oM-hPF" firstAttribute="leading" secondItem="z5I-K6-9Gq" secondAttribute="leadingMargin" constant="12" id="mEu-Rz-gk0"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="GKy-Oh-Ygs" id="tDV-uG-539"/>
                             <outlet property="delegate" destination="GKy-Oh-Ygs" id="BJJ-6G-Ehn"/>
