@@ -22,7 +22,7 @@
 #import "KJVideoCell.h"
 #import "KJComicListCell.h"
 
-@interface KJFavouritesListView () <UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface KJFavouritesListView () <UITableViewDelegate, UITableViewDataSource>
 
 @end
 
@@ -80,18 +80,7 @@
                      completion:nil];
 }
 
-#pragma mark - UIAlertView delegate methods
-
--       (void)alertView:(UIAlertView *)alertView
-   clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [alertView dismissWithClickedButtonIndex:buttonIndex
-                                    animated:YES];
-    
-    // Go back to previous view controller
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - UITableView delegate methods
+#pragma mark - UITableView data source delegate methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -163,16 +152,20 @@
     return nil;
 }
 
+#pragma mark - UITableView delegate methods
+
 -       (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Videos
     if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-        [self performSegueWithIdentifier:@"favouritesVideoSegue" sender:self];
+        [self performSegueWithIdentifier:@"favouritesVideoSegue"
+                                  sender:self];
     }
     
     // Comics
     else if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
-        [self performSegueWithIdentifier:@"comicDetailSegueFromFavourites" sender:self];
+        [self performSegueWithIdentifier:@"comicDetailSegueFromFavourites"
+                                  sender:self];
     }
 }
 
