@@ -1,5 +1,5 @@
 PODS:
-  - Bolts (1.1.3)
+  - Bolts (1.1.4)
   - CocoaLumberjack (1.9.1):
     - CocoaLumberjack/Extensions (= 1.9.1)
   - CocoaLumberjack/Core (1.9.1)
@@ -28,7 +28,7 @@ DEPENDENCIES:
   - SDWebImage (= 3.7.1)
 
 SPEC CHECKSUMS:
-  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
+  Bolts: dd9fb8433d67f5acc3b6b4d1379bbc5513d716c1
   CocoaLumberjack: 94accd5749f5c5d15134c8d50f34a973aed8ef69
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   Parse: b0ec7666167e212edb6fc94f60ba170248bd1869

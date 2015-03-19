@@ -1,4 +1,4 @@
-platform :ios, '7.0'
+platform :ios, '8.0'
 
 pod 'Parse', '1.6.1'
 pod 'ParseCrashReporting', '1.6.1'
