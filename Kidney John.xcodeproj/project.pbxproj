@@ -17,6 +17,7 @@
 		680CF0C71A7F730F009250E3 /* KJVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680CF0C51A7F730F009250E3 /* KJVideoCell.xib */; };
 		68211A211927A95000B24BF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68211A231927A95000B24BF1 /* Localizable.strings */; };
 		6832C3751924B91E00E94788 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6832C3741924B91E00E94788 /* Keys.plist */; };
+		6837E5D51ADD052F00779F18 /* KJRandomViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6837E5D41ADD052F00779F18 /* KJRandomViewDataSource.m */; };
 		683CAE5918C77DF2006173FA /* KJDoodleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683CAE5818C77DF2006173FA /* KJDoodleCell.m */; };
 		683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */; };
 		68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */; };
@@ -106,6 +107,8 @@
 		68211A241927A98400B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6832C3741924B91E00E94788 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.2.xcdatamodel"; sourceTree = "<group>"; };
+		6837E5D31ADD052F00779F18 /* KJRandomViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomViewDataSource.h; path = "Data Sources/KJRandomViewDataSource.h"; sourceTree = "<group>"; };
+		6837E5D41ADD052F00779F18 /* KJRandomViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomViewDataSource.m; path = "Data Sources/KJRandomViewDataSource.m"; sourceTree = "<group>"; };
 		683CAE5718C77DF2006173FA /* KJDoodleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJDoodleCell.h; path = Cells/KJDoodleCell.h; sourceTree = "<group>"; };
 		683CAE5818C77DF2006173FA /* KJDoodleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJDoodleCell.m; path = Cells/KJDoodleCell.m; sourceTree = "<group>"; };
 		683DC0321A6B5DF40051A7DB /* KJVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoViewController.h; path = "View Controllers/KJVideoViewController.h"; sourceTree = "<group>"; };
@@ -268,6 +271,8 @@
 			children = (
 				68E48D6C184D874500600FA5 /* KJRandomView.h */,
 				68E48D6D184D874500600FA5 /* KJRandomView.m */,
+				6837E5D31ADD052F00779F18 /* KJRandomViewDataSource.h */,
+				6837E5D41ADD052F00779F18 /* KJRandomViewDataSource.m */,
 			);
 			name = Doodles;
 			sourceTree = "<group>";
@@ -673,6 +678,7 @@
 				68E1D0381A6083650054C7E1 /* KJComic+Methods.m in Sources */,
 				683CAE5918C77DF2006173FA /* KJDoodleCell.m in Sources */,
 				68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */,
+				6837E5D51ADD052F00779F18 /* KJRandomViewDataSource.m in Sources */,
 				68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

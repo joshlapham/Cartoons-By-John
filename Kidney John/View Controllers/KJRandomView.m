@@ -17,14 +17,16 @@
 #import "UIFont+KJFonts.h"
 #import "KJRandomImage.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "KJRandomViewDataSource.h"
 
 // Constants
 static NSString *kDoodleCellIdentifier = @"doodleCell";
 
-@interface KJRandomView () <UICollectionViewDelegate, UICollectionViewDataSource, UIAlertViewDelegate>
+@interface KJRandomView () <UIAlertViewDelegate>
 
+// Properties
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray *cellDataSource;
+@property (nonatomic, strong) KJRandomViewDataSource *dataSource;
 @property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -108,6 +110,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     [flowLayout setMinimumInteritemSpacing:0.0f];
     [flowLayout setMinimumLineSpacing:0.0f];
     
+    // TODO: review this for iPhone 6 + bug
     // Use up whole screen (or frame)
     [flowLayout setItemSize:self.collectionView.bounds.size];
     
@@ -115,49 +118,12 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     self.collectionView.pagingEnabled = YES;
     self.collectionView.collectionViewLayout = flowLayout;
     self.collectionView.frame = self.view.frame;
-}
-
-#pragma mark - UICollectionView delegate methods
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView
-     numberOfItemsInSection:(NSInteger)section {
-    return [_cellDataSource count];
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    // Init cell
-    KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kDoodleCellIdentifier
-                                                                                   forIndexPath:indexPath];
     
-    // Init cell data
-    KJRandomImage *cellData = [_cellDataSource objectAtIndex:indexPath.row];
+    // Init data source
+    _dataSource = [[KJRandomViewDataSource alloc] init];
     
-    // SDWebImage
-    // Check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
-        //DDLogVerbose(@"found image in cache");
-    } else {
-        //DDLogVerbose(@"no image in cache");
-        // TODO: implement fallback if image not in cache
-    }
-    
-    // Set doodle image
-    [cell.doodleImageView sd_setImageWithURL:[NSURL URLWithString:cellData.imageUrl]
-                            placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                   completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
-                                       if (cellImage && !error) {
-                                           DDLogVerbose(@"Doodles: fetched image from URL: %@", url);
-                                       } else {
-                                           DDLogError(@"Doodles: error fetching image: %@", [error localizedDescription]);
-                                       }
-                                   }];
-    
-    return cell;
+    // Set delegates
+    self.collectionView.dataSource = _dataSource;
 }
 
 #pragma mark - Data fetch did happen method
@@ -169,12 +135,12 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     // Check if coming from Favourites list ..
     // Is coming from favourites list, so init data source array with just that one image
     if (self.selectedImageFromFavouritesList != nil) {
-        _cellDataSource = @[ self.selectedImageFromFavouritesList ];
+        _dataSource.cellDataSource = @[ self.selectedImageFromFavouritesList ];
     }
     
     // Not coming from favourites list, so init data source array with all doodles
     else {
-        _cellDataSource = [[KJDoodleStore sharedStore] returnDoodlesArray];
+        _dataSource.cellDataSource = [[KJDoodleStore sharedStore] returnDoodlesArray];
     }
     
     // Init action button in top right hand corner of navbar
@@ -206,7 +172,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 - (void)showActivityView {
     // Get data for doodle currently on screen
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
-    KJRandomImage *cellData = [_cellDataSource objectAtIndex:currentCellIndex.row];
+    KJRandomImage *cellData = [_dataSource.cellDataSource objectAtIndex:currentCellIndex.row];
     
     // TODO: review these image methods
     
@@ -310,6 +276,8 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 }
 
 #pragma mark - UIAlertView delegate methods
+
+// TODO: refactor to use UIAlertController
 
 -       (void)alertView:(UIAlertView *)alertView
    clickedButtonAtIndex:(NSInteger)buttonIndex {
