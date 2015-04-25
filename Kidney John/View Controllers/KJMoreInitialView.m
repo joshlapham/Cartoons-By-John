@@ -22,6 +22,8 @@
 
 // Constants
 static NSString *kSocialCellIdentifier = @"SocialLinkCell";
+static NSString *kSegueIdentifierDoodleFavourite = @"doodleFavouriteSegue";
+static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
 
 @interface KJMoreInitialView () <UITableViewDataSource, UITableViewDelegate>
 
@@ -93,7 +95,8 @@ static NSString *kSocialCellIdentifier = @"SocialLinkCell";
     _cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
     
     // Register cells with tableView
-    [self.tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell" bundle:nil]
+    [self.tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell"
+                                               bundle:nil]
          forCellReuseIdentifier:kSocialCellIdentifier];
     
     // Allow for dynamic sized cells
@@ -202,13 +205,13 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             // If Doodles was tapped ..
             if (_chosenRow == 2) {
                 // Doodles was chosen
-                [self performSegueWithIdentifier:@"doodleFavouriteSegue"
+                [self performSegueWithIdentifier:kSegueIdentifierDoodleFavourite
                                           sender:self];
             }
             
             // Videos or Comix was chosen
             else {
-                [self performSegueWithIdentifier:@"favouritesSegue"
+                [self performSegueWithIdentifier:kSegueIdentifierFavourite
                                           sender:self];
             }
         }
@@ -259,7 +262,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
-    if ([[segue identifier] isEqualToString:@"favouritesSegue"]) {
+    // Videos or Comix
+    if ([[segue identifier] isEqualToString:kSegueIdentifierFavourite]) {
         //DDLogVerbose(@"in segue method ..");
         NSString *typeOfFavourite = [_cellArray objectAtIndex:_chosenRow];
         //DDLogVerbose(@"type of fav: %@", typeOfFavourite);
@@ -283,7 +287,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     
     // Doodles
-    else if ([segue.identifier isEqualToString:@"doodleFavouriteSegue"]) {
+    else if ([segue.identifier isEqualToString:kSegueIdentifierDoodleFavourite]) {
         // NOTE: don't need to set anything here
         //KJFavDoodlesListView *destViewController = segue.destinationViewController;
     }
