@@ -107,4 +107,21 @@ NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
     return NSStringFromClass(self.class);
 }
 
+#pragma mark - Accessibility methods
+
+- (BOOL)isAccessibilityElement {
+    return YES;
+}
+
+- (NSString *)accessibilityLabel {
+    NSString *accessibilityString = [NSString stringWithFormat:@"Comic title: %@",
+                                     _comicTitle];
+    
+    return NSLocalizedString(accessibilityString, nil);
+}
+
+- (NSString *)accessibilityHint {
+    return NSLocalizedString(@"Double-tap to zoom in or out on comic", nil);
+}
+
 @end
