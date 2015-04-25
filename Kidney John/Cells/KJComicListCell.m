@@ -9,6 +9,14 @@
 #import "KJComicListCell.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "KJComic.h"
+
+@interface KJComicListCell ()
+
+// Properties
+@property (nonatomic, strong) NSString *comicName;
+
+@end
 
 @implementation KJComicListCell
 
@@ -52,5 +60,31 @@
 + (NSString *)cellIdentifier {
     return [NSString stringWithFormat:@"%@", self.class];
 }
+
+#pragma mark - Configure cell method
+
+- (void)configureCellWithData:(KJComic *)cellData {
+    // Set comic title
+    _comicName = cellData.comicName;
+}
+
+//#pragma mark - Accessibility methods
+//
+//- (NSString *)accessibilityLabel {
+//    NSString *videoTitle = [self.videoTitle accessibilityLabel];
+//    NSString *videoDescription = [self.videoDescription accessibilityLabel];
+//    NSString *videoDuration = [self.videoDuration accessibilityLabel];
+//    
+//    NSString *accessibilityString = [NSString stringWithFormat:@"Video title: %@, Description: %@, Duration: %@",
+//                                     videoTitle,
+//                                     videoDescription,
+//                                     videoDuration];
+//    
+//    return NSLocalizedString(accessibilityString, nil);
+//}
+//
+//- (NSString *)accessibilityHint {
+//    return NSLocalizedString(@"Tap to view comic", nil);
+//}
 
 @end
