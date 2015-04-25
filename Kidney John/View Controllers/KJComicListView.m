@@ -249,6 +249,7 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     [cell configureCellWithData:cellData];
     
     // Set comic thumbnail using SDWebImage
+    // TODO: refactor to do image setting in configureCell method on KJComicCell class
     [cell.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
                            placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                                   completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
