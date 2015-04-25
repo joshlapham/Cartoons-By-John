@@ -10,6 +10,10 @@
 
 @interface KJComicCell : UICollectionViewCell <UIScrollViewDelegate>
 
+// Properties
 @property (strong, nonatomic) UIImageView *comicImageView;
+
+// Methods
++ (NSString *)cellIdentifier;
 
 @end

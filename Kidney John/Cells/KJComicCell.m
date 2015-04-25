@@ -7,6 +7,14 @@
 //
 
 #import "KJComicCell.h"
+#import "KJComic.h"
+
+@interface KJComicCell ()
+
+// Properties
+@property (nonatomic, strong) KJComic *cellData;
+
+@end
 
 @implementation KJComicCell
 
@@ -29,5 +37,30 @@
     
     return self;
 }
+
+//- (instancetype)initWithComic:(KJComic *)comic {
+//    self = [super initWithFrame:<#(CGRect)#>];
+//}
+
+#pragma mark - Cell identifier method
+
++ (NSString *)cellIdentifier {
+    return NSStringFromClass(self.class);
+}
+
+//#pragma mark - Accessibility methods
+//
+//- (NSString *)accessibilityLabel {
+//    NSString *comicTitle = [self.comicTitle accessibilityLabel];
+//    
+//    NSString *accessibilityString = [NSString stringWithFormat:@"Comic title: %@",
+//                                     comicTitle];
+//    
+//    return NSLocalizedString(accessibilityString, nil);
+//}
+//
+//- (NSString *)accessibilityHint {
+//    return NSLocalizedString(@"Tap to view comic", nil);
+//}
 
 @end
