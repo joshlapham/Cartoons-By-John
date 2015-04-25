@@ -7,10 +7,18 @@
 //
 
 #import "KJComicDetailCell.h"
+#import "KJComic.h"
 
 // Constants
 // Constant for NSNotification name
 NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
+
+@interface KJComicDetailCell ()
+
+// Properties
+@property (nonatomic, strong) NSString *comicTitle;
+
+@end
 
 @implementation KJComicDetailCell
 
@@ -80,6 +88,19 @@ NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
         [comicScrollView setZoomScale:comicScrollView.maximumZoomScale
                              animated:YES];
     }
+}
+
+#pragma mark - Configure cell method
+
+- (void)configureCellWithData:(KJComic *)cellData {
+    // Set comic title
+    _comicTitle = cellData.comicName;
+}
+
+#pragma mark - Cell identifier method
+
++ (NSString *)cellIdentifier {
+    return NSStringFromClass(self.class);
 }
 
 @end

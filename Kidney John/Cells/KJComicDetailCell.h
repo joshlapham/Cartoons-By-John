@@ -8,12 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@class KJComic;
+
 // Constants
 extern NSString * const KJComicWasDoubleTappedNotification;
 
 @interface KJComicDetailCell : UICollectionViewCell <UIScrollViewDelegate>
 
+// Properties
 @property (strong, nonatomic) UIImageView *comicImageView;
 @property (strong, nonatomic) UIScrollView *comicScrollView;
+
+// Methods
+- (void)configureCellWithData:(KJComic *)cellData;
++ (NSString *)cellIdentifier;
 
 @end
