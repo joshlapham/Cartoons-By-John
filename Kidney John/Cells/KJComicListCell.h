@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class KJComic;
+
 @interface KJComicListCell : UITableViewCell
 
 // Properties

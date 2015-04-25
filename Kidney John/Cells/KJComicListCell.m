@@ -10,6 +10,7 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 #import "KJComic.h"
+#import "KJComic+Methods.h"
 
 @interface KJComicListCell ()
 
@@ -66,6 +67,10 @@
 - (void)configureCellWithData:(KJComic *)cellData {
     // Set comic title
     _comicName = cellData.comicName;
+    
+    // Set cell label text
+    self.comicTitle.text = cellData.comicName;
+    self.comicThumbnail.image = [cellData returnComicThumbImageFromComic];
 }
 
 //#pragma mark - Accessibility methods
