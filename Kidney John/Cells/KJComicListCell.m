@@ -73,23 +73,17 @@
     self.comicThumbnail.image = [cellData returnComicThumbImageFromComic];
 }
 
-//#pragma mark - Accessibility methods
-//
-//- (NSString *)accessibilityLabel {
-//    NSString *videoTitle = [self.videoTitle accessibilityLabel];
-//    NSString *videoDescription = [self.videoDescription accessibilityLabel];
-//    NSString *videoDuration = [self.videoDuration accessibilityLabel];
-//    
-//    NSString *accessibilityString = [NSString stringWithFormat:@"Video title: %@, Description: %@, Duration: %@",
-//                                     videoTitle,
-//                                     videoDescription,
-//                                     videoDuration];
-//    
-//    return NSLocalizedString(accessibilityString, nil);
-//}
-//
-//- (NSString *)accessibilityHint {
-//    return NSLocalizedString(@"Tap to view comic", nil);
-//}
+#pragma mark - Accessibility methods
+
+- (NSString *)accessibilityLabel {
+    NSString *accessibilityString = [NSString stringWithFormat:@"Comic title: %@",
+                                     _comicTitle];
+    
+    return NSLocalizedString(accessibilityString, nil);
+}
+
+- (NSString *)accessibilityHint {
+    return NSLocalizedString(@"Tap to view comic", nil);
+}
 
 @end
