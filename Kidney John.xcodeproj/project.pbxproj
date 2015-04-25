@@ -843,8 +843,6 @@
 					"-l\"Pods-MBProgressHUD\"",
 					"-l\"Pods-PBWebViewController\"",
 					"-l\"Pods-PBYouTubeVideoViewController\"",
-					"-l\"Pods-Parse\"",
-					"-l\"Pods-ParseCrashReporting\"",
 					"-l\"Pods-Reachability\"",
 					"-l\"Pods-SDWebImage\"",
 					"-l\"sqlite3\"",
@@ -885,7 +883,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "EE12BE2C-8A91-4427-9A27-C388BDB3F47D";
+				PROVISIONING_PROFILE = "c661ef61-cffb-4afb-b66b-60bc8b505c4d";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -909,8 +907,6 @@
 					"-l\"Pods-MBProgressHUD\"",
 					"-l\"Pods-PBWebViewController\"",
 					"-l\"Pods-PBYouTubeVideoViewController\"",
-					"-l\"Pods-Parse\"",
-					"-l\"Pods-ParseCrashReporting\"",
 					"-l\"Pods-Reachability\"",
 					"-l\"Pods-SDWebImage\"",
 					"-l\"sqlite3\"",
@@ -951,7 +947,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7E480498-5969-4C1D-B5FB-C7ACFCD46B02";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
