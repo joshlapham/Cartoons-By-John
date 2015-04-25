@@ -31,4 +31,14 @@
     return self;
 }
 
+#pragma mark - Accessibility methods
+
+- (BOOL)isAccessibilityElement {
+    return YES;
+}
+
+- (NSString *)accessibilityHint {
+    return NSLocalizedString(@"Swipe left or right to navigate between images", nil);
+}
+
 @end
