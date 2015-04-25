@@ -22,6 +22,14 @@
 #import "KJVideoCell.h"
 #import "KJComicListCell.h"
 
+// Constants
+// Segue identifiers
+static NSString * kSegueIdentifierVideoFavourites = @"favouritesVideoSegue";
+static NSString * kSegueIdentifierComicDetailFavourites = @"comicDetailSegueFromFavourites";
+
+// Fallback placeholder for video duration
+static NSString * kVideoDurationFallbackString = @"0:30";
+
 @interface KJFavouritesListView () <UITableViewDelegate, UITableViewDataSource>
 
 @end
@@ -54,6 +62,8 @@
 
 #pragma mark - Show noFavouritesAlertView method
 
+// TODO: refactor to use UIAlertController
+
 - (void)thereAreNoFavourites {
     // Init strings for noFavouritesAlertView
     NSString *titleString = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
@@ -81,6 +91,8 @@
 }
 
 #pragma mark - UITableView data source delegate methods
+
+// TODO: refactor dataSource into own class
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -110,8 +122,10 @@
         
         // Placeholder duration
         if (cellData.videoDuration == nil) {
-            videoCell.videoDuration.text = @"0:30";
-        } else {
+            videoCell.videoDuration.text = kVideoDurationFallbackString;
+        }
+        
+        else {
             videoCell.videoDuration.text = cellData.videoDuration;
         }
         
@@ -158,13 +172,13 @@
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Videos
     if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-        [self performSegueWithIdentifier:@"favouritesVideoSegue"
+        [self performSegueWithIdentifier:kSegueIdentifierVideoFavourites
                                   sender:self];
     }
     
     // Comics
     else if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
-        [self performSegueWithIdentifier:@"comicDetailSegueFromFavourites"
+        [self performSegueWithIdentifier:kSegueIdentifierComicDetailFavourites
                                   sender:self];
     }
 }
@@ -177,14 +191,14 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     
     // Videos
-    if ([segue.identifier isEqualToString:@"favouritesVideoSegue"]) {
+    if ([segue.identifier isEqualToString:kSegueIdentifierVideoFavourites]) {
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
         KJVideo *cellVideo = [self.cellResults objectAtIndex:indexPath.row];
         destViewController.chosenVideo = cellVideo;
     }
     
     // Comics
-    else if ([segue.identifier isEqualToString:@"comicDetailSegueFromFavourites"]) {
+    else if ([segue.identifier isEqualToString:kSegueIdentifierComicDetailFavourites]) {
         // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
         
