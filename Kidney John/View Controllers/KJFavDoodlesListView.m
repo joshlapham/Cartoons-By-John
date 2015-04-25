@@ -12,13 +12,13 @@
 #import "KJDoodleCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJRandomView.h"
+#import "UIColor+KJColours.h"
 
 // Constants
 static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
 @interface KJFavDoodlesListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *cellResults;
 
 @end
@@ -37,6 +37,9 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
     [self.collectionView registerClass:[KJDoodleCell class]
             forCellWithReuseIdentifier:kDoodleFavouriteCellIdentifier];
     
+    // Setup collectionView
+    [self setupCollectionView];
+    
     // Init data source array
     // TODO: review this, init another way using Core Data
     _cellResults = [[KJDoodleStore sharedStore] returnFavouritesArray];
@@ -48,6 +51,13 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
     
     // Reload collectionView
     [self.collectionView reloadData];
+}
+
+#pragma mark - Setup collectionView helper method
+
+- (void)setupCollectionView {
+    // Set collectionView properties
+    self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
 }
 
 #pragma mark - UICollectionView delegate methods

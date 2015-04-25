@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KJFavDoodlesListView : UIViewController
+@interface KJFavDoodlesListView : UICollectionViewController
 
 @end
