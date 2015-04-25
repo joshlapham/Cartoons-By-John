@@ -77,7 +77,7 @@
 
 - (NSString *)accessibilityLabel {
     NSString *accessibilityString = [NSString stringWithFormat:@"Comic title: %@",
-                                     _comicTitle];
+                                     _comicName];
     
     return NSLocalizedString(accessibilityString, nil);
 }
