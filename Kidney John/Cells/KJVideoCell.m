@@ -85,7 +85,7 @@ static CGFloat kMaxLayoutWidthModifier = 195;
 }
 
 - (NSString *)accessibilityHint {
-    return NSLocalizedString(@"Play video", nil);
+    return NSLocalizedString(@"Tap to play video", nil);
 }
 
 @end
