@@ -154,9 +154,8 @@ static NSString * kVideoDurationFallbackString = @"0:30";
         // Init cell data
         KJComic *cellData = [self.cellResults objectAtIndex:indexPath.row];
         
-        // Set cell label text
-        comicCell.comicTitle.text = cellData.comicName;
-        comicCell.comicThumbnail.image = [cellData returnComicThumbImageFromComic];
+        // Configure cell
+        [comicCell configureCellWithData:cellData];
         
         // Return cell
         return comicCell;
