@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -30,8 +30,10 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Rek-tZ-2EL" firstAttribute="leading" secondItem="efS-Yg-Wst" secondAttribute="leadingMargin" constant="12" id="4Nn-Nc-Ase"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="rYh-oe-Gln" secondAttribute="bottom" constant="3" id="E83-td-XtX"/>
                     <constraint firstAttribute="centerY" secondItem="Rek-tZ-2EL" secondAttribute="centerY" id="ENO-e1-2gV"/>
                     <constraint firstItem="rYh-oe-Gln" firstAttribute="leading" secondItem="Rek-tZ-2EL" secondAttribute="trailing" constant="8" id="Ysj-Bg-w7j"/>
+                    <constraint firstItem="rYh-oe-Gln" firstAttribute="top" secondItem="efS-Yg-Wst" secondAttribute="topMargin" constant="3" id="e7i-Yw-8Ti"/>
                     <constraint firstAttribute="centerY" secondItem="rYh-oe-Gln" secondAttribute="centerY" id="ssm-TO-got"/>
                 </constraints>
             </tableViewCellContentView>
