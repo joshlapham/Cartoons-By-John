@@ -947,7 +947,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "403dc5b9-ee64-4776-b182-bca65328fbec";
+				PROVISIONING_PROFILE = "3c0a5fad-a3d4-484d-b8f5-fa3f8986032c";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
