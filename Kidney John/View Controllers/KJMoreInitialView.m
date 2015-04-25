@@ -376,13 +376,27 @@ titleForHeaderInSection:(NSInteger)section {
 
 - (void)initHardcodedSocialLinksArray {
     // TODO: load these from a .plist included with app, so there are initial values?
-    NSDictionary *facebookLink = @{@"title" : @"Facebook", @"url" : @"https://www.facebook.com/kidneyjohn", @"image" : @"facebook.png"};
-    NSDictionary *twitterLink = @{@"title" : @"Twitter", @"url" : @"https://twitter.com/johnrodpaine", @"image" : @"twitter.png"};
-    NSDictionary *tumblrLink = @{@"title" : @"Tumblr", @"url" : @"http://johnroderickpaine.tumblr.com", @"image" : @"tumblr.png"};
-    NSDictionary *youtubeLink = @{@"title" : @"YouTube", @"url" : @"https://www.youtube.com/user/kidneyjohn", @"image" : @"youtube.png"};
-    NSDictionary *vimeoLink = @{@"title" : @"Vimeo", @"url" : @"http://vimeo.com/johnroderickpaine", @"image" : @"vimeo.png"};
-    NSDictionary *instaLink = @{@"title" : @"Instagram", @"url" : @"http://instagram.com/johnroderickpaine", @"image" : @"instagram.png"};
-    NSDictionary *societyLink = @{@"title" : @"Society6", @"url" : @"http://society6.com/kidneyjohn", @"image" : @"society6.png"};
+    NSDictionary *facebookLink = @{ @"title" : @"Facebook",
+                                    @"url" : @"https://www.facebook.com/kidneyjohn",
+                                    @"image" : @"facebook.png" };
+    NSDictionary *twitterLink = @{ @"title" : @"Twitter",
+                                   @"url" : @"https://twitter.com/johnrodpaine",
+                                   @"image" : @"twitter.png" };
+    NSDictionary *tumblrLink = @{ @"title" : @"Tumblr",
+                                  @"url" : @"http://johnroderickpaine.tumblr.com",
+                                  @"image" : @"tumblr.png" };
+    NSDictionary *youtubeLink = @{ @"title" : @"YouTube",
+                                   @"url" : @"https://www.youtube.com/user/kidneyjohn",
+                                   @"image" : @"youtube.png" };
+    NSDictionary *vimeoLink = @{ @"title" : @"Vimeo",
+                                 @"url" : @"http://vimeo.com/johnroderickpaine",
+                                 @"image" : @"vimeo.png" };
+    NSDictionary *instaLink = @{ @"title" : @"Instagram",
+                                 @"url" : @"http://instagram.com/johnroderickpaine",
+                                 @"image" : @"instagram.png" };
+    NSDictionary *societyLink = @{ @"title" : @"Society6",
+                                   @"url" : @"http://society6.com/kidneyjohn",
+                                   @"image" : @"society6.png" };
     
     _socialLinksArray = [[NSMutableArray alloc] init];
     [_socialLinksArray addObject:facebookLink];
