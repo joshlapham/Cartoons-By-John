@@ -12,9 +12,9 @@
             <key>Title</key>
             <string>Version</string>
             <key>Key</key>
-            <string>1.1</string>
+            <string>1.1.1</string>
             <key>DefaultValue</key>
-            <string>1.1</string>
+            <string>1.1.1</string>
         </dict>
         <dict>
             <key>Type</key>
@@ -22,9 +22,9 @@
             <key>Title</key>
             <string>Build</string>
             <key>Key</key>
-            <string>114</string>
+            <string>115</string>
             <key>DefaultValue</key>
-            <string>114</string>
+            <string>115</string>
         </dict>
         <dict>
             <key>Type</key>
