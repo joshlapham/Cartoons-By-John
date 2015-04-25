@@ -10,6 +10,10 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 
+// Constants
+// Modifier for description label max layout width
+static CGFloat kMaxLayoutWidthModifier = 195;
+
 @implementation KJVideoCell
 
 #pragma mark - Awake from NIB method
@@ -24,7 +28,12 @@
     self.videoDescription.font = [UIFont kj_videoDescriptionFont];
     self.videoDescription.textColor = [UIColor kj_videoDurationTextColour];
     self.videoDescription.numberOfLines = 0;
-    self.videoDescription.preferredMaxLayoutWidth = 130;
+    
+    // TODO: this is hacky!
+    // Calculate max layout width for video description label
+    CGFloat mainScreenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat maxLayoutWidth = mainScreenWidth - kMaxLayoutWidthModifier;
+    self.videoDescription.preferredMaxLayoutWidth = maxLayoutWidth;
     
     // Video duration
     self.videoDuration.font = [UIFont kj_videoDurationFont];
