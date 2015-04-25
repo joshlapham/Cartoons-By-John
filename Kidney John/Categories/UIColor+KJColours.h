@@ -26,6 +26,9 @@
 + (UIColor *)kj_videoDurationTextColour;
 + (UIColor *)kj_newVideoLabelColour;
 
+// 'Doodles' view
++ (UIColor *)kj_doodlesViewBackgroundColour;
+
 // 'More' view
 + (UIColor *)kj_moreViewSectionTextColour;
 

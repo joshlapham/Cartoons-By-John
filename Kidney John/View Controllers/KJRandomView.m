@@ -18,6 +18,7 @@
 #import "KJRandomImage.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "KJRandomViewDataSource.h"
+#import "UIColor+KJColours.h"
 
 // Constants
 static NSString *kDoodleCellIdentifier = @"doodleCell";
@@ -25,7 +26,6 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 @interface KJRandomView () <UIAlertViewDelegate>
 
 // Properties
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) KJRandomViewDataSource *dataSource;
 @property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
@@ -104,20 +104,21 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 #pragma mark - Setup collectionView method
 
 - (void)setupCollectionView {
+    // Set collectionView properties
+    self.collectionView.pagingEnabled = YES;
+    self.collectionView.frame = self.view.bounds;
+    self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    
     // Init flow layout
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [flowLayout setMinimumInteritemSpacing:0.0f];
     [flowLayout setMinimumLineSpacing:0.0f];
     
-    // TODO: review this for iPhone 6 + bug
+    self.collectionView.collectionViewLayout = flowLayout;
+    
     // Use up whole screen (or frame)
     [flowLayout setItemSize:self.collectionView.bounds.size];
-    
-    // Set collectionView properties
-    self.collectionView.pagingEnabled = YES;
-    self.collectionView.collectionViewLayout = flowLayout;
-    self.collectionView.frame = self.view.frame;
     
     // Init data source
     _dataSource = [[KJRandomViewDataSource alloc] init];

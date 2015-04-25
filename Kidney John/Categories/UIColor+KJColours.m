@@ -103,6 +103,11 @@
     return [UIColor colorWithRed:92/255.0 green:184/255.0 blue:92/255.0 alpha:1];
 }
 
+// 'Doodles' view
++ (UIColor *)kj_doodlesViewBackgroundColour {
+    return [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
+}
+
 // 'More' view
 + (UIColor *)kj_moreViewSectionTextColour {
     return [UIColor darkGrayColor];
