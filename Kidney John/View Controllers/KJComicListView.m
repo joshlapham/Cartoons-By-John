@@ -20,10 +20,12 @@
 #import "NSUserDefaults+KJSettings.h"
 
 // Constants
-static NSString *kComicCellIdentifier = @"comicCell";
+// Segue identifiers
+static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 
+// Properties
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *comicResults;
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
@@ -63,7 +65,7 @@ static NSString *kComicCellIdentifier = @"comicCell";
     
     // Init collection view cell
     [self.collectionView registerClass:[KJComicCell class]
-            forCellWithReuseIdentifier:kComicCellIdentifier];
+            forCellWithReuseIdentifier:[KJComicCell cellIdentifier]];
     
     // Register NSNotifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -237,7 +239,7 @@ static NSString *kComicCellIdentifier = @"comicCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
-    KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kComicCellIdentifier
+    KJComicCell *cell = (KJComicCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[KJComicCell cellIdentifier]
                                                                                  forIndexPath:indexPath];
     
     // Init cell data
@@ -261,7 +263,8 @@ static NSString *kComicCellIdentifier = @"comicCell";
 -   (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     DDLogVerbose(@"Comix: selected item - %ld", (long)indexPath.row);
-    [self performSegueWithIdentifier:@"comicDetailSegue" sender:self];
+    [self performSegueWithIdentifier:kSegueIdentifierComicDetail
+                              sender:self];
     
 }
 
@@ -275,7 +278,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"comicDetailSegue"]) {
+    if ([segue.identifier isEqualToString:kSegueIdentifierComicDetail]) {
         // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
         
