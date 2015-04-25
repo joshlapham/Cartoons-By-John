@@ -16,25 +16,6 @@ static CGFloat kMaxLayoutWidthModifier = 195;
 
 @implementation KJVideoCell
 
-#pragma mark - Accessibility methods
-
-- (NSString *)accessibilityLabel {
-    NSString *videoTitle = [self.videoTitle accessibilityLabel];
-    NSString *videoDescription = [self.videoDescription accessibilityLabel];
-    NSString *videoDuration = [self.videoDuration accessibilityLabel];
-    
-    NSString *accessibilityString = [NSString stringWithFormat:@"Video title: %@, Description: %@, Duration: %@",
-                                     videoTitle,
-                                     videoDescription,
-                                     videoDuration];
-    
-    return NSLocalizedString(accessibilityString, nil);
-}
-
-- (NSString *)accessibilityHint {
-    return NSLocalizedString(@"Play video", nil);
-}
-
 #pragma mark - Awake from NIB method
 
 - (void)awakeFromNib {
@@ -86,6 +67,25 @@ static CGFloat kMaxLayoutWidthModifier = 195;
 
 + (NSString *)cellIdentifier {
     return [NSString stringWithFormat:@"%@", self.class];
+}
+
+#pragma mark - Accessibility methods
+
+- (NSString *)accessibilityLabel {
+    NSString *videoTitle = [self.videoTitle accessibilityLabel];
+    NSString *videoDescription = [self.videoDescription accessibilityLabel];
+    NSString *videoDuration = [self.videoDuration accessibilityLabel];
+    
+    NSString *accessibilityString = [NSString stringWithFormat:@"Video title: %@, Description: %@, Duration: %@",
+                                     videoTitle,
+                                     videoDescription,
+                                     videoDuration];
+    
+    return NSLocalizedString(accessibilityString, nil);
+}
+
+- (NSString *)accessibilityHint {
+    return NSLocalizedString(@"Play video", nil);
 }
 
 @end
