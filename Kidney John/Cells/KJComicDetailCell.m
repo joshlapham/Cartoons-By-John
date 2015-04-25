@@ -8,6 +8,7 @@
 
 #import "KJComicDetailCell.h"
 #import "KJComic.h"
+#import "KJComic+Methods.h"
 
 // Constants
 // Constant for NSNotification name
@@ -16,13 +17,13 @@ NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
 @interface KJComicDetailCell ()
 
 // Properties
+@property (strong, nonatomic) UIImageView *comicImageView;
+@property (strong, nonatomic) UIScrollView *comicScrollView;
 @property (nonatomic, strong) NSString *comicTitle;
 
 @end
 
 @implementation KJComicDetailCell
-
-@synthesize comicImageView, comicScrollView;
 
 #pragma mark - dealloc method
 
@@ -50,21 +51,21 @@ NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
                                                    object:nil];
         
         // Init scrollView
-        comicScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        comicScrollView.delegate = self;
-        comicScrollView.minimumZoomScale = 1.0;
-        comicScrollView.maximumZoomScale = 3.0;
-        comicScrollView.contentSize = self.bounds.size;
+        _comicScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _comicScrollView.delegate = self;
+        _comicScrollView.minimumZoomScale = 1.0;
+        _comicScrollView.maximumZoomScale = 3.0;
+        _comicScrollView.contentSize = self.bounds.size;
         
         // Init imageView
-        comicImageView = [[UIImageView alloc] initWithFrame:comicScrollView.bounds];
-        comicImageView.contentMode = UIViewContentModeScaleToFill;
+        _comicImageView = [[UIImageView alloc] initWithFrame:_comicScrollView.bounds];
+        _comicImageView.contentMode = UIViewContentModeScaleToFill;
         
         // Add imageView to scrollView
-        [comicScrollView addSubview:comicImageView];
+        [_comicScrollView addSubview:_comicImageView];
         
         // Add scrollView to view
-        [self addSubview:comicScrollView];
+        [self addSubview:_comicScrollView];
     }
     
     return self;
@@ -73,20 +74,20 @@ NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
 #pragma mark - UIScrollView delegate methods
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    return comicImageView;
+    return _comicImageView;
 }
 
 #pragma mark - UIGestureRecognizer methods
 
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer {
-    if (comicScrollView.zoomScale > comicScrollView.minimumZoomScale) {
-        [comicScrollView setZoomScale:comicScrollView.minimumZoomScale
-                             animated:YES];
+    if (_comicScrollView.zoomScale > _comicScrollView.minimumZoomScale) {
+        [_comicScrollView setZoomScale:_comicScrollView.minimumZoomScale
+                              animated:YES];
     }
     
     else {
-        [comicScrollView setZoomScale:comicScrollView.maximumZoomScale
-                             animated:YES];
+        [_comicScrollView setZoomScale:_comicScrollView.maximumZoomScale
+                              animated:YES];
     }
 }
 
@@ -95,6 +96,9 @@ NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
 - (void)configureCellWithData:(KJComic *)cellData {
     // Set comic title
     _comicTitle = cellData.comicName;
+    
+    // Set comic image
+    _comicImageView.image = [cellData returnComicImageFromComic];
 }
 
 #pragma mark - Cell identifier method
