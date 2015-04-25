@@ -71,10 +71,15 @@ NSString * const KJComicWasDoubleTappedNotification = @"KJComicWasDoubleTapped";
 #pragma mark - UIGestureRecognizer methods
 
 - (void)handleDoubleTap:(UIGestureRecognizer *)gestureRecognizer {
-    if(comicScrollView.zoomScale > comicScrollView.minimumZoomScale)
-        [comicScrollView setZoomScale:comicScrollView.minimumZoomScale animated:YES];
-    else
-        [comicScrollView setZoomScale:comicScrollView.maximumZoomScale animated:YES];
+    if (comicScrollView.zoomScale > comicScrollView.minimumZoomScale) {
+        [comicScrollView setZoomScale:comicScrollView.minimumZoomScale
+                             animated:YES];
+    }
+    
+    else {
+        [comicScrollView setZoomScale:comicScrollView.maximumZoomScale
+                             animated:YES];
+    }
 }
 
 @end
