@@ -20,7 +20,7 @@ Run `pod install` in the project directory to install these dependencies.
 
 #### Parse.com
 
-__NOTE__: This project uses Parse.com for the backend database, and does not include the required API keys for privacy reasons. The app will not run without them.
+__NOTE__: This project uses [Parse.com](https://parse.com/) for the backend database, and does not include the required API keys for privacy reasons. The app will not run without them.
 
 ### Other Info
 
@@ -30,7 +30,7 @@ This project adheres to the [NYTimes Objective-C Style Guide](https://github.com
 
 #### Third-Party Libraries
 
-The following libraries were used to create this app -
+The following libraries are used in this app:
 
 * [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
 * [Parse-iOS-SDK](https://parse.com)
@@ -39,4 +39,4 @@ The following libraries were used to create this app -
 * [Reachability](https://github.com/tonymillion/Reachability)
 * [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack)
 
-Thank you to the respective authors for creating and sharing your work.
+Thank you to the respective authors for creating and sharing their work.
