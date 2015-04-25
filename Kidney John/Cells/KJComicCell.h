@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class KJComic;
+
 @interface KJComicCell : UICollectionViewCell <UIScrollViewDelegate>
 
 // Properties
 @property (strong, nonatomic) UIImageView *comicImageView;
 
 // Methods
+- (void)configureCellWithData:(KJComic *)cellData;
 + (NSString *)cellIdentifier;
 
 @end

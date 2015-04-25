@@ -12,7 +12,7 @@
 @interface KJComicCell ()
 
 // Properties
-@property (nonatomic, strong) KJComic *cellData;
+@property (nonatomic, strong) NSString *comicTitle;
 
 @end
 
@@ -38,9 +38,12 @@
     return self;
 }
 
-//- (instancetype)initWithComic:(KJComic *)comic {
-//    self = [super initWithFrame:<#(CGRect)#>];
-//}
+#pragma mark - Configure cell method
+
+- (void)configureCellWithData:(KJComic *)cellData {
+    // Set comic title
+    _comicTitle = cellData.comicName;
+}
 
 #pragma mark - Cell identifier method
 
