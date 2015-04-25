@@ -15,21 +15,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rek-tZ-2EL">
-                        <rect key="frame" x="20" y="7" width="30" height="30"/>
+                        <rect key="frame" x="10" y="7" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="Xak-Z5-KZO"/>
                             <constraint firstAttribute="width" constant="30" id="b3s-tW-Ob8"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rYh-oe-Gln">
-                        <rect key="frame" x="58" y="11" width="42" height="21"/>
+                        <rect key="frame" x="48" y="11" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Rek-tZ-2EL" firstAttribute="leading" secondItem="efS-Yg-Wst" secondAttribute="leadingMargin" constant="12" id="4Nn-Nc-Ase"/>
+                    <constraint firstItem="Rek-tZ-2EL" firstAttribute="leading" secondItem="efS-Yg-Wst" secondAttribute="leadingMargin" constant="2" id="4Nn-Nc-Ase"/>
                     <constraint firstAttribute="bottomMargin" secondItem="rYh-oe-Gln" secondAttribute="bottom" constant="3" id="E83-td-XtX"/>
                     <constraint firstAttribute="centerY" secondItem="Rek-tZ-2EL" secondAttribute="centerY" id="ENO-e1-2gV"/>
                     <constraint firstItem="rYh-oe-Gln" firstAttribute="leading" secondItem="Rek-tZ-2EL" secondAttribute="trailing" constant="8" id="Ysj-Bg-w7j"/>
