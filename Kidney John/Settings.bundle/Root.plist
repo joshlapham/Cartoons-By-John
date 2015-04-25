@@ -18,6 +18,16 @@
         </dict>
         <dict>
             <key>Type</key>
+            <string>PSTitleValueSpecifier</string>
+            <key>Title</key>
+            <string>Build</string>
+            <key>Key</key>
+            <string>114</string>
+            <key>DefaultValue</key>
+            <string>114</string>
+        </dict>
+        <dict>
+            <key>Type</key>
             <string>PSChildPaneSpecifier</string>
             <key>Title</key>
             <string>Acknowledgements</string>
