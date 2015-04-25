@@ -34,7 +34,6 @@ The following libraries were used to create this app -
 
 * [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
 * [Parse-iOS-SDK](https://parse.com)
-* [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
 * [PBWebViewController](https://github.com/kmikael/PBWebViewController)
 * [SDWebImage](https://github.com/rs/SDWebImage)
 * [Reachability](https://github.com/tonymillion/Reachability)
