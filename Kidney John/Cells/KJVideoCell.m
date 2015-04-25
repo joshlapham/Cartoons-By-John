@@ -31,6 +31,10 @@ static CGFloat kMaxLayoutWidthModifier = 195;
     return NSLocalizedString(accessibilityString, nil);
 }
 
+- (NSString *)accessibilityHint {
+    return NSLocalizedString(@"Play video", nil);
+}
+
 #pragma mark - Awake from NIB method
 
 - (void)awakeFromNib {
