@@ -13,11 +13,9 @@
 #import "KJComic.h"
 #import "KJComic+Methods.h"
 
-// Constants
-static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
-
 @interface KJComicDetailView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
+// Properties
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *cellDataSource;
 
@@ -41,6 +39,7 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
         // Init array with just initialComicToShow object, as that's all we need
         _cellDataSource = @[ self.initialComicToShow ];
     }
+    
     // Coming from KJComicList VC
     else {
         // Init array of all comics in Core Data
@@ -52,7 +51,7 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
     
     // Register custom UICollectionViewCell with collectionView
     [self.collectionView registerClass:[KJComicDetailCell class]
-            forCellWithReuseIdentifier:kComicDetailCellIdentifier];
+            forCellWithReuseIdentifier:[KJComicDetailCell cellIdentifier]];
     
     // Init action button in top right hand corner of navbar
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
@@ -102,16 +101,14 @@ static NSString *kComicDetailCellIdentifier = @"comicDetailCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
-    KJComicDetailCell *cell = (KJComicDetailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kComicDetailCellIdentifier
+    KJComicDetailCell *cell = (KJComicDetailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[KJComicDetailCell cellIdentifier]
                                                                                              forIndexPath:indexPath];
     
     // Init cell data
     KJComic *cellData = [_cellDataSource objectAtIndex:indexPath.row];
     
-    // Init comic image
-    cell.comicImageView.image = [cellData returnComicImageFromComic];
-    
-    //    DDLogVerbose(@"Comics List: image: %@, index path: %d", cell.comicImageView.image, indexPath.row);
+    // Configure cell
+    [cell configureCellWithData:cellData];
     
     return cell;
 }
