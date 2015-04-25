@@ -23,15 +23,17 @@ static CGFloat kMaxLayoutWidthModifier = 195;
     NSString *videoDescription = [self.videoDescription accessibilityLabel];
     NSString *videoDuration = [self.videoDuration accessibilityLabel];
     
-    return [NSString stringWithFormat:@"%@, %@, %@", videoTitle, videoDescription, videoDuration];
+    NSString *accessibilityString = [NSString stringWithFormat:@"Video title: %@, Description: %@, Duration: %@",
+                                     videoTitle,
+                                     videoDescription,
+                                     videoDuration];
+    
+    return NSLocalizedString(accessibilityString, nil);
 }
 
 #pragma mark - Awake from NIB method
 
 - (void)awakeFromNib {
-    // Accessibility
-    self.isAccessibilityElement = YES;
-    
     // TODO: this is hacky!
     // Calculate max layout width for video name & description labels
     CGFloat mainScreenWidth = [UIScreen mainScreen].bounds.size.width;
