@@ -62,4 +62,24 @@
     }
 }
 
+#pragma mark - Accessibility methods
+
+- (NSString *)accessibilityHint {
+    // Determine cell type
+    // Favourites
+    if (self.cellType == KJSocialLinkCellTypeFavourites) {
+        NSString *cellTitleString = [_titleLabel.text lowercaseString];
+        NSString *finalString = [NSString stringWithFormat:@"Tap to view your favourite %@", cellTitleString];
+        return NSLocalizedString(finalString, nil);
+    }
+    
+    // Social Link
+    else if (self.cellType == KJSocialLinkCellTypeSocialLink) {
+        return NSLocalizedString(@"Tap to view social media link", nil);
+    }
+    
+    // NOTE - returning nil by default
+    return nil;
+}
+
 @end
