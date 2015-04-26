@@ -26,6 +26,12 @@ static NSString * kParseAnalyticsKeyComicTitle = @"comicTitle";
 static NSString * kParseAnalyticsKeyComicId = @"comicId";
 static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
 
+// Doodles
+static NSString * kParseAnalyticsKeyDoodleEventName = @"doodleFavourite";
+static NSString * kParseAnalyticsKeyDoodleUrl = @"doodleURL";
+static NSString * kParseAnalyticsKeyDoodleId = @"doodleId";
+static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
+
 @implementation KJParseAnalyticsStore
 
 #pragma mark - Init method
@@ -70,7 +76,14 @@ static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
 #pragma mark - Doodles
 
 - (void)trackDoodleFavouriteEventForDoodle:(KJRandomImage *)doodle {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyDoodleUrl : doodle.imageUrl,
+                                 kParseAnalyticsKeyDoodleId : doodle.imageId,
+                                 kParseAnalyticsKeyDoodleIsFavourite : doodle.isFavourite ? @"YES" : @"NO",
+                                 };
     
+    [PFAnalytics trackEvent:kParseAnalyticsKeyDoodleEventName
+                 dimensions:dimensions];
 }
 
 @end

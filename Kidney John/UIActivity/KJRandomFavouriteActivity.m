@@ -9,15 +9,8 @@
 #import "KJRandomFavouriteActivity.h"
 #import "KJDoodleStore.h"
 #import "KJRandomImage.h"
-#import <Parse/Parse.h>
 #import "NSUserDefaults+KJSettings.h"
-
-// Constants
-// Parse Analytics keys
-static NSString * kParseAnalyticsKeyEventName = @"doodleFavourite";
-static NSString * kParseAnalyticsKeyDoodleUrl = @"doodleURL";
-static NSString * kParseAnalyticsKeyDoodleId = @"doodleId";
-static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
+#import "KJParseAnalyticsStore.h"
 
 @implementation KJRandomFavouriteActivity {
     NSString *titleOfActivity;
@@ -58,6 +51,7 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
     if (!doodleObject.isFavourite) {
         return [UIImage imageNamed:@"add-to-fav.png"];
     }
+    
     else {
         return [UIImage imageNamed:@"remove-from-fav.png"];
     }
@@ -73,7 +67,7 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
     
     // Track action with Parse analytics (if enabled)
     if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
-        [self sendParseAnalyticEvent];
+        [[KJParseAnalyticsStore sharedStore] trackDoodleFavouriteEventForDoodle:doodleObject];
     }
     
     // Save managedObjectContext
@@ -82,6 +76,7 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
         // Handle the error.
         DDLogError(@"Doodle: failed to save managedObjectContext: %@", [error debugDescription]);
     }
+    
     else {
         DDLogInfo(@"Doodle: saved managedObjectContext");
     }
@@ -93,19 +88,6 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
 
 - (void)performActivity {
     [self activityDidFinish:YES];
-}
-
-#pragma mark - Parse Analytics method
-
-- (void)sendParseAnalyticEvent {
-    NSDictionary *dimensions = @{
-                                 kParseAnalyticsKeyDoodleUrl : doodleObject.imageUrl,
-                                 kParseAnalyticsKeyDoodleId : doodleObject.imageId,
-                                 kParseAnalyticsKeyDoodleIsFavourite : doodleObject.isFavourite ? @"YES" : @"NO",
-                                 };
-    
-    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
-                 dimensions:dimensions];
 }
 
 @end
