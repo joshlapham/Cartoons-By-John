@@ -72,7 +72,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 // Method to return array of doodles that have their attribute isFavourite set to YES.
 - (NSArray *)returnDoodlesArray {
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request
@@ -107,7 +107,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
     
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request
@@ -161,7 +161,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                                                                                    prefetchedDoodlesPredicate ]];
     
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Set fetch request properties
@@ -203,7 +203,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 // Method to fetch all existing doodles in Core Data. We do this before the data fetch to help speed things up.
 - (NSArray *)fetchExistingDoodlesInCoreData {
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init sort descriptor by video date, newest at the top
@@ -246,7 +246,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 
 // Method to get all image URL strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if an image URL exists in the array returned by this method.
 - (NSArray *)alreadyFetchedImageUrlsArray {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJRandomImage"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request for only the image URL property of KJRandomImage
@@ -347,7 +347,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                             DDLogInfo(@"doodleStore: haven't fetched doodle %@", imageUrl);
                             
                             // Init new doodle
-                            KJRandomImage *newDoodle = [NSEntityDescription insertNewObjectForEntityForName:@"KJRandomImage"
+                            KJRandomImage *newDoodle = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([KJRandomImage class])
                                                                               inManagedObjectContext:self.managedObjectContext];
                             
                             newDoodle.imageId = object[kParseImageIdKey];
@@ -383,7 +383,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                             // Init fetch request for video to delete
                             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                             fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(imageUrl == %@)", imageUrl];
-                            fetchRequest.entity = [NSEntityDescription entityForName:@"KJRandomImage"
+                            fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                                               inManagedObjectContext:self.managedObjectContext];
                             
                             // Execute the fetch
