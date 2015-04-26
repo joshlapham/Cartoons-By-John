@@ -10,4 +10,9 @@
 
 @interface KJSocialLinkCell : UITableViewCell
 
+// Methods
++ (NSString *)cellIdentifier;
+- (void)configureCellWithTitle:(NSString *)title
+                      andImage:(UIImage *)image;
+
 @end
