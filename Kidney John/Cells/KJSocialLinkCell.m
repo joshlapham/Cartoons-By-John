@@ -8,14 +8,20 @@
 
 #import "KJSocialLinkCell.h"
 
+@interface KJSocialLinkCell ()
+
+// Properties
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *iconImage;
+
+@end
+
 @implementation KJSocialLinkCell
 
 #pragma mark - Awake from NIB (init) method
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
-    NSLog(@"AWAKE FROM NIB");
 }
 
 #pragma mark - Cell identifier method
@@ -28,7 +34,9 @@
 
 - (void)configureCellWithTitle:(NSString *)title
                       andImage:(UIImage *)image {
-    
+    // Set cell labels
+    _titleLabel.text = title;
+    _iconImage.image = image;
 }
 
 @end

@@ -37,6 +37,10 @@
                     <constraint firstAttribute="centerY" secondItem="rYh-oe-Gln" secondAttribute="centerY" id="ssm-TO-got"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="iconImage" destination="Rek-tZ-2EL" id="YbE-hS-k8O"/>
+                <outlet property="titleLabel" destination="rYh-oe-Gln" id="plx-eT-8cw"/>
+            </connections>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
