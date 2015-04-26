@@ -9,6 +9,15 @@
 #import "KJComicFavouriteActivity.h"
 #import "KJComicStore.h"
 #import "KJComic.h"
+#import <Parse/Parse.h>
+#import "NSUserDefaults+KJSettings.h"
+
+// Constants
+// Parse Analytics keys
+static NSString * kParseAnalyticsKeyEventName = @"comicFavourite";
+static NSString * kParseAnalyticsKeyComicTitle = @"comicTitle";
+static NSString * kParseAnalyticsKeyComicId = @"comicId";
+static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
 
 @implementation KJComicFavouriteActivity {
     NSString *titleOfActivity;
@@ -62,6 +71,11 @@
     // Toggle favourite status for comicObject
     comicObject.isFavourite = !comicObject.isFavourite;
     
+    // Track action with Parse analytics (if enabled)
+    if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
+        [self sendParseAnalyticEvent];
+    }
+    
     // Save managedObjectContext
     NSError *error;
     if (![comicObject.managedObjectContext save:&error]) {
@@ -79,6 +93,19 @@
 
 - (void)performActivity {
     [self activityDidFinish:YES];
+}
+
+#pragma mark - Parse Analytics method
+
+- (void)sendParseAnalyticEvent {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyComicTitle : comicObject.comicName,
+                                 kParseAnalyticsKeyComicId : comicObject.comicNumber,
+                                 kParseAnalyticsKeyComicIsFavourite : comicObject.isFavourite ? @"YES" : @"NO",
+                                 };
+    
+    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
+                 dimensions:dimensions];
 }
 
 @end
