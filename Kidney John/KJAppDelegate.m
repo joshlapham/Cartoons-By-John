@@ -28,6 +28,7 @@ static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours"
 static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFromParse";
 static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey = @"trackFavouritedItemEventsWithParseAnalytics";
 static NSString *kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey = @"trackPlayedVideoEventsWithParseAnalytics";
+static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @"trackViewedComicEventsWithParseAnalytics";
 
 @implementation KJAppDelegate {
     NSString *parseAppId;
@@ -148,11 +149,18 @@ static NSString *kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey = @
                 [NSUserDefaults kj_setShouldTrackFavouritedItemEventsWithParseSetting:[shouldTrackEventsWithAnalytics boolValue]];
             }
             
-            // Init Should track played video events with Parse Analytics
+            // Init should track played video events with Parse Analytics
             if (config[kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey]) {
                 NSNumber *shouldTrackPlayedVideoEventsWithAnalytics = config[kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey];
                 DDLogInfo(@"PFConfig: should track played video events with Parse Analytics: %@", [shouldTrackPlayedVideoEventsWithAnalytics boolValue] ? @"YES" : @"NO");
                 [NSUserDefaults kj_setShouldTrackPlayedVideoEventsWithParseSetting:[shouldTrackPlayedVideoEventsWithAnalytics boolValue]];
+            }
+            
+            // Init should track viewed comic events with Parse Analytics
+            if (config[kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey]) {
+                NSNumber *shouldTrackViewedComicEventsWithAnalytics = config[kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey];
+                DDLogInfo(@"PFConfig: should track viewed comic events with Parse Analytics: %@", [shouldTrackViewedComicEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+                [NSUserDefaults kj_setShouldTrackViewedComicEventsWithParseSetting:[shouldTrackViewedComicEventsWithAnalytics boolValue]];
             }
             
             // Sync NSUserDefaults
