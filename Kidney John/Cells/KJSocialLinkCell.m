@@ -10,16 +10,12 @@
 
 @implementation KJSocialLinkCell
 
+#pragma mark - Awake from NIB (init) method
+
 - (void)awakeFromNib {
-    // Initialization code
+    [super awakeFromNib];
     
     NSLog(@"AWAKE FROM NIB");
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end
