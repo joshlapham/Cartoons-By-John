@@ -7,6 +7,8 @@
 //
 
 #import "KJDoodleCell.h"
+#import "KJRandomView.h"
+#import "KJFavDoodlesListView.h"
 
 @implementation KJDoodleCell
 
@@ -38,7 +40,23 @@
 }
 
 - (NSString *)accessibilityHint {
-    return NSLocalizedString(@"Swipe left or right to navigate between images", nil);
+    // Determine which VC presented this cell and return appropriate string
+    // VC tags
+    NSInteger doodlesViewControllerTag = 1001;
+    NSInteger doodlesFavListViewControllerTag = 1002;
+    
+    // Doodles VC
+    if (self.superview.tag == doodlesViewControllerTag) {
+        return NSLocalizedString(@"Swipe left or right to navigate between images", nil);
+    }
+    
+    // Doodles Favourite List VC
+    if (self.superview.tag == doodlesFavListViewControllerTag) {
+        return NSLocalizedString(@"Tap to view image", nil);
+    }
+    
+    // NOTE - returning nil by default
+    return nil;
 }
 
 @end
