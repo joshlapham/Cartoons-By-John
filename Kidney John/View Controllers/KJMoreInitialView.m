@@ -134,21 +134,20 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
     KJSocialLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:[KJSocialLinkCell cellIdentifier]
                                                              forIndexPath:indexPath];
     
+    // Init properties for cell label values
+    NSString *titleString;
+    UIImage *cellImage;
+    
     // Determine section (Favourites or Social Links)
     // If Favourites section ..
     if (indexPath.section == 0) {
         // Init properties for cell label values
-        NSString *titleString = [_cellArray objectAtIndex:indexPath.row];
-        UIImage *cellImage;
+        titleString = [_cellArray objectAtIndex:indexPath.row];
         
         // Set Favourites icon
         // Videos
         if (indexPath.row == 0) {
             cellImage = [UIImage imageNamed:@"video-tab-icon.png"];
-            
-            // TODO: review this
-            // Fix the look of the Video thumbnail when in tableView
-//            thumbImage.contentMode = UIViewContentModeScaleAspectFit;
         }
         
         // Comics
@@ -161,6 +160,9 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
             cellImage = [UIImage imageNamed:@"doodle-tab-icon.png"];
         }
         
+        // Set cell type
+        [cell setCellType:KJSocialLinkCellTypeFavourites];
+        
         // Configure cell
         [cell configureCellWithTitle:titleString
                             andImage:cellImage];
@@ -168,10 +170,6 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
     
     // If Social Links section ..
     else {
-        // Init properties for cell values
-        NSString *titleString;
-        UIImage *cellImage;
-        
         // Set the cell text
         // FOR TESTING
         // Use links from Parse
@@ -188,9 +186,8 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
             cellImage = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
         }
         
-        // Give the social icons a bit of opacity to match Favourites icons
-        // TODO: review this
-//        thumbImage.alpha = 0.5;
+        // Set cell type
+        [cell setCellType:KJSocialLinkCellTypeSocialLink];
         
         // Configure cell
         [cell configureCellWithTitle:titleString

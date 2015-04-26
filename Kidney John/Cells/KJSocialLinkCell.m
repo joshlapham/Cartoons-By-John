@@ -43,4 +43,23 @@
     _iconImage.image = image;
 }
 
+#pragma mark - Getter/setter override methods
+
+- (void)setCellType:(KJSocialLinkCellType)cellType {
+    _cellType = cellType;
+    
+    // Determine cell type and set properties accordingly
+    // Favourites
+    if (self.cellType == KJSocialLinkCellTypeFavourites) {
+        // Fix the look of the Video thumbnail when in tableView
+        _iconImage.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    
+    // Social Link
+    else if (self.cellType == KJSocialLinkCellTypeSocialLink) {
+        // Give the social icons a bit of opacity to match Favourites icons
+        _iconImage.alpha = 0.5;
+    }
+}
+
 @end
