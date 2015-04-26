@@ -23,6 +23,7 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
 
 // Comics
 static NSString * kParseAnalyticsKeyComicEventName = @"comicFavourite";
+static NSString * kParseAnalyticsKeyComicViewedEventName = @"comicViewed";
 static NSString * kParseAnalyticsKeyComicTitle = @"comicTitle";
 static NSString * kParseAnalyticsKeyComicId = @"comicId";
 static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
@@ -109,6 +110,19 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
                                  };
     
     [PFAnalytics trackEvent:kParseAnalyticsKeyVideoPlayedEventName
+                 dimensions:dimensions];
+}
+
+#pragma mark -  Viewed comic event method
+
+- (void)trackComicViewEventForComic:(KJComic *)comic {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyComicTitle : comic.comicName,
+                                 kParseAnalyticsKeyComicId : comic.comicNumber,
+                                 kParseAnalyticsKeyComicIsFavourite : comic.isFavourite ? @"YES" : @"NO",
+                                 };
+    
+    [PFAnalytics trackEvent:kParseAnalyticsKeyComicViewedEventName
                  dimensions:dimensions];
 }
 

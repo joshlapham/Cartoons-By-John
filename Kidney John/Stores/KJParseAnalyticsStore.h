@@ -29,4 +29,7 @@
 // Played video event method
 - (void)trackVideoPlayEventForVideo:(KJVideo *)video;
 
+// Viewed comic event method
+- (void)trackComicViewEventForComic:(KJComic *)comic;
+
 @end
