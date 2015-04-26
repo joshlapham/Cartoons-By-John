@@ -26,6 +26,7 @@
 // Constants
 static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours";
 static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFromParse";
+static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey = @"trackFavouritedItemEventsWithParseAnalytics";
 
 @implementation KJAppDelegate {
     NSString *parseAppId;
@@ -114,7 +115,7 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     parseAppId = [temp objectForKey:@"appId"];
     parseClientKey = [temp objectForKey:@"clientKey"];
     
-//    DDLogVerbose(@"Parse App ID: %@, Client Key: %@", parseAppId, parseClientKey);
+    //    DDLogVerbose(@"Parse App ID: %@, Client Key: %@", parseAppId, parseClientKey);
 }
 
 #pragma mark Fetch Parse PFConfig method
@@ -128,7 +129,6 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
                 NSNumber *shouldUseVersion11Colours = config[kKJParsePFConfigUseVersion11ColoursKey];
                 DDLogInfo(@"PFConfig: should use version 1.1 colours: %@", [shouldUseVersion11Colours boolValue] ? @"YES" : @"NO");
                 [NSUserDefaults kj_setShouldUseVersion11ColourSchemeSetting:[shouldUseVersion11Colours boolValue]];
-                [[NSUserDefaults standardUserDefaults] synchronize];
             }
             
             // Init should use social links from Parse
@@ -136,9 +136,20 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
                 NSNumber *shouldUseSocialLinks = config[kKJParsePFConfigUseSocialLinksFromParseKey];
                 DDLogInfo(@"PFConfig: should use social links from Parse: %@", [shouldUseSocialLinks boolValue] ? @"YES" : @"NO");
                 [NSUserDefaults kj_setShouldUseSocialLinksFromParseSetting:[shouldUseSocialLinks boolValue]];
-                [[NSUserDefaults standardUserDefaults] synchronize];
             }
+            
+            // Init should track favourited item events with Parse Analytics
+            if (config[kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey]) {
+                NSNumber *shouldTrackEventsWithAnalytics = config[kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey];
+                DDLogInfo(@"PFConfig: should track favourited item events with Parse Analytics: %@", [shouldTrackEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+                [NSUserDefaults kj_setShouldTrackFavouritedItemEventsWithParseSetting:[shouldTrackEventsWithAnalytics boolValue]];
+            }
+            
+            // Sync NSUserDefaults
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
+        
+        // TODO: handle error
         else {
             DDLogError(@"Error fetching PFConfig from Parse");
         }
@@ -164,8 +175,8 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Init prefs for Settings
     // NOTE - IMPORTANT to comment this out for App Store release!
-//    NSDictionary *userDefaultsDefaults = @{ @"KJUsingVersion2ColourSchemeSetting" : [NSNumber numberWithBool:NO] };
-//    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
+    //    NSDictionary *userDefaultsDefaults = @{ @"KJUsingVersion2ColourSchemeSetting" : [NSNumber numberWithBool:NO] };
+    //    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsDefaults];
     
     // Do app version checks
     [self checkAppVersion];
@@ -260,7 +271,7 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
@@ -322,9 +333,9 @@ static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFr
     
     // Init options for persistent store to handle lightweight migrations
     NSDictionary *persistentStoreOptions = @{
-                              NSMigratePersistentStoresAutomaticallyOption : @YES,
-                              NSInferMappingModelAutomaticallyOption : @YES
-                              };
+                                             NSMigratePersistentStoresAutomaticallyOption : @YES,
+                                             NSInferMappingModelAutomaticallyOption : @YES
+                                             };
     
     // Create the coordinator and store
     
