@@ -54,4 +54,7 @@
 + (BOOL)kj_shouldTrackPlayedVideoEventsWithParseSetting;
 + (void)kj_setShouldTrackPlayedVideoEventsWithParseSetting:(BOOL)setting;
 
++ (BOOL)kj_shouldTrackViewedComicEventsWithParseSetting;
++ (void)kj_setShouldTrackViewedComicEventsWithParseSetting:(BOOL)setting;
+
 @end
