@@ -15,10 +15,16 @@
 // Constants
 // Parse Analytics keys
 // Videos
-static NSString * kParseAnalyticsKeyEventName = @"videoFavourite";
+static NSString * kParseAnalyticsKeyVideoEventName = @"videoFavourite";
 static NSString * kParseAnalyticsKeyVideoTitle = @"videoTitle";
 static NSString * kParseAnalyticsKeyVideoId = @"videoId";
 static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
+
+// Comics
+static NSString * kParseAnalyticsKeyComicEventName = @"comicFavourite";
+static NSString * kParseAnalyticsKeyComicTitle = @"comicTitle";
+static NSString * kParseAnalyticsKeyComicId = @"comicId";
+static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
 
 @implementation KJParseAnalyticsStore
 
@@ -44,8 +50,27 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
                                  kParseAnalyticsKeyVideoIsFavourite : video.isFavourite ? @"YES" : @"NO",
                                  };
     
-    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
+    [PFAnalytics trackEvent:kParseAnalyticsKeyVideoEventName
                  dimensions:dimensions];
+}
+
+#pragma mark - Comics
+
+- (void)trackComicFavouriteEventForComic:(KJComic *)comic {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyComicTitle : comic.comicName,
+                                 kParseAnalyticsKeyComicId : comic.comicNumber,
+                                 kParseAnalyticsKeyComicIsFavourite : comic.isFavourite ? @"YES" : @"NO",
+                                 };
+    
+    [PFAnalytics trackEvent:kParseAnalyticsKeyComicEventName
+                 dimensions:dimensions];
+}
+
+#pragma mark - Doodles
+
+- (void)trackDoodleFavouriteEventForDoodle:(KJRandomImage *)doodle {
+    
 }
 
 @end
