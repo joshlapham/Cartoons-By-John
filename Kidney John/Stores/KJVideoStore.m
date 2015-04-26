@@ -78,7 +78,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
     
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJVideo class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request
@@ -132,7 +132,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[ videoIdPredicate, prefetchedVideosPredicate ]];
     
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJVideo class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Set fetch request properties
@@ -176,7 +176,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 // Method to fetch all existing videos in Core Data. We do this before the data fetch to help speed things up.
 - (NSArray *)fetchExistingVideosInCoreData {
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJVideo class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init sort descriptor by video date, newest at the top
@@ -219,7 +219,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
 
 // Method to get all video ID strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if a video ID exists in the array returned by this method.
 - (NSArray *)alreadyFetchedVideoIdsArray {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJVideo"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJVideo class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request for only the video ID property of KJVideo
@@ -320,7 +320,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                             DDLogInfo(@"videoStore: haven't fetched video %@", videoName);
                             
                             // Init new video
-                            KJVideo *newVideo = [NSEntityDescription insertNewObjectForEntityForName:@"KJVideo"
+                            KJVideo *newVideo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([KJVideo class])
                                                                               inManagedObjectContext:self.managedObjectContext];
                             
                             newVideo.videoId = object[kParseVideoIdKey];
@@ -357,7 +357,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                             // Init fetch request for video to delete
                             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                             fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(videoId == %@)", videoId];
-                            fetchRequest.entity = [NSEntityDescription entityForName:@"KJVideo"
+                            fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJVideo class])
                                                               inManagedObjectContext:self.managedObjectContext];
                             
                             // Execute the fetch
