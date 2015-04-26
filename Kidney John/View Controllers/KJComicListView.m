@@ -26,7 +26,6 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 @interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 
 // Properties
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *comicResults;
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) MBProgressHUD *progressHud;

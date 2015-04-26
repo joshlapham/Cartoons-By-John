@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KJComicListView : UIViewController
+@interface KJComicListView : UICollectionViewController
 
 // Properties
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
