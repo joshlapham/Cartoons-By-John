@@ -24,11 +24,11 @@
 // Segue identifiers
 static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
-@interface KJComicListView () <UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
+@interface KJComicListView () <NSFetchedResultsControllerDelegate>
 
 // Properties
 @property (nonatomic, strong) NSArray *comicResults;
-@property (nonatomic, strong) UIAlertView *noNetworkAlertView;
+@property (nonatomic, strong) UIAlertController *noNetworkAlert;
 @property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
@@ -350,15 +350,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         DDLogVerbose(@"Comix: network became available");
         
         // Dismiss no network UIAlertView
-        [_noNetworkAlertView dismissWithClickedButtonIndex:0
-                                                  animated:YES];
+        [_noNetworkAlert dismissViewControllerAnimated:YES
+                                            completion:nil];
         
         // Fetch data
         [[KJComicStore sharedStore] fetchComicData];
     }
 }
-
-// TODO: refactor to use UIAlertController
 
 - (void)noNetworkConnection {
     // Init strings for noNetworkAlertView
@@ -367,12 +365,33 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
     NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
     
-    // Init alertView
-    _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                     message:messageString
-                                                    delegate:self
-                                           cancelButtonTitle:cancelButtonString
-                                           otherButtonTitles:retryButtonString, nil];
+    // Init UIAlertController
+    _noNetworkAlert = [UIAlertController alertControllerWithTitle:titleString
+                                                          message:messageString
+                                                   preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions
+    // Retry
+    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:retryButtonString
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action) {
+                                                            [self fetchDataWithNetworkCheck];
+                                                        }];
+    
+    [_noNetworkAlert addAction:retryAction];
+    
+    // Cancel
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonString
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {
+                                                             // TODO: implement a new view with a button to retry data refresh here?
+                                                             
+                                                             // Reload collectionView data to check for empty data source
+                                                             // TODO: maybe don't reload here?
+                                                             [self.collectionView reloadData];
+                                                         }];
+    
+    [_noNetworkAlert addAction:cancelAction];
     
     // Check if first comic data fetch has happened
     if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
@@ -381,7 +400,9 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         // Show alertView
-        [_noNetworkAlertView show];
+        [self presentViewController:_noNetworkAlert
+                           animated:YES
+                         completion:nil];
     }
 }
 
@@ -418,27 +439,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         if ([JPLReachabilityManager isReachable]) {
             [[KJComicStore sharedStore] fetchComicData];
         }
-    }
-}
-
-#pragma mark - UIAlertView delegate methods
-
--       (void)alertView:(UIAlertView *)alertView
-   clickedButtonAtIndex:(NSInteger)buttonIndex {
-    DDLogVerbose(@"Comix List: alert button clicked: %ld", (long)buttonIndex);
-    
-    // Retry was clicked
-    if (buttonIndex == 1) {
-        [self fetchDataWithNetworkCheck];
-    }
-    
-    // Cancel was clicked
-    else if (buttonIndex == 0) {
-        // TODO: implement a new view with a button to retry data refresh here?
-        
-        // Reload collectionView data to check for empty data source
-        // TODO: maybe don't reload here?
-        [self.collectionView reloadData];
     }
 }
 
