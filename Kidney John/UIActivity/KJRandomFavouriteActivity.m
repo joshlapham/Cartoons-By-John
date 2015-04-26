@@ -9,6 +9,15 @@
 #import "KJRandomFavouriteActivity.h"
 #import "KJDoodleStore.h"
 #import "KJRandomImage.h"
+#import <Parse/Parse.h>
+#import "NSUserDefaults+KJSettings.h"
+
+// Constants
+// Parse Analytics keys
+static NSString * kParseAnalyticsKeyEventName = @"doodleFavourite";
+static NSString * kParseAnalyticsKeyDoodleUrl = @"doodleURL";
+static NSString * kParseAnalyticsKeyDoodleId = @"doodleId";
+static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
 
 @implementation KJRandomFavouriteActivity {
     NSString *titleOfActivity;
@@ -62,6 +71,11 @@
     // Toggle favourite status for doodleObject
     doodleObject.isFavourite = !doodleObject.isFavourite;
     
+    // Track action with Parse analytics (if enabled)
+    if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
+        [self sendParseAnalyticEvent];
+    }
+    
     // Save managedObjectContext
     NSError *error;
     if (![doodleObject.managedObjectContext save:&error]) {
@@ -79,6 +93,19 @@
 
 - (void)performActivity {
     [self activityDidFinish:YES];
+}
+
+#pragma mark - Parse Analytics method
+
+- (void)sendParseAnalyticEvent {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyDoodleUrl : doodleObject.imageUrl,
+                                 kParseAnalyticsKeyDoodleId : doodleObject.imageId,
+                                 kParseAnalyticsKeyDoodleIsFavourite : doodleObject.isFavourite ? @"YES" : @"NO",
+                                 };
+    
+    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
+                 dimensions:dimensions];
 }
 
 @end
