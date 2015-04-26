@@ -23,6 +23,11 @@ static NSString *kParseImageDateKey = @"date";
 // Constant for NSNotification name
 NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHappen";
 
+// Constants for Core Data attributes to find by
+static NSString *kDoodleAttributeKeyImageId = @"imageId";
+static NSString *kDoodleAttributeKeyImageDate = @"imageDate";
+static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
+
 @implementation KJDoodleStore {
     BOOL __block changesToDoodlesWereMade;
     NSArray __block *existingDoodlesInCoreDataBeforeFetch;
@@ -60,9 +65,11 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     
     // Cache URL for SDWebImage
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
-    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
-        DDLogVerbose(@"doodleStore: prefetched doodles count: %d, skipped: %d", finishedCount, skippedCount);
-    }];
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls
+                                                      progress:nil
+                                                     completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
+                                                         DDLogVerbose(@"doodleStore: prefetched doodles count: %lu, skipped: %lu", (unsigned long)finishedCount, (unsigned long)skippedCount);
+                                                     }];
 }
 
 #pragma mark - Return all doodles method
@@ -80,7 +87,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     fetchRequest.entity = entity;
     
     // Set sort descriptor (by doodle date; newest at the top)
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"imageId"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kDoodleAttributeKeyImageId
                                                                    ascending:YES];
     fetchRequest.sortDescriptors = @[ sortDescriptor ];
     
@@ -94,7 +101,9 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         // Handle the error
         DDLogError(@"doodleStore: error fetching doodles: %@", [error localizedDescription]);
         return nil;
-    } else {
+    }
+    
+    else {
         return fetchedObjects;
     }
 }
@@ -115,7 +124,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     fetchRequest.entity = entity;
     
     // Set sort descriptor (by doodle date; newest at the top)
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"imageDate"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kDoodleAttributeKeyImageDate
                                                                    ascending:NO];
     fetchRequest.sortDescriptors = @[ sortDescriptor ];
     
@@ -132,7 +141,9 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         // Handle the error
         DDLogError(@"doodleStore: error fetching favourites: %@", [error localizedDescription]);
         return nil;
-    } else {
+    }
+    
+    else {
         return fetchedObjects;
     }
 }
@@ -151,7 +162,9 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     // Init predicate for doodles matching image URL
-    NSPredicate *imageUrlPredicate = [NSPredicate predicateWithFormat:@"imageUrl == %@", imageUrl];
+    NSPredicate *imageUrlPredicate = [NSPredicate predicateWithFormat:@"%@ == %@",
+                                      kDoodleAttributeKeyImageUrl,
+                                      imageUrl];
     
     // Init predicate for doodles in pre-fetched doodles array
     NSPredicate *prefetchedDoodlesPredicate = [NSPredicate predicateWithFormat:@"self IN %@", existingDoodlesInCoreDataBeforeFetch];
@@ -194,6 +207,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
             // This saves us from triggering a save every time we fetch data from the server.
             changesToDoodlesWereMade = YES;
         }
+        
         else {
             DDLogInfo(@"doodleStore: doodle doesn't need update: %@", imageUrl);
         }
@@ -206,15 +220,9 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                               inManagedObjectContext:self.managedObjectContext];
     
-    // Init sort descriptor by video date, newest at the top
-    // NOTE - we do this just so the prefetchVideoThumbnails method can better prefetch, starting with newest video
-//    NSSortDescriptor *videoDateDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"videoDate"
-//                                                                          ascending:NO];
-    
-    // Init fetch request for only the video ID property of KJVideo
+    // Init fetch request
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     request.entity = entity;
-//    request.sortDescriptors = @[ videoDateDescriptor ];
     
     // Execute the fetch
     NSError *error;
@@ -222,9 +230,10 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                                                                           error:&error];
     
     if (!doodlesInCoreData) {
-        // Handle the error
+        // TODO: handle error
         return nil;
     }
+    
     else {
         return doodlesInCoreData;
     }
@@ -254,7 +263,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     request.entity = entity;
     request.resultType = NSDictionaryResultType;
     request.returnsDistinctResults = YES;
-    request.propertiesToFetch = @[ @"imageUrl" ];
+    request.propertiesToFetch = @[ kDoodleAttributeKeyImageUrl ];
     
     // Init predicate for pre-fetched existing doodles in Core Data array
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", existingDoodlesInCoreDataBeforeFetch];
@@ -272,10 +281,11 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
         // Handle the error
         return nil;
     }
+    
     else {
-        // Get video ID strings
+        // Get image URL strings
         for (NSDictionary *dict in doodlesInCoreData) {
-            NSString *imageUrl = [dict valueForKey:@"imageUrl"];
+            NSString *imageUrl = [dict valueForKey:kDoodleAttributeKeyImageUrl];
             [imageUrlStrings addObject:imageUrl];
         }
     }
@@ -304,7 +314,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
     
     // Set connection state to CONNECTING
     self.connectionState = KJDoodleStoreStateConnecting;
-    DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
+    DDLogInfo(@"doodleStore: connection state: %lu", (unsigned long)self.connectionState);
     
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
@@ -331,7 +341,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 // The find succeeded
                 // Set connection state to CONNECTED
                 self.connectionState = KJDoodleStoreStateConnected;
-                DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
+                DDLogInfo(@"doodleStore: connection state: %lu", (unsigned long)self.connectionState);
                 
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -348,7 +358,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                             
                             // Init new doodle
                             KJRandomImage *newDoodle = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([KJRandomImage class])
-                                                                              inManagedObjectContext:self.managedObjectContext];
+                                                                                     inManagedObjectContext:self.managedObjectContext];
                             
                             newDoodle.imageId = object[kParseImageIdKey];
                             newDoodle.imageUrl = object[kParseImageUrlKey];
@@ -359,6 +369,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                             // This saves us from triggering a save every time we fetch data from the server.
                             changesToDoodlesWereMade = YES;
                         }
+                        
                         else {
                             DDLogInfo(@"doodleStore: already fetched doodle %@", imageUrl);
                             
@@ -370,7 +381,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                     // Doodle is NOT active
                     // Check if it exists locally in Core Data, and delete if so
                     else {
-                            DDLogInfo(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
+                        DDLogInfo(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
                         
                         if (![alreadyFetchedImageUrls containsObject:imageUrl]) {
                             DDLogInfo(@"doodleStore: doodle %@ isn't active but isn't in database, so it's all good", imageUrl);
@@ -382,7 +393,9 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                             
                             // Init fetch request for video to delete
                             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(imageUrl == %@)", imageUrl];
+                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(%@ == %@)",
+                                                      kDoodleAttributeKeyImageUrl,
+                                                      imageUrl];
                             fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
                                                               inManagedObjectContext:self.managedObjectContext];
                             
@@ -393,7 +406,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                             
                             // If we found doodle to delete ..
                             if ([itemsToDelete count] > 0) {
-                                DDLogInfo(@"doodleStore: found %d doodle to delete", [itemsToDelete count]);
+                                DDLogInfo(@"doodleStore: found %lu doodle to delete", [itemsToDelete count]);
                                 
                                 // Delete
                                 KJRandomImage *doodleToDelete = [itemsToDelete firstObject];
@@ -403,6 +416,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                                 // This saves us from triggering a save every time we fetch data from the server.
                                 changesToDoodlesWereMade = YES;
                             }
+                            
                             else {
                                 DDLogError(@"doodleStore: failed to find doodle to delete from Core Data: %@", imageUrl);
                             }
@@ -419,6 +433,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 if (!changesToDoodlesWereMade) {
                     DDLogInfo(@"doodleStore: no changes to doodles were found, so no save managedObjectContext is required");
                 }
+                
                 else {
                     // Changes were made.
                     // This could have been new doodles added, existing doodle info updated, or doodle deleted from Core Data.
@@ -431,7 +446,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                         DDLogInfo(@"doodleStore: saved managedObjectContext");
                     }
                 }
-
+                
                 // Set first fetch = YES in NSUserDefaults
                 if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
                     [NSUserDefaults kj_setHasFirstDoodleFetchCompletedSetting:YES];
@@ -444,7 +459,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 
                 // Set connection state to DISCONNECTED
                 self.connectionState = KJDoodleStoreStateDisconnected;
-                DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
+                DDLogInfo(@"doodleStore: connection state: %lu", self.connectionState);
                 
                 // Prefetch doodles if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
@@ -452,12 +467,13 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
                 }
                 
             }
+            
             else {
                 // Log details of the failure
                 DDLogError(@"doodleStore: error: %@ %@", error, [error userInfo]);
                 // Set connection state to DISCONNECTED
                 self.connectionState = KJDoodleStoreStateDisconnected;
-                DDLogInfo(@"doodleStore: connection state: %u", self.connectionState);
+                DDLogInfo(@"doodleStore: connection state: %lu", self.connectionState);
             }
         }];
     });
