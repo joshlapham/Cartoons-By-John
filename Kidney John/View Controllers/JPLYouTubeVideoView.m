@@ -22,10 +22,10 @@ static NSString *kYouTubeVideoUrlForSharing = @"https://www.youtube.com/watch?v=
 
 // HTML string for YouTube video
 // NOTE - autoplay is set in playerVars
-// TODO: look at width and height variables in this string for Auto Layout issues
+// NOTE - look at width and height variables in this string for any Auto Layout issues
 static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{background-color:black;}body{margin:0px 0px 0px 0px;}</style><meta name = \"viewport\" content = \"initial-scale1.0, user-scalable=no\" /></head> <body> <div id=\"player\"></div> <script> var tag = document.createElement('script'); tag.src = \"http://www.youtube.com/player_api\"; var firstScriptTag = document.getElementsByTagName('script')[0]; firstScriptTag.parentNode.insertBefore(tag, firstScriptTag); var player; function onYouTubePlayerAPIReady() { player = new YT.Player('player', { playerVars: { autoplay: 0, showinfo: 0, rel: 0, modestbranding: 1, controls: 0 }, width:'1024', height:'704', videoId:'%@', events: { 'onReady': onPlayerReady, } }); } function onPlayerReady(event) { event.target.playVideo(); } </script> </body> </html>";
 
-@interface JPLYouTubeVideoView () <UIWebViewDelegate, UIAlertViewDelegate>
+@interface JPLYouTubeVideoView () <UIWebViewDelegate>
 
 // Properties
 @property (weak, nonatomic) IBOutlet UIWebView *videoView;
@@ -79,36 +79,6 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     
     // Go back to video list if changing views
     [self.navigationController popViewControllerAnimated:NO];
-}
-
-#pragma mark - UIAlertView delegate methods
-
-// TODO: refactor to use UIAlertController
-
-- (void)showErrorIfNoNetworkConnection {
-    // Init strings for noNetworkAlert
-    NSString *titleString = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
-    NSString *messageString = NSLocalizedString(@"A network connection is required to watch videos", @"Error message displayed when no network connection is available");
-    NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in no network connection error alert");
-    
-    // Init alertView
-    UIAlertView *noNetworkAlert = [[UIAlertView alloc] initWithTitle:titleString
-                                                             message:messageString
-                                                            delegate:self
-                                                   cancelButtonTitle:okButtonString
-                                                   otherButtonTitles:nil, nil];
-    
-    // Show alertView
-    [noNetworkAlert show];
-}
-
--       (void)alertView:(UIAlertView *)alertView
-   clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // If OK button was tapped ..
-    if (buttonIndex == 0) {
-        // Go back to video list view
-        [self.navigationController popViewControllerAnimated:YES];
-    }
 }
 
 #pragma mark - UIWebView delegate methods
@@ -176,6 +146,36 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     
     // NOTE - must include NSBundle resourceURL otherwise video autoplay will not work (autoplay disabled for now)
     //[_videoView loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
+}
+
+#pragma mark - Show no network alert method
+
+- (void)showErrorIfNoNetworkConnection {
+    // Init strings for noNetworkAlert
+    NSString *titleString = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
+    NSString *messageString = NSLocalizedString(@"A network connection is required to watch videos", @"Error message displayed when no network connection is available");
+    NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in no network connection error alert");
+    
+    // Init alertView
+    UIAlertController *noNetworkAlert = [UIAlertController alertControllerWithTitle:titleString
+                                                                            message:messageString
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions
+    // Okay
+    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonString
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action) {
+                                                           // Go back to video list view
+                                                           [self.navigationController popViewControllerAnimated:YES];
+                                                       }];
+    
+    [noNetworkAlert addAction:okayAction];
+    
+    // Show alertView
+    [self presentViewController:noNetworkAlert
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - UIActivityView methods

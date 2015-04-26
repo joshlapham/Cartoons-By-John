@@ -12,6 +12,7 @@
 
 @interface JPLYouTubeVideoView : UIViewController
 
+// Properties
 @property (nonatomic, strong) KJVideo *chosenVideo;
 
 @end
