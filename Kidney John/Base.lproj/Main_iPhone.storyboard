@@ -96,11 +96,11 @@
             </objects>
             <point key="canvasLocation" x="6357" y="91"/>
         </scene>
-        <!--Collection View Controller-->
+        <!--Comic List View-->
         <scene sceneID="GAX-Eg-aMQ">
             <objects>
-                <collectionViewController id="WFD-3C-LSj" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1001" contentMode="scaleToFill" dataMode="prototypes" id="0OM-I8-IlO">
+                <collectionViewController id="WFD-3C-LSj" customClass="KJComicListView" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="0OM-I8-IlO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Tha-gA-Jd3">
@@ -278,7 +278,7 @@
         <scene sceneID="mjP-c7-8uq">
             <objects>
                 <collectionViewController id="Yn2-9O-ON9" customClass="KJRandomView" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="W4u-ha-wbT">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1001" contentMode="scaleToFill" dataMode="prototypes" id="W4u-ha-wbT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="R6W-cS-tPa">
@@ -400,7 +400,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="5zS-gt-cTt"/>
         <segue reference="nGw-FC-YiY"/>
-        <segue reference="IvO-BV-0GL"/>
     </inferredMetricsTieBreakers>
 </document>
