@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class KJVideo;
+@class KJVideo, KJComic, KJRandomImage;
 
 @interface KJParseAnalyticsStore : NSObject
 
@@ -18,5 +18,7 @@
 
 // Favourited item event methods
 - (void)trackVideoFavouriteEventForVideo:(KJVideo *)video;
+- (void)trackComicFavouriteEventForComic:(KJComic *)comic;
+- (void)trackDoodleFavouriteEventForDoodle:(KJRandomImage *)doodle;
 
 @end
