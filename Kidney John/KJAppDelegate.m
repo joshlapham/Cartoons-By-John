@@ -27,6 +27,7 @@
 static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours";
 static NSString *kKJParsePFConfigUseSocialLinksFromParseKey = @"useSocialLinksFromParse";
 static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey = @"trackFavouritedItemEventsWithParseAnalytics";
+static NSString *kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey = @"trackPlayedVideoEventsWithParseAnalytics";
 
 @implementation KJAppDelegate {
     NSString *parseAppId;
@@ -73,6 +74,7 @@ static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey 
     if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     }
+    
     else {
         // Version 1.1 colour
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -97,7 +99,8 @@ static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey 
     plistPath = [rootPath stringByAppendingPathComponent:@"Keys.plist"];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:plistPath]) {
-        plistPath = [[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist"];
+        plistPath = [[NSBundle mainBundle] pathForResource:@"Keys"
+                                                    ofType:@"plist"];
     }
     
     NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:plistPath];
@@ -143,6 +146,13 @@ static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey 
                 NSNumber *shouldTrackEventsWithAnalytics = config[kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey];
                 DDLogInfo(@"PFConfig: should track favourited item events with Parse Analytics: %@", [shouldTrackEventsWithAnalytics boolValue] ? @"YES" : @"NO");
                 [NSUserDefaults kj_setShouldTrackFavouritedItemEventsWithParseSetting:[shouldTrackEventsWithAnalytics boolValue]];
+            }
+            
+            // Init Should track played video events with Parse Analytics
+            if (config[kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey]) {
+                NSNumber *shouldTrackPlayedVideoEventsWithAnalytics = config[kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey];
+                DDLogInfo(@"PFConfig: should track played video events with Parse Analytics: %@", [shouldTrackPlayedVideoEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+                [NSUserDefaults kj_setShouldTrackPlayedVideoEventsWithParseSetting:[shouldTrackPlayedVideoEventsWithAnalytics boolValue]];
             }
             
             // Sync NSUserDefaults
@@ -257,6 +267,7 @@ static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey 
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Parse.com is reachable");
     }
+    
     else if ([JPLReachabilityManager isUnreachable]) {
         DDLogVerbose(@"Parse.com is NOT reachable");
     }
@@ -320,7 +331,8 @@ static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey 
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Kidney John" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Kidney John"
+                                              withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -343,13 +355,22 @@ static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey 
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"kj.sqlite"];
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:persistentStoreOptions error:&error]) {
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                   configuration:nil
+                                                             URL:storeURL
+                                                         options:persistentStoreOptions
+                                                           error:&error]) {
         // Report any error we got.
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
         dict[NSLocalizedFailureReasonErrorKey] = failureReason;
         dict[NSUnderlyingErrorKey] = error;
-        error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
+        error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN"
+                                    code:9999
+                                userInfo:dict];
+        
+        // TODO: handle error
+        
         // Replace this with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -380,7 +401,10 @@ static NSString *kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey 
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) {
         NSError *error = nil;
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+        if ([managedObjectContext hasChanges] &&
+            ![managedObjectContext save:&error]) {
+            // TODO: handle error
+            
             // Replace this implementation with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
