@@ -22,6 +22,9 @@ static NSString *kShouldUseVersion11ColourSchemeKey = @"KJShouldUseVersion11Colo
 // Testing social links from Parse
 static NSString *kShouldUseSocialLinksFromParseSettingKey = @"KJShouldUseSocialLinksFromParseSettingKey";
 
+// Parse Analytics
+static NSString * kShouldTrackFavouritedItemEventsWithParseSettingKey = @"KJShouldTrackFavouritedItemEventsWithParseSettingKey";
+
 @implementation NSUserDefaults (KJSettings)
 
 // App first launch setting
@@ -108,6 +111,16 @@ static NSString *kShouldUseSocialLinksFromParseSettingKey = @"KJShouldUseSocialL
 + (void)kj_setShouldUseSocialLinksFromParseSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
                                             forKey:kShouldUseSocialLinksFromParseSettingKey];
+}
+
+// Parse Analytics
++ (BOOL)kj_shouldTrackFavouritedItemEventsWithParseSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldTrackFavouritedItemEventsWithParseSettingKey];
+}
+
++ (void)kj_setShouldTrackFavouritedItemEventsWithParseSetting:(BOOL)setting {
+    [[NSUserDefaults standardUserDefaults] setBool:setting
+                                            forKey:kShouldTrackFavouritedItemEventsWithParseSettingKey];
 }
 
 @end

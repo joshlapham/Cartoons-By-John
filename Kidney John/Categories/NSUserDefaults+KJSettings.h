@@ -47,4 +47,8 @@
 + (BOOL)kj_shouldUseSocialLinksFromParseSetting;
 + (void)kj_setShouldUseSocialLinksFromParseSetting:(BOOL)setting;
 
+// Parse Analytics
++ (BOOL)kj_shouldTrackFavouritedItemEventsWithParseSetting;
++ (void)kj_setShouldTrackFavouritedItemEventsWithParseSetting:(BOOL)setting;
+
 @end
