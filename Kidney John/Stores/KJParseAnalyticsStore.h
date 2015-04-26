@@ -26,4 +26,7 @@
 - (void)trackComicShareEventForComic:(KJComic *)comic;
 - (void)trackDoodleShareEventForDoodle:(KJRandomImage *)doodle;
 
+// Played video event method
+- (void)trackVideoPlayEventForVideo:(KJVideo *)video;
+
 @end

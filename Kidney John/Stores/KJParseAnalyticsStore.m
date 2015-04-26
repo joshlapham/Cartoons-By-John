@@ -16,6 +16,7 @@
 // Parse Analytics keys
 // Videos
 static NSString * kParseAnalyticsKeyVideoEventName = @"videoFavourite";
+static NSString * kParseAnalyticsKeyVideoPlayedEventName = @"videoPlayed";
 static NSString * kParseAnalyticsKeyVideoTitle = @"videoTitle";
 static NSString * kParseAnalyticsKeyVideoId = @"videoId";
 static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
@@ -87,16 +88,28 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
 
 #pragma mark - Shared item event methods
 
+// TODO: implement these methods
+
 - (void)trackVideoShareEventForVideo:(KJVideo *)video {
-    
 }
 
 - (void)trackComicShareEventForComic:(KJComic *)comic {
-    
 }
 
 - (void)trackDoodleShareEventForDoodle:(KJRandomImage *)doodle {
+}
+
+#pragma mark -  Played video event method
+
+- (void)trackVideoPlayEventForVideo:(KJVideo *)video {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyVideoTitle : video.videoName,
+                                 kParseAnalyticsKeyVideoId : video.videoId,
+                                 kParseAnalyticsKeyVideoIsFavourite : video.isFavourite ? @"YES" : @"NO",
+                                 };
     
+    [PFAnalytics trackEvent:kParseAnalyticsKeyVideoPlayedEventName
+                 dimensions:dimensions];
 }
 
 @end
