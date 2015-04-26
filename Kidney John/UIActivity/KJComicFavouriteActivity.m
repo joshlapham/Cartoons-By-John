@@ -9,15 +9,8 @@
 #import "KJComicFavouriteActivity.h"
 #import "KJComicStore.h"
 #import "KJComic.h"
-#import <Parse/Parse.h>
 #import "NSUserDefaults+KJSettings.h"
-
-// Constants
-// Parse Analytics keys
-static NSString * kParseAnalyticsKeyEventName = @"comicFavourite";
-static NSString * kParseAnalyticsKeyComicTitle = @"comicTitle";
-static NSString * kParseAnalyticsKeyComicId = @"comicId";
-static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
+#import "KJParseAnalyticsStore.h"
 
 @implementation KJComicFavouriteActivity {
     NSString *titleOfActivity;
@@ -73,7 +66,7 @@ static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
     
     // Track action with Parse analytics (if enabled)
     if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
-        [self sendParseAnalyticEvent];
+        [[KJParseAnalyticsStore sharedStore] trackComicFavouriteEventForComic:comicObject];
     }
     
     // Save managedObjectContext
@@ -82,6 +75,7 @@ static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
         // Handle the error.
         DDLogError(@"Comic: failed to save managedObjectContext: %@", [error debugDescription]);
     }
+    
     else {
         DDLogInfo(@"Comic: saved managedObjectContext");
     }
@@ -93,19 +87,6 @@ static NSString * kParseAnalyticsKeyComicIsFavourite = @"isFavourite";
 
 - (void)performActivity {
     [self activityDidFinish:YES];
-}
-
-#pragma mark - Parse Analytics method
-
-- (void)sendParseAnalyticEvent {
-    NSDictionary *dimensions = @{
-                                 kParseAnalyticsKeyComicTitle : comicObject.comicName,
-                                 kParseAnalyticsKeyComicId : comicObject.comicNumber,
-                                 kParseAnalyticsKeyComicIsFavourite : comicObject.isFavourite ? @"YES" : @"NO",
-                                 };
-    
-    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
-                 dimensions:dimensions];
 }
 
 @end
