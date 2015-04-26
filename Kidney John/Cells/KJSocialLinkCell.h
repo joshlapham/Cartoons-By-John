@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+// ENUM for cell type
+typedef enum : NSUInteger {
+    KJSocialLinkCellTypeFavourites,
+    KJSocialLinkCellTypeSocialLink,
+} KJSocialLinkCellType;
+
 @interface KJSocialLinkCell : UITableViewCell
+
+// Properties
+@property (nonatomic) KJSocialLinkCellType cellType;
 
 // Methods
 + (NSString *)cellIdentifier;
