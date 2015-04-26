@@ -21,4 +21,9 @@
 - (void)trackComicFavouriteEventForComic:(KJComic *)comic;
 - (void)trackDoodleFavouriteEventForDoodle:(KJRandomImage *)doodle;
 
+// Shared item event methods
+- (void)trackVideoShareEventForVideo:(KJVideo *)video;
+- (void)trackComicShareEventForComic:(KJComic *)comic;
+- (void)trackDoodleShareEventForDoodle:(KJRandomImage *)doodle;
+
 @end
