@@ -51,4 +51,7 @@
 + (BOOL)kj_shouldTrackFavouritedItemEventsWithParseSetting;
 + (void)kj_setShouldTrackFavouritedItemEventsWithParseSetting:(BOOL)setting;
 
++ (BOOL)kj_shouldTrackPlayedVideoEventsWithParseSetting;
++ (void)kj_setShouldTrackPlayedVideoEventsWithParseSetting:(BOOL)setting;
+
 @end

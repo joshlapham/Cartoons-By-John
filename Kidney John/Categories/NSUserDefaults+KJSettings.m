@@ -24,6 +24,7 @@ static NSString *kShouldUseSocialLinksFromParseSettingKey = @"KJShouldUseSocialL
 
 // Parse Analytics
 static NSString * kShouldTrackFavouritedItemEventsWithParseSettingKey = @"KJShouldTrackFavouritedItemEventsWithParseSettingKey";
+static NSString * kShouldTrackPlayedVideoEventsWithParseSettingKey = @"KJShouldTrackPlayedVideoEventsWithParseSettingKey";
 
 @implementation NSUserDefaults (KJSettings)
 
@@ -121,6 +122,15 @@ static NSString * kShouldTrackFavouritedItemEventsWithParseSettingKey = @"KJShou
 + (void)kj_setShouldTrackFavouritedItemEventsWithParseSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
                                             forKey:kShouldTrackFavouritedItemEventsWithParseSettingKey];
+}
+
++ (BOOL)kj_shouldTrackPlayedVideoEventsWithParseSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldTrackPlayedVideoEventsWithParseSettingKey];
+}
+
++ (void)kj_setShouldTrackPlayedVideoEventsWithParseSetting:(BOOL)setting {
+    [[NSUserDefaults standardUserDefaults] setBool:setting
+                                            forKey:kShouldTrackPlayedVideoEventsWithParseSettingKey];
 }
 
 @end
