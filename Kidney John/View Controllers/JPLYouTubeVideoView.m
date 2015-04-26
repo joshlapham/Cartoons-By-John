@@ -13,6 +13,7 @@
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
 #import "JPLReachabilityManager.h"
+#import "NSUserDefaults+KJSettings.h"
 
 // Constants
 // YouTube video URL for social sharing
@@ -25,6 +26,7 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
 
 @interface JPLYouTubeVideoView () <UIWebViewDelegate, UIAlertViewDelegate>
 
+// Properties
 @property (weak, nonatomic) IBOutlet UIWebView *videoView;
 @property (nonatomic, strong) MBProgressHUD *progressHud;
 
@@ -80,6 +82,8 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
 
 #pragma mark - UIAlertView delegate methods
 
+// TODO: refactor to use UIAlertController
+
 - (void)showErrorIfNoNetworkConnection {
     // Init strings for noNetworkAlert
     NSString *titleString = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
@@ -97,7 +101,8 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     [noNetworkAlert show];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+-       (void)alertView:(UIAlertView *)alertView
+   clickedButtonAtIndex:(NSInteger)buttonIndex {
     // If OK button was tapped ..
     if (buttonIndex == 0) {
         // Go back to video list view
@@ -132,7 +137,8 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+-       (void)webView:(UIWebView *)webView
+ didFailLoadWithError:(NSError *)error {
     // Hide progress
     [_progressHud hide:YES];
     
@@ -146,7 +152,8 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
 
 - (void)playVideoWithId:(NSString *)videoId {
     // Show progress
-    _progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHud = [MBProgressHUD showHUDAddedTo:self.view
+                                        animated:YES];
     _progressHud.labelText = @"";
     
     // Show network activity indicator
@@ -154,9 +161,10 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     
     // Init HTML for videoView
     NSString *html = [NSString stringWithFormat:kYouTubeVideoHTML, videoId];
-    [_videoView loadHTMLString:html baseURL:nil];
+    [_videoView loadHTMLString:html
+                       baseURL:nil];
     
-    // TODO: review these settings for Auto Layout issues
+    // NOTE: review these settings for any Auto Layout issues
     _videoView.scalesPageToFit = YES;
     _videoView.autoresizesSubviews = YES;
     
@@ -174,11 +182,13 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     NSURL *activityUrl = [NSURL URLWithString:[NSString stringWithFormat:kYouTubeVideoUrlForSharing, self.chosenVideo.videoId]];
     
     // Init view controller for UIActivity
-    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[activityUrl]
-                                                                             applicationActivities:@[favouriteActivity]];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[ activityUrl ]
+                                                                             applicationActivities:@[ favouriteActivity ]];
     
     // Show UIActivity
-    [self.navigationController presentViewController:activityVC animated:YES completion:nil];
+    [self.navigationController presentViewController:activityVC
+                                            animated:YES
+                                          completion:nil];
 }
 
 @end
