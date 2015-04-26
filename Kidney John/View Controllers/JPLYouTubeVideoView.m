@@ -14,6 +14,7 @@
 #import "KJVideoStore.h"
 #import "JPLReachabilityManager.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "KJParseAnalyticsStore.h"
 
 // Constants
 // YouTube video URL for social sharing
@@ -135,6 +136,11 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     
     // Hide network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    // Track video played with Parse Analytics (if enabled)
+    if ([NSUserDefaults kj_shouldTrackPlayedVideoEventsWithParseSetting]) {
+        [[KJParseAnalyticsStore sharedStore] trackVideoPlayEventForVideo:self.chosenVideo];
+    }
 }
 
 -       (void)webView:(UIWebView *)webView
