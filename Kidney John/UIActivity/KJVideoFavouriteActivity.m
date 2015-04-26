@@ -71,14 +71,7 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
     videoObject.isFavourite = !videoObject.isFavourite;
     
     // Track action with Parse analytics
-    NSDictionary *dimensions = @{
-                                 kParseAnalyticsKeyVideoTitle : videoObject.videoName,
-                                 kParseAnalyticsKeyVideoId : videoObject.videoId,
-                                 kParseAnalyticsKeyVideoIsFavourite : videoObject.isFavourite ? @"YES" : @"NO",
-                                 };
-    
-    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
-                 dimensions:dimensions];
+    [self sendParseAnalyticEvent];
     
     // Save managedObjectContext
     NSError *error;
@@ -98,6 +91,19 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
 
 - (void)performActivity {
     [self activityDidFinish:YES];
+}
+
+#pragma mark - Parse Analytics method
+
+- (void)sendParseAnalyticEvent {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyVideoTitle : videoObject.videoName,
+                                 kParseAnalyticsKeyVideoId : videoObject.videoId,
+                                 kParseAnalyticsKeyVideoIsFavourite : videoObject.isFavourite ? @"YES" : @"NO",
+                                 };
+    
+    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
+                 dimensions:dimensions];
 }
 
 @end
