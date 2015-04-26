@@ -75,7 +75,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
     
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request
@@ -112,7 +112,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 // Will be refactoring that view shortly, which then won't need this method.
 - (NSArray *)returnComicsArray {
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request
@@ -166,7 +166,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                                                                                    prefetchedComicsPredicate ]];
     
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Set fetch request properties
@@ -208,7 +208,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 // Method to fetch all existing comics in Core Data. We do this before the data fetch to help speed things up.
 - (NSArray *)fetchExistingComicsInCoreData {
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request for only the video ID property of KJComic
@@ -245,7 +245,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
 
 // Method to get all image URL strings that exist in Core Data. This helps as we don't have to init a fetch request every time we want to see if something exists in Core Data; we can just check if an image URL exists in the array returned by this method.
 - (NSArray *)alreadyFetchedComicNamesArray {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init fetch request for only the image URL property of KJComic
@@ -348,7 +348,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                         DDLogInfo(@"comicStore: haven't fetched comic %@", comicName);
                         
                         // Init new comic
-                        KJComic *newComic = [NSEntityDescription insertNewObjectForEntityForName:@"KJComic"
+                        KJComic *newComic = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([KJComic class])
                                                                           inManagedObjectContext:self.managedObjectContext];
                         
                         newComic.comicFileName = object[kParseComicFileNameKey];
@@ -384,7 +384,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                         // Init fetch request for video to delete
                         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
                         fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(comicName == %@)", comicName];
-                        fetchRequest.entity = [NSEntityDescription entityForName:@"KJComic"
+                        fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                                           inManagedObjectContext:self.managedObjectContext];
                         
                         // Execute the fetch
