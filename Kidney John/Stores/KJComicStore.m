@@ -23,7 +23,7 @@ static NSString *kParseComicNumberKey = @"comicNumber";
 NSString * const KJComicDataFetchDidHappenNotification = @"KJComicDataFetchDidHappen";
 
 // Constant for Core Data attribute to find by
-static NSString *kComicAttributeComicNameKey = @"comicName";
+static NSString *kComicAttributeKeyComicName = @"comicName";
 
 @implementation KJComicStore {
     BOOL __block changesToComicsWereMade;
@@ -62,9 +62,11 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     
     // Cache URL for SDWebImage
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
-    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
-        DDLogVerbose(@"comicstore: prefetched comics count: %d, skipped: %d", finishedCount, skippedCount);
-    }];
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls
+                                                      progress:nil
+                                                     completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
+                                                         DDLogVerbose(@"comicstore: prefetched comics count: %lu, skipped: %lu", (unsigned long)finishedCount, (unsigned long)skippedCount);
+                                                     }];
 }
 
 #pragma mark - Return favourite comics method
@@ -83,7 +85,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     fetchRequest.entity = entity;
     
     // Set sort descriptor (by comic name)
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"comicName"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kComicAttributeKeyComicName
                                                                    ascending:NO];
     fetchRequest.sortDescriptors = @[ sortDescriptor ];
     
@@ -156,7 +158,9 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     // Init predicate for comics matching comic name
-    NSPredicate *comicNamePredicate = [NSPredicate predicateWithFormat:@"comicName == %@", comicName];
+    NSPredicate *comicNamePredicate = [NSPredicate predicateWithFormat:@"%@ == %@",
+                                       kComicAttributeKeyComicName,
+                                       comicName];
     
     // Init predicate for comics in pre-fetched comics array
     NSPredicate *prefetchedComicsPredicate = [NSPredicate predicateWithFormat:@"self IN %@", existingComicsInCoreDataBeforeFetch];
@@ -253,7 +257,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     request.entity = entity;
     request.resultType = NSDictionaryResultType;
     request.returnsDistinctResults = YES;
-    request.propertiesToFetch = @[ @"comicName" ];
+    request.propertiesToFetch = @[ kComicAttributeKeyComicName ];
     
     // Init predicate for pre-fetched existing comics in Core Data array
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", existingComicsInCoreDataBeforeFetch];
@@ -274,7 +278,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     else {
         // Get video ID strings
         for (NSDictionary *dict in comicsInCoreData) {
-            NSString *comicName = [dict valueForKey:@"comicName"];
+            NSString *comicName = [dict valueForKey:kComicAttributeKeyComicName];
             [comicNameStrings addObject:comicName];
         }
     }
@@ -303,7 +307,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
     
     // Set connection state to CONNECTING
     self.connectionState = KJComicStoreStateConnecting;
-    DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+    DDLogInfo(@"comicStore: connection state: %lu", (unsigned long)self.connectionState);
     
     // Setup query
     PFQuery *comicsQuery = [PFQuery queryWithClassName:[KJComic parseClassName]];
@@ -326,7 +330,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             // The find succeeded
             // Set connection state to CONNECTED
             self.connectionState = KJComicStoreStateConnected;
-            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+            DDLogInfo(@"comicStore: connection state: %lu", (unsigned long)self.connectionState);
             
             // Show network activity monitor
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -383,7 +387,9 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                         
                         // Init fetch request for video to delete
                         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                        fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(comicName == %@)", comicName];
+                        fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(%@ == %@)",
+                                                  kComicAttributeKeyComicName,
+                                                  comicName];
                         fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                                           inManagedObjectContext:self.managedObjectContext];
                         
@@ -394,7 +400,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
                         
                         // If we found comic to delete ..
                         if ([itemsToDelete count] > 0) {
-                            DDLogInfo(@"comicStore: found %d comic to delete", [itemsToDelete count]);
+                            DDLogInfo(@"comicStore: found %lu comic to delete", (unsigned long)[itemsToDelete count]);
                             
                             // Delete
                             KJComic *comicToDelete = [itemsToDelete firstObject];
@@ -441,7 +447,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             
             // Set connection state to DISCONNECTED
             self.connectionState = KJComicStoreStateDisconnected;
-            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+            DDLogInfo(@"comicStore: connection state: %lu", (unsigned long)self.connectionState);
             
             // Send NSNotification to say that data fetch is done
             [[NSNotificationCenter defaultCenter] postNotificationName:KJComicDataFetchDidHappenNotification
@@ -457,7 +463,7 @@ static NSString *kComicAttributeComicNameKey = @"comicName";
             DDLogError(@"comicStore: error: %@ %@", error, [error userInfo]);
             // Set connection state to DISCONNECTED
             self.connectionState = KJComicStoreStateDisconnected;
-            DDLogInfo(@"comicStore: connection state: %u", self.connectionState);
+            DDLogInfo(@"comicStore: connection state: %lu", (unsigned long)self.connectionState);
         }
     }];
 }
