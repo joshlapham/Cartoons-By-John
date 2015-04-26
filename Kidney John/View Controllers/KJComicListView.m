@@ -24,7 +24,7 @@
 // Segue identifiers
 static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
-@interface KJComicListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
+@interface KJComicListView () <UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 
 // Properties
 @property (nonatomic, strong) NSArray *comicResults;
@@ -84,6 +84,9 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     
     // Core Data
     NSError *error;
+    
+    // TODO: handle error
+    
     if (![[self fetchedResultsController] performFetch:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
@@ -133,7 +136,7 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     }
     
     // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"KJComic"
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
                                               inManagedObjectContext:self.managedObjectContext];
     
     // Init sort descriptor
@@ -262,12 +265,16 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     // TODO: refactor to do image setting in configureCell method on KJComicCell class
     [cell.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
                            placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                  completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
+                                  completed:^(UIImage *cellImage, NSError *error,
+                                              SDImageCacheType cacheType,
+                                              NSURL *url) {
                                       if (cellImage && !error) {
                                           DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
-                                      } else {
+                                      }
+                                      
+                                      // TODO: implement fallback
+                                      else {
                                           DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
-                                          // TODO: implement fallback
                                       }
                                   }];
     
@@ -276,7 +283,6 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
 -   (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    DDLogVerbose(@"Comix: selected item - %ld", (long)indexPath.row);
     [self performSegueWithIdentifier:kSegueIdentifierComicDetail
                               sender:self];
     
@@ -292,6 +298,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
+    // Comic detail segue
     if ([segue.identifier isEqualToString:kSegueIdentifierComicDetail]) {
         // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
@@ -308,7 +315,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         // Pass selected index path to destination VC
         destViewController.collectionViewIndexFromList = selectedIndexPath;
         
-        DDLogVerbose(@"Comix: selected comic row: %d", selectedIndexPath.row);
+        DDLogVerbose(@"Comix: selected comic row: %ld", (long)selectedIndexPath.row);
         
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
@@ -319,12 +326,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)comicFetchDidHappen {
     DDLogVerbose(@"Comic fetch did happen ..");
-    
-    // TODO: update to use vanilla Core Data
-    
-    //    _comicResults = [[NSArray alloc] init];
-    //    _comicResults = [KJComic MR_findAllSortedBy:@"comicNumber" ascending:YES];
-    
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -340,11 +341,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     // Remove tap gesture recognizer
     [self.collectionView removeGestureRecognizer:_singleTap];
-    
-    // Reload collectionview with data just fetched on main thread
-    //    dispatch_async(dispatch_get_main_queue(), ^{
-    //        [self.collectionView reloadData];
-    //    });
 }
 
 #pragma mark - Reachability methods
@@ -354,12 +350,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         DDLogVerbose(@"Comix: network became available");
         
         // Dismiss no network UIAlertView
-        [_noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        [_noNetworkAlertView dismissWithClickedButtonIndex:0
+                                                  animated:YES];
         
         // Fetch data
         [[KJComicStore sharedStore] fetchComicData];
     }
 }
+
+// TODO: refactor to use UIAlertController
 
 - (void)noNetworkConnection {
     // Init strings for noNetworkAlertView
@@ -404,13 +403,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         if ([JPLReachabilityManager isReachable]) {
             [[KJComicStore sharedStore] fetchComicData];
         }
+        
         else if ([JPLReachabilityManager isUnreachable]) {
             // Show noNetworkAlertView
             [self noNetworkConnection];
         }
     }
+    
+    // We have data, so call this method to fetch from local DB and reload table
     else {
-        // We have data, so call this method to fetch from local DB and reload table
         [self comicFetchDidHappen];
         
         // Fetch new data if network is available
@@ -424,14 +425,15 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 -       (void)alertView:(UIAlertView *)alertView
    clickedButtonAtIndex:(NSInteger)buttonIndex {
-    DDLogVerbose(@"Comix List: alert button clicked: %d", buttonIndex);
+    DDLogVerbose(@"Comix List: alert button clicked: %ld", (long)buttonIndex);
     
+    // Retry was clicked
     if (buttonIndex == 1) {
-        // Retry was clicked
         [self fetchDataWithNetworkCheck];
     }
+    
+    // Cancel was clicked
     else if (buttonIndex == 0) {
-        // Cancel was clicked
         // TODO: implement a new view with a button to retry data refresh here?
         
         // Reload collectionView data to check for empty data source
