@@ -8,9 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class KJVideo;
+
 @interface KJParseAnalyticsStore : NSObject
 
-// Init method
+// Methods
+// Init
 + (KJParseAnalyticsStore *)sharedStore;
+
+// Favourited item event methods
++ (void)sendVideoFavouriteEventForVideo:(KJVideo *)video;
 
 @end
