@@ -9,15 +9,8 @@
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
 #import "KJVideo.h"
-#import <Parse/Parse.h>
 #import "NSUserDefaults+KJSettings.h"
-
-// Constants
-// Parse Analytics keys
-static NSString * kParseAnalyticsKeyEventName = @"videoFavourite";
-static NSString * kParseAnalyticsKeyVideoTitle = @"videoTitle";
-static NSString * kParseAnalyticsKeyVideoId = @"videoId";
-static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
+#import "KJParseAnalyticsStore.h"
 
 @implementation KJVideoFavouriteActivity {
     NSString *titleOfActivity;
@@ -73,7 +66,7 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
     
     // Track action with Parse analytics (if enabled)
     if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
-        [self sendParseAnalyticEvent];
+        [[KJParseAnalyticsStore sharedStore] trackVideoFavouriteEventForVideo:videoObject];
     }
     
     // Save managedObjectContext
@@ -94,19 +87,6 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
 
 - (void)performActivity {
     [self activityDidFinish:YES];
-}
-
-#pragma mark - Parse Analytics method
-
-- (void)sendParseAnalyticEvent {
-    NSDictionary *dimensions = @{
-                                 kParseAnalyticsKeyVideoTitle : videoObject.videoName,
-                                 kParseAnalyticsKeyVideoId : videoObject.videoId,
-                                 kParseAnalyticsKeyVideoIsFavourite : videoObject.isFavourite ? @"YES" : @"NO",
-                                 };
-    
-    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
-                 dimensions:dimensions];
 }
 
 @end

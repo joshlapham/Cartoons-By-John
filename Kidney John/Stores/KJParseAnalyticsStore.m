@@ -37,7 +37,7 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
 
 #pragma mark - Videos
 
-+ (void)sendVideoFavouriteEventForVideo:(KJVideo *)video {
+- (void)trackVideoFavouriteEventForVideo:(KJVideo *)video {
     NSDictionary *dimensions = @{
                                  kParseAnalyticsKeyVideoTitle : video.videoName,
                                  kParseAnalyticsKeyVideoId : video.videoId,

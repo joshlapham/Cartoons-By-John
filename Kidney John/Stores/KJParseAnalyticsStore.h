@@ -17,6 +17,6 @@
 + (KJParseAnalyticsStore *)sharedStore;
 
 // Favourited item event methods
-+ (void)sendVideoFavouriteEventForVideo:(KJVideo *)video;
+- (void)trackVideoFavouriteEventForVideo:(KJVideo *)video;
 
 @end
