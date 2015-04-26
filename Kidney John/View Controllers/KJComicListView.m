@@ -18,6 +18,7 @@
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
 #import "NSUserDefaults+KJSettings.h"
+#import "UIColor+KJColours.h"
 
 // Constants
 // Segue identifiers
@@ -66,6 +67,9 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     [self.collectionView registerClass:[KJComicCell class]
             forCellWithReuseIdentifier:[KJComicCell cellIdentifier]];
     
+    // Setup collectionView
+    [self setupCollectionView];
+    
     // Register NSNotifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(comicFetchDidHappen)
@@ -110,6 +114,13 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
         _singleTap.numberOfTapsRequired = 1;
         [self.collectionView addGestureRecognizer:_singleTap];
     }
+}
+
+#pragma mark - Setup collectionView helper method
+
+- (void)setupCollectionView {
+    // Set collectionView properties
+    self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
 }
 
 #pragma mark - NSFetchedResultsController
