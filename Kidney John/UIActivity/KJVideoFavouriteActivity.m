@@ -10,6 +10,7 @@
 #import "KJVideoStore.h"
 #import "KJVideo.h"
 #import <Parse/Parse.h>
+#import "NSUserDefaults+KJSettings.h"
 
 // Constants
 // Parse Analytics keys
@@ -70,8 +71,10 @@ static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
     // Toggle favourite status for videoObject
     videoObject.isFavourite = !videoObject.isFavourite;
     
-    // Track action with Parse analytics
-    [self sendParseAnalyticEvent];
+    // Track action with Parse analytics (if enabled)
+    if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
+        [self sendParseAnalyticEvent];
+    }
     
     // Save managedObjectContext
     NSError *error;
