@@ -9,6 +9,14 @@
 #import "KJVideoFavouriteActivity.h"
 #import "KJVideoStore.h"
 #import "KJVideo.h"
+#import <Parse/Parse.h>
+
+// Constants
+// Parse Analytics keys
+static NSString * kParseAnalyticsKeyEventName = @"videoFavourite";
+static NSString * kParseAnalyticsKeyVideoTitle = @"videoTitle";
+static NSString * kParseAnalyticsKeyVideoId = @"videoId";
+static NSString * kParseAnalyticsKeyVideoIsFavourite = @"isFavourite";
 
 @implementation KJVideoFavouriteActivity {
     NSString *titleOfActivity;
@@ -62,12 +70,23 @@
     // Toggle favourite status for videoObject
     videoObject.isFavourite = !videoObject.isFavourite;
     
+    // Track action with Parse analytics
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyVideoTitle : videoObject.videoName,
+                                 kParseAnalyticsKeyVideoId : videoObject.videoId,
+                                 kParseAnalyticsKeyVideoIsFavourite : videoObject.isFavourite ? @"YES" : @"NO",
+                                 };
+    
+    [PFAnalytics trackEvent:kParseAnalyticsKeyEventName
+                 dimensions:dimensions];
+    
     // Save managedObjectContext
     NSError *error;
     if (![videoObject.managedObjectContext save:&error]) {
-        // Handle the error.
+        // TODO: handle the error
         DDLogError(@"Video: failed to save managedObjectContext: %@", [error debugDescription]);
     }
+    
     else {
         DDLogInfo(@"Video: saved managedObjectContext");
     }
