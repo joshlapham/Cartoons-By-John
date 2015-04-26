@@ -47,8 +47,9 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
     return _sharedStore;
 }
 
-#pragma mark - Videos
+#pragma mark - Favourited item event methods
 
+// Videos
 - (void)trackVideoFavouriteEventForVideo:(KJVideo *)video {
     NSDictionary *dimensions = @{
                                  kParseAnalyticsKeyVideoTitle : video.videoName,
@@ -60,8 +61,7 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
                  dimensions:dimensions];
 }
 
-#pragma mark - Comics
-
+// Comics
 - (void)trackComicFavouriteEventForComic:(KJComic *)comic {
     NSDictionary *dimensions = @{
                                  kParseAnalyticsKeyComicTitle : comic.comicName,
@@ -73,8 +73,7 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
                  dimensions:dimensions];
 }
 
-#pragma mark - Doodles
-
+// Doodles
 - (void)trackDoodleFavouriteEventForDoodle:(KJRandomImage *)doodle {
     NSDictionary *dimensions = @{
                                  kParseAnalyticsKeyDoodleUrl : doodle.imageUrl,
@@ -84,6 +83,20 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
     
     [PFAnalytics trackEvent:kParseAnalyticsKeyDoodleEventName
                  dimensions:dimensions];
+}
+
+#pragma mark - Shared item event methods
+
+- (void)trackVideoShareEventForVideo:(KJVideo *)video {
+    
+}
+
+- (void)trackComicShareEventForComic:(KJComic *)comic {
+    
+}
+
+- (void)trackDoodleShareEventForDoodle:(KJRandomImage *)doodle {
+    
 }
 
 @end
