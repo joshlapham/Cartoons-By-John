@@ -24,6 +24,10 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
 // Constant for NSNotification name
 NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHappen";
 
+// Constants for Core Data attributes to find by
+static NSString *kVideoAttributeKeyVideoId = @"videoId";
+static NSString *kVideoAttributeKeyVideoDate = @"videoDate";
+
 @implementation KJVideoStore {
     BOOL __block changesToVideosWereMade;
     NSArray __block *existingVideosInCoreDataBeforeFetch;
@@ -63,9 +67,11 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     
     // Cache URL for SDWebImage
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
-    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls progress:nil completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
-        DDLogVerbose(@"videoStore: prefetched video thumbs count: %d, skipped: %d", finishedCount, skippedCount);
-    }];
+    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls
+                                                      progress:nil
+                                                     completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
+                                                         DDLogVerbose(@"videoStore: prefetched video thumbs count: %lu, skipped: %lu", (unsigned long)finishedCount, (unsigned long)skippedCount);
+                                                     }];
 }
 
 #pragma mark - Return favourite videos method
@@ -86,10 +92,10 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     fetchRequest.entity = entity;
     
     // Set sort descriptor (by video date; newest at the top)
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"videoDate"
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:kVideoAttributeKeyVideoDate
                                                                    ascending:NO];
     fetchRequest.sortDescriptors = @[ sortDescriptor ];
-
+    
     // Set predicate
     fetchRequest.predicate = predicate;
     
@@ -123,7 +129,9 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     // Init predicate for videos matching video ID
-    NSPredicate *videoIdPredicate = [NSPredicate predicateWithFormat:@"videoId == %@", videoId];
+    NSPredicate *videoIdPredicate = [NSPredicate predicateWithFormat:@"%@ == %@",
+                                     kVideoAttributeKeyVideoId,
+                                     videoId];
     
     // Init predicate for videos in pre-fetched videos array
     NSPredicate *prefetchedVideosPredicate = [NSPredicate predicateWithFormat:@"self IN %@", existingVideosInCoreDataBeforeFetch];
@@ -168,7 +176,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
             changesToVideosWereMade = YES;
         }
         else {
-//            DDLogInfo(@"videoStore: video doesn't need update: %@", videoName);
+            //            DDLogInfo(@"videoStore: video doesn't need update: %@", videoName);
         }
     }
 }
@@ -181,7 +189,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     
     // Init sort descriptor by video date, newest at the top
     // NOTE - we do this just so the prefetchVideoThumbnails method can better prefetch, starting with newest video
-    NSSortDescriptor *videoDateDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"videoDate"
+    NSSortDescriptor *videoDateDescriptor = [NSSortDescriptor sortDescriptorWithKey:kVideoAttributeKeyVideoDate
                                                                           ascending:NO];
     
     // Init fetch request for only the video ID property of KJVideo
@@ -227,7 +235,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     request.entity = entity;
     request.resultType = NSDictionaryResultType;
     request.returnsDistinctResults = YES;
-    request.propertiesToFetch = @[@"videoId"];
+    request.propertiesToFetch = @[ kVideoAttributeKeyVideoId ];
     
     // Init predicate for pre-fetched existing videos in Core Data array
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", existingVideosInCoreDataBeforeFetch];
@@ -238,7 +246,8 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     
     // Execute the fetch
     NSError *error;
-    NSArray *videosInCoreData = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSArray *videosInCoreData = [self.managedObjectContext executeFetchRequest:request
+                                                                         error:&error];
     
     if (videosInCoreData == nil) {
         // Handle the error
@@ -247,7 +256,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     else {
         // Get video ID strings
         for (NSDictionary *dict in videosInCoreData) {
-            NSString *videoId = [dict valueForKey:@"videoId"];
+            NSString *videoId = [dict valueForKey:kVideoAttributeKeyVideoId];
             [videoIdStrings addObject:videoId];
         }
     }
@@ -276,7 +285,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
     
     // Set connection state to CONNECTING
     self.connectionState = KJVideoStoreStateConnecting;
-    DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
+    DDLogInfo(@"videoStore: connection state: %lu", (unsigned long)self.connectionState);
     
     dispatch_queue_t defaultQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
     dispatch_async(defaultQueue, ^{
@@ -303,7 +312,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 // The find succeeded
                 // Set connection state to CONNECTED
                 self.connectionState = KJVideoStoreStateConnected;
-                DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
+                DDLogInfo(@"videoStore: connection state: %lu", (unsigned long)self.connectionState);
                 
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -334,7 +343,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                             changesToVideosWereMade = YES;
                         }
                         else {
-//                            DDLogInfo(@"videoStore: already fetched video %@", videoId);
+                            //                            DDLogInfo(@"videoStore: already fetched video %@", videoId);
                             
                             // Check if video needs update
                             [self checkIfVideoNeedsUpdateWithParseObject:object];
@@ -344,10 +353,10 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                     // Video is NOT active
                     // Check if it exists locally in Core Data, and delete if so
                     else {
-//                        DDLogInfo(@"videoStore: video not active: %@", object[@"videoName"]);
+                        //                        DDLogInfo(@"videoStore: video not active: %@", object[@"videoName"]);
                         
                         if (![alreadyFetchedVideoIds containsObject:videoId]) {
-//                            DDLogInfo(@"videoStore: video %@ isn't active but isn't in database, so it's all good", videoName);
+                            //                            DDLogInfo(@"videoStore: video %@ isn't active but isn't in database, so it's all good", videoName);
                         }
                         
                         // Video IS in Core Data, so delete
@@ -356,7 +365,9 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                             
                             // Init fetch request for video to delete
                             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(videoId == %@)", videoId];
+                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(%@ == %@)",
+                                                      kVideoAttributeKeyVideoId,
+                                                      videoId];
                             fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJVideo class])
                                                               inManagedObjectContext:self.managedObjectContext];
                             
@@ -367,7 +378,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                             
                             // If we found video to delete ..
                             if ([itemsToDelete count] > 0) {
-                                DDLogInfo(@"videoStore: found %d video to delete", [itemsToDelete count]);
+                                DDLogInfo(@"videoStore: found %lu video to delete", (unsigned long)[itemsToDelete count]);
                                 
                                 // Delete
                                 KJVideo *videoToDelete = [itemsToDelete firstObject];
@@ -393,6 +404,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 if (!changesToVideosWereMade) {
                     DDLogInfo(@"videoStore: no changes to videos were found, so no save managedObjectContext is required");
                 }
+                
                 else {
                     // Changes were made.
                     // This could have been new videos added, existing video info updated, or video deleted from Core Data.
@@ -401,6 +413,7 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                         // Handle the error.
                         DDLogError(@"videoStore: failed to save managedObjectContext: %@", [error debugDescription]);
                     }
+                    
                     else {
                         DDLogInfo(@"videoStore: saved managedObjectContext");
                     }
@@ -418,20 +431,21 @@ NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHa
                 
                 // Set connection state to DISCONNECTED
                 self.connectionState = KJVideoStoreStateDisconnected;
-                DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
+                DDLogInfo(@"videoStore: connection state: %lu", (unsigned long)self.connectionState);
                 
                 // Prefetch video thumbnails if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
                     [self prefetchVideoThumbnails];
                 }
             }
+            
             else {
                 // Log details of the failure
                 DDLogError(@"videoStore: error: %@ %@", error, [error userInfo]);
                 
                 // Set connection state to DISCONNECTED
                 self.connectionState = KJVideoStoreStateDisconnected;
-                DDLogInfo(@"videoStore: connection state: %u", self.connectionState);
+                DDLogInfo(@"videoStore: connection state: %lu", (unsigned long)self.connectionState);
             }
         }];
     });
