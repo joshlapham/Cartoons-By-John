@@ -12,6 +12,8 @@
 #import "KJComicFavouriteActivity.h"
 #import "KJComic.h"
 #import "KJComic+Methods.h"
+#import "NSUserDefaults+KJSettings.h"
+#import "KJParseAnalyticsStore.h"
 
 @interface KJComicDetailView () <UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -38,12 +40,23 @@
     if (!self.collectionViewIndexFromList) {
         // Init array with just initialComicToShow object, as that's all we need
         _cellDataSource = @[ self.initialComicToShow ];
+        
+        // Track comic viewed with Parse Analytics (if enabled)
+        if ([NSUserDefaults kj_shouldTrackViewedComicEventsWithParseSetting]) {
+            [[KJParseAnalyticsStore sharedStore] trackComicViewEventForComic:self.initialComicToShow];
+        }
     }
     
     // Coming from KJComicList VC
     else {
         // Init array of all comics in Core Data
         _cellDataSource = [[KJComicStore sharedStore] returnComicsArray];
+        
+        // Track comic viewed with Parse Analytics (if enabled)
+        if ([NSUserDefaults kj_shouldTrackViewedComicEventsWithParseSetting]) {
+            KJComic *chosenComic = [_cellDataSource objectAtIndex:self.collectionViewIndexFromList.row];
+            [[KJParseAnalyticsStore sharedStore] trackComicViewEventForComic:chosenComic];
+        }
     }
     
     // Call method to setup collectionView and flow layout
