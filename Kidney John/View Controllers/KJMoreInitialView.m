@@ -19,9 +19,9 @@
 #import "KJSocialLink.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "KJSocialLinkCell.h"
 
 // Constants
-static NSString *kSocialCellIdentifier = @"SocialLinkCell";
 static NSString *kSegueIdentifierDoodleFavourite = @"doodleFavouriteSegue";
 static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
 
@@ -95,9 +95,9 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
     _cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
     
     // Register cells with tableView
-    [self.tableView registerNib:[UINib nibWithNibName:@"KJSocialLinkCell"
+    [self.tableView registerNib:[UINib nibWithNibName:[KJSocialLinkCell cellIdentifier]
                                                bundle:nil]
-         forCellReuseIdentifier:kSocialCellIdentifier];
+         forCellReuseIdentifier:[KJSocialLinkCell cellIdentifier]];
     
     // Allow for dynamic sized cells
     self.tableView.estimatedRowHeight = 44;
@@ -131,65 +131,70 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
-    UITableViewCell *cell;
+    KJSocialLinkCell *cell = [tableView dequeueReusableCellWithIdentifier:[KJSocialLinkCell cellIdentifier]
+                                                             forIndexPath:indexPath];
     
-    if (!cell) {
-        cell = [tableView dequeueReusableCellWithIdentifier:kSocialCellIdentifier
-                                               forIndexPath:indexPath];
-    }
-    
-    // Init cell labels
-    UILabel *titleLabel = (UILabel *)[cell viewWithTag:101];
-    UIImageView *thumbImage = (UIImageView *)[cell viewWithTag:102];
-    
-    // Set font
-    titleLabel.font = [UIFont kj_moreViewCellFont];
-    
+    // Determine section (Favourites or Social Links)
     // If Favourites section ..
     if (indexPath.section == 0) {
-        // Set the cell text
-        titleLabel.text = [_cellArray objectAtIndex:indexPath.row];
+        // Init properties for cell label values
+        NSString *titleString = [_cellArray objectAtIndex:indexPath.row];
+        UIImage *cellImage;
         
         // Set Favourites icon
         // Videos
         if (indexPath.row == 0) {
-            thumbImage.image = [UIImage imageNamed:@"video-tab-icon.png"];
+            cellImage = [UIImage imageNamed:@"video-tab-icon.png"];
+            
+            // TODO: review this
             // Fix the look of the Video thumbnail when in tableView
-            thumbImage.contentMode = UIViewContentModeScaleAspectFit;
+//            thumbImage.contentMode = UIViewContentModeScaleAspectFit;
         }
         
         // Comics
         else if (indexPath.row == 1) {
-            thumbImage.image = [UIImage imageNamed:@"comic-tab-icon.png"];
+            cellImage = [UIImage imageNamed:@"comic-tab-icon.png"];
         }
         
         // Doodles
         else if (indexPath.row == 2) {
-            thumbImage.image = [UIImage imageNamed:@"doodle-tab-icon.png"];
+            cellImage = [UIImage imageNamed:@"doodle-tab-icon.png"];
         }
+        
+        // Configure cell
+        [cell configureCellWithTitle:titleString
+                            andImage:cellImage];
     }
     
     // If Social Links section ..
     else {
-        // Set the cell text
+        // Init properties for cell values
+        NSString *titleString;
+        UIImage *cellImage;
         
+        // Set the cell text
         // FOR TESTING
         // Use links from Parse
         if (_areWeTestingSocialLinksFromParseFeature == YES) {
             KJSocialLink *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
-            titleLabel.text = socialLink.title;
-            thumbImage.image = [UIImage imageNamed:socialLink.imagePath];
+            titleString = socialLink.title;
+            cellImage = [UIImage imageNamed:socialLink.imagePath];
         }
         
         // Use hardcoded social links
         else {
             NSDictionary *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
-            titleLabel.text = [socialLink objectForKey:@"title"];
-            thumbImage.image = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
+            titleString = [socialLink objectForKey:@"title"];
+            cellImage = [UIImage imageNamed:[socialLink objectForKey:@"image"]];
         }
         
         // Give the social icons a bit of opacity to match Favourites icons
-        thumbImage.alpha = 0.5;
+        // TODO: review this
+//        thumbImage.alpha = 0.5;
+        
+        // Configure cell
+        [cell configureCellWithTitle:titleString
+                            andImage:cellImage];
     }
     
     return cell;

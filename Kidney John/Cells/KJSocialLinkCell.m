@@ -7,6 +7,7 @@
 //
 
 #import "KJSocialLinkCell.h"
+#import "UIFont+KJFonts.h"
 
 @interface KJSocialLinkCell ()
 
@@ -22,6 +23,9 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    
+    // Set font
+    _titleLabel.font = [UIFont kj_moreViewCellFont];
 }
 
 #pragma mark - Cell identifier method
