@@ -32,4 +32,7 @@
 // 'More' view
 + (UIColor *)kj_moreViewSectionTextColour;
 
+// Accessibility
++ (UIColor *)kj_accessibilityDarkenColoursBackgroundColour;
+
 @end

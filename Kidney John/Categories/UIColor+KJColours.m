@@ -113,4 +113,9 @@
     return [UIColor darkGrayColor];
 }
 
+// Accessibility
++ (UIColor *)kj_accessibilityDarkenColoursBackgroundColour {
+    return [UIColor darkGrayColor];
+}
+
 @end
