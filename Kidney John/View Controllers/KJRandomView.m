@@ -108,6 +108,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     self.collectionView.pagingEnabled = YES;
     self.collectionView.frame = self.view.bounds;
 
+    // Accessibility
     if (UIAccessibilityDarkerSystemColorsEnabled()) {
         self.collectionView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
     }
