@@ -2,7 +2,13 @@
 
 ## Version 1.1.1
 
-- update to support accessibility features of iOS
+This update is focused on supporting Accessibility features of iOS for Global Accessibility Awareness Day - globalaccessibilityawarenessday.org
+
+- update to support VoiceOver accessibility feature of iOS with more descriptive text for elements on-screen
+- update to support 'Darken Colours' accessibility feature of iOS with darker backgrounds and text colour if enabled
+
+Bug fixes:
+
 - fixed issue on 'More' screen where section titles would not show correctly on iPhone 6 and 6+
 
 ## Version 1.1
