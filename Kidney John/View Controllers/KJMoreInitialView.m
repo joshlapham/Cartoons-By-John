@@ -94,6 +94,15 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
     // Init array of titles for Favourites cells
     _cellArray = [NSArray arrayWithObjects:videosString, comicString, doodlesString, nil];
     
+    // Set properties on tableView
+    if (UIAccessibilityDarkerSystemColorsEnabled()) {
+        self.tableView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
+    }
+
+    else {
+        self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    }
+
     // Register cells with tableView
     [self.tableView registerNib:[UINib nibWithNibName:[KJSocialLinkCell cellIdentifier]
                                                bundle:nil]
