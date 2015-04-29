@@ -57,7 +57,14 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
 - (void)setupCollectionView {
     // Set collectionView properties
-    self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    // Accessibility
+    if (UIAccessibilityDarkerSystemColorsEnabled()) {
+        self.collectionView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
+    }
+    
+    else {
+        self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    }
 }
 
 #pragma mark - UICollectionView delegate methods
