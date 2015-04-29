@@ -123,7 +123,13 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
 - (void)setupCollectionView {
     // Set collectionView properties
-    self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    if (UIAccessibilityDarkerSystemColorsEnabled()) {
+        self.collectionView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
+    }
+
+    else {
+        self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    }
 }
 
 #pragma mark - NSFetchedResultsController
