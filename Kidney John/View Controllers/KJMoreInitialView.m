@@ -322,9 +322,12 @@ titleForHeaderInSection:(NSInteger)section {
 
 -   (UIView *)tableView:(UITableView *)tableView
  viewForHeaderInSection:(NSInteger)section {
+    // Init header label
     UILabel *headerLabel = [[UILabel alloc] init];
+    CGRect screenFrame = [[UIScreen mainScreen] bounds];
+    CGRect headerLabelFrame = CGRectMake(20, 8, screenFrame.size.width, 20);
+    headerLabel.frame = headerLabelFrame;
     
-    headerLabel.frame = CGRectMake(20, 8, 320, 20);
     headerLabel.font = [UIFont kj_sectionHeaderFont];
     headerLabel.textColor = [UIColor kj_moreViewSectionTextColour];
     headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
