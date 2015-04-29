@@ -19,6 +19,7 @@
 #import "KJVideo+Methods.h"
 #import "KJVideoViewController.h"
 #import "KJVideoCell.h"
+#import "UIColor+KJColours.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 
@@ -32,6 +33,8 @@
 @property (nonatomic, retain) NSFetchedResultsController *searchFetchedResultsController;
 
 @end
+
+// TODO: refactor this class to use UISearchController
 
 @implementation JPLYouTubeListView
 
@@ -113,6 +116,16 @@
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.searchDisplayController.searchResultsTableView.estimatedRowHeight = 120;
     self.searchDisplayController.searchResultsTableView.rowHeight = UITableViewAutomaticDimension;
+    
+    // Set background colour for view
+    // Accessibility
+    if (UIAccessibilityDarkerSystemColorsEnabled()) {
+        self.view.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
+    }
+    
+    else {
+        self.view.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    }
 }
 
 #pragma mark - Prepare for segue method
