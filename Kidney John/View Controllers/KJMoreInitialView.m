@@ -296,12 +296,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         
         destViewController.cellResults = favouritesDataToPass;
     }
-    
-    // Doodles
-    else if ([segue.identifier isEqualToString:kSegueIdentifierDoodleFavourite]) {
-        // NOTE: don't need to set anything here
-        //KJFavDoodlesListView *destViewController = segue.destinationViewController;
-    }
 }
 
 #pragma mark TableView header views
@@ -318,8 +312,8 @@ titleForHeaderInSection:(NSInteger)section {
             break;
             
         default:
-            // TODO: review this
-            return [NSString stringWithFormat:@"LOL error"];
+            // NOTE: returning nil by default
+            return nil;
             break;
     }
 }
@@ -358,42 +352,11 @@ titleForHeaderInSection:(NSInteger)section {
     }
 }
 
-#pragma mark - Did fetch Social Links method
+#pragma mark - Init data source array method
 
-- (void)didFetchSocialLinks {
-    //    DDLogVerbose(@"More: did fetch social links");
-    //
-    //    // Clear out existing links
-    //    [_socialLinksArray removeAllObjects];
-    //
-    //    // Get links from Core Data
-    //    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
-    //
-    //    // Reload tableView
-    //    [self.tableView reloadData];
-}
-
-#pragma mark - Init cell array methods
-
-// NOTE - since we are still testing fetching of Social Links from Parse,
-// these methods are here for that purpose
-
-- (void)initSocialLinksArrayFromParse {
-    //    // Init social link data source array
-    //    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
-    //
-    //    // Reload tableView
-    //    [self.tableView reloadData];
-    //
-    //    // Check if network is reachable
-    //    if ([JPLReachabilityManager isReachable]) {
-    //        // Fetch social links from Parse
-    //        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
-    //    }
-}
+// TODO: remove this once switched over to Parse for fetching social links
 
 - (void)initHardcodedSocialLinksArray {
-    // TODO: load these from a .plist included with app, so there are initial values?
     NSDictionary *facebookLink = @{ @"title" : @"Facebook",
                                     @"url" : @"https://www.facebook.com/kidneyjohn",
                                     @"image" : @"facebook.png" };
@@ -424,6 +387,42 @@ titleForHeaderInSection:(NSInteger)section {
     [_socialLinksArray addObject:vimeoLink];
     [_socialLinksArray addObject:instaLink];
     [_socialLinksArray addObject:societyLink];
+}
+
+#pragma mark - Social links from Parse methods
+
+// NOTE - since we are still testing fetching of Social Links from Parse,
+// these methods are commented out
+
+#pragma mark Did fetch social links method
+
+- (void)didFetchSocialLinks {
+    //    DDLogVerbose(@"More: did fetch social links");
+    //
+    //    // Clear out existing links
+    //    [_socialLinksArray removeAllObjects];
+    //
+    //    // Get links from Core Data
+    //    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+    //
+    //    // Reload tableView
+    //    [self.tableView reloadData];
+}
+
+#pragma mark Init cell array methods
+
+- (void)initSocialLinksArrayFromParse {
+    //    // Init social link data source array
+    //    _socialLinksArray = [NSMutableArray arrayWithArray:[KJSocialLink MR_findAll]];
+    //
+    //    // Reload tableView
+    //    [self.tableView reloadData];
+    //
+    //    // Check if network is reachable
+    //    if ([JPLReachabilityManager isReachable]) {
+    //        // Fetch social links from Parse
+    //        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
+    //    }
 }
 
 @end
