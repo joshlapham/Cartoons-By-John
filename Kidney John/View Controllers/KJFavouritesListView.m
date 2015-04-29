@@ -50,6 +50,16 @@ static NSString * kVideoDurationFallbackString = @"0:30";
     [self.tableView registerNib:[UINib nibWithNibName:[KJVideoCell cellIdentifier] bundle:nil]
          forCellReuseIdentifier:[KJVideoCell cellIdentifier]];
     
+    // Set background colour for view
+    // Accessibility
+    if (UIAccessibilityDarkerSystemColorsEnabled()) {
+        self.view.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
+    }
+    
+    else {
+        self.view.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    }
+    
     // Set auto row height for cells
     self.tableView.estimatedRowHeight = 122;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -61,8 +71,6 @@ static NSString * kVideoDurationFallbackString = @"0:30";
 }
 
 #pragma mark - Show noFavouritesAlertView method
-
-// TODO: refactor to use UIAlertController
 
 - (void)thereAreNoFavourites {
     // Init strings for noFavouritesAlertView
