@@ -10,6 +10,13 @@
 
 @interface UIColor (KJColours)
 
+// Standard background colour for all views
++ (UIColor *)kj_viewBackgroundColour;
+
+// Accessibility
+// Standard background colour for all views with 'Darken Colours' accessibility feature enabled
++ (UIColor *)kj_accessibilityDarkenColoursBackgroundColour;
+
 // Navbar
 + (UIColor *)kj_navbarColour;
 + (UIColor *)kj_navbarTitleFontShadowColour;
@@ -22,17 +29,11 @@
 + (UIColor *)kj_tabBarItemIconStateNormalColour;
 + (UIColor *)kj_tabBarItemIconStateSelectedColour;
 
-// Videos
+// Video cells
 + (UIColor *)kj_videoDurationTextColour;
 + (UIColor *)kj_newVideoLabelColour;
 
-// 'Doodles' & 'Favourite Doodles' view
-+ (UIColor *)kj_doodlesViewBackgroundColour;
-
 // 'More' view
 + (UIColor *)kj_moreViewSectionTextColour;
-
-// Accessibility
-+ (UIColor *)kj_accessibilityDarkenColoursBackgroundColour;
 
 @end

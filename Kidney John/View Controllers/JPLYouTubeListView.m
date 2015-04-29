@@ -124,7 +124,7 @@
     }
     
     else {
-        self.view.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+        self.view.backgroundColor = [UIColor kj_viewBackgroundColour];
     }
 }
 

@@ -11,6 +11,17 @@
 
 @implementation UIColor (KJColours)
 
+// Standard background colour for all views
++ (UIColor *)kj_viewBackgroundColour {
+    return [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
+}
+
+// Accessibility
+// Standard background colour for all views with 'Darken Colours' accessibility feature enabled
++ (UIColor *)kj_accessibilityDarkenColoursBackgroundColour {
+    return [UIColor darkGrayColor];
+}
+
 // Navbar
 + (UIColor *)kj_navbarColour {
     if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
@@ -94,7 +105,7 @@
     }
 }
 
-// Videos
+// Video cells
 + (UIColor *)kj_videoDurationTextColour {
     return [UIColor grayColor];
 }
@@ -103,18 +114,8 @@
     return [UIColor colorWithRed:92/255.0 green:184/255.0 blue:92/255.0 alpha:1];
 }
 
-// 'Doodles' & 'Favourite Doodles' view
-+ (UIColor *)kj_doodlesViewBackgroundColour {
-    return [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1];
-}
-
 // 'More' view
 + (UIColor *)kj_moreViewSectionTextColour {
-    return [UIColor darkGrayColor];
-}
-
-// Accessibility
-+ (UIColor *)kj_accessibilityDarkenColoursBackgroundColour {
     return [UIColor darkGrayColor];
 }
 

@@ -57,7 +57,7 @@ static NSString * kVideoDurationFallbackString = @"0:30";
     }
     
     else {
-        self.view.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+        self.view.backgroundColor = [UIColor kj_viewBackgroundColour];
     }
     
     // Set auto row height for cells

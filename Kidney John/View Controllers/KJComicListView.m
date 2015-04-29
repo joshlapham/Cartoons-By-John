@@ -129,7 +129,7 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     }
 
     else {
-        self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+        self.collectionView.backgroundColor = [UIColor kj_viewBackgroundColour];
     }
 }
 

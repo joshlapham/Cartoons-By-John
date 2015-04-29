@@ -63,7 +63,7 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
     }
     
     else {
-        self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+        self.collectionView.backgroundColor = [UIColor kj_viewBackgroundColour];
     }
 }
 

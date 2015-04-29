@@ -114,7 +114,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     }
 
     else {
-        self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+        self.collectionView.backgroundColor = [UIColor kj_viewBackgroundColour];
     }
     
     // Init flow layout
