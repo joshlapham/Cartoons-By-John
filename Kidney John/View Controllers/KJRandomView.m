@@ -107,7 +107,14 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     // Set collectionView properties
     self.collectionView.pagingEnabled = YES;
     self.collectionView.frame = self.view.bounds;
-    self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+
+    if (UIAccessibilityDarkerSystemColorsEnabled()) {
+        self.collectionView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
+    }
+
+    else {
+        self.collectionView.backgroundColor = [UIColor kj_doodlesViewBackgroundColour];
+    }
     
     // Init flow layout
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
