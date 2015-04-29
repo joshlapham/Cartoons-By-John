@@ -331,10 +331,22 @@ titleForHeaderInSection:(NSInteger)section {
     CGRect headerLabelFrame = CGRectMake(20, 8, screenFrame.size.width, 20);
     headerLabel.frame = headerLabelFrame;
     
+    // Set font and text
     headerLabel.font = [UIFont kj_sectionHeaderFont];
-    headerLabel.textColor = [UIColor kj_moreViewSectionTextColour];
-    headerLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    headerLabel.text = [self tableView:tableView
+               titleForHeaderInSection:section];
     
+    // Set colour
+    // Accessibility
+    if (UIAccessibilityDarkerSystemColorsEnabled()) {
+        headerLabel.textColor = [UIColor whiteColor];
+    }
+
+    else {
+        headerLabel.textColor = [UIColor kj_moreViewSectionTextColour];
+    }
+
+    // Init view for section
     UIView *headerView = [[UIView alloc] init];
     [headerView addSubview:headerLabel];
     
