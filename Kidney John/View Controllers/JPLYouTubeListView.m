@@ -18,6 +18,7 @@
 #import "KJVideoViewController.h"
 #import "KJVideoCell.h"
 #import "UIColor+KJColours.h"
+#import "UIViewController+KJUtils.h"
 
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
@@ -314,45 +315,13 @@
     // Perform fetch
     NSError *error = nil;
     if (![fetchedResultsController performFetch:&error]) {
+        DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
         
-        // TODO: handle this error
-        
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-         */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        // Show fatal error alert
+        [self showFatalErrorAlert];
     }
     
     return fetchedResultsController;
-}
-
-#pragma mark - Show fatal error alert method
-
-- (void)showFatalErrorAlert {
-    // Init alert strings
-    NSString *alertTitle = NSLocalizedString(@"Error", nil);
-    NSString *alertMessage = NSLocalizedString(@"We're sorry, a fatal error occurred. Please try exiting and re-launching the app.", nil);
-    NSString *okayButtonTitle = NSLocalizedString(@"Okay", nil);
-    
-    // Init alert
-    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:alertTitle
-                                                                        message:alertMessage
-                                                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    // Init actions
-    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okayButtonTitle
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:nil];
-    
-    [errorAlert addAction:okayAction];
-    
-    // Show alert
-    [self presentViewController:errorAlert
-                       animated:YES
-                     completion:nil];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
