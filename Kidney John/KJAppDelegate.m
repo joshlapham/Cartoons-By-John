@@ -374,16 +374,17 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
         dict[NSUnderlyingErrorKey] = error;
         
         // Init NSError with dict
+        // TODO: update error domain
         error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN"
                                     code:9999
                                 userInfo:dict];
         
-        // TODO: handle error
+        DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
         
-        // Replace this with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+#ifdef DEBUG
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
+#endif
     }
     
     return _persistentStoreCoordinator;
@@ -420,6 +421,11 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
             ![managedObjectContext save:&error]) {
             // TODO: implement analytics for fatal error to be reported
             DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
+            
+#ifdef DEBUG
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+#endif
         }
     }
 }
