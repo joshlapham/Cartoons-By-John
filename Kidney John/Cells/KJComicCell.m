@@ -8,6 +8,8 @@
 
 #import "KJComicCell.h"
 #import "KJComic.h"
+#import "KJComic+Methods.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface KJComicCell ()
 
@@ -46,6 +48,22 @@
     
     // Set comic title
     _comicTitle = cellData.comicName;
+    
+    // Set comic thumbnail using SDWebImage
+    [self.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
+                           placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                  completed:^(UIImage *cellImage, NSError *error,
+                                              SDImageCacheType cacheType,
+                                              NSURL *url) {
+                                      if (cellImage && !error) {
+                                          DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
+                                      }
+                                      
+                                      // TODO: implement fallback
+                                      else {
+                                          DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
+                                      }
+                                  }];
 }
 
 #pragma mark - Accessibility methods

@@ -17,9 +17,11 @@
 // Constants
 static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
-@interface KJFavDoodlesListView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UIAlertViewDelegate>
+@interface KJFavDoodlesListView ()
 
+// Properties
 @property (nonatomic, strong) NSArray *cellResults;
+@property (nonatomic, strong) UIAlertController *noNetworkAlertView;
 
 @end
 
@@ -67,13 +69,20 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
     }
 }
 
-#pragma mark - UICollectionView delegate methods
+#pragma mark - UICollectionView methods
+
+#pragma mark - UICollectionViewDelegate methods
 
 -   (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-//    DDLogVerbose(@"Doodle Favs: selected item - %ld", (long)indexPath.row);
-    [self performSegueWithIdentifier:@"doodleDetailSegueFromFavourites" sender:self];
+    // TODO: update to use constant
+    [self performSegueWithIdentifier:@"doodleDetailSegueFromFavourites"
+                              sender:self];
 }
+
+#pragma mark UICollectionViewDataSource delegate methods
+
+// TODO: refactor to own data source class
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
@@ -105,6 +114,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell data
     KJRandomImage *cellData = [_cellResults objectAtIndex:indexPath.row];
     
+    // TODO: refactor to configureCell method on cell
+    
     // SDWebImage
     // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
@@ -124,30 +135,32 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in No Favourites error alert");
     
     // Init alertView
-    UIAlertView *noFavouritesAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                 message:messageString
-                                                delegate:self
-                                       cancelButtonTitle:Nil
-                                       otherButtonTitles:okButtonString, nil];
+    UIAlertController *noFavouritesAlertView = [UIAlertController alertControllerWithTitle:titleString
+                                                                                   message:messageString
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions for alertView
+    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonString
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction *action) {
+                                                           // Go back to previous view controller
+                                                           [self.navigationController popViewControllerAnimated:YES];
+                                                       }];
+    [noFavouritesAlertView addAction:okayAction];
     
     // Show alertView
-    [noFavouritesAlertView show];
-}
-
-#pragma mark - UIAlertView delegate methods
-
--       (void)alertView:(UIAlertView *)alertView
-   clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    
-    // Go back to previous view controller
-    [self.navigationController popViewControllerAnimated:YES];
+    [self presentViewController:noFavouritesAlertView
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
+    
+    // TODO: update to use string constant for segue ID
+    
     if ([segue.identifier isEqualToString:@"doodleDetailSegueFromFavourites"]) {
         // Init destination view controller
         KJRandomView *destViewController = segue.destinationViewController;

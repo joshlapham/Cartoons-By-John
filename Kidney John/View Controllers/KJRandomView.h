@@ -12,6 +12,7 @@
 
 @interface KJRandomView : UICollectionViewController
 
+// Properties
 @property (nonatomic, strong) KJRandomImage *selectedImageFromFavouritesList;
 
 @end

@@ -10,10 +10,8 @@
 #import "KJComicCell.h"
 #import "KJComicDetailView.h"
 #import "KJComic.h"
-#import "KJComic+Methods.h"
 #import "MBProgressHUD.h"
 #import "KJComicStore.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
@@ -136,6 +134,8 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 #pragma mark - NSFetchedResultsController
 
 #pragma mark Init fetched results controller
+
+// TODO: refactor this out to own data class
 
 - (NSFetchedResultsController *)fetchedResultsController {
     if (_fetchedResultsController != nil) {
@@ -268,23 +268,6 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     // Configure cell
     [cell configureCellWithData:cellData];
     
-    // Set comic thumbnail using SDWebImage
-    // TODO: refactor to do image setting in configureCell method on KJComicCell class
-    [cell.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
-                           placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                  completed:^(UIImage *cellImage, NSError *error,
-                                              SDImageCacheType cacheType,
-                                              NSURL *url) {
-                                      if (cellImage && !error) {
-                                          DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
-                                      }
-                                      
-                                      // TODO: implement fallback
-                                      else {
-                                          DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
-                                      }
-                                  }];
-    
     return cell;
 }
 
@@ -356,7 +339,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Comix: network became available");
         
-        // Dismiss no network UIAlertView
+        // Dismiss no network UIAlert
         [_noNetworkAlert dismissViewControllerAnimated:YES
                                             completion:nil];
         

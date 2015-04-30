@@ -14,6 +14,7 @@
 @interface KJComicCell : KJBaseCollectionViewCell <UIScrollViewDelegate>
 
 // Properties
+// TODO: refactor to implementation
 @property (strong, nonatomic) UIImageView *comicImageView;
 
 @end

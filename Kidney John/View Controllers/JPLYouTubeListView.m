@@ -19,15 +19,16 @@
 #import "KJVideoCell.h"
 #import "UIColor+KJColours.h"
 
-@interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
+@interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
+// Properties
 @property (nonatomic, strong) NSArray *videoResults;
 @property (nonatomic, strong) NSArray *searchResults;
 @property (nonatomic, strong) MBProgressHUD *progressHud;
-@property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSFetchedResultsController *searchFetchedResultsController;
+@property (nonatomic, strong) UIAlertController *noNetworkAlertView;
 
 @end
 
@@ -154,28 +155,6 @@
     }
 }
 
-#pragma mark - UIAlertView delegate methods
-
-// TODO: refactor to use UIAlertController
-
--       (void)alertView:(UIAlertView *)alertView
-   clickedButtonAtIndex:(NSInteger)buttonIndex {
-    DDLogVerbose(@"Button clicked: %ld", (long)buttonIndex);
-    
-    if (buttonIndex == 1) {
-        // Retry was clicked
-        [self fetchDataWithNetworkCheck];
-    }
-    else if (buttonIndex == 0) {
-        // Cancel was clicked
-        // TODO: implement a new view with a button to retry data refresh here?
-        
-        // Reload table data to check for empty data source
-        // TODO: maybe don't reload here?
-        [self.tableView reloadData];
-    }
-}
-
 - (void)noNetworkConnection {
     // Init strings for noNetworkAlertView
     NSString *titleString = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
@@ -183,21 +162,43 @@
     NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
     NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
     
-    // Init alertView
-    _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                     message:messageString
-                                                    delegate:self
-                                           cancelButtonTitle:cancelButtonString
-                                           otherButtonTitles:retryButtonString, nil];
+    // Init alert
+    _noNetworkAlertView = [UIAlertController alertControllerWithTitle:titleString
+                                                              message:messageString
+                                                       preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions
+    // Retry
+    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:retryButtonString
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action) {
+                                                            // Retry data fetch
+                                                            [self fetchDataWithNetworkCheck];
+                                                        }];
+    
+    [_noNetworkAlertView addAction:retryAction];
+    
+    // Cancel
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonString
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {
+                                                             // Reload table data to check for empty data source
+                                                             [self.tableView reloadData];
+                                                         }];
+    
+    [_noNetworkAlertView addAction:cancelAction];
     
     // Check if first video data fetch has happened
+    // NOTE - this will only show on very first app launch
     if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         // Hide progress
         [_progressHud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         // Show alertView
-        [_noNetworkAlertView show];
+        [self presentViewController:_noNetworkAlertView
+                           animated:YES
+                         completion:nil];
     }
 }
 
@@ -207,8 +208,9 @@
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Videos: network became available");
         
-        // Dismiss no network UIAlertView
-        [_noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        // Dismiss no network UIAlert
+        [_noNetworkAlertView dismissViewControllerAnimated:YES
+                                                completion:nil];
         
         // Fetch data
         [[KJVideoStore sharedStore] fetchVideoData];
@@ -312,7 +314,9 @@
     // Perform fetch
     NSError *error = nil;
     if (![fetchedResultsController performFetch:&error]) {
+        
         // TODO: handle this error
+        
         /*
          Replace this implementation with code to handle the error appropriately.
          

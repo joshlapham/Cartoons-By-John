@@ -23,14 +23,14 @@
 // Constants
 static NSString *kDoodleCellIdentifier = @"doodleCell";
 
-@interface KJRandomView () <UIAlertViewDelegate>
+@interface KJRandomView ()
 
 // Properties
 @property (nonatomic, strong) KJRandomViewDataSource *dataSource;
 @property (nonatomic, strong) MBProgressHUD *progressHud;
-@property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
+@property (nonatomic, strong) UIAlertController *noNetworkAlertView;
 
 @end
 
@@ -107,12 +107,12 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     // Set collectionView properties
     self.collectionView.pagingEnabled = YES;
     self.collectionView.frame = self.view.bounds;
-
+    
     // Accessibility
     if (UIAccessibilityDarkerSystemColorsEnabled()) {
         self.collectionView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
     }
-
+    
     else {
         self.collectionView.backgroundColor = [UIColor kj_viewBackgroundColour];
     }
@@ -221,11 +221,30 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
     
     // Init alertView
-    _noNetworkAlertView = [[UIAlertView alloc] initWithTitle:titleString
-                                                     message:messageString
-                                                    delegate:self
-                                           cancelButtonTitle:cancelButtonString
-                                           otherButtonTitles:retryButtonString, nil];
+    _noNetworkAlertView = [UIAlertController alertControllerWithTitle:titleString
+                                                              message:messageString
+                                                       preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions
+    // Retry
+    UIAlertAction *retryAction = [UIAlertAction actionWithTitle:retryButtonString
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action) {
+                                                            // Retry data fetch
+                                                            [self fetchDataWithNetworkCheck];
+                                                        }];
+    
+    [_noNetworkAlertView addAction:retryAction];
+    
+    // Cancel
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonString
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {
+                                                             // Reload collectionView data to check for empty data source
+                                                             [self.collectionView reloadData];
+                                                         }];
+    
+    [_noNetworkAlertView addAction:cancelAction];
     
     // Check if first doodle data fetch has happened
     if (![NSUserDefaults kj_hasFirstDoodleFetchCompletedSetting]) {
@@ -234,7 +253,9 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         // Show alertView
-        [_noNetworkAlertView show];
+        [self presentViewController:_noNetworkAlertView
+                           animated:YES
+                         completion:nil];
     }
 }
 
@@ -242,8 +263,9 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"Doodles: network became available");
         
-        // Dismiss no network UIAlertView
-        [_noNetworkAlertView dismissWithClickedButtonIndex:0 animated:YES];
+        // Dismiss no network UIAlert
+        [_noNetworkAlertView dismissViewControllerAnimated:YES
+                                                completion:nil];
         
         // Fetch data
         [[KJDoodleStore sharedStore] fetchDoodleData];
@@ -281,27 +303,6 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
         if ([JPLReachabilityManager isReachable]) {
             [[KJDoodleStore sharedStore] fetchDoodleData];
         }
-    }
-}
-
-#pragma mark - UIAlertView delegate methods
-
-// TODO: refactor to use UIAlertController
-
--       (void)alertView:(UIAlertView *)alertView
-   clickedButtonAtIndex:(NSInteger)buttonIndex {
-    // Retry was clicked
-    if (buttonIndex == 1) {
-        [self fetchDataWithNetworkCheck];
-    }
-    
-    // Cancel was clicked
-    else if (buttonIndex == 0) {
-        // TODO: implement a new view with a button to retry data refresh here?
-        
-        // Reload collectionView data to check for empty data source
-        // TODO: maybe don't reload here?
-        [self.collectionView reloadData];
     }
 }
 

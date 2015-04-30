@@ -115,6 +115,9 @@ static NSString * kVideoDurationFallbackString = @"0:30";
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Video cell
     if ([[self.cellResults firstObject] isKindOfClass:[KJVideo class]]) {
+        
+        // TODO: refactor logic here to configureCell method on cell
+        
         // Init KJVideoCell
         KJVideoCell *videoCell = [tableView dequeueReusableCellWithIdentifier:[KJVideoCell cellIdentifier]
                                                                  forIndexPath:indexPath];
