@@ -43,8 +43,6 @@ static NSString *kComicThumbnailsLocalDirectoryName = @"ComicThumbs";
 
 #pragma mark - Filepath for comics methods
 
-// TODO: handle if filepath is nil
-
 - (NSString *)returnThumbnailFilepathForComic {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicThumbnailsLocalDirectoryName];
     
@@ -58,9 +56,7 @@ static NSString *kComicThumbnailsLocalDirectoryName = @"ComicThumbs";
 
 #pragma mark - Private methods
 
-// TODO: handle if filepath is nil
-
-// Private method to return filepath for comic.
+// Private method to return filepath for full-sized comic.
 - (NSString *)p_returnFilepathForComic {
     NSString *comicsFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:kComicsLocalDirectoryName];
     
