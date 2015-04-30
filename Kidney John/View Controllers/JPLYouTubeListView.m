@@ -86,13 +86,8 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     
     // Set background if no network is available
     if ([JPLReachabilityManager isUnreachable]) {
-        // Init image to use for table background
-        // TODO: change image to UILabel
-        UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        
-        // Add to tableView
-        self.tableView.backgroundView = imageView;
+        // Init image to use for background
+        self.tableView.backgroundView = [self kj_noNetworkImageView];
         self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped

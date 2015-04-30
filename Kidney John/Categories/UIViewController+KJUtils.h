@@ -18,6 +18,9 @@
 // Return 'no network' alert controller
 - (UIAlertController *)kj_noNetworkAlertControllerWithNoActions;
 
+// Return 'no network' image view
+- (UIImageView *)kj_noNetworkImageView;
+
 // Video view controllers
 - (void)kj_showErrorIfNoNetworkConnectionForVideoDetailView;
 

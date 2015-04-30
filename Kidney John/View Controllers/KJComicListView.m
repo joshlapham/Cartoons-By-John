@@ -99,8 +99,7 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     // Set background image if no network is available
     if ([JPLReachabilityManager isUnreachable]) {
         // Init image to use for table background
-        UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        _backgroundImageView = [[UIImageView alloc] initWithImage:image];
+        _backgroundImageView = [self kj_noNetworkImageView];
         
         // Add to background
         [self.collectionView addSubview:_backgroundImageView];

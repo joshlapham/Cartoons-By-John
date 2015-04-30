@@ -10,7 +10,9 @@
 
 @implementation UIViewController (KJUtils)
 
-#pragma mark - Show fatal error alert method
+#pragma mark - All view controllers
+
+#pragma mark Show fatal error alert method
 
 - (void)showFatalErrorAlert {
     // Init alert strings
@@ -36,7 +38,7 @@
                      completion:nil];
 }
 
-#pragma mark - Return 'no network' alert controller
+#pragma mark Return 'no network' alert controller
 
 - (UIAlertController *)kj_noNetworkAlertControllerWithNoActions {
     // Init strings for noNetworkAlertView
@@ -49,6 +51,16 @@
                                                                          preferredStyle:UIAlertControllerStyleAlert];
     
     return noNetworkAlertView;
+}
+
+#pragma mark - Return 'no network' image view
+
+- (UIImageView *)kj_noNetworkImageView {
+    // TODO: refactor to UILabel
+    UIImage *image = [UIImage imageNamed:@"no-data.png"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    
+    return imageView;
 }
 
 #pragma mark - Video view controllers

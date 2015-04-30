@@ -77,11 +77,9 @@
     // Set background if no network is available
     if ([JPLReachabilityManager isUnreachable]) {
         // Init image to use for background
-        UIImage *image = [UIImage imageNamed:@"no-data.png"];
-        _backgroundImageView = [[UIImageView alloc] initWithImage:image];
+        _backgroundImageView = [self kj_noNetworkImageView];
         
         // Add to background
-        [self.collectionView addSubview:_backgroundImageView];
         self.collectionView.backgroundView = _backgroundImageView;
         self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
