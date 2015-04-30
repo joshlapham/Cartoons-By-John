@@ -406,7 +406,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                             
                             // If we found doodle to delete ..
                             if ([itemsToDelete count] > 0) {
-                                DDLogInfo(@"doodleStore: found %lu doodle to delete", [itemsToDelete count]);
+                                DDLogInfo(@"doodleStore: found %lu doodle to delete", (unsigned long)[itemsToDelete count]);
                                 
                                 // Delete
                                 KJRandomImage *doodleToDelete = [itemsToDelete firstObject];
@@ -459,13 +459,12 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                 
                 // Set connection state to DISCONNECTED
                 self.connectionState = KJDoodleStoreStateDisconnected;
-                DDLogInfo(@"doodleStore: connection state: %lu", self.connectionState);
+                DDLogInfo(@"doodleStore: connection state: %lu", (unsigned long)self.connectionState);
                 
                 // Prefetch doodles if on Wifi
                 if ([JPLReachabilityManager isReachableViaWiFi]) {
                     [self prefetchDoodles];
                 }
-                
             }
             
             else {
@@ -473,7 +472,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                 DDLogError(@"doodleStore: error: %@ %@", error, [error userInfo]);
                 // Set connection state to DISCONNECTED
                 self.connectionState = KJDoodleStoreStateDisconnected;
-                DDLogInfo(@"doodleStore: connection state: %lu", self.connectionState);
+                DDLogInfo(@"doodleStore: connection state: %lu", (unsigned long)self.connectionState);
             }
         }];
     });
