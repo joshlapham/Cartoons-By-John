@@ -11,7 +11,11 @@
 @interface UIViewController (KJUtils)
 
 // Methods
-// Error alert
+// All view controllers
+// Fatal error alert
 - (void)showFatalErrorAlert;
+
+// Video view controllers
+- (void)kj_showErrorIfNoNetworkConnectionForVideoDetailView;
 
 @end

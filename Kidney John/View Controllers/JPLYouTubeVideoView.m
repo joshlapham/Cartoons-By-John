@@ -15,6 +15,7 @@
 #import "JPLReachabilityManager.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "KJParseAnalyticsStore.h"
+#import "UIViewController+KJUtils.h"
 
 // Constants
 // YouTube video URL for social sharing
@@ -38,6 +39,7 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
 #pragma mark - dealloc method
 
 - (void)dealloc {
+    // NOTE - must dealloc videoView or we might crash
     [self.videoView setDelegate:nil];
     [self.videoView stopLoading];
 }
@@ -96,7 +98,7 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
         [_videoView stopLoading];
         
         // Show no network error alert
-        [self showErrorIfNoNetworkConnection];
+        [self kj_showErrorIfNoNetworkConnectionForVideoDetailView];
     }
 }
 
@@ -146,36 +148,6 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     
     // NOTE - must include NSBundle resourceURL otherwise video autoplay will not work (autoplay disabled for now)
     //[_videoView loadHTMLString:html baseURL:[[NSBundle mainBundle] resourceURL]];
-}
-
-#pragma mark - Show no network alert method
-
-- (void)showErrorIfNoNetworkConnection {
-    // Init strings for noNetworkAlert
-    NSString *alertTitle = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
-    NSString *alertMessage = NSLocalizedString(@"A network connection is required to watch videos", @"Error message displayed when no network connection is available");
-    NSString *okButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
-    
-    // Init alertView
-    UIAlertController *noNetworkAlert = [UIAlertController alertControllerWithTitle:alertTitle
-                                                                            message:alertMessage
-                                                                     preferredStyle:UIAlertControllerStyleAlert];
-    
-    // Init actions
-    // Okay
-    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonTitle
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction *action) {
-                                                           // Go back to video list view
-                                                           [self.navigationController popViewControllerAnimated:YES];
-                                                       }];
-    
-    [noNetworkAlert addAction:okayAction];
-    
-    // Show alertView
-    [self presentViewController:noNetworkAlert
-                       animated:YES
-                     completion:nil];
 }
 
 #pragma mark - UIActivityView methods

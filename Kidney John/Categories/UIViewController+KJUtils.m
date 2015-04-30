@@ -36,4 +36,36 @@
                      completion:nil];
 }
 
+#pragma mark - Video view controllers
+
+#pragma mark Video Detail VC - Show no network alert method
+
+- (void)kj_showErrorIfNoNetworkConnectionForVideoDetailView {
+    // Init strings for noNetworkAlert
+    NSString *alertTitle = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
+    NSString *alertMessage = NSLocalizedString(@"A network connection is required to watch videos", @"Error message displayed when no network connection is available");
+    NSString *okButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
+    
+    // Init alertView
+    UIAlertController *noNetworkAlert = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                            message:alertMessage
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions
+    // Okay
+    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonTitle
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action) {
+                                                           // Go back to video list view
+                                                           [self.navigationController popViewControllerAnimated:YES];
+                                                       }];
+    
+    [noNetworkAlert addAction:okayAction];
+    
+    // Show alertView
+    [self presentViewController:noNetworkAlert
+                       animated:YES
+                     completion:nil];
+}
+
 @end
