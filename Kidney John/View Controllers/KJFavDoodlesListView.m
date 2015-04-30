@@ -126,7 +126,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init strings for noFavouritesAlertView
     NSString *titleString = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
     NSString *messageString = NSLocalizedString(@"You haven't set any Doodles as favourites", @"Message displayed when user hasn't favourited any Doodles (drawings)");
-    NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in No Favourites error alert");
+    NSString *okButtonString = NSLocalizedString(@"Okay", @"Title of confirmation button");
     
     // Init alertView
     UIAlertController *noFavouritesAlertView = [UIAlertController alertControllerWithTitle:titleString

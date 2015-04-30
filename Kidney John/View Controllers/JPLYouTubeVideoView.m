@@ -154,7 +154,7 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
     // Init strings for noNetworkAlert
     NSString *titleString = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
     NSString *messageString = NSLocalizedString(@"A network connection is required to watch videos", @"Error message displayed when no network connection is available");
-    NSString *okButtonString = NSLocalizedString(@"OK", @"Title of OK button in no network connection error alert");
+    NSString *okButtonString = NSLocalizedString(@"Okay", @"Title of confirmation button");
     
     // Init alertView
     UIAlertController *noNetworkAlert = [UIAlertController alertControllerWithTitle:titleString

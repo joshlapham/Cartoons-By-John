@@ -16,7 +16,7 @@
     // Init alert strings
     NSString *alertTitle = NSLocalizedString(@"Error", nil);
     NSString *alertMessage = NSLocalizedString(@"We're sorry, a fatal error occurred. Please try exiting and re-launching the app.", nil);
-    NSString *okayButtonTitle = NSLocalizedString(@"Okay", nil);
+    NSString *okayButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
     
     // Init alert
     UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:alertTitle
