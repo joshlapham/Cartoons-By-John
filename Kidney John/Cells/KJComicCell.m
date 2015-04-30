@@ -15,12 +15,11 @@
 
 // Properties
 @property (nonatomic, strong) NSString *comicTitle;
+@property (strong, nonatomic) UIImageView *comicImageView;
 
 @end
 
 @implementation KJComicCell
-
-@synthesize comicImageView;
 
 #pragma mark - Init method
 
@@ -28,13 +27,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Init imageView
-        comicImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        _comicImageView = [[UIImageView alloc] initWithFrame:self.bounds];
         
         // Make comic scale to fill view
-        comicImageView.contentMode = UIViewContentModeScaleToFill;
+        _comicImageView.contentMode = UIViewContentModeScaleToFill;
         
         // Add imageView to view
-        [self addSubview:comicImageView];
+        [self addSubview:_comicImageView];
     }
     
     return self;
@@ -50,20 +49,20 @@
     _comicTitle = cellData.comicName;
     
     // Set comic thumbnail using SDWebImage
-    [self.comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
-                           placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                  completed:^(UIImage *cellImage, NSError *error,
-                                              SDImageCacheType cacheType,
-                                              NSURL *url) {
-                                      if (cellImage && !error) {
-                                          DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
-                                      }
-                                      
-                                      // TODO: implement fallback
-                                      else {
-                                          DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
-                                      }
-                                  }];
+    [_comicImageView sd_setImageWithURL:[NSURL fileURLWithPath:[cellData returnThumbnailFilepathForComic]]
+                       placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                              completed:^(UIImage *cellImage, NSError *error,
+                                          SDImageCacheType cacheType,
+                                          NSURL *url) {
+                                  if (cellImage && !error) {
+                                      DDLogVerbose(@"Comix: fetched comic thumbnail image from URL: %@", url);
+                                  }
+                                  
+                                  // TODO: implement fallback
+                                  else {
+                                      DDLogError(@"Comix: error fetching comic thumbnail image: %@", [error localizedDescription]);
+                                  }
+                              }];
 }
 
 #pragma mark - Accessibility methods
