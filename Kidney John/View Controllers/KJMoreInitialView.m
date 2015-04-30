@@ -115,6 +115,8 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
 
 #pragma mark - UITableView delegate methods
 
+// TODO: refactor to own data source class
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
 }
