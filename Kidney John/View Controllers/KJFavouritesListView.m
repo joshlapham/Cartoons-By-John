@@ -75,12 +75,12 @@ static NSString * kVideoDurationFallbackString = @"0:30";
 - (void)thereAreNoFavourites {
     // Init strings for noFavouritesAlertView
     NSString *alertTitle = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
-    NSString *messageString = [NSString stringWithFormat:NSLocalizedString(@"You haven't set any %@ as favourites", @"Message displayed when user hasn't favourited any {items}"), self.titleForView];
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"You haven't set any %@ as favourites", @"Message displayed when user hasn't favourited any {items}"), self.titleForView];
     NSString *okButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
     
     // Init alertView
     UIAlertController *noFavouritesAlertView = [UIAlertController alertControllerWithTitle:alertTitle
-                                                                                   message:messageString
+                                                                                   message:alertMessage
                                                                             preferredStyle:UIAlertControllerStyleAlert];
     
     // Init actions for alertView
