@@ -130,36 +130,6 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     }
 }
 
-//#pragma mark - Prepare for segue method
-//
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue
-//                 sender:(id)sender {
-//    if ([segue.identifier isEqualToString:kSegueIdentifierVideoDetail]) {
-//        // Init destination VC
-//        JPLYouTubeVideoView *destViewController = segue.destinationViewController;
-//        
-//        NSFetchedResultsController *resultsController;
-//        NSIndexPath *indexPath;
-//        KJVideo *cellVideo;
-//        
-//        // If search results ..
-//        if ([self.searchDisplayController isActive]) {
-//            resultsController = [self fetchedResultsControllerForTableView:self.searchDisplayController.searchResultsTableView];
-//            indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
-//            cellVideo = [resultsController objectAtIndexPath:indexPath];
-//        }
-//        
-//        else {
-//            resultsController = [self fetchedResultsControllerForTableView:self.tableView];
-//            indexPath = [self.tableView indexPathForSelectedRow];
-//            cellVideo = [resultsController objectAtIndexPath:indexPath];
-//        }
-//        
-//        // Set chosen video on destination VC
-//        destViewController.chosenVideo = cellVideo;
-//    }
-//}
-
 - (void)noNetworkConnection {
     // Init strings for noNetworkAlertView
     NSString *alertTitle = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
