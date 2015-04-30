@@ -74,6 +74,7 @@
 		C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C961F2621AA5598D0015E67F /* Launch Screen.xib */; };
 		C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C968D7D71A8C482800C3B621 /* KJComicListCell.m */; };
 		C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C968D7D81A8C482800C3B621 /* KJComicListCell.xib */; };
+		C9CD4DD01AF1D5290015715A /* KJBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CD4DCF1AF1D5290015715A /* KJBaseCollectionViewCell.m */; };
 		C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E467261AF1BDE8001F369C /* KJBaseTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -209,6 +210,8 @@
 		C968D7D61A8C482800C3B621 /* KJComicListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListCell.h; path = Cells/KJComicListCell.h; sourceTree = "<group>"; };
 		C968D7D71A8C482800C3B621 /* KJComicListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicListCell.m; path = Cells/KJComicListCell.m; sourceTree = "<group>"; };
 		C968D7D81A8C482800C3B621 /* KJComicListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJComicListCell.xib; path = Cells/KJComicListCell.xib; sourceTree = "<group>"; };
+		C9CD4DCE1AF1D5290015715A /* KJBaseCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJBaseCollectionViewCell.h; path = Cells/KJBaseCollectionViewCell.h; sourceTree = "<group>"; };
+		C9CD4DCF1AF1D5290015715A /* KJBaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJBaseCollectionViewCell.m; path = Cells/KJBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		C9E467251AF1BDE8001F369C /* KJBaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJBaseTableViewCell.h; path = Cells/KJBaseTableViewCell.h; sourceTree = "<group>"; };
 		C9E467261AF1BDE8001F369C /* KJBaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJBaseTableViewCell.m; path = Cells/KJBaseTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -361,6 +364,8 @@
 			children = (
 				C9E467251AF1BDE8001F369C /* KJBaseTableViewCell.h */,
 				C9E467261AF1BDE8001F369C /* KJBaseTableViewCell.m */,
+				C9CD4DCE1AF1D5290015715A /* KJBaseCollectionViewCell.h */,
+				C9CD4DCF1AF1D5290015715A /* KJBaseCollectionViewCell.m */,
 				680CF0C31A7F730F009250E3 /* KJVideoCell.h */,
 				680CF0C41A7F730F009250E3 /* KJVideoCell.m */,
 				680CF0C51A7F730F009250E3 /* KJVideoCell.xib */,
@@ -666,6 +671,7 @@
 				68DB8F041A6006D0005D33E2 /* UIImage+KJImageUtils.m in Sources */,
 				68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */,
 				C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */,
+				C9CD4DD01AF1D5290015715A /* KJBaseCollectionViewCell.m in Sources */,
 				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,
 				68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */,
 				68024D311A628D0900D2A900 /* KJRandomImage+Methods.m in Sources */,

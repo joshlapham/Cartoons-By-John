@@ -7,16 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJBaseCollectionViewCell.h"
 
 @class KJComic;
 
-@interface KJComicCell : UICollectionViewCell <UIScrollViewDelegate>
+@interface KJComicCell : KJBaseCollectionViewCell <UIScrollViewDelegate>
 
 // Properties
 @property (strong, nonatomic) UIImageView *comicImageView;
-
-// Methods
-- (void)configureCellWithData:(KJComic *)cellData;
-+ (NSString *)cellIdentifier;
 
 @end

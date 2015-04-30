@@ -7,16 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJBaseCollectionViewCell.h"
 
 @class KJComic;
 
 // Constants
 extern NSString * const KJComicWasDoubleTappedNotification;
 
-@interface KJComicDetailCell : UICollectionViewCell <UIScrollViewDelegate>
-
-// Methods
-- (void)configureCellWithData:(KJComic *)cellData;
-+ (NSString *)cellIdentifier;
+@interface KJComicDetailCell : KJBaseCollectionViewCell <UIScrollViewDelegate>
 
 @end

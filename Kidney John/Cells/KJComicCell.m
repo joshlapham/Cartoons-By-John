@@ -40,15 +40,12 @@
 
 #pragma mark - Configure cell method
 
-- (void)configureCellWithData:(KJComic *)cellData {
+- (void)configureCellWithData:(id)data {
+    // Init cell data
+    KJComic *cellData = (KJComic *)data;
+    
     // Set comic title
     _comicTitle = cellData.comicName;
-}
-
-#pragma mark - Cell identifier method
-
-+ (NSString *)cellIdentifier {
-    return NSStringFromClass(self.class);
 }
 
 #pragma mark - Accessibility methods

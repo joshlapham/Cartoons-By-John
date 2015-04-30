@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJBaseCollectionViewCell.h"
 
-@interface KJDoodleCell : UICollectionViewCell
+@interface KJDoodleCell : KJBaseCollectionViewCell
 
+// Properties
 @property (nonatomic, strong) UIImageView *doodleImageView;
 
 @end
