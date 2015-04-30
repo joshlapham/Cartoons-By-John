@@ -20,6 +20,9 @@
 #import "UIViewController+KJUtils.h"
 
 // Constants
+// collectionView insets (for all edges)
+static CGFloat kCollectionViewEdgeInset = 20;
+
 // Segue identifiers
 static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
@@ -276,7 +279,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(20, 20, 20, 20);
+    return UIEdgeInsetsMake(kCollectionViewEdgeInset, kCollectionViewEdgeInset, kCollectionViewEdgeInset, kCollectionViewEdgeInset);
 }
 
 #pragma mark - Prepare for segue method
@@ -330,7 +333,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
-        DDLogVerbose(@"Comix: network became available");
+        DDLogVerbose(@"%s: network became available", __func__);
         
         // Dismiss no network UIAlert
         [_noNetworkAlert dismissViewControllerAnimated:YES
