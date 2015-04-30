@@ -76,7 +76,7 @@ static CGFloat kMaxLayoutWidthModifier = 195;
 #pragma mark - Configure cell with data method
 
 - (void)configureCellWithData:(id)data {
-    // TODO: init cell data
+    // Init cell data
     KJVideo *cellData = (KJVideo *)data;
     
     // Init label text
@@ -125,7 +125,6 @@ static CGFloat kMaxLayoutWidthModifier = 195;
                                           DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
                                       }
                                   }];
-
 }
 
 #pragma mark - Highlight new videos methods
