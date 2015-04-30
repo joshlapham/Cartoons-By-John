@@ -78,6 +78,7 @@
     [noNetworkAlert addAction:okayAction];
     
     // Show alertView
+    // TODO: review this
     [self presentViewController:noNetworkAlert
                        animated:YES
                      completion:nil];
