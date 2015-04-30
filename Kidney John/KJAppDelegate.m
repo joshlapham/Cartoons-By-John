@@ -31,6 +31,7 @@ static NSString *kKJParsePFConfigTrackPlayedVideoEventsWithParseAnalyticsKey = @
 static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @"trackViewedComicEventsWithParseAnalytics";
 
 @implementation KJAppDelegate {
+    // Private properties for Parse app/client keys
     NSString *parseAppId;
     NSString *parseClientKey;
 }
@@ -113,7 +114,7 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
                                           errorDescription:&errorDesc];
     
     if (!temp) {
-        DDLogError(@"Error reading Parse keys.plist: %@, format: %d", errorDesc, format);
+        DDLogError(@"%s - error reading Parse keys.plist: %@, format: %d", __func__, errorDesc, format);
     }
     
     parseAppId = [temp objectForKey:@"appId"];
