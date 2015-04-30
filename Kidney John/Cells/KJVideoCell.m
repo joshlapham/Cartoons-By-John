@@ -29,7 +29,6 @@ static CGFloat kMaxLayoutWidthModifier = 195;
 #pragma mark - Awake from NIB method
 
 - (void)awakeFromNib {
-    // TODO: this is hacky!
     // Calculate max layout width for video name & description labels
     CGFloat mainScreenWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat maxLayoutWidth = mainScreenWidth - kMaxLayoutWidthModifier;

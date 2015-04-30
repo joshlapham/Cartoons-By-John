@@ -426,10 +426,6 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                 
                 // Save managedObjectContext
                 // Only save if we have changes
-                
-                // TODO: is this check really required? Will there be a huge performance hit if we're saving the managedObjectContext each time?
-                // Also, does creating or updating an entity even if the properties are the same do anything to the managedObjectContext?
-                
                 if (!changesToDoodlesWereMade) {
                     DDLogInfo(@"doodleStore: no changes to doodles were found, so no save managedObjectContext is required");
                 }
