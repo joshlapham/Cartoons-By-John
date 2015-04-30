@@ -28,9 +28,6 @@
 static NSString * kSegueIdentifierVideoFavourites = @"favouritesVideoSegue";
 static NSString * kSegueIdentifierComicDetailFavourites = @"comicDetailSegueFromFavourites";
 
-// Fallback placeholder for video duration
-static NSString * kVideoDurationFallbackString = @"0:30";
-
 @interface KJFavouritesListView () <UITableViewDelegate, UITableViewDataSource>
 
 @end
@@ -46,9 +43,11 @@ static NSString * kVideoDurationFallbackString = @"0:30";
     self.title = self.titleForView;
     
     // Register cells with tableView
-    [self.tableView registerNib:[UINib nibWithNibName:[KJComicListCell cellIdentifier] bundle:nil]
+    [self.tableView registerNib:[UINib nibWithNibName:[KJComicListCell cellIdentifier]
+                                               bundle:nil]
          forCellReuseIdentifier:[KJComicListCell cellIdentifier]];
-    [self.tableView registerNib:[UINib nibWithNibName:[KJVideoCell cellIdentifier] bundle:nil]
+    [self.tableView registerNib:[UINib nibWithNibName:[KJVideoCell cellIdentifier]
+                                               bundle:nil]
          forCellReuseIdentifier:[KJVideoCell cellIdentifier]];
     
     // Set background colour for view

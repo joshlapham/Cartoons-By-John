@@ -14,8 +14,13 @@
 #import "KJVideo+Methods.h"
 
 // Constants
+static NSString * kVideoDateFormat = @"YYYY-MM-dd";
+
 // Modifier for name & description labels max layout width
 static CGFloat kMaxLayoutWidthModifier = 195;
+
+// Fallback placeholder for video duration
+static NSString * kVideoDurationFallbackString = @"0:30";
 
 @interface KJVideoCell ()
 
@@ -99,7 +104,7 @@ static CGFloat kMaxLayoutWidthModifier = 195;
     // Video duration
     // Placeholder duration
     if (cellData.videoDuration == nil) {
-        self.videoDuration.text = @"0:30";
+        self.videoDuration.text = kVideoDurationFallbackString;
     } else {
         self.videoDuration.text = cellData.videoDuration;
     }
@@ -121,9 +126,9 @@ static CGFloat kMaxLayoutWidthModifier = 195;
                            placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                                   completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
                                       if (cellImage && !error) {
-                                          DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
+                                          DDLogVerbose(@"%s: fetched video thumbnail image from URL: %@", __func__, url);
                                       } else {
-                                          DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
+                                          DDLogError(@"%s: error fetching video thumbnail image: %@", __func__, [error localizedDescription]);
                                       }
                                   }];
 }
@@ -151,7 +156,7 @@ static CGFloat kMaxLayoutWidthModifier = 195;
     
     // Check if video is less than 14 days old
     if (dateComponents.day < 15) {
-        DDLogVerbose(@"Videos: video %@ is new!", video.videoName);
+        DDLogVerbose(@"%s: video %@ is new!", __func__, video.videoName);
         return YES;
     }
     else {
@@ -168,7 +173,9 @@ static CGFloat kMaxLayoutWidthModifier = 195;
     
     // Init date formatter
     _dateFormatter = [[NSDateFormatter alloc] init];
-    [_dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    
+    // NOTE - using this date format because it matches the one used on Parse backend database
+    [_dateFormatter setDateFormat:kVideoDateFormat];
     
     return _dateFormatter;
 }
