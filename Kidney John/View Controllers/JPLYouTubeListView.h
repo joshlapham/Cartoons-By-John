@@ -10,6 +10,7 @@
 
 @interface JPLYouTubeListView : UITableViewController
 
+// Properties
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end
