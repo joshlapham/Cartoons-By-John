@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "KJBaseCollectionViewCell.h"
 
-@class KJComic;
-
 // Constants
 extern NSString * const KJComicWasDoubleTappedNotification;
 
