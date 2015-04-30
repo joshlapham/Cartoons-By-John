@@ -107,6 +107,8 @@ static CGFloat kMaxLayoutWidthModifier = 195;
     // Init video thumbnail
     NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, cellData.videoId];
     
+    // TODO: review image setting here; use cache?
+    
     // Check if image is in cache
     if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
         //DDLogVerbose(@"found image in cache");

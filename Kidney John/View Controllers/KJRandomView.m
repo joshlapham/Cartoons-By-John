@@ -183,7 +183,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     NSIndexPath *currentCellIndex = [[self.collectionView indexPathsForVisibleItems] firstObject];
     KJRandomImage *cellData = [_dataSource.cellDataSource objectAtIndex:currentCellIndex.row];
     
-    // TODO: review these image methods
+    // TODO: review image setting here; use cache?
     
     // Image to share
     UIImage *doodleImageToShare = [[UIImage alloc] init];
