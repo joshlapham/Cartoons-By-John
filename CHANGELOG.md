@@ -11,6 +11,7 @@ Bug fixes:
 
 - fixed issue on 'More' screen where section titles would not show correctly on iPhone 6 and 6+
 - fixed issue where videos loaded from the Favourites screen would be misaligned
+- fixed possible issues where app could crash while fetching new data
 
 ## Version 1.1
 
