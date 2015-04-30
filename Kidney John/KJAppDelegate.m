@@ -418,13 +418,8 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
         NSError *error = nil;
         if ([managedObjectContext hasChanges] &&
             ![managedObjectContext save:&error]) {
-            // TODO: handle error
             // TODO: implement analytics for fatal error to be reported
-            
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
         }
     }
 }
