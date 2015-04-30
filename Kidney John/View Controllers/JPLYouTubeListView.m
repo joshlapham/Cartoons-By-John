@@ -20,6 +20,10 @@
 #import "UIColor+KJColours.h"
 #import "UIViewController+KJUtils.h"
 
+// Constants
+// Segue identifiers
+static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
+
 @interface JPLYouTubeListView () <UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
 // Properties
@@ -131,7 +135,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"videoIdSegue"]) {
+    if ([segue.identifier isEqualToString:kSegueIdentifierVideoDetail]) {
         // Init destination VC
         JPLYouTubeVideoView *destViewController = segue.destinationViewController;
         
@@ -145,6 +149,7 @@
             indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
             cellVideo = [resultsController objectAtIndexPath:indexPath];
         }
+        
         else {
             resultsController = [self fetchedResultsControllerForTableView:self.tableView];
             indexPath = [self.tableView indexPathForSelectedRow];

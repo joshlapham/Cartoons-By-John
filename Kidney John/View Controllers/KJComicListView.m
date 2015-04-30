@@ -300,8 +300,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         // Pass selected index path to destination VC
         destViewController.collectionViewIndexFromList = selectedIndexPath;
         
-        DDLogVerbose(@"Comix: selected comic row: %ld", (long)selectedIndexPath.row);
-        
         // Hide tabbar on detail view
         destViewController.hidesBottomBarWhenPushed = YES;
     }
@@ -310,7 +308,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark - Data fetch did happen method
 
 - (void)comicFetchDidHappen {
-    DDLogVerbose(@"Comic fetch did happen ..");
+    DDLogVerbose(@"%s - comic fetch did happen ..", __func__);
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
