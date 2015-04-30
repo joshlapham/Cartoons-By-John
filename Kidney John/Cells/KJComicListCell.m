@@ -16,6 +16,9 @@
 
 // Properties
 @property (nonatomic, strong) NSString *comicName;
+@property (weak, nonatomic) IBOutlet UILabel *comicTitle;
+@property (weak, nonatomic) IBOutlet UIImageView *comicThumbnail;
+@property (weak, nonatomic) IBOutlet UILabel *comicIsNew;
 
 @end
 
@@ -25,27 +28,27 @@
 
 - (void)awakeFromNib {
     // Comic name
-    self.comicTitle.font = [UIFont kj_videoNameFont];
-    self.comicTitle.numberOfLines = 0;
-    self.comicTitle.preferredMaxLayoutWidth = 130;
+    _comicTitle.font = [UIFont kj_videoNameFont];
+    _comicTitle.numberOfLines = 0;
+    _comicTitle.preferredMaxLayoutWidth = 130;
     
     // Comic thumbnail
-    self.comicThumbnail.contentMode = UIViewContentModeScaleAspectFit;
+    _comicThumbnail.contentMode = UIViewContentModeScaleAspectFit;
     
     // New! label
-    self.comicIsNew.font = [UIFont kj_videoNewLabelFont];
-    self.comicIsNew.textColor = [UIColor whiteColor];
-    self.comicIsNew.backgroundColor = [UIColor kj_newVideoLabelColour];
-    self.comicIsNew.numberOfLines = 0;
-    self.comicIsNew.textAlignment = NSTextAlignmentCenter;
+    _comicIsNew.font = [UIFont kj_videoNewLabelFont];
+    _comicIsNew.textColor = [UIColor whiteColor];
+    _comicIsNew.backgroundColor = [UIColor kj_newVideoLabelColour];
+    _comicIsNew.numberOfLines = 0;
+    _comicIsNew.textAlignment = NSTextAlignmentCenter;
     
     // Make label round
-    self.comicIsNew.layer.masksToBounds = YES;
-    self.comicIsNew.layer.cornerRadius = self.comicIsNew.frame.size.width / 2;
+    _comicIsNew.layer.masksToBounds = YES;
+    _comicIsNew.layer.cornerRadius = _comicIsNew.frame.size.width / 2;
     
     // Init text
     NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if a comic is new");
-    self.comicIsNew.text = labelText;
+    _comicIsNew.text = labelText;
 }
 
 #pragma mark - Prepare for reuse method
@@ -53,7 +56,7 @@
 - (void)prepareForReuse {
     // Set videoIsNew label to hidden, so label won't show every few cells as tableView is scrolled.
     // NOTE - we toggle hidden property in tableView configureCell method.
-    self.comicIsNew.hidden = YES;
+    _comicIsNew.hidden = YES;
 }
 
 #pragma mark - Configure cell method
@@ -66,8 +69,8 @@
     _comicName = cellData.comicName;
     
     // Set cell label text
-    self.comicTitle.text = cellData.comicName;
-    self.comicThumbnail.image = [cellData returnComicThumbImageFromComic];
+    _comicTitle.text = cellData.comicName;
+    _comicThumbnail.image = [cellData returnComicThumbImageFromComic];
 }
 
 #pragma mark - Accessibility methods
