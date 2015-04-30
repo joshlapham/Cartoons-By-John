@@ -10,4 +10,8 @@
 
 @interface UIViewController (KJUtils)
 
+// Methods
+// Error alert
+- (void)showFatalErrorAlert;
+
 @end
