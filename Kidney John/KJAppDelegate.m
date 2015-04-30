@@ -36,6 +36,10 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
     NSString *parseClientKey;
 }
 
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize managedObjectModel = _managedObjectModel;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+
 #pragma mark - dealloc method
 
 - (void)dealloc {
@@ -170,7 +174,7 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
         
         // TODO: handle error
         else {
-            DDLogError(@"Error fetching PFConfig from Parse");
+            DDLogError(@"%s - error fetching PFConfig from Parse", __func__);
         }
     }];
 }
@@ -319,20 +323,18 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    DDLogVerbose(@"Did receive push notification");
+    DDLogVerbose(@"%s - did receive push notification", __func__);
     
     [PFPush handlePush:userInfo];
 }
 
-#pragma mark - Core Data stack
-
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+#pragma mark - Core Data methods
 
 - (NSURL *)applicationDocumentsDirectory {
     // The directory the application uses to store the Core Data store file. This code uses a directory named "com.joshlapham.Hacker_News_Reader" in the application's documents directory.
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
+                                                   inDomains:NSUserDomainMask]
+            lastObject];
 }
 
 - (NSManagedObjectModel *)managedObjectModel {
@@ -359,21 +361,24 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
                                              };
     
     // Create the coordinator and store
-    
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"kj.sqlite"];
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
+    
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                    configuration:nil
                                                              URL:storeURL
                                                          options:persistentStoreOptions
                                                            error:&error]) {
         // Report any error we got.
+        // Init for error
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
         dict[NSLocalizedFailureReasonErrorKey] = failureReason;
         dict[NSUnderlyingErrorKey] = error;
+        
+        // Init NSError with dict
         error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN"
                                     code:9999
                                 userInfo:dict];
@@ -395,16 +400,22 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
         return _managedObjectContext;
     }
     
+    // Init store coordinator
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    
+    // Fail if coordinator fails to init
     if (!coordinator) {
         return nil;
     }
+    
+    // Init managed object context
     _managedObjectContext = [[NSManagedObjectContext alloc] init];
     [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+    
     return _managedObjectContext;
 }
 
-#pragma mark - Core Data Saving support
+#pragma mark Core Data Saving support
 
 - (void)saveContext {
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
