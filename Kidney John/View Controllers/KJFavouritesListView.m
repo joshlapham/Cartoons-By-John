@@ -21,6 +21,7 @@
 #import "UIColor+KJColours.h"
 #import "KJVideoCell.h"
 #import "KJComicListCell.h"
+#import "UIViewController+KJUtils.h"
 
 // Constants
 // Segue identifiers
@@ -66,36 +67,8 @@ static NSString * kVideoDurationFallbackString = @"0:30";
     
     // Check for Favourites results
     if ([self.cellResults count] == 0) {
-        [self thereAreNoFavourites];
+        [self kj_showthereAreNoFavouritesAlertWithTitle:self.titleForView];
     }
-}
-
-#pragma mark - Show noFavouritesAlertView method
-
-- (void)thereAreNoFavourites {
-    // Init strings for noFavouritesAlertView
-    NSString *alertTitle = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
-    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"You haven't set any %@ as favourites", @"Message displayed when user hasn't favourited any {items}"), self.titleForView];
-    NSString *okButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
-    
-    // Init alertView
-    UIAlertController *noFavouritesAlertView = [UIAlertController alertControllerWithTitle:alertTitle
-                                                                                   message:alertMessage
-                                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    // Init actions for alertView
-    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonTitle
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction *action) {
-                                                           // Go back to previous view controller
-                                                           [self.navigationController popViewControllerAnimated:YES];
-                                                       }];
-    [noFavouritesAlertView addAction:okayAction];
-    
-    // Show alertView
-    [self presentViewController:noFavouritesAlertView
-                       animated:YES
-                     completion:nil];
 }
 
 #pragma mark - UITableView data source delegate methods
