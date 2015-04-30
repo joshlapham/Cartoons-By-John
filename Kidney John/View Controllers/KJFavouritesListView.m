@@ -7,7 +7,7 @@
 //
 
 #import "KJFavouritesListView.h"
-#import "JPLYouTubeVideoView.h"
+#import "KJVideoViewController.h"
 #import "KJVideo.h"
 #import "KJComic.h"
 #import "KJComicDetailView.h"
@@ -18,7 +18,6 @@
 
 // Constants
 // Segue identifiers
-static NSString * kSegueIdentifierVideoFavourites = @"favouritesVideoSegue";
 static NSString * kSegueIdentifierComicDetailFavourites = @"comicDetailSegueFromFavourites";
 
 @interface KJFavouritesListView () <UITableViewDelegate, UITableViewDataSource>
@@ -120,8 +119,13 @@ static NSString * kSegueIdentifierComicDetailFavourites = @"comicDetailSegueFrom
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Videos
     if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-        [self performSegueWithIdentifier:kSegueIdentifierVideoFavourites
-                                  sender:self];
+        KJVideoViewController *destViewController = [[KJVideoViewController alloc] init];
+        KJVideo *cellVideo = [self.cellResults objectAtIndex:indexPath.row];
+        destViewController.chosenVideo = cellVideo;
+        
+        // Push it
+        [self.navigationController pushViewController:destViewController
+                                             animated:YES];
     }
     
     // Comics
@@ -135,18 +139,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
-    // Init index path
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    
-    // Videos
-    if ([segue.identifier isEqualToString:kSegueIdentifierVideoFavourites]) {
-        JPLYouTubeVideoView *destViewController = segue.destinationViewController;
-        KJVideo *cellVideo = [self.cellResults objectAtIndex:indexPath.row];
-        destViewController.chosenVideo = cellVideo;
-    }
-    
     // Comics
-    else if ([segue.identifier isEqualToString:kSegueIdentifierComicDetailFavourites]) {
+    if ([segue.identifier isEqualToString:kSegueIdentifierComicDetailFavourites]) {
+        // Init index path
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        
         // Init destination view controller
         KJComicDetailView *destViewController = segue.destinationViewController;
         

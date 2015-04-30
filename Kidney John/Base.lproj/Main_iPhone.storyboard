@@ -11,7 +11,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="72" sectionHeaderHeight="10" sectionFooterHeight="10" id="iCA-qD-fEs">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" id="idt-bk-cfu">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -42,40 +42,6 @@
                 </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="6807" y="90"/>
-        </scene>
-        <!--You Tube Video View-->
-        <scene sceneID="ufC-wZ-h7g">
-            <objects>
-                <viewController id="vXZ-lx-hvc" customClass="JPLYouTubeVideoView" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jpe-PW-cw6"/>
-                        <viewControllerLayoutGuide type="bottom" id="WG9-8Q-SqJ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wv9-CY-yb4">
-                                <rect key="frame" x="0.0" y="100" width="320" height="368"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="centerY" secondItem="wv9-CY-yb4" secondAttribute="centerY" id="8Nk-ek-JQp"/>
-                            <constraint firstAttribute="centerX" secondItem="wv9-CY-yb4" secondAttribute="centerX" id="W74-48-aNg"/>
-                            <constraint firstItem="wv9-CY-yb4" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="ga8-4R-ocp"/>
-                            <constraint firstItem="wv9-CY-yb4" firstAttribute="top" secondItem="jpe-PW-cw6" secondAttribute="bottom" constant="36" id="ltC-r5-CSN"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="Kvq-dN-KYn"/>
-                    <connections>
-                        <outlet property="videoView" destination="wv9-CY-yb4" id="Wly-PK-3gd"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="7258" y="91"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="XMA-8E-hFS">
@@ -148,7 +114,7 @@
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dm8-tm-IlR">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="GKh-Dj-Pfr">
                                     <size key="itemSize" width="98" height="116"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -172,7 +138,7 @@
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="dm8-tm-IlR" secondAttribute="centerY" id="23D-gd-Xey"/>
                             <constraint firstItem="dm8-tm-IlR" firstAttribute="leading" secondItem="eea-s3-kDS" secondAttribute="leading" id="5se-d2-ylD"/>
@@ -197,7 +163,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="100" sectionHeaderHeight="10" sectionFooterHeight="10" id="KZF-NZ-IGb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="pdg-rQ-Sxt" id="ezb-nz-eG4"/>
                             <outlet property="delegate" destination="pdg-rQ-Sxt" id="yT5-cz-C3v"/>
@@ -206,7 +172,6 @@
                     <navigationItem key="navigationItem" id="KCg-x1-lR8"/>
                     <connections>
                         <segue destination="viw-HE-GoZ" kind="push" identifier="comicDetailSegueFromFavourites" id="Hfi-Tv-zMT"/>
-                        <segue destination="vXZ-lx-hvc" kind="push" identifier="favouritesVideoSegue" id="9wO-Qc-WMm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zd1-YQ-iiV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -258,7 +223,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="6CB-M3-4ca">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="GKy-Oh-Ygs" id="tDV-uG-539"/>
                             <outlet property="delegate" destination="GKy-Oh-Ygs" id="BJJ-6G-Ehn"/>

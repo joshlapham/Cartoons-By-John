@@ -26,6 +26,9 @@ static NSString *kYouTubeVideoUrlForSharing = @"https://www.youtube.com/watch?v=
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Set title
+    self.title = self.chosenVideo.videoName;
+    
     // Init action button in top right hand corner
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                            target:self

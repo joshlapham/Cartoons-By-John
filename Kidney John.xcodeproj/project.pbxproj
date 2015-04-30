@@ -64,7 +64,6 @@
 		68E48D40184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
 		68E48D48184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D46184A247D00600FA5 /* InfoPlist.strings */; };
 		68E48D4A184A247D00600FA5 /* Kidney_JohnTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */; };
-		68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */; };
 		68E48D5B184BEA7400600FA5 /* JPLYouTubeListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */; };
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
 		68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D6D184D874500600FA5 /* KJRandomView.m */; };
@@ -192,8 +191,6 @@
 		68E48D45184A247D00600FA5 /* Kidney JohnTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Kidney JohnTests-Info.plist"; sourceTree = "<group>"; };
 		68E48D47184A247D00600FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Kidney_JohnTests.m; sourceTree = "<group>"; };
-		68E48D56184BE89300600FA5 /* JPLYouTubeVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLYouTubeVideoView.h; path = "View Controllers/JPLYouTubeVideoView.h"; sourceTree = "<group>"; };
-		68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLYouTubeVideoView.m; path = "View Controllers/JPLYouTubeVideoView.m"; sourceTree = "<group>"; };
 		68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLYouTubeListView.h; path = "View Controllers/JPLYouTubeListView.h"; sourceTree = "<group>"; };
 		68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLYouTubeListView.m; path = "View Controllers/JPLYouTubeListView.m"; sourceTree = "<group>"; };
 		68E48D66184C20A500600FA5 /* KJComicListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListView.h; path = "View Controllers/KJComicListView.h"; sourceTree = "<group>"; };
@@ -262,8 +259,6 @@
 			children = (
 				68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */,
 				68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */,
-				68E48D56184BE89300600FA5 /* JPLYouTubeVideoView.h */,
-				68E48D57184BE89300600FA5 /* JPLYouTubeVideoView.m */,
 				683DC0321A6B5DF40051A7DB /* KJVideoViewController.h */,
 				683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */,
 			);
@@ -677,7 +672,6 @@
 				68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */,
 				C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */,
 				C9CD4DD01AF1D5290015715A /* KJBaseCollectionViewCell.m in Sources */,
-				68E48D58184BE89300600FA5 /* JPLYouTubeVideoView.m in Sources */,
 				68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */,
 				68024D311A628D0900D2A900 /* KJRandomImage+Methods.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
