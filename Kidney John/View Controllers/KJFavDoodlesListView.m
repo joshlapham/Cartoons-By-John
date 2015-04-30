@@ -15,7 +15,12 @@
 #import "UIViewController+KJUtils.h"
 
 // Constants
-static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
+// collectionView insets (for all edges)
+static CGFloat kCollectionViewEdgeInset = 20;
+
+// collectionView cell size
+static CGFloat kCollectionViewCellWidth = 75;
+static CGFloat kCollectionViewCellHeight = 75;
 
 // Segue identifiers
 static NSString * kSegueIdentifierDoodleDetail = @"doodleDetailSegueFromFavourites";
@@ -40,7 +45,7 @@ static NSString * kSegueIdentifierDoodleDetail = @"doodleDetailSegueFromFavourit
     
     // Register cell with collectionView
     [self.collectionView registerClass:[KJDoodleCell class]
-            forCellWithReuseIdentifier:kDoodleFavouriteCellIdentifier];
+            forCellWithReuseIdentifier:[KJDoodleCell cellIdentifier]];
     
     // Setup collectionView
     [self setupCollectionView];
@@ -90,7 +95,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(20, 20, 20, 20);
+    return UIEdgeInsetsMake(kCollectionViewEdgeInset, kCollectionViewEdgeInset, kCollectionViewEdgeInset, kCollectionViewEdgeInset);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
@@ -105,13 +110,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake(75, 75);
+    return CGSizeMake(kCollectionViewCellWidth, kCollectionViewCellHeight);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
-    KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kDoodleFavouriteCellIdentifier
+    KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[KJDoodleCell cellIdentifier]
                                                                                    forIndexPath:indexPath];
     
     // Init cell data
