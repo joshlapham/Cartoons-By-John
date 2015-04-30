@@ -9,8 +9,8 @@ This update is focused on supporting Accessibility features of iOS for Global Ac
 
 Bug fixes:
 
-- fixed issue on 'More' screen where section titles would not show correctly on iPhone 6 and 6+
-- fixed issue where videos loaded from the Favourites screen would be misaligned on iPhone 6 and 6+
+- fixed issue on the 'More' screen where section titles would not show correctly on iPhone 6 and 6+
+- fixed issue where videos loaded from the 'Favourites' screen would be misaligned on iPhone 6 and 6+
 - fixed possible issues where app could crash while fetching new data
 
 ## Version 1.1
