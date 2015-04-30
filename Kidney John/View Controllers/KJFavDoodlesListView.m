@@ -12,6 +12,7 @@
 #import "KJDoodleCell.h"
 #import "KJRandomView.h"
 #import "UIColor+KJColours.h"
+#import "UIViewController+KJUtils.h"
 
 // Constants
 static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
@@ -50,7 +51,7 @@ static NSString * kSegueIdentifierDoodleDetail = @"doodleDetailSegueFromFavourit
     
     // Check for Favourites results
     if ([_cellResults count] == 0) {
-        [self thereAreNoFavourites];
+        [self kj_showthereAreNoFavouritesAlertWithTitle:self.title];
     }
     
     // Reload collectionView
@@ -120,32 +121,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [cell configureCellWithData:cellData];
     
     return cell;
-}
-
-- (void)thereAreNoFavourites {
-    // Init strings for noFavouritesAlertView
-    NSString *alertTitle = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
-    NSString *alertMessage = NSLocalizedString(@"You haven't set any Doodles as favourites", @"Message displayed when user hasn't favourited any Doodles (drawings)");
-    NSString *okButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
-    
-    // Init alertView
-    UIAlertController *noFavouritesAlertView = [UIAlertController alertControllerWithTitle:alertTitle
-                                                                                   message:alertMessage
-                                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    // Init actions for alertView
-    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonTitle
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction *action) {
-                                                           // Go back to previous view controller
-                                                           [self.navigationController popViewControllerAnimated:YES];
-                                                       }];
-    [noFavouritesAlertView addAction:okayAction];
-    
-    // Show alertView
-    [self presentViewController:noFavouritesAlertView
-                       animated:YES
-                     completion:nil];
 }
 
 #pragma mark - Prepare for segue method
