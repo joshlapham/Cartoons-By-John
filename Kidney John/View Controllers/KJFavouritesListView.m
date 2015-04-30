@@ -115,9 +115,6 @@ static NSString * kVideoDurationFallbackString = @"0:30";
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // Video cell
     if ([[self.cellResults firstObject] isKindOfClass:[KJVideo class]]) {
-        
-        // TODO: refactor logic here to configureCell method on cell
-        
         // Init KJVideoCell
         KJVideoCell *videoCell = [tableView dequeueReusableCellWithIdentifier:[KJVideoCell cellIdentifier]
                                                                  forIndexPath:indexPath];
@@ -125,32 +122,8 @@ static NSString * kVideoDurationFallbackString = @"0:30";
         // Init cell data
         KJVideo *cellData = [self.cellResults objectAtIndex:indexPath.row];
         
-        // Video name
-        videoCell.videoTitle.text = cellData.videoName;
-        
-        // Video description
-        videoCell.videoDescription.text = cellData.videoDescription;
-        
-        // Placeholder duration
-        if (cellData.videoDuration == nil) {
-            videoCell.videoDuration.text = kVideoDurationFallbackString;
-        }
-        
-        else {
-            videoCell.videoDuration.text = cellData.videoDuration;
-        }
-        
-        // SDWebImage
-        NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, cellData.videoId];
-        
-        // Check if image is in cache
-        if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
-            //DDLogVerbose(@"found image in cache");
-            videoCell.videoThumbnail.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString];
-        } else {
-            // TODO: fallback if not in cache
-            //DDLogVerbose(@"no image in cache");
-        }
+        // Configure cell
+        [videoCell configureCellWithData:cellData];
         
         // Return cell
         return videoCell;
