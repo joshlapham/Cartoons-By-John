@@ -15,6 +15,7 @@
 		680CF071190F8DBD00A0E296 /* KJComicDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 680CF070190F8DBD00A0E296 /* KJComicDetailCell.m */; };
 		680CF0C61A7F730F009250E3 /* KJVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 680CF0C41A7F730F009250E3 /* KJVideoCell.m */; };
 		680CF0C71A7F730F009250E3 /* KJVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680CF0C51A7F730F009250E3 /* KJVideoCell.xib */; };
+		681347051AF26781009DCF88 /* KJVideoCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 681347041AF26781009DCF88 /* KJVideoCellTests.m */; };
 		68211A211927A95000B24BF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68211A231927A95000B24BF1 /* Localizable.strings */; };
 		6832C3751924B91E00E94788 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6832C3741924B91E00E94788 /* Keys.plist */; };
 		6837E5D51ADD052F00779F18 /* KJRandomViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6837E5D41ADD052F00779F18 /* KJRandomViewDataSource.m */; };
@@ -63,7 +64,6 @@
 		68E48D3F184A247D00600FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1B184A247D00600FA5 /* Foundation.framework */; };
 		68E48D40184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
 		68E48D48184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D46184A247D00600FA5 /* InfoPlist.strings */; };
-		68E48D4A184A247D00600FA5 /* Kidney_JohnTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */; };
 		68E48D5B184BEA7400600FA5 /* JPLYouTubeListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */; };
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
 		68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D6D184D874500600FA5 /* KJRandomView.m */; };
@@ -103,6 +103,7 @@
 		680CF0C31A7F730F009250E3 /* KJVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoCell.h; path = Cells/KJVideoCell.h; sourceTree = "<group>"; };
 		680CF0C41A7F730F009250E3 /* KJVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoCell.m; path = Cells/KJVideoCell.m; sourceTree = "<group>"; };
 		680CF0C51A7F730F009250E3 /* KJVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJVideoCell.xib; path = Cells/KJVideoCell.xib; sourceTree = "<group>"; };
+		681347041AF26781009DCF88 /* KJVideoCellTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJVideoCellTests.m; sourceTree = "<group>"; };
 		68211A1B1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		68211A1C1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main_iPad.strings; sourceTree = "<group>"; };
 		68211A1D1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -190,7 +191,6 @@
 		68E48D3D184A247D00600FA5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		68E48D45184A247D00600FA5 /* Kidney JohnTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Kidney JohnTests-Info.plist"; sourceTree = "<group>"; };
 		68E48D47184A247D00600FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Kidney_JohnTests.m; sourceTree = "<group>"; };
 		68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLYouTubeListView.h; path = "View Controllers/JPLYouTubeListView.h"; sourceTree = "<group>"; };
 		68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLYouTubeListView.m; path = "View Controllers/JPLYouTubeListView.m"; sourceTree = "<group>"; };
 		68E48D66184C20A500600FA5 /* KJComicListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListView.h; path = "View Controllers/KJComicListView.h"; sourceTree = "<group>"; };
@@ -462,7 +462,7 @@
 		68E48D43184A247D00600FA5 /* Kidney JohnTests */ = {
 			isa = PBXGroup;
 			children = (
-				68E48D49184A247D00600FA5 /* Kidney_JohnTests.m */,
+				681347041AF26781009DCF88 /* KJVideoCellTests.m */,
 				68E48D44184A247D00600FA5 /* Supporting Files */,
 			);
 			path = "Kidney JohnTests";
@@ -711,7 +711,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68E48D4A184A247D00600FA5 /* Kidney_JohnTests.m in Sources */,
+				681347051AF26781009DCF88 /* KJVideoCellTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
