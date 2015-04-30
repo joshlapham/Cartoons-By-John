@@ -92,7 +92,6 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         
         // Add to tableView
-        [self.tableView addSubview:imageView];
         self.tableView.backgroundView = imageView;
         self.tableView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
