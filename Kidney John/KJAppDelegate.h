@@ -20,6 +20,7 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 // Methods
+// Core Data helper methods
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
