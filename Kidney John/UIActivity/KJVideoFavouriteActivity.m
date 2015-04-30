@@ -72,12 +72,11 @@
     // Save managedObjectContext
     NSError *error;
     if (![videoObject.managedObjectContext save:&error]) {
-        // TODO: handle the error
-        DDLogError(@"Video: failed to save managedObjectContext: %@", [error debugDescription]);
+        DDLogError(@"%s - failed to save managedObjectContext: %@", __func__, [error debugDescription]);
     }
     
     else {
-        DDLogInfo(@"Video: saved managedObjectContext");
+        DDLogInfo(@"%s - saved managedObjectContext", __func__);
     }
 }
 

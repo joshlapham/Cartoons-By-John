@@ -229,8 +229,9 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
     NSArray *doodlesInCoreData = [self.managedObjectContext executeFetchRequest:request
                                                                           error:&error];
     
+    // TODO: refactor to use best practice fetch syntax for better error checking
+    
     if (!doodlesInCoreData) {
-        // TODO: handle error
         return nil;
     }
     

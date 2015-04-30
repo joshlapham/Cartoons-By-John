@@ -173,7 +173,6 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         
-        // TODO: handle error
         else {
             DDLogError(@"%s - error fetching PFConfig from Parse", __func__);
         }
