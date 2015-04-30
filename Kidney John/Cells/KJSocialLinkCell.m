@@ -28,12 +28,6 @@
     _titleLabel.font = [UIFont kj_moreViewCellFont];
 }
 
-#pragma mark - Cell identifier method
-
-+ (NSString *)cellIdentifier {
-    return NSStringFromClass(self.class);
-}
-
 #pragma mark - Configure cell method
 
 - (void)configureCellWithTitle:(NSString *)title

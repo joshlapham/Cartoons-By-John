@@ -11,12 +11,10 @@
 #import "MBProgressHUD.h"
 #import "KJVideo.h"
 #import "KJVideoStore.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
 #import "NSUserDefaults+KJSettings.h"
-#import "KJVideo+Methods.h"
 #import "KJVideoViewController.h"
 #import "KJVideoCell.h"
 #import "UIColor+KJColours.h"
@@ -28,7 +26,6 @@
 @property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIAlertView *noNetworkAlertView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
-@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSFetchedResultsController *searchFetchedResultsController;
 
@@ -159,6 +156,8 @@
 
 #pragma mark - UIAlertView delegate methods
 
+// TODO: refactor to use UIAlertController
+
 -       (void)alertView:(UIAlertView *)alertView
    clickedButtonAtIndex:(NSInteger)buttonIndex {
     DDLogVerbose(@"Button clicked: %ld", (long)buttonIndex);
@@ -249,51 +248,6 @@
     }
 }
 
-#pragma mark - Highlight new videos methods
-
-#pragma mark Check if video is new or not method
-
-- (BOOL)isNewVideo:(KJVideo *)video {
-    // Check date of video compared to today's date.
-    // If less than two weeks old then we'll class the video as 'new'.
-    
-    // Init date object from videoDate
-    NSDate *videoDate = [[self dateFormatter] dateFromString:video.videoDate];
-    
-    // Init date object for today's date
-    NSDate *todayDate = [NSDate date];
-    
-    // Get day components (number of days since video date)
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *dateComponents = [calendar components:NSCalendarUnitDay
-                                                   fromDate:videoDate
-                                                     toDate:todayDate
-                                                    options:NO];
-    
-    // Check if video is less than 14 days old
-    if (dateComponents.day < 15) {
-        DDLogVerbose(@"Videos: video %@ is new!", video.videoName);
-        return YES;
-    }
-    else {
-        return NO;
-    }
-}
-
-#pragma mark Init date formatter method
-
-- (NSDateFormatter *)dateFormatter {
-    if (_dateFormatter != nil) {
-        return _dateFormatter;
-    }
-    
-    // Init date formatter
-    _dateFormatter = [[NSDateFormatter alloc] init];
-    [_dateFormatter setDateFormat:@"YYYY-MM-dd"];
-    
-    return _dateFormatter;
-}
-
 #pragma mark - Data fetch did happen method
 
 - (void)videoFetchDidFinish {
@@ -316,6 +270,8 @@
 
 #pragma mark - NSFetchedResultsController
 #pragma mark -
+
+// TODO: refactor to own data source class
 
 #pragma mark Init controller methods
 
@@ -547,52 +503,8 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption {
     // Init cell data
     KJVideo *cellVideo = [fetchedResultsController objectAtIndexPath:indexPath];
     
-    // Init label text
-    // Video name
-    cell.videoTitle.text = cellVideo.videoName;
-    
-    // Video description
-    cell.videoDescription.text = cellVideo.videoDescription;
-    
-    // Check if new video, add 'New!' label if so
-    // NOT a new video, so hide label
-    if (![self isNewVideo:cellVideo]) {
-        cell.videoIsNew.hidden = YES;
-    }
-    
-    // IS a new video, so show label
-    else {
-        cell.videoIsNew.hidden = NO;
-    }
-    
-    // Video duration
-    // Placeholder duration
-    if (cellVideo.videoDuration == nil) {
-        cell.videoDuration.text = @"0:30";
-    } else {
-        cell.videoDuration.text = cellVideo.videoDuration;
-    }
-    
-    // Init video thumbnail
-    NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, cellVideo.videoId];
-    
-    // Check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
-        //DDLogVerbose(@"found image in cache");
-    } else {
-        //DDLogVerbose(@"no image in cache");
-        // TODO: implement fallback if image not in cache
-    }
-    
-    [cell.videoThumbnail sd_setImageWithURL:[NSURL URLWithString:urlString]
-                           placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-                                  completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
-                                      if (cellImage && !error) {
-                                          DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
-                                      } else {
-                                          DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
-                                      }
-                                  }];
+    // Configure cell
+    [cell configureCellWithData:cellVideo];
 }
 
 -       (void)tableView:(UITableView *)tableView

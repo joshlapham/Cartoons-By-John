@@ -9,10 +9,20 @@
 #import "KJVideoCell.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "KJVideo.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "KJVideo+Methods.h"
 
 // Constants
 // Modifier for name & description labels max layout width
 static CGFloat kMaxLayoutWidthModifier = 195;
+
+@interface KJVideoCell ()
+
+// Properties
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
+@end
 
 @implementation KJVideoCell
 
@@ -63,10 +73,104 @@ static CGFloat kMaxLayoutWidthModifier = 195;
     self.videoIsNew.hidden = YES;
 }
 
-#pragma mark - Cell reuse identifer method
+#pragma mark - Configure cell with data method
 
-+ (NSString *)cellIdentifier {
-    return [NSString stringWithFormat:@"%@", self.class];
+- (void)configureCellWithData:(id)data {
+    // TODO: init cell data
+    KJVideo *cellData = (KJVideo *)data;
+    
+    // Init label text
+    // Video name
+    self.videoTitle.text = cellData.videoName;
+    
+    // Video description
+    self.videoDescription.text = cellData.videoDescription;
+    
+    // Check if new video, add 'New!' label if so
+    // NOT a new video, so hide label
+    if (![self isNewVideo:cellData]) {
+        self.videoIsNew.hidden = YES;
+    }
+    
+    // IS a new video, so show label
+    else {
+        self.videoIsNew.hidden = NO;
+    }
+    
+    // Video duration
+    // Placeholder duration
+    if (cellData.videoDuration == nil) {
+        self.videoDuration.text = @"0:30";
+    } else {
+        self.videoDuration.text = cellData.videoDuration;
+    }
+    
+    // Init video thumbnail
+    NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, cellData.videoId];
+    
+    // Check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:urlString]) {
+        //DDLogVerbose(@"found image in cache");
+    } else {
+        //DDLogVerbose(@"no image in cache");
+        // TODO: implement fallback if image not in cache
+    }
+    
+    [self.videoThumbnail sd_setImageWithURL:[NSURL URLWithString:urlString]
+                           placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                                  completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
+                                      if (cellImage && !error) {
+                                          DDLogVerbose(@"Videos: fetched video thumbnail image from URL: %@", url);
+                                      } else {
+                                          DDLogError(@"Videos: error fetching video thumbnail image: %@", [error localizedDescription]);
+                                      }
+                                  }];
+
+}
+
+#pragma mark - Highlight new videos methods
+
+#pragma mark Check if video is new or not method
+
+- (BOOL)isNewVideo:(KJVideo *)video {
+    // Check date of video compared to today's date.
+    // If less than two weeks old then we'll class the video as 'new'.
+    
+    // Init date object from videoDate
+    NSDate *videoDate = [[self dateFormatter] dateFromString:video.videoDate];
+    
+    // Init date object for today's date
+    NSDate *todayDate = [NSDate date];
+    
+    // Get day components (number of days since video date)
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *dateComponents = [calendar components:NSCalendarUnitDay
+                                                   fromDate:videoDate
+                                                     toDate:todayDate
+                                                    options:NO];
+    
+    // Check if video is less than 14 days old
+    if (dateComponents.day < 15) {
+        DDLogVerbose(@"Videos: video %@ is new!", video.videoName);
+        return YES;
+    }
+    else {
+        return NO;
+    }
+}
+
+#pragma mark Init date formatter method
+
+- (NSDateFormatter *)dateFormatter {
+    if (_dateFormatter != nil) {
+        return _dateFormatter;
+    }
+    
+    // Init date formatter
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    [_dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    
+    return _dateFormatter;
 }
 
 #pragma mark - Accessibility methods

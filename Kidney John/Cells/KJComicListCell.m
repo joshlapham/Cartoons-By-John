@@ -56,15 +56,12 @@
     self.comicIsNew.hidden = YES;
 }
 
-#pragma mark - Cell reuse identifer method
-
-+ (NSString *)cellIdentifier {
-    return [NSString stringWithFormat:@"%@", self.class];
-}
-
 #pragma mark - Configure cell method
 
-- (void)configureCellWithData:(KJComic *)cellData {
+- (void)configureCellWithData:(id)data {
+    // Init data
+    KJComic *cellData = (KJComic *)data;
+    
     // Set comic title
     _comicName = cellData.comicName;
     

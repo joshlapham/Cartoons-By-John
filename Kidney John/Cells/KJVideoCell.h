@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJBaseTableViewCell.h"
 
-@interface KJVideoCell : UITableViewCell
-
-// Methods
-+ (NSString *)cellIdentifier;
+@interface KJVideoCell : KJBaseTableViewCell
 
 // Properties
 @property (weak, nonatomic) IBOutlet UILabel *videoTitle;

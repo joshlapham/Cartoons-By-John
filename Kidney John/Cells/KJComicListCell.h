@@ -7,19 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJBaseTableViewCell.h"
 
 @class KJComic;
 
-@interface KJComicListCell : UITableViewCell
+@interface KJComicListCell : KJBaseTableViewCell
 
 // Properties
 // TODO: refactor to implementation
 @property (weak, nonatomic) IBOutlet UILabel *comicTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *comicThumbnail;
 @property (weak, nonatomic) IBOutlet UILabel *comicIsNew;
-
-// Methods
-+ (NSString *)cellIdentifier;
-- (void)configureCellWithData:(KJComic *)cellData;
 
 @end

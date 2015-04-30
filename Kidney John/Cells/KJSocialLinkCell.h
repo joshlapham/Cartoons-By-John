@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KJBaseTableViewCell.h"
 
 // ENUM for cell type
 typedef enum : NSUInteger {
@@ -14,13 +15,12 @@ typedef enum : NSUInteger {
     KJSocialLinkCellTypeSocialLink,
 } KJSocialLinkCellType;
 
-@interface KJSocialLinkCell : UITableViewCell
+@interface KJSocialLinkCell : KJBaseTableViewCell
 
 // Properties
 @property (nonatomic) KJSocialLinkCellType cellType;
 
 // Methods
-+ (NSString *)cellIdentifier;
 - (void)configureCellWithTitle:(NSString *)title
                       andImage:(UIImage *)image;
 
