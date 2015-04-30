@@ -17,6 +17,7 @@
 #import "UIFont+KJFonts.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "UIColor+KJColours.h"
+#import "UIViewController+KJUtils.h"
 
 // Constants
 // Segue identifiers
@@ -80,19 +81,13 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    // Core Data
+    // Perform fetch
     NSError *error;
-    
-    // TODO: handle error
-    
     if (![[self fetchedResultsController] performFetch:&error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-         */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
+        
+        // Show fatal error alert
+        [self showFatalErrorAlert];
     }
     
     // Fetch comic data
@@ -125,7 +120,7 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     if (UIAccessibilityDarkerSystemColorsEnabled()) {
         self.collectionView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
     }
-
+    
     else {
         self.collectionView.backgroundColor = [UIColor kj_viewBackgroundColour];
     }
