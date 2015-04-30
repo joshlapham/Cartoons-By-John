@@ -10,6 +10,7 @@
 
 @interface KJFavouritesListView : UITableViewController
 
+// Properties
 @property (nonatomic, strong) NSString *titleForView;
 @property (nonatomic, strong) NSArray *cellResults;
 

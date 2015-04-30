@@ -11,9 +11,9 @@
 #import "PBWebViewController.h"
 #import "KJVideoStore.h"
 #import "KJComicStore.h"
-#import "KJDoodleStore.h"
+//#import "KJDoodleStore.h"
 #import "KJSocialLinkStore.h"
-#import "KJFavDoodlesListView.h"
+//#import "KJFavDoodlesListView.h"
 #import "JPLReachabilityManager.h"
 #import <Reachability/Reachability.h>
 #import "KJSocialLink.h"
@@ -277,9 +277,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                  sender:(id)sender {
     // Videos or Comix
     if ([[segue identifier] isEqualToString:kSegueIdentifierFavourite]) {
-        //DDLogVerbose(@"in segue method ..");
+        // NOTE - we use this as title for destination view controller
+        // TODO: review this; it looks not right
         NSString *typeOfFavourite = [_cellArray objectAtIndex:_chosenRow];
-        //DDLogVerbose(@"type of fav: %@", typeOfFavourite);
         NSArray *favouritesDataToPass;
         
         // Init destination view controller
@@ -359,7 +359,7 @@ titleForHeaderInSection:(NSInteger)section {
 
 - (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
-        DDLogVerbose(@"More: network became available");
+        DDLogVerbose(@"%s: network became available", __func__);
         
         // Fetch data
         [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
