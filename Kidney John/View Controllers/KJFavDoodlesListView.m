@@ -17,6 +17,9 @@
 // Constants
 static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
+// Segue identifiers
+static NSString * kSegueIdentifierDoodleDetail = @"doodleDetailSegueFromFavourites";
+
 @interface KJFavDoodlesListView ()
 
 // Properties
@@ -75,8 +78,8 @@ static NSString *kDoodleFavouriteCellIdentifier = @"DoodleFavouriteCell";
 
 -   (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO: update to use constant
-    [self performSegueWithIdentifier:@"doodleDetailSegueFromFavourites"
+    // Perform segue
+    [self performSegueWithIdentifier:kSegueIdentifierDoodleDetail
                               sender:self];
 }
 
@@ -158,10 +161,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
-    
-    // TODO: update to use string constant for segue ID
-    
-    if ([segue.identifier isEqualToString:@"doodleDetailSegueFromFavourites"]) {
+    if ([segue.identifier isEqualToString:kSegueIdentifierDoodleDetail]) {
         // Init destination view controller
         KJRandomView *destViewController = segue.destinationViewController;
         
