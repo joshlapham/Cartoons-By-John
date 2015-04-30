@@ -10,7 +10,6 @@
 #import "KJRandomImage.h"
 #import "KJDoodleStore.h"
 #import "KJDoodleCell.h"
-#import <SDWebImage/UIImageView+WebCache.h>
 #import "KJRandomView.h"
 #import "UIColor+KJColours.h"
 
@@ -117,16 +116,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell data
     KJRandomImage *cellData = [_cellResults objectAtIndex:indexPath.row];
     
-    // TODO: refactor to configureCell method on cell
-    
-    // SDWebImage
-    // Check if image is in cache
-    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
-        cell.doodleImageView.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl];
-    } else {
-        //DDLogVerbose(@"no image in cache");
-        // TODO: fallback if no image in cache
-    }
+    // Configure cell
+    [cell configureCellWithData:cellData];
     
     return cell;
 }

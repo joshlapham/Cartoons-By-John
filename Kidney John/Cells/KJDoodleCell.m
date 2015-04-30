@@ -9,6 +9,15 @@
 #import "KJDoodleCell.h"
 #import "KJRandomView.h"
 #import "KJFavDoodlesListView.h"
+#import "KJRandomImage.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
+@interface KJDoodleCell ()
+
+// Properties
+@property (nonatomic, strong) UIImageView *doodleImageView;
+
+@end
 
 @implementation KJDoodleCell
 
@@ -18,19 +27,50 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Init image view
-        self.doodleImageView = [[UIImageView alloc] init];
+        _doodleImageView = [[UIImageView alloc] init];
         
         // Scale image to fit
-        self.doodleImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _doodleImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Set frame to entire screen
-        self.doodleImageView.frame = self.bounds;
+        _doodleImageView.frame = self.bounds;
         
         // Add image view to cell's view
-        [self addSubview:self.doodleImageView];
+        [self addSubview:_doodleImageView];
     }
     
     return self;
+}
+
+#pragma mark - Configure cell with data method
+
+- (void)configureCellWithData:(id)data {
+    // Init cell data
+    KJRandomImage *cellData = (KJRandomImage *)data;
+    
+    // TODO: review image setting here; use cache?
+    
+    // SDWebImage
+    // Check if image is in cache
+    if ([[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl]) {
+        _doodleImageView.image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:cellData.imageUrl];
+    }
+    
+    // TODO: fallback if no image in cache
+    else {
+        //DDLogVerbose(@"no image in cache");
+    }
+    
+    // Set doodle image
+    [_doodleImageView sd_setImageWithURL:[NSURL URLWithString:cellData.imageUrl]
+                        placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+                               completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
+                                   if (cellImage && !error) {
+                                       DDLogVerbose(@"Doodles: fetched image from URL: %@", url);
+                                   } else {
+                                       DDLogError(@"Doodles: error fetching image: %@", [error localizedDescription]);
+                                   }
+                               }];
 }
 
 #pragma mark - Accessibility methods

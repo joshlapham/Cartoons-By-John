@@ -11,7 +11,4 @@
 
 @interface KJDoodleCell : KJBaseCollectionViewCell
 
-// Properties
-@property (nonatomic, strong) UIImageView *doodleImageView;
-
 @end
