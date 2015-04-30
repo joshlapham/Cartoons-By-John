@@ -179,7 +179,6 @@
     KJComic *cellData = [_cellDataSource objectAtIndex:currentCellIndex.row];
     
     // Init comic image
-    // TODO: do we really need this method?
     UIImage *comicImageToShare = [cellData returnComicImageFromComic];
     
     // Init UIActivity

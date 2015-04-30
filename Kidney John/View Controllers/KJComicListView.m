@@ -374,10 +374,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonString
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction *action) {
-                                                             // TODO: implement a new view with a button to retry data refresh here?
-                                                             
                                                              // Reload collectionView data to check for empty data source
-                                                             // TODO: maybe don't reload here?
                                                              [self.collectionView reloadData];
                                                          }];
     
