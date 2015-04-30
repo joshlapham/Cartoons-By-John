@@ -192,7 +192,9 @@
     activityVC.excludedActivityTypes = @[UIActivityTypeAssignToContact, UIActivityTypeAddToReadingList];
     
     // Present UIActivityController
-    [self.navigationController presentViewController:activityVC animated:YES completion:nil];
+    [self.navigationController presentViewController:activityVC
+                                            animated:YES
+                                          completion:nil];
 }
 
 #pragma mark - Gesture recognizer methods

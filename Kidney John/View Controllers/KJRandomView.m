@@ -208,7 +208,9 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     activityVC.excludedActivityTypes = @[UIActivityTypeAddToReadingList];
     
     // Present UIActivityController
-    [self.navigationController presentViewController:activityVC animated:YES completion:nil];
+    [self.navigationController presentViewController:activityVC
+                                            animated:YES
+                                          completion:nil];
 }
 
 #pragma mark - Reachability methods
