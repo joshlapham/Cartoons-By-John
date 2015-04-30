@@ -12,6 +12,7 @@
 
 @interface KJComicDetailView : UIViewController
 
+// Properties
 @property (nonatomic, strong) NSIndexPath *collectionViewIndexFromList;
 @property (nonatomic, strong) KJComic *initialComicToShow;
 

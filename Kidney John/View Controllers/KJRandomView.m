@@ -20,9 +20,6 @@
 #import "KJRandomViewDataSource.h"
 #import "UIColor+KJColours.h"
 
-// Constants
-static NSString *kDoodleCellIdentifier = @"doodleCell";
-
 @interface KJRandomView ()
 
 // Properties
@@ -59,7 +56,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
     
     // Register custom UICollectionViewCell
     [self.collectionView registerClass:[KJDoodleCell class]
-            forCellWithReuseIdentifier:kDoodleCellIdentifier];
+            forCellWithReuseIdentifier:[KJDoodleCell cellIdentifier]];
     
     // Register for NSNotifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -88,7 +85,8 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
         self.collectionView.backgroundView.contentMode = UIViewContentModeScaleAspectFit;
         
         // Gesture recognizer to reload data if tapped
-        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchDataWithNetworkCheck)];
+        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                             action:@selector(fetchDataWithNetworkCheck)];
         _singleTap.numberOfTapsRequired = 1;
         [self.collectionView addGestureRecognizer:_singleTap];
     }
@@ -138,7 +136,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 #pragma mark - Data fetch did happen method
 
 - (void)doodleFetchDidHappen {
-    DDLogVerbose(@"Doodles: data fetch did happen");
+    DDLogVerbose(@"%s: data fetch did happen", __func__);
     
     // Init data source array
     // Check if coming from Favourites list ..

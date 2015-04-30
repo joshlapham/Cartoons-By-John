@@ -10,9 +10,6 @@
 #import "KJDoodleCell.h"
 #import "KJRandomImage.h"
 
-// Constants
-static NSString *kDoodleCellIdentifier = @"doodleCell";
-
 @implementation KJRandomViewDataSource
 
 #pragma mark - Init method
@@ -40,7 +37,7 @@ static NSString *kDoodleCellIdentifier = @"doodleCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // Init cell
-    KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kDoodleCellIdentifier
+    KJDoodleCell *cell = (KJDoodleCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[KJDoodleCell cellIdentifier]
                                                                                    forIndexPath:indexPath];
     
     // Init cell data
