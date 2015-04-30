@@ -152,18 +152,18 @@ static NSString *kYouTubeVideoHTML = @"<!DOCTYPE html><html><head><style>*{backg
 
 - (void)showErrorIfNoNetworkConnection {
     // Init strings for noNetworkAlert
-    NSString *titleString = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
+    NSString *alertTitle = NSLocalizedString(@"No Connection", @"Title of error alert displayed when no network connection is available");
     NSString *messageString = NSLocalizedString(@"A network connection is required to watch videos", @"Error message displayed when no network connection is available");
-    NSString *okButtonString = NSLocalizedString(@"Okay", @"Title of confirmation button");
+    NSString *okButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
     
     // Init alertView
-    UIAlertController *noNetworkAlert = [UIAlertController alertControllerWithTitle:titleString
+    UIAlertController *noNetworkAlert = [UIAlertController alertControllerWithTitle:alertTitle
                                                                             message:messageString
                                                                      preferredStyle:UIAlertControllerStyleAlert];
     
     // Init actions
     // Okay
-    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonString
+    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonTitle
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction *action) {
                                                            // Go back to video list view

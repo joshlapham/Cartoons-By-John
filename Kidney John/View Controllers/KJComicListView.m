@@ -346,13 +346,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)noNetworkConnection {
     // Init strings for noNetworkAlertView
-    NSString *titleString = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
+    NSString *alertTitle = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
     NSString *messageString = NSLocalizedString(@"This app requires a network connection", @"Error message displayed when no network connection is available");
     NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
     NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
     
     // Init UIAlertController
-    _noNetworkAlert = [UIAlertController alertControllerWithTitle:titleString
+    _noNetworkAlert = [UIAlertController alertControllerWithTitle:alertTitle
                                                           message:messageString
                                                    preferredStyle:UIAlertControllerStyleAlert];
     
