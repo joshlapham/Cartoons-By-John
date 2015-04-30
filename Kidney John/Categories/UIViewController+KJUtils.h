@@ -15,6 +15,9 @@
 // Fatal error alert
 - (void)showFatalErrorAlert;
 
+// Return 'no network' alert controller
+- (UIAlertController *)kj_noNetworkAlertControllerWithNoActions;
+
 // Video view controllers
 - (void)kj_showErrorIfNoNetworkConnectionForVideoDetailView;
 

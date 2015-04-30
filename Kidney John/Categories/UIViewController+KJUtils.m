@@ -36,6 +36,21 @@
                      completion:nil];
 }
 
+#pragma mark - Return 'no network' alert controller
+
+- (UIAlertController *)kj_noNetworkAlertControllerWithNoActions {
+    // Init strings for noNetworkAlertView
+    NSString *alertTitle = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
+    NSString *alertMessage = NSLocalizedString(@"This app requires a network connection", @"Error message displayed when no network connection is available");
+    
+    // Init alert
+    UIAlertController *noNetworkAlertView = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                                message:alertMessage
+                                                                         preferredStyle:UIAlertControllerStyleAlert];
+    
+    return noNetworkAlertView;
+}
+
 #pragma mark - Video view controllers
 
 #pragma mark Video Detail VC - Show 'no network' alert method

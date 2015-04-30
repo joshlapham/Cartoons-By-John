@@ -19,6 +19,7 @@
 #import "NSUserDefaults+KJSettings.h"
 #import "KJRandomViewDataSource.h"
 #import "UIColor+KJColours.h"
+#import "UIViewController+KJUtils.h"
 
 @interface KJRandomView ()
 
@@ -215,15 +216,11 @@
 
 - (void)noNetworkConnection {
     // Init strings for noNetworkAlertView
-    NSString *alertTitle = NSLocalizedString(@"No Network", @"Title of error alert displayed when no network connection is available");
-    NSString *alertMessage = NSLocalizedString(@"This app requires a network connection", @"Error message displayed when no network connection is available");
     NSString *cancelButtonString = NSLocalizedString(@"Cancel", @"Title of Cancel button in No Network connection error alert");
     NSString *retryButtonString = NSLocalizedString(@"Retry", @"Title of Retry button in No Network connection error alert");
     
     // Init alertView
-    _noNetworkAlertView = [UIAlertController alertControllerWithTitle:alertTitle
-                                                              message:alertMessage
-                                                       preferredStyle:UIAlertControllerStyleAlert];
+    _noNetworkAlertView = [self kj_noNetworkAlertControllerWithNoActions];
     
     // Init actions
     // Retry
