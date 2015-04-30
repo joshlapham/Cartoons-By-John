@@ -341,8 +341,7 @@ static NSString *kComicAttributeKeyComicName = @"comicName";
                 
                 if ([object[@"is_active"] isEqual:@"1"]) {
                     
-                    // TODO:
-                    // - check if PFFile is already saved on filesystem
+                    // TODO: check if PFFile is already saved on filesystem
                     
                     // Save Parse object to Core Data
                     PFFile *comicImageFile = [object objectForKey:kParseComicFileKey];
