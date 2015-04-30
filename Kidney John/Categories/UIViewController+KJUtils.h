@@ -18,4 +18,7 @@
 // Video view controllers
 - (void)kj_showErrorIfNoNetworkConnectionForVideoDetailView;
 
+// Favourites view controllers
+- (void)kj_showthereAreNoFavouritesAlertWithTitle:(NSString *)viewTitle;
+
 @end

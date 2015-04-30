@@ -38,7 +38,7 @@
 
 #pragma mark - Video view controllers
 
-#pragma mark Video Detail VC - Show no network alert method
+#pragma mark Video Detail VC - Show 'no network' alert method
 
 - (void)kj_showErrorIfNoNetworkConnectionForVideoDetailView {
     // Init strings for noNetworkAlert
@@ -64,6 +64,37 @@
     
     // Show alertView
     [self presentViewController:noNetworkAlert
+                       animated:YES
+                     completion:nil];
+}
+
+#pragma mark - Favourites view controllers
+
+#pragma mark Favourites List VC - Show 'no favourites' alert method
+
+- (void)kj_showthereAreNoFavouritesAlertWithTitle:(NSString *)viewTitle {
+    // Init strings for noFavouritesAlertView
+    NSString *alertTitle = NSLocalizedString(@"No Favourites", @"Title of error alert displayed when user hasn't favourited any items");
+    // NOTE - using viewTitle parameter, as there could be different values for the title of this view controller
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"You haven't set any %@ as favourites", @"Message displayed when user hasn't favourited any {items}"), viewTitle];
+    NSString *okButtonTitle = NSLocalizedString(@"Okay", @"Title of confirmation button");
+    
+    // Init alertView
+    UIAlertController *noFavouritesAlertView = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                                   message:alertMessage
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions for alertView
+    UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okButtonTitle
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction *action) {
+                                                           // Go back to previous view controller
+                                                           [self.navigationController popViewControllerAnimated:YES];
+                                                       }];
+    [noFavouritesAlertView addAction:okayAction];
+    
+    // Show alertView
+    [self presentViewController:noFavouritesAlertView
                        animated:YES
                      completion:nil];
 }
