@@ -65,7 +65,7 @@ static NSString * kVideoDurationFallbackString = @"0:30";
     self.videoIsNew.layer.cornerRadius = self.videoIsNew.frame.size.width / 2;
     
     // Init text
-    NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if a video is new");
+    NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if an item is new");
     self.videoIsNew.text = labelText;
 }
 

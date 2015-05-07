@@ -47,7 +47,7 @@
     _comicIsNew.layer.cornerRadius = _comicIsNew.frame.size.width / 2;
     
     // Init text
-    NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if a comic is new");
+    NSString *labelText = NSLocalizedString(@"New!", @"Text for label that highlights if an item is new");
     _comicIsNew.text = labelText;
 }
 
