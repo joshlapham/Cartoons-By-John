@@ -6,6 +6,7 @@ This update is focused on supporting Accessibility features of iOS for Global Ac
 
 - update to support VoiceOver accessibility feature of iOS with more descriptive text for elements on-screen
 - update to support 'Darken Colours' accessibility feature of iOS with darker backgrounds and text colour if enabled
+- better support for Dynamic Type accessibility feature of iOS
 
 Bug fixes:
 
