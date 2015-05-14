@@ -19,6 +19,19 @@
 - (void)dealloc {
 }
 
+#pragma mark - Init method
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        // Set Parse UI properties
+        self.fields = PFLogInFieldsUsernameAndPassword | PFLogInFieldsLogInButton;
+        self.logInView.emailAsUsername = YES;
+    }
+    
+    return self;
+}
+
 #pragma mark - View lifecycle methods
 
 - (void)viewDidLoad {
