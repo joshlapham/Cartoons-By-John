@@ -1,6 +1,7 @@
 platform :ios, '8.0'
 
 pod 'Parse', '1.7.1'
+pod 'ParseUI', '1.1'
 pod 'ParseCrashReporting', '1.7.1'
 pod 'MBProgressHUD', '0.8'
 pod 'PBWebViewController', '0.2'

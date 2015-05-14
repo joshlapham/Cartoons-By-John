@@ -24,6 +24,7 @@
 		68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68493EF918BD69BE004D5CB3 /* KJDoodleStore.m */; };
 		685C171118E2745A00088D26 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 685C171018E2745A00088D26 /* Comics */; };
 		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
+		685EE0641B054D18002E19FA /* KJSecretLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */; };
 		68659F3E1A5E99240048A887 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68659F3D1A5E99240048A887 /* Settings.bundle */; };
 		6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */; };
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
@@ -124,6 +125,8 @@
 		685C171018E2745A00088D26 /* Comics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Comics; sourceTree = "<group>"; };
 		685C171518E29B5300088D26 /* KJComic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComic.h; path = Models/KJComic.h; sourceTree = "<group>"; };
 		685C171618E29B5300088D26 /* KJComic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComic.m; path = Models/KJComic.m; sourceTree = "<group>"; };
+		685EE0621B054D18002E19FA /* KJSecretLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSecretLoginViewController.h; path = "View Controllers/Admin/KJSecretLoginViewController.h"; sourceTree = "<group>"; };
+		685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSecretLoginViewController.m; path = "View Controllers/Admin/KJSecretLoginViewController.m"; sourceTree = "<group>"; };
 		68659F3D1A5E99240048A887 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomFavouriteActivity.h; path = UIActivity/KJRandomFavouriteActivity.h; sourceTree = "<group>"; };
 		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
@@ -293,6 +296,7 @@
 				68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */,
 				68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */,
 				6834315E1A69A3A60050745D /* Favourites */,
+				685EE0651B054D24002E19FA /* Admin */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -306,6 +310,15 @@
 				6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */,
 			);
 			name = Favourites;
+			sourceTree = "<group>";
+		};
+		685EE0651B054D24002E19FA /* Admin */ = {
+			isa = PBXGroup;
+			children = (
+				685EE0621B054D18002E19FA /* KJSecretLoginViewController.h */,
+				685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */,
+			);
+			name = Admin;
 			sourceTree = "<group>";
 		};
 		68A2D60F1A5EBB65000DA2CF /* Categories */ = {
@@ -678,6 +691,7 @@
 				683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */,
 				68E462011865CCC1008D3E36 /* KJTabBarController.m in Sources */,
 				68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */,
+				685EE0641B054D18002E19FA /* KJSecretLoginViewController.m in Sources */,
 				68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */,
 				687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */,
 				68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */,
