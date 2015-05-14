@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "DDLog.h"
 
-// Set CocoaLumberjack logging level
+// Constants
+extern NSString * const KJAppErrorDomain;
+
+// CocoaLumberjack
+// Set logging level
 static int ddLogLevel = LOG_LEVEL_OFF;
 
 @interface KJConstants : NSObject

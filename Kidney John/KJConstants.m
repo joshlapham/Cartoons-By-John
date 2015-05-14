@@ -8,6 +8,9 @@
 
 #import "KJConstants.h"
 
+// Constants
+NSString * const KJAppErrorDomain = @"com.joshlapham.Kidney-John";
+
 @implementation KJConstants
 
 @end
