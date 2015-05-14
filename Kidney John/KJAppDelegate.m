@@ -373,8 +373,7 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
         dict[NSUnderlyingErrorKey] = error;
         
         // Init NSError with dict
-        // TODO: update error domain
-        error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN"
+        error = [NSError errorWithDomain:KJAppErrorDomain
                                     code:9999
                                 userInfo:dict];
         
