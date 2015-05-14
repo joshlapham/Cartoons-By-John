@@ -25,7 +25,7 @@
     self = [super init];
     if (self) {
         // Set Parse UI properties
-        self.fields = PFLogInFieldsUsernameAndPassword | PFLogInFieldsLogInButton;
+        self.fields = PFLogInFieldsUsernameAndPassword | PFLogInFieldsLogInButton | PFLogInFieldsDismissButton;
         self.logInView.emailAsUsername = YES;
     }
     
@@ -34,8 +34,13 @@
 
 #pragma mark - View lifecycle methods
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    // Set Parse UI properties
+    // NOTE - must be done here according to Parse docs
+    // Remove logo
+    self.logInView.logo = nil;
 }
 
 @end
