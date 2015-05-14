@@ -20,6 +20,7 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 #import "KJSocialLinkCell.h"
+#import "KJSecretLoginViewController.h"
 
 // Constants
 static NSString *kSegueIdentifierDoodleFavourite = @"doodleFavouriteSegue";
@@ -269,6 +270,43 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         default:
             break;
     }
+}
+
+-   (UIView *)tableView:(UITableView *)tableView
+ viewForFooterInSection:(NSInteger)section {
+    if (section != 1) {
+        return nil;
+    }
+    
+    else {
+        // Init footer view
+        UIView *secretTapView = [[UIView alloc] initWithFrame:tableView.tableFooterView.bounds];
+        
+        // Set background colour
+        // TODO: remove this after testing is complete
+        secretTapView.backgroundColor = [UIColor orangeColor];
+        
+        // Init secret tap gesture
+        // TODO: update this to be complex!
+        UITapGestureRecognizer *secretGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                        action:@selector(userDidPerformSecretGesture:)];
+        secretGesture.numberOfTapsRequired = 2;
+        [secretTapView addGestureRecognizer:secretGesture];
+        
+        return secretTapView;
+    }
+}
+
+- (IBAction)userDidPerformSecretGesture:(id)sender {
+    NSLog(@"%s", __func__);
+    
+    // Init secret login VC
+    KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
+    
+    // Present modally
+    [self.navigationController presentViewController:secretLoginViewController
+                                            animated:YES
+                                          completion:nil];
 }
 
 #pragma mark - Prepare for segue method
