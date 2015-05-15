@@ -36,7 +36,7 @@
     // Init 'Action' navbar button
     UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                   target:self
-                                                                                  action:@selector(didTapDoneButton:)];
+                                                                                  action:@selector(didTapActionButton:)];
     self.navigationItem.rightBarButtonItem = actionButton;
 }
 
@@ -49,13 +49,35 @@
 #pragma mark - Action handler methods
 
 - (IBAction)didTapDoneButton:(id)sender {
-    // TODO: fix this
     // Go back to previous view (back to the app)
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 - (IBAction)didTapActionButton:(id)sender {
-    // TODO: implement this method
+    // Init action sheet
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                         message:nil
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    // Init actions
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    UIAlertAction *resetPasswordAction = [UIAlertAction actionWithTitle:@"Reset Password"
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction *action) {
+                                                                    // TODO: finish implementing this
+                                                                }];
+    
+    [actionSheet addAction:resetPasswordAction];
+    [actionSheet addAction:cancelAction];
+    
+    // Present action sheet
+    [self presentViewController:actionSheet
+                       animated:YES
+                     completion:nil];
 }
 
 @end
