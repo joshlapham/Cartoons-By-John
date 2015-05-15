@@ -8,7 +8,7 @@
 
 #import "KJSecretLoginViewController.h"
 
-@interface KJSecretLoginViewController ()
+@interface KJSecretLoginViewController () <PFLogInViewControllerDelegate>
 
 @end
 
@@ -41,6 +41,13 @@
     // NOTE - must be done here according to Parse docs
     // Remove logo
     self.logInView.logo = nil;
+}
+
+#pragma mark - PFLogInViewControllerDelegate methods
+
+- (void)logInViewController:(PFLogInViewController *)logInController
+               didLogInUser:(PFUser *)user {
+    // TODO: init VC here
 }
 
 @end
