@@ -8,7 +8,20 @@
 
 #import "KJSecretAdminViewController.h"
 
+// ENUMs
+// Data type for view
+typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
+    KJSecretAdminDataTypeVideos,
+    KJSecretAdminDataTypeComics,
+    KJSecretAdminDataTypeDoodles,
+    KJSecretAdminDataTypeLinks,
+    KJSecretAdminDataTypeMisc,
+};
+
 @interface KJSecretAdminViewController () <UIToolbarDelegate>
+
+// Properties
+@property (nonatomic) KJSecretAdminDataType dataTypeForView;
 
 @end
 
@@ -79,6 +92,16 @@
     [self presentViewController:actionSheet
                        animated:YES
                      completion:nil];
+}
+
+#pragma mark - Getter/setter override methods
+
+- (void)setDataTypeForView:(KJSecretAdminDataType)dataTypeForView {
+    _dataTypeForView = dataTypeForView;
+    
+    // TODO: implement this method
+    
+    NSLog(@"%s", __func__);
 }
 
 @end
