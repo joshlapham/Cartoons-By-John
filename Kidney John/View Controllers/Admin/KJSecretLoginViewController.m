@@ -7,6 +7,7 @@
 //
 
 #import "KJSecretLoginViewController.h"
+#import "KJSecretAdminViewController.h"
 
 @interface KJSecretLoginViewController () <PFLogInViewControllerDelegate>
 
@@ -27,6 +28,7 @@
         // Set Parse UI properties
         self.fields = PFLogInFieldsUsernameAndPassword | PFLogInFieldsLogInButton | PFLogInFieldsDismissButton;
         self.logInView.emailAsUsername = YES;
+        self.delegate = self;
     }
     
     return self;
@@ -47,7 +49,15 @@
 
 - (void)logInViewController:(PFLogInViewController *)logInController
                didLogInUser:(PFUser *)user {
+    NSLog(@"%s", __func__);
+    
     // TODO: init VC here
+    KJSecretAdminViewController *adminViewController = [[KJSecretAdminViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:adminViewController];
+    
+    [self presentViewController:navController
+                       animated:YES
+                     completion:nil];
 }
 
 @end
