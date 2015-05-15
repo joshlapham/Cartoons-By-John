@@ -75,6 +75,7 @@
     [actionSheet addAction:cancelAction];
     
     // Present action sheet
+    // TODO: implement completion block to re-fetch data in app
     [self presentViewController:actionSheet
                        animated:YES
                      completion:nil];
