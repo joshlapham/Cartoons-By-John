@@ -49,9 +49,7 @@
 
 - (void)logInViewController:(PFLogInViewController *)logInController
                didLogInUser:(PFUser *)user {
-    NSLog(@"%s", __func__);
-    
-    // TODO: init VC here
+    // Init secret admin VC
     KJSecretAdminViewController *adminViewController = [[KJSecretAdminViewController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:adminViewController];
     

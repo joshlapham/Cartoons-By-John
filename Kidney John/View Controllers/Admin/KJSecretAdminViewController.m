@@ -14,11 +14,21 @@
 
 @implementation KJSecretAdminViewController
 
+#pragma mark - dealloc method
+
+- (void)dealloc {
+}
+
+#pragma mark - View lifecycle methods
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Prevent segmented control from being hidden
     self.navigationController.navigationBar.translucent = NO;
 }
+
+#pragma mark - UIToolbarDelegate methods
 
 - (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
     return UIBarPositionTop;
