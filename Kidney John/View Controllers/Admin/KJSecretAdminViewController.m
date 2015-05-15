@@ -32,6 +32,12 @@
                                                                                 target:self
                                                                                 action:@selector(didTapDoneButton:)];
     self.navigationItem.leftBarButtonItem = doneButton;
+    
+    // Init 'Action' navbar button
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                  target:self
+                                                                                  action:@selector(didTapDoneButton:)];
+    self.navigationItem.rightBarButtonItem = actionButton;
 }
 
 #pragma mark - UIToolbarDelegate methods
@@ -46,6 +52,10 @@
     // TODO: fix this
     // Go back to previous view (back to the app)
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (IBAction)didTapActionButton:(id)sender {
+    // TODO: implement this method
 }
 
 @end
