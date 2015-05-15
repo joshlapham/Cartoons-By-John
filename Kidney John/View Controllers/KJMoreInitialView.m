@@ -22,6 +22,9 @@
 #import "KJSocialLinkCell.h"
 #import "KJSecretLoginViewController.h"
 
+// TODO: remove import after testing feature
+#import "KJSecretAdminViewController.h"
+
 // Constants
 static NSString *kSegueIdentifierDoodleFavourite = @"doodleFavouriteSegue";
 static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
@@ -300,13 +303,20 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (IBAction)userDidPerformSecretGesture:(id)sender {
     NSLog(@"%s", __func__);
     
+    // TODO: remove this after testing feature
+    KJSecretAdminViewController *secretAdminVC = [[KJSecretAdminViewController alloc] init];
+    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:secretAdminVC];
+    [self presentViewController:navCon
+                       animated:YES
+                     completion:nil];
+    
     // Init secret login VC
-    KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
+    //    KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
     
     // Present modally
-    [self.navigationController presentViewController:secretLoginViewController
-                                            animated:YES
-                                          completion:nil];
+//    [self.navigationController presentViewController:secretLoginViewController
+//                                            animated:YES
+//                                          completion:nil];
 }
 
 #pragma mark - Prepare for segue method
