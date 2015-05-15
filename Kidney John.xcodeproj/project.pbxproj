@@ -41,6 +41,8 @@
 		68A2D6121A5EC43C000DA2CF /* UIColor+KJColours.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A2D6111A5EC43C000DA2CF /* UIColor+KJColours.m */; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
 		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
+		68DB55031B06A12900F74329 /* KJSecretAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB55011B06A12900F74329 /* KJSecretAdminViewController.m */; };
+		68DB55041B06A12900F74329 /* KJSecretAdminViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68DB55021B06A12900F74329 /* KJSecretAdminViewController.xib */; };
 		68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */; };
 		68DB8F041A6006D0005D33E2 /* UIImage+KJImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F031A6006D0005D33E2 /* UIImage+KJImageUtils.m */; };
 		68E1D0381A6083650054C7E1 /* KJComic+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1D0371A6083650054C7E1 /* KJComic+Methods.m */; };
@@ -156,6 +158,9 @@
 		68CE160218BDDAF300127AA7 /* KJComicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicStore.m; path = Stores/KJComicStore.m; sourceTree = "<group>"; };
 		68CE160418BEAF7800127AA7 /* KJVideoStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoStore.h; path = Stores/KJVideoStore.h; sourceTree = "<group>"; };
 		68CE160518BEAF7800127AA7 /* KJVideoStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoStore.m; path = Stores/KJVideoStore.m; sourceTree = "<group>"; };
+		68DB55001B06A12900F74329 /* KJSecretAdminViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSecretAdminViewController.h; path = "View Controllers/Admin/KJSecretAdminViewController.h"; sourceTree = "<group>"; };
+		68DB55011B06A12900F74329 /* KJSecretAdminViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSecretAdminViewController.m; path = "View Controllers/Admin/KJSecretAdminViewController.m"; sourceTree = "<group>"; };
+		68DB55021B06A12900F74329 /* KJSecretAdminViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJSecretAdminViewController.xib; path = "View Controllers/Admin/KJSecretAdminViewController.xib"; sourceTree = "<group>"; };
 		68DB8EFF1A5FE296005D33E2 /* NSUserDefaults+KJSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+KJSettings.h"; path = "Categories/NSUserDefaults+KJSettings.h"; sourceTree = "<group>"; };
 		68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+KJSettings.m"; path = "Categories/NSUserDefaults+KJSettings.m"; sourceTree = "<group>"; };
 		68DB8F021A6006D0005D33E2 /* UIImage+KJImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+KJImageUtils.h"; path = "Categories/UIImage+KJImageUtils.h"; sourceTree = "<group>"; };
@@ -317,6 +322,9 @@
 			children = (
 				685EE0621B054D18002E19FA /* KJSecretLoginViewController.h */,
 				685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */,
+				68DB55001B06A12900F74329 /* KJSecretAdminViewController.h */,
+				68DB55011B06A12900F74329 /* KJSecretAdminViewController.m */,
+				68DB55021B06A12900F74329 /* KJSecretAdminViewController.xib */,
 			);
 			name = Admin;
 			sourceTree = "<group>";
@@ -609,6 +617,7 @@
 				68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */,
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
 				C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */,
+				68DB55041B06A12900F74329 /* KJSecretAdminViewController.xib in Resources */,
 				68211A211927A95000B24BF1 /* Localizable.strings in Resources */,
 				6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */,
 				68659F3E1A5E99240048A887 /* Settings.bundle in Resources */,
@@ -718,6 +727,7 @@
 				6837E5D51ADD052F00779F18 /* KJRandomViewDataSource.m in Sources */,
 				68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */,
 				C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */,
+				68DB55031B06A12900F74329 /* KJSecretAdminViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
