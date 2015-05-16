@@ -7,15 +7,25 @@
 //
 
 #import "KJVideoCollectionViewCell.h"
+#import "KJVideo.h"
 
 @implementation KJVideoCollectionViewCell
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+#pragma mark - Awake from NIB (init) method
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    // TODO: implement
 }
-*/
+
+#pragma mark - Configure cell method
+
+- (void)configureCellWithData:(id)data {
+    // Init cell data
+    KJVideo *cellData = (KJVideo *)data;
+    
+    // TODO: implement
+}
 
 @end
