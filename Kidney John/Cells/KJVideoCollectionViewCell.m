@@ -9,6 +9,12 @@
 #import "KJVideoCollectionViewCell.h"
 #import "KJVideo.h"
 
+@interface KJVideoCollectionViewCell ()
+
+// Properties
+
+@end
+
 @implementation KJVideoCollectionViewCell
 
 #pragma mark - Awake from NIB (init) method
