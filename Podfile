@@ -9,5 +9,6 @@ pod 'SDWebImage', '3.7.1'
 pod 'Reachability', '3.1.1'
 pod 'CocoaLumberjack', '1.9.1'
 pod 'PBYouTubeVideoViewController', '1.0.1'
+pod 'QuickDialog', '1.0'
 
 #pod 'Reveal-iOS-SDK', '~> 1.0'
