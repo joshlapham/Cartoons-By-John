@@ -98,6 +98,10 @@
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
+                
+                __weak typeof(element) weakElement;
+                [self.chosenVideo setValue:weakElement.value
+                                    forKey:@"videoName"];
             };
             
             [section addElement:element];
@@ -111,6 +115,10 @@
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
+                
+                __weak typeof(element) weakElement;
+                [self.chosenVideo setValue:weakElement.value
+                                    forKey:@"videoDescription"];
             };
             
             [section addElement:element];
@@ -124,6 +132,10 @@
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
+                
+                __weak typeof(element) weakElement;
+                [self.chosenVideo setValue:weakElement.value
+                                    forKey:@"videoDuration"];
             };
             
             [section addElement:element];
@@ -139,6 +151,8 @@
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
+                
+                // TODO: update property
             };
             
             // TODO: set date value (parse date string)
@@ -164,6 +178,10 @@
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
+                
+                __weak typeof(element) weakElement;
+                [self.chosenVideo setValue:weakElement.value
+                                    forKey:@"is_active"];
             };
             
             [section addElement:element];
@@ -179,6 +197,11 @@
 #pragma mark - Action handler methods
 
 - (IBAction)didTapCancelButton:(id)sender {
+    // TODO: implement confirm alert if changes made
+    if (_userDidMakeEdits) {
+        // TODO: implement
+    }
+    
     // Go back to previous view controller
     [self dismissViewControllerAnimated:YES
                              completion:nil];
@@ -223,13 +246,43 @@
     DDLogInfo(@"%s - updating item %@ on Parse", __func__, [self.chosenVideo valueForKey:@"videoName"]);
     
     // Show progress
-//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//    [MBProgressHUD showHUDAddedTo:self.view
-//                         animated:YES];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [MBProgressHUD showHUDAddedTo:self.view
+                         animated:YES];
     
-    // TODO: update values on property
-    // TODO: save to Parse
-    // TODO: go back to previous view
+    // Save to Parse
+    [self.chosenVideo saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        // Hide progress
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [MBProgressHUD hideAllHUDsForView:self.view
+                                 animated:YES];
+        
+        if (!error) {
+            // Go back to previous view
+            [self dismissViewControllerAnimated:YES
+                                     completion:nil];
+        }
+        
+        // Handle error
+        else {
+            // Init alert
+            UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:@"Error"
+                                                                                message:@"An error occured. Please try again."
+                                                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Init actions
+            UIAlertAction *okayAction = [UIAlertAction actionWithTitle:@"Okay"
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:nil];
+            
+            [errorAlert addAction:okayAction];
+            
+            // Show alert
+            [self presentViewController:errorAlert
+                               animated:YES
+                             completion:nil];
+        }
+    }];
 }
 
 #pragma mark - Getter/setter overrides
