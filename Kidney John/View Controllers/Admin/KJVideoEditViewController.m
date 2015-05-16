@@ -13,9 +13,7 @@
 #import <QEntryElement.h>
 #import <QBooleanElement.h>
 #import <QDateTimeElement.h>
-
-// typedefs
-typedef void(^userDidEditValue)(void);
+#import <QDateTimeInlineElement.h>
 
 @interface KJVideoEditViewController ()
 
@@ -98,12 +96,12 @@ typedef void(^userDidEditValue)(void);
             element.textValue = [self.chosenVideo valueForKey:@"videoName"];
             
             element.onValueChanged = ^(QRootElement *rootElement) {
-//                __weak typeof(element) weakElement;
+                //                __weak typeof(element) weakElement;
                 
                 [self setUserDidMakeEdits:YES];
                 
-//                if (weakElement.value) {
-//                }
+                //                if (weakElement.value) {
+                //                }
             };
             
             [section addElement:element];
@@ -129,20 +127,14 @@ typedef void(^userDidEditValue)(void);
         
         // Video date
         {
-            QEntryElement *element = [[QEntryElement alloc] init];
+            QDateTimeInlineElement *element = [[QDateTimeInlineElement alloc] init];
             element.title = @"Date";
-            element.textValue = [self.chosenVideo valueForKey:@"date"];
-            
-//            [section addElement:element];
-        }
-        
-        // Video date (again)
-        {
-            QDateTimeElement *element = [[QDateTimeElement alloc] init];
-            element.title = @"Date";
+            element.dateValue = [NSDate date];
+            element.mode = UIDatePickerModeDate;
+            //            element.showPickerInCell = YES;
             
             // TODO: set date value (parse date string)
-//            element.textValue = [self.chosenVideo valueForKey:@"date"];
+            //            element.textValue = [self.chosenVideo valueForKey:@"date"];
             
             [section addElement:element];
         }
@@ -184,7 +176,7 @@ typedef void(^userDidEditValue)(void);
     // Init strings for alert
     // NOTE - these aren't localized strings as end-users will (hopefully) never see this view controller
     NSString *alertTitle = @"Are You Sure?";
-    NSString *alertMessage = @"Are you sure you want to save your changes to this item?";
+    NSString *alertMessage = @"Are you sure you want to save changes made to this item?";
     NSString *yesButtonTitle = @"Yes";
     
     // Init alertView
