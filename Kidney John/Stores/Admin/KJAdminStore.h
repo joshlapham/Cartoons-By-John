@@ -10,6 +10,16 @@
 
 @interface KJAdminStore : NSObject
 
+// Connection state
+typedef NS_ENUM(NSUInteger, KJAdminStoreConnectionState) {
+    KJAdminStoreStateDisconnected,
+    KJAdminStoreStateConnecting,
+    KJAdminStoreStateConnected,
+};
+
+// Properties
+@property (nonatomic) KJAdminStoreConnectionState connectionState;
+
 // Methods
 // Init
 + (instancetype)sharedStore;

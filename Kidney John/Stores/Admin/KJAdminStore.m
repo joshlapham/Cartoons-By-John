@@ -23,5 +23,4 @@
     return _sharedStore;
 }
 
-
 @end
