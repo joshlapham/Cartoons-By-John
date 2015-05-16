@@ -10,6 +10,8 @@
 #import <Parse/Parse.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "KJVideo+Methods.h"
+#import "UIFont+KJFonts.h"
+#import "UIColor+KJColours.h"
 
 @interface KJVideoCollectionViewCell ()
 
@@ -47,11 +49,13 @@
     
     self.contentView.backgroundColor = [UIColor whiteColor];
     
-    //    _descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds), 100, 50)];
+    // Style label text
     [_nameLabel setTextColor:[UIColor blackColor]];
     [_descriptionLabel setTextColor:[UIColor blackColor]];
-    [_durationLabel setTextColor:[UIColor blackColor]];
-    //    [self addSubview:_descriptionLabel];
+    [_durationLabel setTextColor:[UIColor kj_videoDurationTextColour]];
+    _nameLabel.font = [UIFont kj_videoNameFont];
+    _descriptionLabel.font = [UIFont kj_videoDescriptionFont];
+    _durationLabel.font = [UIFont kj_videoDurationFont];
     
     // Init cell data
     PFObject *cellData = (PFObject *)data;
