@@ -150,7 +150,7 @@
             //            element.showPickerInCell = YES;
             
             element.onValueChanged = ^(QRootElement *rootElement) {
-                [self setUserDidMakeEdits:YES];
+                //                [self setUserDidMakeEdits:YES];
                 
                 // TODO: update property
             };
@@ -177,11 +177,13 @@
             element.boolValue = [[self.chosenVideo valueForKey:@"is_active"] isEqualToString:@"1"] ? YES : NO;
             
             element.onValueChanged = ^(QRootElement *rootElement) {
-                [self setUserDidMakeEdits:YES];
+                //                [self setUserDidMakeEdits:YES];
                 
-                __weak typeof(element) weakElement;
-                [self.chosenVideo setValue:weakElement.value
-                                    forKey:@"is_active"];
+                // TODO: fix this crash
+                
+                //                __weak typeof(element) weakElement;
+                //                [self.chosenVideo setValue:weakElement.value
+                //                                    forKey:@"is_active"];
             };
             
             [section addElement:element];
