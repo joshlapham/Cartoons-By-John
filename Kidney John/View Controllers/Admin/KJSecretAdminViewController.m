@@ -7,6 +7,7 @@
 //
 
 #import "KJSecretAdminViewController.h"
+#import "KJVideoDataSource.h"
 
 // ENUMs
 // Data type for view
@@ -22,6 +23,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 
 // Properties
 @property (nonatomic) KJSecretAdminDataType dataTypeForView;
+@property (nonatomic, strong) id dataSourceForView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
@@ -117,7 +119,10 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 - (IBAction)segmentedControlIndexDidChange:(id)sender {
     NSLog(@"%@ - %s", [self class], __func__);
     
+    UISegmentedControl *control = (UISegmentedControl *)sender;
+    
     // TODO: implement this method
+    [self setDataTypeForView:control.selectedSegmentIndex];
 }
 
 #pragma mark - Getter/setter override methods
@@ -128,6 +133,16 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     // TODO: implement this method
     
     NSLog(@"%s", __func__);
+    NSLog(@"%s - set data type for view to : %lu", __func__, (unsigned long)_dataTypeForView);
+    
+    if (_dataTypeForView == KJSecretAdminDataTypeVideos) {
+        NSLog(@"%s - chose Videos", __func__);
+        
+        _dataSourceForView = [[KJVideoDataSource alloc] init];
+        
+        // TODO: set cell array on data source
+        // TODO: refresh view with data
+    }
 }
 
 @end
