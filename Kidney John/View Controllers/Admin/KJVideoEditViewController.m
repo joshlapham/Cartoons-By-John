@@ -63,6 +63,18 @@
         QSection *section = [[QSection alloc] init];
         section.title = @"Details";
         
+        // Video ID
+        NSString *videoId = [self.chosenVideo valueForKey:@"videoId"];
+        if (videoId) {
+            {
+                QLabelElement *element = [[QLabelElement alloc] init];
+                element.title = @"ID";
+                element.value = videoId;
+                
+                [section addElement:element];
+            }
+        }
+        
         // Video name
         {
             QEntryElement *element = [[QEntryElement alloc] init];
