@@ -10,6 +10,7 @@
 #import "KJVideo.h"
 #import "KJVideo+Methods.h"
 #import "KJVideoCell.h"
+#import "KJVideoCollectionViewCell.h"
 
 @implementation KJVideoDataSource
 
@@ -50,21 +51,19 @@
     return self.cellDataSource.count;
 }
 
-// TODO: implement KJVideoCollectionViewCell (?)
-
-//- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-//                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    // Init cell
-//    KJVideoCell *cell = (KJVideoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[KJVideoCell cellIdentifier]
-//                                                                                   forIndexPath:indexPath];
-//
-//    // Init cell data
-//    KJVideo *cellData = [self.cellDataSource objectAtIndex:indexPath.row];
-//
-//    // Configure cell
-//    [cell configureCellWithData:cellData];
-//
-//    return cell;
-//}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    // Init cell
+    KJVideoCollectionViewCell *cell = (KJVideoCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[KJVideoCollectionViewCell cellIdentifier]
+                                                                                                             forIndexPath:indexPath];
+    
+    // Init cell data
+    KJVideo *cellData = [self.cellDataSource objectAtIndex:indexPath.row];
+    
+    // Configure cell
+    [cell configureCellWithData:cellData];
+    
+    return cell;
+}
 
 @end
