@@ -100,7 +100,7 @@
                 [self setUserDidMakeEdits:YES];
                 
                 __weak typeof(element) weakElement;
-                [self.chosenVideo setValue:weakElement.value
+                [self.chosenVideo setValue:weakElement.textValue
                                     forKey:@"videoName"];
             };
             
@@ -117,7 +117,7 @@
                 [self setUserDidMakeEdits:YES];
                 
                 __weak typeof(element) weakElement;
-                [self.chosenVideo setValue:weakElement.value
+                [self.chosenVideo setValue:weakElement.textValue
                                     forKey:@"videoDescription"];
             };
             
@@ -134,7 +134,7 @@
                 [self setUserDidMakeEdits:YES];
                 
                 __weak typeof(element) weakElement;
-                [self.chosenVideo setValue:weakElement.value
+                [self.chosenVideo setValue:weakElement.textValue
                                     forKey:@"videoDuration"];
             };
             
@@ -174,16 +174,44 @@
         {
             QBooleanElement *element = [[QBooleanElement alloc] init];
             element.title = @"Is Active?";
-            element.boolValue = [[self.chosenVideo valueForKey:@"is_active"] isEqualToString:@"1"] ? YES : NO;
+            
+            id existingValue = [self.chosenVideo valueForKey:@"is_active"];
+            BOOL valueToSet;
+            if ([existingValue isKindOfClass:[NSString class]]) {
+                valueToSet = YES;
+            }
+            
+            else {
+                valueToSet = NO;
+            }
+            
+            element.boolValue = valueToSet;
             
             element.onValueChanged = ^(QRootElement *rootElement) {
-                //                [self setUserDidMakeEdits:YES];
+                [self setUserDidMakeEdits:YES];
                 
-                // TODO: fix this crash
+                __weak typeof(element) weakElement;
                 
-                //                __weak typeof(element) weakElement;
-                //                [self.chosenVideo setValue:weakElement.value
-                //                                    forKey:@"is_active"];
+                // TODO: fix weak compiler warning here
+                
+                //                NSString *boolString = weakElement.boolValue ? @"1" : @"0";
+                NSString *boolString = element.boolValue ? @"1" : @"0";
+                
+                
+                //                NSLog(@"NON WEAK BOOL VALUE : %hhd", element.boolValue);
+                //                NSLog(@"BOOL VALUE : %hhd", weakElement.boolValue);
+                //                NSLog(@"BOOL STRING : %@", boolString);
+                
+                if ([boolString isEqualToString:@"0"]) {
+                    [self.chosenVideo setValue:[NSNull null]
+                                        forKey:@"is_active"];
+                }
+                
+                else {
+                    [self.chosenVideo setValue:boolString
+                                        forKey:@"is_active"];
+                }
+                
             };
             
             [section addElement:element];
