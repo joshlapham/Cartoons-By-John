@@ -12,6 +12,7 @@
 #import "KJVideoCollectionViewCell.h"
 #import "KJVideoEditViewController.h"
 #import <MBProgressHUD.h>
+#import "UIColor+KJColours.h"
 
 // ENUMs
 // Data type for view
@@ -90,14 +91,13 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     
     // Init flow layout
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    //    flowLayout.minimumInteritemSpacing = 0.1f;
-    flowLayout.minimumLineSpacing = 1.0f;
+    flowLayout.minimumLineSpacing = 2.0f;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.itemSize = CGSizeMake(300, 93);
     
     // Init collectionView
     _collectionView.collectionViewLayout = flowLayout;
-    _collectionView.backgroundColor = [UIColor lightGrayColor];
+    _collectionView.backgroundColor = [UIColor kj_viewBackgroundColour];
     _collectionView.delegate = self;
 }
 
