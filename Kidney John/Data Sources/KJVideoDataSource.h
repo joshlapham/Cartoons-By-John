@@ -8,6 +8,6 @@
 
 #import "KJBaseDataSource.h"
 
-@interface KJVideoDataSource : KJBaseDataSource
+@interface KJVideoDataSource : KJBaseDataSource <UICollectionViewDataSource, UITableViewDataSource>
 
 @end
