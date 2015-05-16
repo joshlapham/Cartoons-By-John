@@ -176,9 +176,18 @@
             element.title = @"Is Active?";
             
             id existingValue = [self.chosenVideo valueForKey:@"is_active"];
-            BOOL valueToSet;
-            if ([existingValue isKindOfClass:[NSString class]]) {
-                valueToSet = YES;
+            BOOL valueToSet = NO;
+            
+            // TODO: fix this hackiness
+            
+            if ([existingValue respondsToSelector:@selector(isEqualToString:)]) {
+                if ([existingValue isEqualToString:@"1"]) {
+                    valueToSet = YES;
+                }
+                
+                else {
+                    valueToSet = NO;
+                }
             }
             
             else {
