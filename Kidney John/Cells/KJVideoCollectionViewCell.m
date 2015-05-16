@@ -54,7 +54,7 @@
     
     // TODO: implement
     _nameLabel.text = [cellData valueForKey:@"videoName"];
-    _descriptionLabel.text = [cellData valueForKey:@"videoDate"];
+    _descriptionLabel.text = [cellData valueForKey:@"date"];
     _durationLabel.text = [cellData valueForKey:@"videoDuration"];
 }
 
