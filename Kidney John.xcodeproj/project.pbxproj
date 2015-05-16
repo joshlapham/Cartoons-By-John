@@ -75,6 +75,7 @@
 		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
 		C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C956F61E1AF204D600D5B9B0 /* UIViewController+KJUtils.m */; };
 		C95A0B961B06CBC5007AA777 /* KJAdminStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A0B951B06CBC5007AA777 /* KJAdminStore.m */; };
+		C95A0B991B06CEFD007AA777 /* KJBaseDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A0B981B06CEFD007AA777 /* KJBaseDataSource.m */; };
 		C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C961F2621AA5598D0015E67F /* Launch Screen.xib */; };
 		C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C968D7D71A8C482800C3B621 /* KJComicListCell.m */; };
 		C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C968D7D81A8C482800C3B621 /* KJComicListCell.xib */; };
@@ -217,6 +218,8 @@
 		C956F61E1AF204D600D5B9B0 /* UIViewController+KJUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+KJUtils.m"; path = "Categories/UIViewController+KJUtils.m"; sourceTree = "<group>"; };
 		C95A0B941B06CBC5007AA777 /* KJAdminStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJAdminStore.h; path = Stores/Admin/KJAdminStore.h; sourceTree = "<group>"; };
 		C95A0B951B06CBC5007AA777 /* KJAdminStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJAdminStore.m; path = Stores/Admin/KJAdminStore.m; sourceTree = "<group>"; };
+		C95A0B971B06CEFD007AA777 /* KJBaseDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJBaseDataSource.h; path = "Data Sources/KJBaseDataSource.h"; sourceTree = "<group>"; };
+		C95A0B981B06CEFD007AA777 /* KJBaseDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJBaseDataSource.m; path = "Data Sources/KJBaseDataSource.m"; sourceTree = "<group>"; };
 		C961F2621AA5598D0015E67F /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		C968D7D61A8C482800C3B621 /* KJComicListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListCell.h; path = Cells/KJComicListCell.h; sourceTree = "<group>"; };
 		C968D7D71A8C482800C3B621 /* KJComicListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicListCell.m; path = Cells/KJComicListCell.m; sourceTree = "<group>"; };
@@ -292,8 +295,6 @@
 			children = (
 				68E48D6C184D874500600FA5 /* KJRandomView.h */,
 				68E48D6D184D874500600FA5 /* KJRandomView.m */,
-				6837E5D31ADD052F00779F18 /* KJRandomViewDataSource.h */,
-				6837E5D41ADD052F00779F18 /* KJRandomViewDataSource.m */,
 			);
 			name = Doodles;
 			sourceTree = "<group>";
@@ -451,6 +452,7 @@
 			children = (
 				68A2D60F1A5EBB65000DA2CF /* Categories */,
 				68E48D5F184C062F00600FA5 /* Models */,
+				C95A0B9A1B06CF0D007AA777 /* Data Sources */,
 				68DF729E18BEBA2F00878497 /* Cells */,
 				68CE160718BEB6B600127AA7 /* Stores */,
 				6832C37319245E7E00E94788 /* UIActivity */,
@@ -534,6 +536,17 @@
 				4D94687170B9557CDE67339B /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		C95A0B9A1B06CF0D007AA777 /* Data Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C95A0B971B06CEFD007AA777 /* KJBaseDataSource.h */,
+				C95A0B981B06CEFD007AA777 /* KJBaseDataSource.m */,
+				6837E5D31ADD052F00779F18 /* KJRandomViewDataSource.h */,
+				6837E5D41ADD052F00779F18 /* KJRandomViewDataSource.m */,
+			);
+			name = "Data Sources";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -690,6 +703,7 @@
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
 				68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */,
 				687BC374184D9C8900F45970 /* KJComicCell.m in Sources */,
+				C95A0B991B06CEFD007AA777 /* KJBaseDataSource.m in Sources */,
 				680CF0C61A7F730F009250E3 /* KJVideoCell.m in Sources */,
 				689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */,
 				689CAF471917A1B3000DD3F3 /* KJVideoFavouriteActivity.m in Sources */,
