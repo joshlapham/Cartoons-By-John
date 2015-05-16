@@ -52,6 +52,24 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                   target:self
                                                                                   action:@selector(didTapActionButton:)];
     self.navigationItem.rightBarButtonItem = actionButton;
+    
+    // Setup collectionView
+    [self setupCollectionView];
+}
+
+#pragma mark - Setup collectionView method
+
+- (void)setupCollectionView {
+    // Init flow layout
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.minimumInteritemSpacing = 0.0f;
+    flowLayout.minimumLineSpacing = 0.0f;
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    flowLayout.itemSize = CGSizeMake(300, 150);
+    
+    // Init collectionView
+    _collectionView.collectionViewLayout = flowLayout;
+    _collectionView.backgroundColor = [UIColor lightGrayColor];
 }
 
 #pragma mark - UIToolbarDelegate methods
