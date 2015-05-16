@@ -283,7 +283,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     else {
         // Init footer view
-        UIView *secretTapView = [[UIView alloc] initWithFrame:tableView.tableFooterView.bounds];
+        // TODO: update frame size
+        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, 200);
+//        UIView *secretTapView = [[UIView alloc] initWithFrame:tableView.tableFooterView.bounds];
+        UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
         
         // Set background colour
         // TODO: remove this after testing is complete
