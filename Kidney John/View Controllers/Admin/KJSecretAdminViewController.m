@@ -11,6 +11,7 @@
 #import "KJAdminStore.h"
 #import "KJVideoCollectionViewCell.h"
 #import "KJVideoEditViewController.h"
+#import <MBProgressHUD.h>
 
 // ENUMs
 // Data type for view
@@ -184,8 +185,6 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 
 - (IBAction)segmentedControlIndexDidChange:(id)sender {
     UISegmentedControl *control = (UISegmentedControl *)sender;
-    
-    // TODO: implement this method
     [self setDataTypeForView:control.selectedSegmentIndex];
 }
 
@@ -196,6 +195,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     [videoDataSource setCellDataSource:[[KJAdminStore sharedStore] fetchedVideos]];
     self.collectionView.dataSource = videoDataSource;
     
+    // Hide progress
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [MBProgressHUD hideAllHUDsForView:self.view
+                             animated:YES];
+    
     // Reload data
     [self.collectionView reloadData];
 }
@@ -204,6 +208,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 
 - (void)setDataTypeForView:(KJSecretAdminDataType)dataTypeForView {
     _dataTypeForView = dataTypeForView;
+    
+    // Show progress
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [MBProgressHUD showHUDAddedTo:self.view
+                         animated:YES];
     
     // Videos
     if (_dataTypeForView == KJSecretAdminDataTypeVideos) {
@@ -214,9 +223,25 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         
         // Fetch video data for view
         [[KJAdminStore sharedStore] fetchVideoData];
+    }
+    
+    // TODO: finish this method
+    else {
+        // Hide progress
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [MBProgressHUD hideAllHUDsForView:self.view
+                                 animated:YES];
         
-        // TODO: set cell array on data source
-        // TODO: refresh view with data
+//        [_collectionView performBatchUpdates:^{
+////            _collectionView deleteItemsAtIndexPaths:[_collectionView index]
+//            _collectionView.dataSource = nil;
+////            _collectionView.delegate = nil;
+//            
+////            _dataSourceForView = nil;
+//        } completion:^(BOOL finished) {
+//            // Reload data
+////            [_collectionView reloadData];
+//        }];
     }
 }
 
