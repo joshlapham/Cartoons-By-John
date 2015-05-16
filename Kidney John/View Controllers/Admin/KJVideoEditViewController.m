@@ -12,11 +12,16 @@
 #import <QLabelElement.h>
 #import <QEntryElement.h>
 #import <QBooleanElement.h>
+#import <QDateTimeElement.h>
+
+// typedefs
+typedef void(^userDidEditValue)(void);
 
 @interface KJVideoEditViewController ()
 
 // Properties
 @property (nonatomic) BOOL userDidMakeEdits;
+@property (nonatomic, strong) UIBarButtonItem *saveButton;
 
 @end
 
@@ -48,6 +53,14 @@
                                                                                   target:self
                                                                                   action:@selector(didTapCancelButton:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
+    
+    // Init 'Save' navbar button
+    _saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                target:self
+                                                                action:@selector(didTapSaveButton:)];
+    // NOTE - disabled at the start
+    _saveButton.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _saveButton;
 }
 
 #pragma mark - QuickDialog methods
@@ -84,6 +97,15 @@
             element.title = @"Title";
             element.textValue = [self.chosenVideo valueForKey:@"videoName"];
             
+            element.onValueChanged = ^(QRootElement *rootElement) {
+//                __weak typeof(element) weakElement;
+                
+                [self setUserDidMakeEdits:YES];
+                
+//                if (weakElement.value) {
+//                }
+            };
+            
             [section addElement:element];
         }
         
@@ -110,6 +132,17 @@
             QEntryElement *element = [[QEntryElement alloc] init];
             element.title = @"Date";
             element.textValue = [self.chosenVideo valueForKey:@"date"];
+            
+//            [section addElement:element];
+        }
+        
+        // Video date (again)
+        {
+            QDateTimeElement *element = [[QDateTimeElement alloc] init];
+            element.title = @"Date";
+            
+            // TODO: set date value (parse date string)
+//            element.textValue = [self.chosenVideo valueForKey:@"date"];
             
             [section addElement:element];
         }
@@ -195,13 +228,14 @@
 - (void)setUserDidMakeEdits:(BOOL)userDidMakeEdits {
     _userDidMakeEdits = userDidMakeEdits;
     
+    // Enable 'Save' button
     if (_userDidMakeEdits == YES) {
-        // TODO: finish this
-        // TODO: show confirmation alert
+        _saveButton.enabled = YES;
     }
     
+    // Disable 'Save' button
     else {
-        // TODO: finish this
+        _saveButton.enabled = NO;
     }
 }
 
