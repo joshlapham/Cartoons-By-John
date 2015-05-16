@@ -61,6 +61,7 @@
     // Section
     {
         QSection *section = [[QSection alloc] init];
+        section.title = @"Details";
         
         // Video name
         {
@@ -89,6 +90,24 @@
             [section addElement:element];
         }
         
+        // Video date
+        {
+            QEntryElement *element = [[QEntryElement alloc] init];
+            element.title = @"Date";
+            element.textValue = [self.chosenVideo valueForKey:@"date"];
+            
+            [section addElement:element];
+        }
+        
+        // Add section to root
+        [root addSection:section];
+    }
+    
+    // Section
+    {
+        QSection *section = [[QSection alloc] init];
+        section.footer = @"Determine if this item will appear in the app.";
+        
         // Video is active?
         {
             QBooleanElement *element = [[QBooleanElement alloc] init];
@@ -98,7 +117,7 @@
             [section addElement:element];
         }
         
-        // Add all to root
+        // Add section to root
         [root addSection:section];
     }
     
