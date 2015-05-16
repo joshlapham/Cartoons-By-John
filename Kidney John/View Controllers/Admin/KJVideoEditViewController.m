@@ -14,6 +14,7 @@
 #import <QBooleanElement.h>
 #import <QDateTimeElement.h>
 #import <QDateTimeInlineElement.h>
+#import <MBProgressHUD.h>
 
 @interface KJVideoEditViewController ()
 
@@ -200,9 +201,8 @@
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:yesButtonTitle
                                                         style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction *action) {
-                                                          // TODO: implement this
-                                                          // Go back to previous view
-                                                          //                                                          [self.navigationController popViewControllerAnimated:YES];
+                                                          // Confirm and save to Parse
+                                                          [self userDidConfirmSave:self];
                                                       }];
     
     // Cancel
@@ -217,6 +217,19 @@
     [self presentViewController:confirmAlert
                        animated:YES
                      completion:nil];
+}
+
+- (IBAction)userDidConfirmSave:(id)sender {
+    DDLogInfo(@"%s - updating item %@ on Parse", __func__, [self.chosenVideo valueForKey:@"videoName"]);
+    
+    // Show progress
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//    [MBProgressHUD showHUDAddedTo:self.view
+//                         animated:YES];
+    
+    // TODO: update values on property
+    // TODO: save to Parse
+    // TODO: go back to previous view
 }
 
 #pragma mark - Getter/setter overrides
