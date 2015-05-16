@@ -127,6 +127,14 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                     // TODO: finish implementing this
                                                                 }];
     
+    UIAlertAction *addNewAction = [UIAlertAction actionWithTitle:@"Add New Video"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction *action) {
+                                                             // Show add new video alert
+                                                             [self didTapActionButton:nil];
+                                                         }];
+    
+    [actionSheet addAction:addNewAction];
     [actionSheet addAction:resetPasswordAction];
     [actionSheet addAction:cancelAction];
     
@@ -137,9 +145,39 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                      completion:nil];
 }
 
-- (IBAction)segmentedControlIndexDidChange:(id)sender {
-    NSLog(@"%@ - %s", [self class], __func__);
+- (IBAction)didTapAddNewVideo:(id)sender {
+    // Init alert
+    UIAlertController *addNewAlert = [UIAlertController alertControllerWithTitle:@"Add New Video"
+                                                                         message:@"Type the YouTube video ID.\nThis is the unique identifier found in the video URL."
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
     
+    // Init text field
+    [addNewAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"YouTube Video ID";
+        textField.returnKeyType = UIReturnKeyDone;
+    }];
+    
+    // Init actions
+    UIAlertAction *fetchAction = [UIAlertAction actionWithTitle:@"Fetch"
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction *action) {
+                                                            // TODO: fetch data from YouTube API
+                                                        }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [addNewAlert addAction:fetchAction];
+    [addNewAlert addAction:cancelAction];
+    
+    // Show alert
+    [self presentViewController:addNewAlert
+                       animated:YES
+                     completion:nil];
+}
+
+- (IBAction)segmentedControlIndexDidChange:(id)sender {
     UISegmentedControl *control = (UISegmentedControl *)sender;
     
     // TODO: implement this method
@@ -149,13 +187,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 #pragma mark NSNotification handler methods
 
 - (IBAction)adminStoreVideoDataFetchDidHappen:(id)sender {
-    NSLog(@"%@ - %s", [self class], __func__);
-    
-    // TODO: reload data
     KJVideoDataSource *videoDataSource = (KJVideoDataSource *)_dataSourceForView;
     [videoDataSource setCellDataSource:[[KJAdminStore sharedStore] fetchedVideos]];
     self.collectionView.dataSource = videoDataSource;
     
+    // Reload data
     [self.collectionView reloadData];
 }
 
@@ -164,11 +200,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 - (void)setDataTypeForView:(KJSecretAdminDataType)dataTypeForView {
     _dataTypeForView = dataTypeForView;
     
-    // TODO: implement this method
-    
-    NSLog(@"%s", __func__);
-    NSLog(@"%s - set data type for view to : %lu", __func__, (unsigned long)_dataTypeForView);
-    
+    // Videos
     if (_dataTypeForView == KJSecretAdminDataTypeVideos) {
         NSLog(@"%s - chose Videos", __func__);
         

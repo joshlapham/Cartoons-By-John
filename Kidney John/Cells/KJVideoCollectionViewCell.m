@@ -39,7 +39,8 @@
 #pragma mark - Configure cell method
 
 - (void)configureCellWithData:(id)data {
-    NSLog(@"%@ - %s", [self class], __func__);
+    
+    // TODO: fix all this
     
     self.contentView.backgroundColor = [UIColor whiteColor];
     
