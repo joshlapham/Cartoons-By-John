@@ -12,6 +12,7 @@
 @interface KJVideoCollectionViewCell ()
 
 // Properties
+@property (nonatomic, strong) UILabel *descriptionLabel;
 
 @end
 
@@ -23,6 +24,9 @@
     [super awakeFromNib];
     
     // TODO: implement
+    
+    _descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds), 100, 50)];
+    [self addSubview:_descriptionLabel];
 }
 
 #pragma mark - Configure cell method
@@ -32,6 +36,8 @@
     KJVideo *cellData = (KJVideo *)data;
     
     // TODO: implement
+    
+    _descriptionLabel.text = cellData.videoName;
 }
 
 @end
