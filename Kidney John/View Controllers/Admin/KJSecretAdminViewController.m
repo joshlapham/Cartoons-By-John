@@ -88,7 +88,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 //    flowLayout.minimumInteritemSpacing = 0.1f;
     flowLayout.minimumLineSpacing = 1.0f;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.itemSize = CGSizeMake(300, 50);
+    flowLayout.itemSize = CGSizeMake(300, 93);
     
     // Init collectionView
     _collectionView.collectionViewLayout = flowLayout;
