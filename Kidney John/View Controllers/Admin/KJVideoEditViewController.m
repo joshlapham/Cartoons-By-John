@@ -36,12 +36,6 @@
     return self;
 }
 
-#pragma mark - View lifecycle methods
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 #pragma mark - QuickDialog methods
 
 #pragma mark Build root method
@@ -50,19 +44,27 @@
     QRootElement *root = [[QRootElement alloc] init];
     root.grouped = YES;
     
-    // TODO: set title
-    //    root.title = @"More";
+    // Set title
+    root.title = [self.chosenVideo valueForKey:@"videoName"];
     
     // Section
     {
         QSection *section = [[QSection alloc] init];
         
-        // My Profile
+        // Video name
         {
-            QLabelElement *element = [[QLabelElement alloc] init];
-            //            element.title = @"My Profile";
-            //            element.controllerAction = @"openProfile";
-            element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            QEntryElement *element = [[QEntryElement alloc] init];
+            element.title = @"Title";
+            element.value = [self.chosenVideo valueForKey:@"videoName"];
+            
+            [section addElement:element];
+        }
+        
+        // Video description
+        {
+            QEntryElement *element = [[QEntryElement alloc] init];
+            element.title = @"Description";
+            element.value = [self.chosenVideo valueForKey:@"videoDescription"];
             
             [section addElement:element];
         }

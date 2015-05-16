@@ -7,7 +7,11 @@
 //
 
 #import "QuickDialogController.h"
+#import <Parse/Parse.h>
 
 @interface KJVideoEditViewController : QuickDialogController
+
+// Properties
+@property (nonatomic, strong) PFObject *chosenVideo;
 
 @end
