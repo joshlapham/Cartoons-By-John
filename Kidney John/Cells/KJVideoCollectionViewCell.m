@@ -23,18 +23,22 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     
+    NSLog(@"%@ - %s", [self class], __func__);
+    
     // TODO: implement
     
-    self.backgroundColor = [UIColor whiteColor];
+    self.contentView.backgroundColor = [UIColor whiteColor];
     
     _descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds), 100, 50)];
     [_descriptionLabel setTextColor:[UIColor blackColor]];
-    [self addSubview:_descriptionLabel];
+    [self.contentView addSubview:_descriptionLabel];
 }
 
 #pragma mark - Configure cell method
 
 - (void)configureCellWithData:(id)data {
+    NSLog(@"%@ - %s", [self class], __func__);
+    
     // Init cell data
     PFObject *cellData = (PFObject *)data;
     
