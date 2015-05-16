@@ -45,6 +45,9 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Set title
+    self.title = @"Admin";
+    
     // Register for NSNotifications
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(adminStoreVideoDataFetchDidHappen:)
@@ -82,10 +85,10 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     
     // Init flow layout
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.minimumInteritemSpacing = 0.0f;
-    flowLayout.minimumLineSpacing = 0.0f;
+//    flowLayout.minimumInteritemSpacing = 0.1f;
+    flowLayout.minimumLineSpacing = 1.0f;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    flowLayout.itemSize = CGSizeMake(300, 150);
+    flowLayout.itemSize = CGSizeMake(300, 50);
     
     // Init collectionView
     _collectionView.collectionViewLayout = flowLayout;
