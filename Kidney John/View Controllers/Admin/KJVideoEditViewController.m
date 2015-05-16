@@ -96,12 +96,7 @@
             element.textValue = [self.chosenVideo valueForKey:@"videoName"];
             
             element.onValueChanged = ^(QRootElement *rootElement) {
-                //                __weak typeof(element) weakElement;
-                
                 [self setUserDidMakeEdits:YES];
-                
-                //                if (weakElement.value) {
-                //                }
             };
             
             [section addElement:element];
@@ -113,6 +108,10 @@
             element.title = @"Description";
             element.textValue = [self.chosenVideo valueForKey:@"videoDescription"];
             
+            element.onValueChanged = ^(QRootElement *rootElement) {
+                [self setUserDidMakeEdits:YES];
+            };
+            
             [section addElement:element];
         }
         
@@ -121,6 +120,10 @@
             QEntryElement *element = [[QEntryElement alloc] init];
             element.title = @"Duration";
             element.textValue = [self.chosenVideo valueForKey:@"videoDuration"];
+            
+            element.onValueChanged = ^(QRootElement *rootElement) {
+                [self setUserDidMakeEdits:YES];
+            };
             
             [section addElement:element];
         }
@@ -132,6 +135,10 @@
             element.dateValue = [NSDate date];
             element.mode = UIDatePickerModeDate;
             //            element.showPickerInCell = YES;
+            
+            element.onValueChanged = ^(QRootElement *rootElement) {
+                [self setUserDidMakeEdits:YES];
+            };
             
             // TODO: set date value (parse date string)
             //            element.textValue = [self.chosenVideo valueForKey:@"date"];
@@ -153,6 +160,10 @@
             QBooleanElement *element = [[QBooleanElement alloc] init];
             element.title = @"Is Active?";
             element.boolValue = [[self.chosenVideo valueForKey:@"is_active"] isEqualToString:@"1"] ? YES : NO;
+            
+            element.onValueChanged = ^(QRootElement *rootElement) {
+                [self setUserDidMakeEdits:YES];
+            };
             
             [section addElement:element];
         }
