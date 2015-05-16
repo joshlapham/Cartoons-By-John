@@ -75,6 +75,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
     // Init actions
+    // TODO: update to use string constants
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                            style:UIAlertActionStyleCancel
                                                          handler:nil];
