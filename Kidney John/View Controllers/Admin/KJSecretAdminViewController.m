@@ -9,6 +9,7 @@
 #import "KJSecretAdminViewController.h"
 #import "KJVideoDataSource.h"
 #import "KJAdminStore.h"
+#import "KJVideoCollectionViewCell.h"
 
 // ENUMs
 // Data type for view
@@ -72,6 +73,10 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 #pragma mark - Setup collectionView method
 
 - (void)setupCollectionView {
+    // Register cell
+    [_collectionView registerClass:[KJVideoCollectionViewCell class]
+        forCellWithReuseIdentifier:[KJVideoCollectionViewCell cellIdentifier]];
+    
     // Init flow layout
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumInteritemSpacing = 0.0f;

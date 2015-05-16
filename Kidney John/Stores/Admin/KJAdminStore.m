@@ -96,13 +96,32 @@ NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStor
                 // Set fetched videos array
                 self.fetchedVideos = [NSArray arrayWithArray:objects];
                 
-//                for (PFObject *object in objects) {
-//                    // Init strings for video ID and name
-//                    NSString *videoId = object[kParseVideoIdKey];
-//                    NSString *videoName = object[kParseVideoNameKey];
-//                    
-//                    // TODO: improve this
-//                }
+                //                NSMutableArray *tmpArray = [NSMutableArray new];
+                
+                //                for (PFObject *object in objects) {
+                //                    // Init strings for video ID and name
+                //                    NSString *videoId = object[kParseVideoIdKey];
+                //                    NSString *videoName = object[kParseVideoNameKey];
+                //                    NSString *videoDescription = object[kParseVideoDescriptionKey];
+                //                    NSString *videoDuration = object[kParseVideoDurationKey];
+                //                    NSString *videoDate = object[kParseVideoDateKey];
+                //
+                //                    KJVideo *newVideo = [[KJVideo alloc] init];
+                //                    newVideo.videoId = videoId;
+                //                    newVideo.videoName = videoName;
+                //                    newVideo.videoDescription = videoDescription;
+                //                    newVideo.videoDuration = videoDuration;
+                //                    newVideo.videoDate = videoDate;
+                //
+                //                    [tmpArray addObject:newVideo];
+                //
+                //                    // TODO: is_active attribute
+                //
+                //                    // TODO: improve this
+                //                }
+                
+                // Set fetched videos array
+                //                self.fetchedVideos = [NSArray arrayWithArray:tmpArray];
                 
                 // Post NSNotification that data fetch is done
                 [[NSNotificationCenter defaultCenter] postNotificationName:KJAdminStoreVideoDataFetchDidHappenNotification

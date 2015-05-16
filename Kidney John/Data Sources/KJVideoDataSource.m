@@ -11,6 +11,7 @@
 #import "KJVideo+Methods.h"
 #import "KJVideoCell.h"
 #import "KJVideoCollectionViewCell.h"
+#import <Parse/Parse.h>
 
 @implementation KJVideoDataSource
 
@@ -32,7 +33,7 @@
                                                         forIndexPath:indexPath];
     
     // Init cell data
-    KJVideo *cellData = [self.cellDataSource objectAtIndex:indexPath.row];
+    PFObject *cellData = [self.cellDataSource objectAtIndex:indexPath.row];
     
     // Configure cell
     [cell configureCellWithData:cellData];
@@ -58,7 +59,7 @@
                                                                                                              forIndexPath:indexPath];
     
     // Init cell data
-    KJVideo *cellData = [self.cellDataSource objectAtIndex:indexPath.row];
+    PFObject *cellData = [self.cellDataSource objectAtIndex:indexPath.row];
     
     // Configure cell
     [cell configureCellWithData:cellData];

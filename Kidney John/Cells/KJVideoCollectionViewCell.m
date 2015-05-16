@@ -7,7 +7,7 @@
 //
 
 #import "KJVideoCollectionViewCell.h"
-#import "KJVideo.h"
+#import <Parse/Parse.h>
 
 @interface KJVideoCollectionViewCell ()
 
@@ -25,7 +25,10 @@
     
     // TODO: implement
     
+    self.backgroundColor = [UIColor whiteColor];
+    
     _descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds), 100, 50)];
+    [_descriptionLabel setTextColor:[UIColor blackColor]];
     [self addSubview:_descriptionLabel];
 }
 
@@ -33,11 +36,11 @@
 
 - (void)configureCellWithData:(id)data {
     // Init cell data
-    KJVideo *cellData = (KJVideo *)data;
+    PFObject *cellData = (PFObject *)data;
     
     // TODO: implement
     
-    _descriptionLabel.text = cellData.videoName;
+    _descriptionLabel.text = [cellData valueForKey:@"videoName"];
 }
 
 @end
