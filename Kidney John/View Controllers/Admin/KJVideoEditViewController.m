@@ -147,6 +147,42 @@
                              completion:nil];
 }
 
+- (IBAction)didTapSaveButton:(id)sender {
+    // Init strings for alert
+    // NOTE - these aren't localized strings as end-users will (hopefully) never see this view controller
+    NSString *alertTitle = @"Are You Sure?";
+    NSString *alertMessage = @"Are you sure you want to save your changes to this item?";
+    NSString *yesButtonTitle = @"Yes";
+    
+    // Init alertView
+    UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                          message:alertMessage
+                                                                   preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Init actions
+    // Yes
+    UIAlertAction *yesAction = [UIAlertAction actionWithTitle:yesButtonTitle
+                                                        style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction *action) {
+                                                          // TODO: implement this
+                                                          // Go back to previous view
+                                                          //                                                          [self.navigationController popViewControllerAnimated:YES];
+                                                      }];
+    
+    // Cancel
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [confirmAlert addAction:yesAction];
+    [confirmAlert addAction:cancelAction];
+    
+    // Show alertView
+    [self presentViewController:confirmAlert
+                       animated:YES
+                     completion:nil];
+}
+
 #pragma mark - Getter/setter overrides
 
 - (void)setChosenVideo:(PFObject *)chosenVideo {
@@ -161,6 +197,7 @@
     
     if (_userDidMakeEdits == YES) {
         // TODO: finish this
+        // TODO: show confirmation alert
     }
     
     else {
