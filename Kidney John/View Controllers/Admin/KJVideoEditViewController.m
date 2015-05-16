@@ -29,11 +29,22 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.root = [self buildRoot];
         self.resizeWhenKeyboardPresented = YES;
     }
     
     return self;
+}
+
+#pragma mark - View lifecycle methods
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    // Init 'Cancel' navbar button
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self
+                                                                                  action:@selector(didTapCancelButton:)];
+    self.navigationItem.leftBarButtonItem = cancelButton;
 }
 
 #pragma mark - QuickDialog methods
@@ -55,7 +66,7 @@
         {
             QEntryElement *element = [[QEntryElement alloc] init];
             element.title = @"Title";
-            element.value = [self.chosenVideo valueForKey:@"videoName"];
+            element.textValue = [self.chosenVideo valueForKey:@"videoName"];
             
             [section addElement:element];
         }
@@ -64,7 +75,25 @@
         {
             QEntryElement *element = [[QEntryElement alloc] init];
             element.title = @"Description";
-            element.value = [self.chosenVideo valueForKey:@"videoDescription"];
+            element.textValue = [self.chosenVideo valueForKey:@"videoDescription"];
+            
+            [section addElement:element];
+        }
+        
+        // Video duration
+        {
+            QEntryElement *element = [[QEntryElement alloc] init];
+            element.title = @"Duration";
+            element.textValue = [self.chosenVideo valueForKey:@"videoDuration"];
+            
+            [section addElement:element];
+        }
+        
+        // Video is active?
+        {
+            QBooleanElement *element = [[QBooleanElement alloc] init];
+            element.title = @"Is Active?";
+            element.boolValue = [[self.chosenVideo valueForKey:@"is_active"] isEqualToString:@"1"] ? YES : NO;
             
             [section addElement:element];
         }
@@ -74,6 +103,23 @@
     }
     
     return root;
+}
+
+#pragma mark - Action handler methods
+
+- (IBAction)didTapCancelButton:(id)sender {
+    // Go back to previous view controller
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
+}
+
+#pragma mark - Getter/setter overrides
+
+- (void)setChosenVideo:(PFObject *)chosenVideo {
+    _chosenVideo = chosenVideo;
+    
+    // Re-build QuickDialog root element
+    self.root = [self buildRoot];
 }
 
 @end
