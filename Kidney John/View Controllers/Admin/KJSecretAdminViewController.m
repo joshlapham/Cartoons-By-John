@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 
 // Properties
 @property (nonatomic) KJSecretAdminDataType dataTypeForView;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
