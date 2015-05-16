@@ -114,6 +114,12 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                      completion:nil];
 }
 
+- (IBAction)segmentedControlIndexDidChange:(id)sender {
+    NSLog(@"%@ - %s", [self class], __func__);
+    
+    // TODO: implement this method
+}
+
 #pragma mark - Getter/setter override methods
 
 - (void)setDataTypeForView:(KJSecretAdminDataType)dataTypeForView {
