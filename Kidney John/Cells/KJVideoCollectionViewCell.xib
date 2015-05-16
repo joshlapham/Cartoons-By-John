@@ -7,14 +7,26 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="KJVideoCollectionViewCell" id="KWp-0D-xNG" customClass="KJVideoCollectionViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="300" height="93"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="300" height="93"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uUN-Ia-CTd">
-                        <rect key="frame" x="15" y="14" width="271" height="21"/>
+                        <rect key="frame" x="8" y="8" width="284" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqo-rW-X5J">
+                        <rect key="frame" x="8" y="36" width="284" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Zt-76-Oeh">
+                        <rect key="frame" x="8" y="64" width="284" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -22,11 +34,13 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <size key="customSize" width="305" height="80"/>
+            <size key="customSize" width="305" height="73"/>
             <connections>
-                <outlet property="descriptionLabel" destination="uUN-Ia-CTd" id="dIn-Dg-KOk"/>
+                <outlet property="descriptionLabel" destination="Lqo-rW-X5J" id="iTa-Xc-cNV"/>
+                <outlet property="durationLabel" destination="0Zt-76-Oeh" id="t9S-Iz-24C"/>
+                <outlet property="nameLabel" destination="uUN-Ia-CTd" id="mrR-Jf-LmR"/>
             </connections>
-            <point key="canvasLocation" x="764.5" y="294"/>
+            <point key="canvasLocation" x="764" y="290.5"/>
         </collectionViewCell>
     </objects>
 </document>

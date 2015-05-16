@@ -12,7 +12,9 @@
 @interface KJVideoCollectionViewCell ()
 
 // Properties
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 
 @end
 
@@ -42,15 +44,18 @@
     self.contentView.backgroundColor = [UIColor whiteColor];
     
 //    _descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds), 100, 50)];
+    [_nameLabel setTextColor:[UIColor blackColor]];
     [_descriptionLabel setTextColor:[UIColor blackColor]];
+    [_durationLabel setTextColor:[UIColor blackColor]];
 //    [self addSubview:_descriptionLabel];
     
     // Init cell data
     PFObject *cellData = (PFObject *)data;
     
     // TODO: implement
-    
-    _descriptionLabel.text = [cellData valueForKey:@"videoName"];
+    _nameLabel.text = [cellData valueForKey:@"videoName"];
+    _descriptionLabel.text = [cellData valueForKey:@"videoDate"];
+    _durationLabel.text = [cellData valueForKey:@"videoDuration"];
 }
 
 @end
