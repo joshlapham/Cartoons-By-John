@@ -131,7 +131,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction *action) {
                                                              // Show add new video alert
-                                                             [self didTapActionButton:nil];
+                                                             [self didTapAddNewVideo:nil];
                                                          }];
     
     [actionSheet addAction:addNewAction];
