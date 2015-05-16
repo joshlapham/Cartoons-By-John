@@ -10,6 +10,7 @@
 #import "KJVideoDataSource.h"
 #import "KJAdminStore.h"
 #import "KJVideoCollectionViewCell.h"
+#import "KJVideoEditViewController.h"
 
 // ENUMs
 // Data type for view
@@ -21,7 +22,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     KJSecretAdminDataTypeMisc,
 };
 
-@interface KJSecretAdminViewController () <UIToolbarDelegate>
+@interface KJSecretAdminViewController () <UIToolbarDelegate, UICollectionViewDelegate>
 
 // Properties
 @property (nonatomic) KJSecretAdminDataType dataTypeForView;
@@ -77,15 +78,13 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 
 - (void)setupCollectionView {
     // Register cell
-    //    [_collectionView registerClass:[KJVideoCollectionViewCell class]
-    //        forCellWithReuseIdentifier:[KJVideoCollectionViewCell cellIdentifier]];
     [_collectionView registerNib:[UINib nibWithNibName:[KJVideoCollectionViewCell cellIdentifier]
                                                 bundle:nil]
       forCellWithReuseIdentifier:[KJVideoCollectionViewCell cellIdentifier]];
     
     // Init flow layout
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-//    flowLayout.minimumInteritemSpacing = 0.1f;
+    //    flowLayout.minimumInteritemSpacing = 0.1f;
     flowLayout.minimumLineSpacing = 1.0f;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.itemSize = CGSizeMake(300, 93);
@@ -93,6 +92,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     // Init collectionView
     _collectionView.collectionViewLayout = flowLayout;
     _collectionView.backgroundColor = [UIColor lightGrayColor];
+    _collectionView.delegate = self;
 }
 
 #pragma mark - UIToolbarDelegate methods
@@ -180,6 +180,23 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         
         // TODO: set cell array on data source
         // TODO: refresh view with data
+    }
+}
+
+#pragma mark - UICollectionViewDelegate methods
+
+-   (void)collectionView:(UICollectionView *)collectionView
+didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (_dataTypeForView == KJSecretAdminDataTypeVideos) {
+        KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] init];
+        KJVideoDataSource *dataSource = (KJVideoDataSource *)_dataSourceForView;
+        PFObject *cellData = (PFObject *)[dataSource.cellDataSource objectAtIndex:indexPath.row];
+        viewController.chosenVideo = cellData;
+        
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+        [self presentViewController:navController
+                           animated:YES
+                         completion:nil];
     }
 }
 
