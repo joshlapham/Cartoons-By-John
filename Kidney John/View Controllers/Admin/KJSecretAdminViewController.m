@@ -141,6 +141,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     NSLog(@"%@ - %s", [self class], __func__);
     
     // TODO: reload data
+    KJVideoDataSource *videoDataSource = (KJVideoDataSource *)_dataSourceForView;
+    [videoDataSource setCellDataSource:[[KJAdminStore sharedStore] fetchedVideos]];
+    self.collectionView.dataSource = videoDataSource;
+    
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Getter/setter override methods
