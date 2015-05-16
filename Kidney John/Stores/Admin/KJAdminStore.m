@@ -21,6 +21,13 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
 // Constant for NSNotification name
 NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStoreVideoDataFetchDidHappen";
 
+@interface KJAdminStore ()
+
+// Properties
+@property (nonatomic, strong, readwrite) NSArray *fetchedVideos;
+
+@end
+
 @implementation KJAdminStore
 
 #pragma mark - Init method
@@ -85,11 +92,17 @@ NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStor
                 
                 NSLog(@"%s - GOT VIDEO COUNT : %d", __func__, objects.count);
                 
-                for (PFObject *object in objects) {
-                    // Init strings for video ID and name
-                    NSString *videoId = object[kParseVideoIdKey];
-                    NSString *videoName = object[kParseVideoNameKey];
-                }
+                
+                // Set fetched videos array
+                self.fetchedVideos = [NSArray arrayWithArray:objects];
+                
+//                for (PFObject *object in objects) {
+//                    // Init strings for video ID and name
+//                    NSString *videoId = object[kParseVideoIdKey];
+//                    NSString *videoName = object[kParseVideoNameKey];
+//                    
+//                    // TODO: improve this
+//                }
                 
                 // Post NSNotification that data fetch is done
                 [[NSNotificationCenter defaultCenter] postNotificationName:KJAdminStoreVideoDataFetchDidHappenNotification

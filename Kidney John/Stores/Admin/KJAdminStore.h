@@ -23,6 +23,9 @@ typedef NS_ENUM(NSUInteger, KJAdminStoreConnectionState) {
 // Properties
 @property (nonatomic) KJAdminStoreConnectionState connectionState;
 
+// Fetched data
+@property (nonatomic, strong, readonly) NSArray *fetchedVideos;
+
 // Methods
 // Init
 + (instancetype)sharedStore;
