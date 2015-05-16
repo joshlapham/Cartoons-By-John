@@ -72,6 +72,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     
     // Setup collectionView
     [self setupCollectionView];
+    
+    // Fetch data for view
+    // NOTE - we always start on 'Videos' segment
+    // TODO: review this; possibly start on last-selected segment via NSUserDefaults?
+    [self setDataTypeForView:KJSecretAdminDataTypeVideos];
 }
 
 #pragma mark - Setup collectionView method
