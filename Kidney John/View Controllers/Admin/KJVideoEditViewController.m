@@ -15,6 +15,9 @@
 
 @interface KJVideoEditViewController ()
 
+// Properties
+@property (nonatomic) BOOL userDidMakeEdits;
+
 @end
 
 @implementation KJVideoEditViewController
@@ -151,6 +154,18 @@
     
     // Re-build QuickDialog root element
     self.root = [self buildRoot];
+}
+
+- (void)setUserDidMakeEdits:(BOOL)userDidMakeEdits {
+    _userDidMakeEdits = userDidMakeEdits;
+    
+    if (_userDidMakeEdits == YES) {
+        // TODO: finish this
+    }
+    
+    else {
+        // TODO: finish this
+    }
 }
 
 @end
