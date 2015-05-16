@@ -74,8 +74,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 
 - (void)setupCollectionView {
     // Register cell
-    [_collectionView registerClass:[KJVideoCollectionViewCell class]
-        forCellWithReuseIdentifier:[KJVideoCollectionViewCell cellIdentifier]];
+    //    [_collectionView registerClass:[KJVideoCollectionViewCell class]
+    //        forCellWithReuseIdentifier:[KJVideoCollectionViewCell cellIdentifier]];
+    [_collectionView registerNib:[UINib nibWithNibName:[KJVideoCollectionViewCell cellIdentifier]
+                                                bundle:nil]
+      forCellWithReuseIdentifier:[KJVideoCollectionViewCell cellIdentifier]];
     
     // Init flow layout
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];

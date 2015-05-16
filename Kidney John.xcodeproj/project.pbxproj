@@ -81,6 +81,7 @@
 		C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C961F2621AA5598D0015E67F /* Launch Screen.xib */; };
 		C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C968D7D71A8C482800C3B621 /* KJComicListCell.m */; };
 		C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C968D7D81A8C482800C3B621 /* KJComicListCell.xib */; };
+		C9C4F9511B0700B200F0659C /* KJVideoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C4F9501B0700B200F0659C /* KJVideoCollectionViewCell.xib */; };
 		C9CD4DD01AF1D5290015715A /* KJBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9CD4DCF1AF1D5290015715A /* KJBaseCollectionViewCell.m */; };
 		C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E467261AF1BDE8001F369C /* KJBaseTableViewCell.m */; };
 /* End PBXBuildFile section */
@@ -230,6 +231,7 @@
 		C968D7D61A8C482800C3B621 /* KJComicListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListCell.h; path = Cells/KJComicListCell.h; sourceTree = "<group>"; };
 		C968D7D71A8C482800C3B621 /* KJComicListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicListCell.m; path = Cells/KJComicListCell.m; sourceTree = "<group>"; };
 		C968D7D81A8C482800C3B621 /* KJComicListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJComicListCell.xib; path = Cells/KJComicListCell.xib; sourceTree = "<group>"; };
+		C9C4F9501B0700B200F0659C /* KJVideoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJVideoCollectionViewCell.xib; path = Cells/KJVideoCollectionViewCell.xib; sourceTree = "<group>"; };
 		C9CD4DCE1AF1D5290015715A /* KJBaseCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJBaseCollectionViewCell.h; path = Cells/KJBaseCollectionViewCell.h; sourceTree = "<group>"; };
 		C9CD4DCF1AF1D5290015715A /* KJBaseCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJBaseCollectionViewCell.m; path = Cells/KJBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		C9E467251AF1BDE8001F369C /* KJBaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJBaseTableViewCell.h; path = Cells/KJBaseTableViewCell.h; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				680CF0C51A7F730F009250E3 /* KJVideoCell.xib */,
 				C95A0BA11B06D2AD007AA777 /* KJVideoCollectionViewCell.h */,
 				C95A0BA21B06D2AD007AA777 /* KJVideoCollectionViewCell.m */,
+				C9C4F9501B0700B200F0659C /* KJVideoCollectionViewCell.xib */,
 				C968D7D61A8C482800C3B621 /* KJComicListCell.h */,
 				C968D7D71A8C482800C3B621 /* KJComicListCell.m */,
 				C968D7D81A8C482800C3B621 /* KJComicListCell.xib */,
@@ -656,6 +659,7 @@
 				68E461FE1865CA87008D3E36 /* JohnRoderickPaine.ttf in Resources */,
 				680CF0C71A7F730F009250E3 /* KJVideoCell.xib in Resources */,
 				6876CFD21919938C003F3231 /* KJComicFavouriteCell.xib in Resources */,
+				C9C4F9511B0700B200F0659C /* KJVideoCollectionViewCell.xib in Resources */,
 				680006E01910C4150002D604 /* ComicThumbs in Resources */,
 				C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */,
 			);
