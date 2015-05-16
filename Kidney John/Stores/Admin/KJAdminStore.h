@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+// Constants
+extern NSString * const KJAdminStoreVideoDataFetchDidHappenNotification;
+
 @interface KJAdminStore : NSObject
 
 // Connection state
@@ -23,5 +26,8 @@ typedef NS_ENUM(NSUInteger, KJAdminStoreConnectionState) {
 // Methods
 // Init
 + (instancetype)sharedStore;
+
+// Videos
+- (void)fetchVideoData;
 
 @end

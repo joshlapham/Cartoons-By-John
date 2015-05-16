@@ -18,6 +18,9 @@ static NSString *kParseVideoDescriptionKey = @"videoDescription";
 static NSString *kParseVideoDateKey = @"date";
 static NSString *kParseVideoDurationKey = @"videoDuration";
 
+// Constant for NSNotification name
+NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStoreVideoDataFetchDidHappen";
+
 @implementation KJAdminStore
 
 #pragma mark - Init method
@@ -80,15 +83,17 @@ static NSString *kParseVideoDurationKey = @"videoDuration";
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
+                NSLog(@"%s - GOT VIDEO COUNT : %d", __func__, objects.count);
+                
                 for (PFObject *object in objects) {
                     // Init strings for video ID and name
                     NSString *videoId = object[kParseVideoIdKey];
                     NSString *videoName = object[kParseVideoNameKey];
                 }
                 
-                //                // Post NSNotification that data fetch is done
-                //                [[NSNotificationCenter defaultCenter] postNotificationName:KJVideoDataFetchDidHappenNotification
-                //                                                                    object:nil];
+                // Post NSNotification that data fetch is done
+                [[NSNotificationCenter defaultCenter] postNotificationName:KJAdminStoreVideoDataFetchDidHappenNotification
+                                                                    object:nil];
                 
                 // Set connection state to DISCONNECTED
                 self.connectionState = KJAdminStoreStateDisconnected;

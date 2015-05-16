@@ -8,6 +8,7 @@
 
 #import "KJSecretAdminViewController.h"
 #import "KJVideoDataSource.h"
+#import "KJAdminStore.h"
 
 // ENUMs
 // Data type for view
@@ -33,12 +34,21 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 #pragma mark - dealloc method
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:KJAdminStoreVideoDataFetchDidHappenNotification
+                                                  object:nil];
 }
 
 #pragma mark - View lifecycle methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // Register for NSNotifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adminStoreVideoDataFetchDidHappen:)
+                                                 name:KJAdminStoreVideoDataFetchDidHappenNotification
+                                               object:nil];
     
     // Prevent segmented control from being hidden
     self.navigationController.navigationBar.translucent = NO;
@@ -125,6 +135,14 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     [self setDataTypeForView:control.selectedSegmentIndex];
 }
 
+#pragma mark NSNotification handler methods
+
+- (IBAction)adminStoreVideoDataFetchDidHappen:(id)sender {
+    NSLog(@"%@ - %s", [self class], __func__);
+    
+    // TODO: reload data
+}
+
 #pragma mark - Getter/setter override methods
 
 - (void)setDataTypeForView:(KJSecretAdminDataType)dataTypeForView {
@@ -138,7 +156,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     if (_dataTypeForView == KJSecretAdminDataTypeVideos) {
         NSLog(@"%s - chose Videos", __func__);
         
+        // Init data source
         _dataSourceForView = [[KJVideoDataSource alloc] init];
+        
+        // Fetch video data for view
+        [[KJAdminStore sharedStore] fetchVideoData];
         
         // TODO: set cell array on data source
         // TODO: refresh view with data
