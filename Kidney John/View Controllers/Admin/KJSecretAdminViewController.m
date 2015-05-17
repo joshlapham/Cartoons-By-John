@@ -300,8 +300,8 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                               forKey:@"date"];
                                                                                   [newVideo setValue:[NSNull null]
                                                                                               forKey:@"is_active"];
-                                                                                  [newVideo setValue:@"videoId"
-                                                                                              forKey:videoIdToFetch];
+                                                                                  [newVideo setValue:videoIdToFetch
+                                                                                              forKey:@"videoId"];
                                                                                   
                                                                                   // TODO: init Edit Video VC
                                                                                   KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] init];
