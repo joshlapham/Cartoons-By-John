@@ -247,6 +247,11 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     }
     
     else {
+        // Show progress
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        [MBProgressHUD showHUDAddedTo:self.view
+                             animated:YES];
+        
         // Init video ID to fetch
         NSString *videoIdToFetch = fetchTextField.text;
         
@@ -255,22 +260,25 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         // Init API URL
         NSString *apiUrl = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?id=%@&part=snippet&key=%@", videoIdToFetch, youTubeApiKey];
         
-        // TODO: remove this after debugging!
-        NSLog(@"API URL : %@", apiUrl);
-        
         // Init request
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
         [[session dataTaskWithURL:[NSURL URLWithString:apiUrl]
                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    // Hide progress
+                    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                    [MBProgressHUD hideAllHUDsForView:self.view
+                                             animated:YES];
+                    
                     if (!error) {
+                        // Parse JSON response
                         NSError *jsonError;
                         NSDictionary *results = [NSJSONSerialization JSONObjectWithData:data
                                                                                 options:kNilOptions
                                                                                   error:&jsonError];
                         
+                        // If all went well ..
                         if (!jsonError) {
-                            //                            NSLog(@"%s - DICT : %@", __func__, results.debugDescription);
-                            
+                            // Init fetched properties
                             NSString *fetchedName = [[results valueForKeyPath:@"items.snippet.title"] firstObject];
                             NSString *fetchedDescription = [[results valueForKeyPath:@"items.snippet.description"] firstObject];
                             NSString *fetchedDate = [[results valueForKeyPath:@"items.snippet.publishedAt"] firstObject];
@@ -278,7 +286,8 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             
                             NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@", __func__, fetchedName, fetchedDescription, parsedDate);
                             
-                            // TODO: show alert with fetched details
+                            // Show alert with fetched details
+                            // Init alert
                             NSString *alertMessage = [NSString stringWithFormat:@"Are these details correct?\n\nTitle: %@\nDescription: %@\nDate: %@", fetchedName, fetchedDescription, parsedDate];
                             UIAlertController *fetchedDataAlert = [UIAlertController alertControllerWithTitle:@"Fetched Details"
                                                                                                       message:alertMessage
