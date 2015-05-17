@@ -21,6 +21,7 @@
 #import "UIColor+KJColours.h"
 #import "KJSocialLinkCell.h"
 #import "KJSecretLoginViewController.h"
+#import <Parse/Parse.h>
 
 // TODO: remove import after testing feature
 #import "KJSecretAdminViewController.h"
@@ -316,20 +317,28 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (IBAction)userDidPerformSecretGesture:(id)sender {
     NSLog(@"%s", __func__);
     
-    // TODO: remove this after testing feature
-    KJSecretAdminViewController *secretAdminVC = [[KJSecretAdminViewController alloc] init];
-    UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:secretAdminVC];
-    [self presentViewController:navCon
-                       animated:YES
-                     completion:nil];
+    // User is logged-in
+    // TODO: review this for security
+    if ([PFUser currentUser]) {
+        KJSecretAdminViewController *secretAdminVC = [[KJSecretAdminViewController alloc] init];
+        UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:secretAdminVC];
+        
+        // Present modally
+        [self presentViewController:navCon
+                           animated:YES
+                         completion:nil];
+    }
     
-    // Init secret login VC
-    //    KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
-    
-    // Present modally
-    //    [self.navigationController presentViewController:secretLoginViewController
-    //                                            animated:YES
-    //                                          completion:nil];
+    // User is NOT logged-in
+    else {
+        // Init secret login VC
+        KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
+        
+        // Present modally
+        [self.navigationController presentViewController:secretLoginViewController
+                                                animated:YES
+                                              completion:nil];
+    }
 }
 
 #pragma mark - Prepare for segue method
