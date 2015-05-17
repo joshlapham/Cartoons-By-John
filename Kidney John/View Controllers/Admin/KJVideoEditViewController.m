@@ -21,6 +21,7 @@
 // Properties
 @property (nonatomic) BOOL userDidMakeEdits;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -60,6 +61,20 @@
     // NOTE - disabled at the start
     _saveButton.enabled = NO;
     self.navigationItem.rightBarButtonItem = _saveButton;
+}
+
+#pragma mark - Lazy init date formatter method
+
+- (NSDateFormatter *)dateFormatter {
+    if (_dateFormatter != nil) {
+        return _dateFormatter;
+    }
+    
+    // Init date formatter
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    _dateFormatter.dateFormat = @"YYYY-MM-dd";
+    
+    return _dateFormatter;
 }
 
 #pragma mark - QuickDialog methods
