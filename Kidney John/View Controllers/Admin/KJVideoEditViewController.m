@@ -264,14 +264,43 @@
 #pragma mark - Action handler methods
 
 - (IBAction)didTapCancelButton:(id)sender {
-    // TODO: implement confirm alert if changes made
+    // Show confirm alert if changes made
     if (_userDidMakeEdits) {
-        // TODO: implement
+        // Init alert
+        UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:@"Are You Sure?"
+                                                                              message:@"Are you sure you want to discard changes made to this item?"
+                                                                       preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Init actions
+        // Yes
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes"
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction *action) {
+                                                              // Go back to previous view
+                                                              [self dismissViewControllerAnimated:YES
+                                                                                       completion:nil];
+                                                          }];
+        
+        // Cancel
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:nil];
+        
+        [confirmAlert addAction:yesAction];
+        [confirmAlert addAction:cancelAction];
+        
+        // Show alert
+        [self presentViewController:confirmAlert
+                           animated:YES
+                         completion:nil];
     }
     
-    // Go back to previous view controller
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    // No changes made
+    else {
+        // Go back to previous view controller
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    }
 }
 
 - (IBAction)didTapSaveButton:(id)sender {
