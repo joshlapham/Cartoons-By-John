@@ -255,8 +255,6 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         // Init video ID to fetch
         NSString *videoIdToFetch = fetchTextField.text;
         
-        NSLog(@"%s - fetching data for video ID : %@", __func__, videoIdToFetch);
-        
         // Init API URL
         NSString *apiUrl = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?id=%@&part=snippet,contentDetails&key=%@", videoIdToFetch, youTubeApiKey];
         
@@ -284,12 +282,13 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             NSString *fetchedDate = [[results valueForKeyPath:@"items.snippet.publishedAt"] firstObject];
                             NSString *parsedDate = [[fetchedDate componentsSeparatedByString:@"T"] firstObject];
                             NSString *fetchedDuration = [[results valueForKeyPath:@"items.contentDetails.duration"] firstObject];
+                            NSString *parsedDuration = [[fetchedDuration componentsSeparatedByString:@"PT"] lastObject];
                             
-                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@\nDURATION : %@", __func__, fetchedName, fetchedDescription, parsedDate, fetchedDuration);
+                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@\nDURATION : %@", __func__, fetchedName, fetchedDescription, parsedDate, parsedDuration);
                             
                             // Show alert with fetched details
                             // Init alert
-                            NSString *alertMessage = [NSString stringWithFormat:@"Are these details correct?\n\nTitle: %@\nDescription: %@\nDate: %@\nDuration: %@", fetchedName, fetchedDescription, parsedDate, fetchedDuration];
+                            NSString *alertMessage = [NSString stringWithFormat:@"Are these details correct?\n\nTitle: %@\nDescription: %@\nDate: %@\nDuration: %@", fetchedName, fetchedDescription, parsedDate, parsedDuration];
                             UIAlertController *fetchedDataAlert = [UIAlertController alertControllerWithTitle:@"Fetched Details"
                                                                                                       message:alertMessage
                                                                                                preferredStyle:UIAlertControllerStyleAlert];
@@ -310,7 +309,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                               forKey:@"is_active"];
                                                                                   [newVideo setValue:videoIdToFetch
                                                                                               forKey:@"videoId"];
-                                                                                  [newVideo setValue:fetchedDuration
+                                                                                  [newVideo setValue:parsedDuration
                                                                                               forKey:@"videoDuration"];
                                                                                   
                                                                                   // Init Edit Video VC
