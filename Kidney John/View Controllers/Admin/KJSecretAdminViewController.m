@@ -269,7 +269,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                   error:&jsonError];
                         
                         if (!jsonError) {
-//                            NSLog(@"%s - DICT : %@", __func__, results.debugDescription);
+                            //                            NSLog(@"%s - DICT : %@", __func__, results.debugDescription);
                             
                             NSString *fetchedName = [[results valueForKeyPath:@"items.snippet.title"] firstObject];
                             NSString *fetchedDescription = [[results valueForKeyPath:@"items.snippet.description"] firstObject];
@@ -278,8 +278,33 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             
                             NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@", __func__, fetchedName, fetchedDescription, parsedDate);
                             
-                            // TODO: init new PFObject
-                            // TODO: init Edit Video VC
+                            // TODO: show alert with fetched details
+                            NSString *alertMessage = [NSString stringWithFormat:@"Are these details correct?\n\nTitle: %@\nDescription: %@\nDate: %@", fetchedName, fetchedDescription, parsedDate];
+                            UIAlertController *fetchedDataAlert = [UIAlertController alertControllerWithTitle:@"Fetched Details"
+                                                                                                      message:alertMessage
+                                                                                               preferredStyle:UIAlertControllerStyleAlert];
+                            
+                            // Init actions
+                            UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes"
+                                                                                style:UIAlertActionStyleDefault
+                                                                              handler:^(UIAlertAction *action) {
+                                                                                  // TODO: implement
+                                                                                  
+                                                                                  // TODO: init new PFObject
+                                                                                  // TODO: init Edit Video VC
+                                                                              }];
+                            
+                            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                                                   style:UIAlertActionStyleCancel
+                                                                                 handler:nil];
+                            
+                            [fetchedDataAlert addAction:yesAction];
+                            [fetchedDataAlert addAction:cancelAction];
+                            
+                            // Show alert
+                            [self presentViewController:fetchedDataAlert
+                                               animated:YES
+                                             completion:nil];
                         }
                         
                         // Handle parse JSON error
