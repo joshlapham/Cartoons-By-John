@@ -16,6 +16,8 @@
 #import <QDateTimeInlineElement.h>
 #import <MBProgressHUD.h>
 #import <QButtonElement.h>
+#import <QAppearance.h>
+#import <QElement+Appearance.h>
 
 @interface KJVideoEditViewController ()
 
@@ -81,6 +83,16 @@
 }
 
 #pragma mark - QuickDialog methods
+
+#pragma mark Appearance
+
+- (QAppearance *)appearanceForView {
+    QAppearance *appearance = [[QAppearance alloc] init];
+    appearance.actionColorEnabled = [UIColor redColor];
+    appearance.backgroundColorEnabled = [UIColor whiteColor];
+    
+    return appearance;
+}
 
 #pragma mark Build root method
 
@@ -276,6 +288,7 @@
             QButtonElement *element = [[QButtonElement alloc] init];
             element.title = @"Delete";
             element.controllerAction = @"didTapDeleteButton:";
+            element.appearance = [self appearanceForView];
             
             [section addElement:element];
         }
