@@ -303,9 +303,33 @@
 #pragma mark - Action handler methods
 
 - (IBAction)didTapDeleteButton:(id)sender {
-    NSLog(@"%s", __func__);
+    // Init confirm alert
+    UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:@"Are You Sure?"
+                                                                          message:@"Are you sure you want to delete this item?\nThis will delete the item from both the app & server.\nThere is no undo!"
+                                                                   preferredStyle:UIAlertControllerStyleAlert];
     
-    // TODO: Init confirm alert
+    // Init actions
+    // Delete
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"Delete"
+                                                           style:UIAlertActionStyleDestructive
+                                                         handler:^(UIAlertAction *action) {
+                                                             // TODO: implement
+                                                             // TODO: delete object
+                                                             // TODO: go back to previous VC
+                                                         }];
+    
+    // Cancel
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [confirmAlert addAction:deleteAction];
+    [confirmAlert addAction:cancelAction];
+    
+    // Show alert
+    [self presentViewController:confirmAlert
+                       animated:YES
+                     completion:nil];
 }
 
 - (IBAction)didTapCancelButton:(id)sender {
