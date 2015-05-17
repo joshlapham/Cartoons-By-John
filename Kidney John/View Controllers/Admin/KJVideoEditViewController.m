@@ -15,6 +15,7 @@
 #import <QDateTimeElement.h>
 #import <QDateTimeInlineElement.h>
 #import <MBProgressHUD.h>
+#import <QButtonElement.h>
 
 @interface KJVideoEditViewController ()
 
@@ -265,10 +266,34 @@
         [root addSection:section];
     }
     
+    // Section
+    {
+        QSection *section = [[QSection alloc] init];
+        section.footer = @"Delete this item from the app & server.";
+        
+        // Delete video
+        {
+            QButtonElement *element = [[QButtonElement alloc] init];
+            element.title = @"Delete";
+            element.controllerAction = @"didTapDeleteButton:";
+            
+            [section addElement:element];
+        }
+        
+        // Add section to root
+        [root addSection:section];
+    }
+    
     return root;
 }
 
 #pragma mark - Action handler methods
+
+- (IBAction)didTapDeleteButton:(id)sender {
+    NSLog(@"%s", __func__);
+    
+    // TODO: Init confirm alert
+}
 
 - (IBAction)didTapCancelButton:(id)sender {
     // Show confirm alert if changes made
