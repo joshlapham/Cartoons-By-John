@@ -86,7 +86,7 @@
 
 #pragma mark Appearance
 
-- (QAppearance *)appearanceForView {
+- (QAppearance *)appearanceForDeleteButton {
     QAppearance *appearance = [[QAppearance alloc] init];
     appearance.actionColorEnabled = [UIColor redColor];
     appearance.backgroundColorEnabled = [UIColor whiteColor];
@@ -288,7 +288,7 @@
             QButtonElement *element = [[QButtonElement alloc] init];
             element.title = @"Delete";
             element.controllerAction = @"didTapDeleteButton:";
-            element.appearance = [self appearanceForView];
+            element.appearance = [self appearanceForDeleteButton];
             
             [section addElement:element];
         }
