@@ -291,7 +291,25 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                   // TODO: implement
                                                                                   
                                                                                   // TODO: init new PFObject
+                                                                                  PFObject *newVideo = [PFObject objectWithClassName:@"Video"];
+                                                                                  [newVideo setValue:fetchedName
+                                                                                              forKey:@"videoName"];
+                                                                                  [newVideo setValue:fetchedDescription
+                                                                                              forKey:@"videoDescription"];
+                                                                                  [newVideo setValue:parsedDate
+                                                                                              forKey:@"date"];
+                                                                                  [newVideo setValue:[NSNull null]
+                                                                                              forKey:@"is_active"];
+                                                                                  
                                                                                   // TODO: init Edit Video VC
+                                                                                  KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] init];
+                                                                                  [viewController setChosenVideo:newVideo];
+                                                                                  
+                                                                                  UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                                                                                  [self presentViewController:navController
+                                                                                                     animated:YES
+                                                                                                   completion:nil];
+                                                                                  
                                                                               }];
                             
                             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
