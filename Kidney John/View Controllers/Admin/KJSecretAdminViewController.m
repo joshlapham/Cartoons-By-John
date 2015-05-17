@@ -313,7 +313,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                               forKey:@"videoDuration"];
                                                                                   
                                                                                   // Init Edit Video VC
-                                                                                  KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] init];
+                                                                                  KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] initWithItemType:KJVideoEditItemTypeNew];
                                                                                   [viewController setChosenVideo:newVideo];
                                                                                   
                                                                                   UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
@@ -419,7 +419,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 -   (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (_dataTypeForView == KJSecretAdminDataTypeVideos) {
-        KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] init];
+        KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] initWithItemType:KJVideoEditItemTypeExisting];
         KJVideoDataSource *dataSource = (KJVideoDataSource *)_dataSourceForView;
         PFObject *cellData = (PFObject *)[dataSource.cellDataSource objectAtIndex:indexPath.row];
         viewController.chosenVideo = cellData;
