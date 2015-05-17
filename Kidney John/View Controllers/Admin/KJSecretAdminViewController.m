@@ -277,6 +277,9 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             NSString *parsedDate = [[fetchedDate componentsSeparatedByString:@"T"] firstObject];
                             
                             NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@", __func__, fetchedName, fetchedDescription, parsedDate);
+                            
+                            // TODO: init new PFObject
+                            // TODO: init Edit Video VC
                         }
                         
                         // Handle parse JSON error
