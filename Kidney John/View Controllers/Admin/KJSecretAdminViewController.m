@@ -205,6 +205,9 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     [addNewAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.placeholder = @"YouTube Video ID";
         textField.returnKeyType = UIReturnKeyDone;
+        
+        // TODO: remove this after debugging!
+        textField.text = @"WfoK2KLKzWc";
     }];
     
     // Init actions
@@ -252,6 +255,9 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         // Init API URL
         NSString *apiUrl = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?id=%@&part=snippet&key=%@", videoIdToFetch, youTubeApiKey];
         
+        // TODO: remove this after debugging!
+        NSLog(@"API URL : %@", apiUrl);
+        
         // Init request
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
         [[session dataTaskWithURL:[NSURL URLWithString:apiUrl]
@@ -263,8 +269,10 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                   error:&jsonError];
                         
                         if (!jsonError) {
-                            NSString *fetchedName = [results valueForKeyPath:@"items.title"];
-                            NSString *fetchedDescription = [results valueForKeyPath:@"items.description"];
+//                            NSLog(@"%s - DICT : %@", __func__, results.debugDescription);
+                            
+                            NSString *fetchedName = [[results valueForKeyPath:@"items.snippet.title"] firstObject];
+                            NSString *fetchedDescription = [[results valueForKeyPath:@"items.snippet.description"] firstObject];
                             
                             NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@", __func__, fetchedName, fetchedDescription);
                         }
