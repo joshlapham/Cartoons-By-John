@@ -300,8 +300,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
         
         // Set background colour
-        // TODO: remove this after testing is complete
-        secretTapView.backgroundColor = [UIColor orangeColor];
+        secretTapView.backgroundColor = [UIColor clearColor];
         
         // Init secret tap gesture
         // TODO: update this to be complex!
