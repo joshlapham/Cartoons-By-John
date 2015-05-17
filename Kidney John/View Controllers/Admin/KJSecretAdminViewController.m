@@ -257,12 +257,29 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         [[session dataTaskWithURL:[NSURL URLWithString:apiUrl]
                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                     if (!error) {
+                        NSError *jsonError;
+                        NSDictionary *results = [NSJSONSerialization JSONObjectWithData:data
+                                                                                options:kNilOptions
+                                                                                  error:&jsonError];
                         
+                        if (!jsonError) {
+                            NSString *fetchedName = [results valueForKeyPath:@"items.title"];
+                            NSString *fetchedDescription = [results valueForKeyPath:@"items.description"];
+                            
+                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@", __func__, fetchedName, fetchedDescription);
+                        }
+                        
+                        // Handle parse JSON error
+                        else {
+                            // TODO: implement
+                            NSLog(@"%s - JSON PARSE ERROR : %@", __func__, [jsonError localizedDescription]);
+                        }
                     }
                     
                     // Handle error
                     else {
                         // TODO: implement
+                        NSLog(@"%s - FETCH ERROR : %@", __func__, [error localizedDescription]);
                     }
                 }]
          
