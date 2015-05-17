@@ -258,7 +258,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         NSLog(@"%s - fetching data for video ID : %@", __func__, videoIdToFetch);
         
         // Init API URL
-        NSString *apiUrl = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?id=%@&part=snippet&key=%@", videoIdToFetch, youTubeApiKey];
+        NSString *apiUrl = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?id=%@&part=snippet,contentDetails&key=%@", videoIdToFetch, youTubeApiKey];
         
         // Init request
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
@@ -283,12 +283,13 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             NSString *fetchedDescription = [[results valueForKeyPath:@"items.snippet.description"] firstObject];
                             NSString *fetchedDate = [[results valueForKeyPath:@"items.snippet.publishedAt"] firstObject];
                             NSString *parsedDate = [[fetchedDate componentsSeparatedByString:@"T"] firstObject];
+                            NSString *fetchedDuration = [[results valueForKeyPath:@"items.contentDetails.duration"] firstObject];
                             
-                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@", __func__, fetchedName, fetchedDescription, parsedDate);
+                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@\nDURATION : %@", __func__, fetchedName, fetchedDescription, parsedDate, fetchedDuration);
                             
                             // Show alert with fetched details
                             // Init alert
-                            NSString *alertMessage = [NSString stringWithFormat:@"Are these details correct?\n\nTitle: %@\nDescription: %@\nDate: %@", fetchedName, fetchedDescription, parsedDate];
+                            NSString *alertMessage = [NSString stringWithFormat:@"Are these details correct?\n\nTitle: %@\nDescription: %@\nDate: %@\nDuration: %@", fetchedName, fetchedDescription, parsedDate, fetchedDuration];
                             UIAlertController *fetchedDataAlert = [UIAlertController alertControllerWithTitle:@"Fetched Details"
                                                                                                       message:alertMessage
                                                                                                preferredStyle:UIAlertControllerStyleAlert];
@@ -297,9 +298,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes"
                                                                                 style:UIAlertActionStyleDefault
                                                                               handler:^(UIAlertAction *action) {
-                                                                                  // TODO: implement
-                                                                                  
-                                                                                  // TODO: init new PFObject
+                                                                                  // Init new PFObject
                                                                                   PFObject *newVideo = [PFObject objectWithClassName:@"Video"];
                                                                                   [newVideo setValue:fetchedName
                                                                                               forKey:@"videoName"];
@@ -311,12 +310,16 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                               forKey:@"is_active"];
                                                                                   [newVideo setValue:videoIdToFetch
                                                                                               forKey:@"videoId"];
+                                                                                  [newVideo setValue:fetchedDuration
+                                                                                              forKey:@"videoDuration"];
                                                                                   
-                                                                                  // TODO: init Edit Video VC
+                                                                                  // Init Edit Video VC
                                                                                   KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] init];
                                                                                   [viewController setChosenVideo:newVideo];
                                                                                   
                                                                                   UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+                                                                                  
+                                                                                  // Present VC modally
                                                                                   [self presentViewController:navController
                                                                                                      animated:YES
                                                                                                    completion:nil];
