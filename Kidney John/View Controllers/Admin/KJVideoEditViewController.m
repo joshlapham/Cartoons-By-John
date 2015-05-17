@@ -116,8 +116,11 @@
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
                 
-                __weak typeof(element) weakElement;
-                [self.chosenVideo setValue:weakElement.textValue
+                // TODO: fix compiler warning here
+                
+                //                __weak typeof(element) weakElement;
+                
+                [self.chosenVideo setValue:element.textValue
                                     forKey:@"videoName"];
             };
             
@@ -133,8 +136,11 @@
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
                 
-                __weak typeof(element) weakElement;
-                [self.chosenVideo setValue:weakElement.textValue
+                // TODO: fix compiler warning here
+                
+                //                __weak typeof(element) weakElement;
+                
+                [self.chosenVideo setValue:element.textValue
                                     forKey:@"videoDescription"];
             };
             
@@ -150,10 +156,11 @@
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
                 
-                // TODO: fix app crash here
+                // TODO: fix compiler warning here
                 
-                __weak typeof(element) weakElement;
-                [self.chosenVideo setValue:weakElement.textValue
+                //                __weak typeof(element) weakElement;
+                
+                [self.chosenVideo setValue:element.textValue
                                     forKey:@"videoDuration"];
             };
             
@@ -227,7 +234,7 @@
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
                 
-                __weak typeof(element) weakElement;
+                //                __weak typeof(element) weakElement;
                 
                 // TODO: fix weak compiler warning here
                 
