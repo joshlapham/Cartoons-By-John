@@ -168,6 +168,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction *action) {
                                                             // TODO: fetch data from YouTube API
+                                                            [self didEnterVideoIdToFetch:addNewAlert];
                                                         }];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
