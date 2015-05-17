@@ -305,7 +305,7 @@
 - (IBAction)didTapDeleteButton:(id)sender {
     // Init confirm alert
     UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:@"Are You Sure?"
-                                                                          message:@"Are you sure you want to delete this item?\nThis will delete the item from both the app & server.\nThere is no undo!"
+                                                                          message:@"Are you sure you want to delete this item?\n\nThis will delete the item from both the app & server.\n\nThere is no undo!"
                                                                    preferredStyle:UIAlertControllerStyleAlert];
     
     // Init actions
@@ -313,9 +313,31 @@
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"Delete"
                                                            style:UIAlertActionStyleDestructive
                                                          handler:^(UIAlertAction *action) {
-                                                             // TODO: implement
-                                                             // TODO: delete object
-                                                             // TODO: go back to previous VC
+                                                             // Show progress
+                                                             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+                                                             [MBProgressHUD showHUDAddedTo:self.view
+                                                                                  animated:YES];
+                                                             
+                                                             NSLog(@"%s - CHOSEN VIDEO : %@", __func__, self.chosenVideo.debugDescription);
+                                                             
+                                                             // Delete object from Parse
+                                                             [self.chosenVideo deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                                                                 // Hide progress
+                                                                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                                                                 [MBProgressHUD hideAllHUDsForView:self.view
+                                                                                          animated:YES];
+                                                                 
+                                                                 if (!error) {
+                                                                     // Go back to previous VC
+                                                                     [self dismissViewControllerAnimated:YES
+                                                                                              completion:nil];
+                                                                 }
+                                                                 
+                                                                 // Handle error
+                                                                 else {
+                                                                     // TODO: implement
+                                                                 }
+                                                             }];
                                                          }];
     
     // Cancel
