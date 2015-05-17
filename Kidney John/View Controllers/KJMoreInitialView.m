@@ -317,9 +317,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 - (IBAction)userDidPerformSecretGesture:(id)sender {
     NSLog(@"%s", __func__);
     
+    NSLog(@"%s - %@", __func__, [PFUser currentUser].debugDescription);
+    
     // User is logged-in
     // TODO: review this for security
-    if ([PFUser currentUser]) {
+    if ([PFUser currentUser].username.length) {
         KJSecretAdminViewController *secretAdminVC = [[KJSecretAdminViewController alloc] init];
         UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:secretAdminVC];
         
