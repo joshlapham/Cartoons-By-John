@@ -72,7 +72,9 @@
     
     // Init date formatter
     _dateFormatter = [[NSDateFormatter alloc] init];
-    _dateFormatter.dateFormat = @"YYYY-MM-dd";
+    _dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    _dateFormatter.dateStyle = NSDateFormatterShortStyle;
+    _dateFormatter.dateFormat = @"yyyy-MM-dd";
     
     return _dateFormatter;
 }
@@ -148,6 +150,8 @@
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
                 
+                // TODO: fix app crash here
+                
                 __weak typeof(element) weakElement;
                 [self.chosenVideo setValue:weakElement.textValue
                                     forKey:@"videoDuration"];
@@ -160,18 +164,27 @@
         {
             QDateTimeInlineElement *element = [[QDateTimeInlineElement alloc] init];
             element.title = @"Date";
-            element.dateValue = [NSDate date];
             element.mode = UIDatePickerModeDate;
             //            element.showPickerInCell = YES;
             
-            element.onValueChanged = ^(QRootElement *rootElement) {
-                //                [self setUserDidMakeEdits:YES];
-                
-                // TODO: update property
-            };
+            // Set date value (parse date string)
+            NSString *dateString = [self.chosenVideo valueForKey:@"date"];
+            NSDate *videoDate = [[self dateFormatter] dateFromString:dateString];
             
-            // TODO: set date value (parse date string)
-            //            element.textValue = [self.chosenVideo valueForKey:@"date"];
+            element.dateValue = videoDate;
+            element.textValue = dateString;
+            
+            element.onValueChanged = ^(QRootElement *rootElement) {
+                [self setUserDidMakeEdits:YES];
+                
+                // TODO: fix compiler warning here
+                
+                //                NSLog(@"ELEMENT VALUE : %@", element.value);
+                NSLog(@"%s - CHOSEN DATE : %@", __func__, [[self dateFormatter] stringFromDate:element.dateValue]);
+                
+                [self.chosenVideo setValue:[[self dateFormatter] stringFromDate:element.dateValue]
+                                    forKey:@"date"];
+            };
             
             [section addElement:element];
         }
