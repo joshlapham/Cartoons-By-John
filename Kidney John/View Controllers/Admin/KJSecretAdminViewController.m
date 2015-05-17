@@ -244,15 +244,30 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     }
     
     else {
+        // Init video ID to fetch
         NSString *videoIdToFetch = fetchTextField.text;
         
         NSLog(@"%s - fetching data for video ID : %@", __func__, videoIdToFetch);
         
-        // TODO: fetch from YouTube API
+        // Init API URL
+        NSString *apiUrl = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?id=%@&part=snippet&key=%@", videoIdToFetch, youTubeApiKey];
         
+        // Init request
         NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
-        
-        // TODO: set URL and stuff
+        [[session dataTaskWithURL:[NSURL URLWithString:apiUrl]
+                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                    if (!error) {
+                        
+                    }
+                    
+                    // Handle error
+                    else {
+                        // TODO: implement
+                    }
+                }]
+         
+         // Start request
+         resume];
     }
 }
 
