@@ -37,9 +37,14 @@
 
 #pragma mark - Init method
 
-- (instancetype)init {
+- (instancetype)initWithItemType:(KJVideoEditItemType)itemType {
     self = [super init];
     if (self) {
+        // Set item type for view
+        // NOTE - this is to determine if we're editing an existing item or creating a new one
+        self.itemTypeForView = itemType;
+        
+        // QuickDialog init
         self.resizeWhenKeyboardPresented = YES;
     }
     

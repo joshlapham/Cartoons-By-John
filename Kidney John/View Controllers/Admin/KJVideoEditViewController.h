@@ -9,9 +9,21 @@
 #import "QuickDialogController.h"
 #import <Parse/Parse.h>
 
+// ENUM for item type: either an existing item or we're creating a new one
+typedef NS_ENUM(NSUInteger, KJVideoEditItemType) {
+    KJVideoEditItemTypeExisting,
+    KJVideoEditItemTypeNew,
+};
+
 @interface KJVideoEditViewController : QuickDialogController
 
 // Properties
 @property (nonatomic, strong) PFObject *chosenVideo;
+@property (nonatomic) KJVideoEditItemType itemTypeForView;
+
+// Methods
+
+// Init
+- (instancetype)initWithItemType:(KJVideoEditItemType)itemType;
 
 @end
