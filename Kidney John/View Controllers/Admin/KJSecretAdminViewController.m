@@ -188,6 +188,29 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     [self setDataTypeForView:control.selectedSegmentIndex];
 }
 
+- (IBAction)didEnterVideoIdToFetch:(id)sender {
+    UIAlertController *fetchAlert = (UIAlertController *)sender;
+    UITextField *fetchTextField = [fetchAlert.textFields firstObject];
+    
+    // GUARD - empty text field
+    if (!fetchTextField.text.length) {
+        // TODO: show alert again?
+        return;
+    }
+    
+    else {
+        NSString *videoIdToFetch = fetchTextField.text;
+        
+        NSLog(@"%s - fetching data for video ID : %@", __func__, videoIdToFetch);
+        
+        // TODO: fetch from YouTube API
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
+        
+        // TODO: set URL and stuff
+    }
+}
+
 #pragma mark NSNotification handler methods
 
 - (IBAction)adminStoreVideoDataFetchDidHappen:(id)sender {
