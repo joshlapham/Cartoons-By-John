@@ -102,11 +102,11 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
     if (UIAccessibilityDarkerSystemColorsEnabled()) {
         self.tableView.backgroundColor = [UIColor kj_accessibilityDarkenColoursBackgroundColour];
     }
-
+    
     else {
         self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     }
-
+    
     // Register cells with tableView
     [self.tableView registerNib:[UINib nibWithNibName:[KJSocialLinkCell cellIdentifier]
                                                bundle:nil]
@@ -275,6 +275,19 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
+#pragma mark - Secret Admin VC methods
+
+-       (CGFloat)tableView:(UITableView *)tableView
+  heightForFooterInSection:(NSInteger)section {
+    if (section != 1) {
+        return 0;
+    }
+    
+    else {
+        return 25;
+    }
+}
+
 -   (UIView *)tableView:(UITableView *)tableView
  viewForFooterInSection:(NSInteger)section {
     if (section != 1) {
@@ -283,9 +296,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     else {
         // Init footer view
-        // TODO: update frame size
-        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, 200);
-//        UIView *secretTapView = [[UIView alloc] initWithFrame:tableView.tableFooterView.bounds];
+        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, tableView.tableFooterView.bounds.size.height);
         UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
         
         // Set background colour
@@ -317,9 +328,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //    KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
     
     // Present modally
-//    [self.navigationController presentViewController:secretLoginViewController
-//                                            animated:YES
-//                                          completion:nil];
+    //    [self.navigationController presentViewController:secretLoginViewController
+    //                                            animated:YES
+    //                                          completion:nil];
 }
 
 #pragma mark - Prepare for segue method
@@ -394,11 +405,11 @@ titleForHeaderInSection:(NSInteger)section {
     if (UIAccessibilityDarkerSystemColorsEnabled()) {
         headerLabel.textColor = [UIColor whiteColor];
     }
-
+    
     else {
         headerLabel.textColor = [UIColor kj_moreViewSectionTextColour];
     }
-
+    
     // Init view for section
     UIView *headerView = [[UIView alloc] init];
     [headerView addSubview:headerLabel];
