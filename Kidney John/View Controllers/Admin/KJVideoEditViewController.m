@@ -66,8 +66,19 @@
     _saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                 target:self
                                                                 action:@selector(didTapSaveButton:)];
-    // NOTE - disabled at the start
-    _saveButton.enabled = NO;
+    
+    // Check data type for view and enable/disable button accordingly
+    // Existing item
+    if (self.itemTypeForView == KJVideoEditItemTypeExisting) {
+        _saveButton.enabled = NO;
+    }
+    
+    // New item
+    else if (self.itemTypeForView == KJVideoEditItemTypeNew) {
+        // NOTE - calling this method enables the button; we do this to ensure confirmation alerts are shown to user if they tap 'Cancel' button as this is a new item
+        [self setUserDidMakeEdits:YES];
+    }
+    
     self.navigationItem.rightBarButtonItem = _saveButton;
 }
 
