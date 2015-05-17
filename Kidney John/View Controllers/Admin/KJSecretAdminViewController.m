@@ -33,7 +33,10 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
 
 @end
 
-@implementation KJSecretAdminViewController
+@implementation KJSecretAdminViewController {
+    // Private property for YouTube API key
+    NSString *youTubeApiKey;
+}
 
 #pragma mark - dealloc method
 
@@ -50,6 +53,9 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     
     // Set title
     self.title = @"Admin";
+    
+    // Set YouTube API key property
+    [self readAPIKeysFromPlist];
     
     // Register for NSNotifications
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -79,6 +85,44 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     // NOTE - we always start on 'Videos' segment
     // TODO: review this; possibly start on last-selected segment via NSUserDefaults?
     [self setDataTypeForView:KJSecretAdminDataTypeVideos];
+}
+
+#pragma mark - Read API keys from plist method
+
+// TODO: refactor for reusability
+// Currently using this method on App Delegate
+
+- (void)readAPIKeysFromPlist {
+    NSString *errorDesc = nil;
+    NSPropertyListFormat format;
+    NSString *plistPath;
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                              NSUserDomainMask, YES) objectAtIndex:0];
+    
+    plistPath = [rootPath stringByAppendingPathComponent:@"Keys.plist"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:plistPath]) {
+        plistPath = [[NSBundle mainBundle] pathForResource:@"Keys"
+                                                    ofType:@"plist"];
+    }
+    
+    NSData *plistXML = [[NSFileManager defaultManager] contentsAtPath:plistPath];
+    
+    // TODO: update to fix compiler errors
+    
+    NSDictionary *temp = (NSDictionary *)[NSPropertyListSerialization
+                                          propertyListFromData:plistXML
+                                          mutabilityOption:NSPropertyListMutableContainersAndLeaves
+                                          format:&format
+                                          errorDescription:&errorDesc];
+    
+    if (!temp) {
+        DDLogError(@"%s - error reading Parse keys.plist: %@, format: %d", __func__, errorDesc, format);
+    }
+    
+    youTubeApiKey = [temp objectForKey:@"youTubeApiKey"];
+    
+    //    DDLogVerbose(@"Parse App ID: %@, Client Key: %@", parseAppId, parseClientKey);
 }
 
 #pragma mark - Setup collectionView method
@@ -256,16 +300,16 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
         [MBProgressHUD hideAllHUDsForView:self.view
                                  animated:YES];
         
-//        [_collectionView performBatchUpdates:^{
-////            _collectionView deleteItemsAtIndexPaths:[_collectionView index]
-//            _collectionView.dataSource = nil;
-////            _collectionView.delegate = nil;
-//            
-////            _dataSourceForView = nil;
-//        } completion:^(BOOL finished) {
-//            // Reload data
-////            [_collectionView reloadData];
-//        }];
+        //        [_collectionView performBatchUpdates:^{
+        ////            _collectionView deleteItemsAtIndexPaths:[_collectionView index]
+        //            _collectionView.dataSource = nil;
+        ////            _collectionView.delegate = nil;
+        //
+        ////            _dataSourceForView = nil;
+        //        } completion:^(BOOL finished) {
+        //            // Reload data
+        ////            [_collectionView reloadData];
+        //        }];
     }
 }
 
