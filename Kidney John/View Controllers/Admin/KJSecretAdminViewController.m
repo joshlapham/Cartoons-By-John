@@ -273,8 +273,10 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             
                             NSString *fetchedName = [[results valueForKeyPath:@"items.snippet.title"] firstObject];
                             NSString *fetchedDescription = [[results valueForKeyPath:@"items.snippet.description"] firstObject];
+                            NSString *fetchedDate = [[results valueForKeyPath:@"items.snippet.publishedAt"] firstObject];
+                            NSString *parsedDate = [[fetchedDate componentsSeparatedByString:@"T"] firstObject];
                             
-                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@", __func__, fetchedName, fetchedDescription);
+                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@", __func__, fetchedName, fetchedDescription, parsedDate);
                         }
                         
                         // Handle parse JSON error
