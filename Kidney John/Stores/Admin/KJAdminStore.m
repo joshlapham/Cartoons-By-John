@@ -83,8 +83,11 @@ NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStor
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             if (!error) {
                 // The find succeeded
+                
+                // TODO: move this out of this scope (on all stores)
                 // Set connection state to CONNECTED
                 self.connectionState = KJAdminStoreStateConnected;
+                
                 DDLogInfo(@"AdminStore: connection state: %lu", (unsigned long)self.connectionState);
                 
                 // Show network activity monitor
