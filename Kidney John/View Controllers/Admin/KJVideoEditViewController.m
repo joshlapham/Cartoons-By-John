@@ -18,6 +18,7 @@
 #import <QButtonElement.h>
 #import <QAppearance.h>
 #import <QElement+Appearance.h>
+#import "KJAdminStore.h"
 
 @interface KJVideoEditViewController ()
 
@@ -383,6 +384,10 @@
         UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes"
                                                             style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction *action) {
+                                                              // Refresh data
+                                                              // NOTE - this will post a notification to Secret Admin VC to reload its' data
+                                                              [[KJAdminStore sharedStore] fetchVideoData];
+                                                              
                                                               // Go back to previous view
                                                               [self dismissViewControllerAnimated:YES
                                                                                        completion:nil];
