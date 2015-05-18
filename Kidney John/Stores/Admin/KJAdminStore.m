@@ -149,4 +149,14 @@ NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStor
     });
 }
 
+#pragma mark - Getter/setter override methods
+
+- (void)setConnectionState:(KJAdminStoreConnectionState)connectionState {
+    _connectionState = connectionState;
+    
+    NSLog(@"%s", __func__);
+    
+    // TODO: post notifications depending on connection state
+}
+
 @end
