@@ -12,3 +12,8 @@ pod 'PBYouTubeVideoViewController', '1.0.1'
 pod 'QuickDialog', '1.0'
 
 #pod 'Reveal-iOS-SDK', '~> 1.0'
+
+post_install do | installer |
+  require 'fileutils'
+  FileUtils.cp_r('Pods/Target Support Files/Pods/Pods-acknowledgements.plist', 'Kidney John/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+end
