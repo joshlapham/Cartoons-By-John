@@ -19,6 +19,7 @@
 #import <QAppearance.h>
 #import <QElement+Appearance.h>
 #import "KJAdminStore.h"
+#import "KJVideoStore.h"
 
 @interface KJVideoEditViewController ()
 
@@ -118,7 +119,7 @@
     root.grouped = YES;
     
     // Set title
-    root.title = [self.chosenVideo valueForKey:@"videoName"];
+    root.title = [self.chosenVideo valueForKey:KJParseKeyVideosName];
     
     // Section
     {
@@ -126,7 +127,7 @@
         section.title = @"Details";
         
         // Video ID
-        NSString *videoId = [self.chosenVideo valueForKey:@"videoId"];
+        NSString *videoId = [self.chosenVideo valueForKey:KJParseKeyVideosId];
         if (videoId) {
             {
                 QLabelElement *element = [[QLabelElement alloc] init];
@@ -141,7 +142,7 @@
         {
             QEntryElement *element = [[QEntryElement alloc] init];
             element.title = @"Title";
-            element.textValue = [self.chosenVideo valueForKey:@"videoName"];
+            element.textValue = [self.chosenVideo valueForKey:KJParseKeyVideosName];
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
@@ -151,7 +152,7 @@
                 //                __weak typeof(element) weakElement;
                 
                 [self.chosenVideo setValue:element.textValue
-                                    forKey:@"videoName"];
+                                    forKey:KJParseKeyVideosName];
             };
             
             [section addElement:element];
@@ -161,7 +162,7 @@
         {
             QEntryElement *element = [[QEntryElement alloc] init];
             element.title = @"Description";
-            element.textValue = [self.chosenVideo valueForKey:@"videoDescription"];
+            element.textValue = [self.chosenVideo valueForKey:KJParseKeyVideosDescription];
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
@@ -171,7 +172,7 @@
                 //                __weak typeof(element) weakElement;
                 
                 [self.chosenVideo setValue:element.textValue
-                                    forKey:@"videoDescription"];
+                                    forKey:KJParseKeyVideosDescription];
             };
             
             [section addElement:element];
@@ -181,7 +182,7 @@
         {
             QEntryElement *element = [[QEntryElement alloc] init];
             element.title = @"Duration";
-            element.textValue = [self.chosenVideo valueForKey:@"videoDuration"];
+            element.textValue = [self.chosenVideo valueForKey:KJParseKeyVideosDuration];
             
             element.onValueChanged = ^(QRootElement *rootElement) {
                 [self setUserDidMakeEdits:YES];
@@ -191,7 +192,7 @@
                 //                __weak typeof(element) weakElement;
                 
                 [self.chosenVideo setValue:element.textValue
-                                    forKey:@"videoDuration"];
+                                    forKey:KJParseKeyVideosDuration];
             };
             
             [section addElement:element];
@@ -205,7 +206,7 @@
             //            element.showPickerInCell = YES;
             
             // Set date value (parse date string)
-            NSString *dateString = [self.chosenVideo valueForKey:@"date"];
+            NSString *dateString = [self.chosenVideo valueForKey:KJParseKeyVideosDate];
             NSDate *videoDate = [[self dateFormatter] dateFromString:dateString];
             
             element.dateValue = videoDate;
@@ -220,7 +221,7 @@
                 NSLog(@"%s - CHOSEN DATE : %@", __func__, [[self dateFormatter] stringFromDate:element.dateValue]);
                 
                 [self.chosenVideo setValue:[[self dateFormatter] stringFromDate:element.dateValue]
-                                    forKey:@"date"];
+                                    forKey:KJParseKeyVideosDate];
             };
             
             [section addElement:element];
@@ -451,7 +452,7 @@
 }
 
 - (IBAction)userDidConfirmSave:(id)sender {
-    DDLogInfo(@"%s - updating item %@ on Parse", __func__, [self.chosenVideo valueForKey:@"videoName"]);
+    DDLogInfo(@"%s - updating item %@ on Parse", __func__, [self.chosenVideo valueForKey:KJParseKeyVideosName]);
     
     // Show progress
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
