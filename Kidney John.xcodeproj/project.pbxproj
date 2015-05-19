@@ -79,6 +79,7 @@
 		C95A0B9D1B06CF97007AA777 /* KJVideoDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A0B9C1B06CF97007AA777 /* KJVideoDataSource.m */; };
 		C95A0BA31B06D2AD007AA777 /* KJVideoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A0BA21B06D2AD007AA777 /* KJVideoCollectionViewCell.m */; };
 		C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C961F2621AA5598D0015E67F /* Launch Screen.xib */; };
+		C96734581B0AC27E00297754 /* KJVideoParseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C96734571B0AC27E00297754 /* KJVideoParseItem.m */; };
 		C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C968D7D71A8C482800C3B621 /* KJComicListCell.m */; };
 		C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C968D7D81A8C482800C3B621 /* KJComicListCell.xib */; };
 		C9C4F9511B0700B200F0659C /* KJVideoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9C4F9501B0700B200F0659C /* KJVideoCollectionViewCell.xib */; };
@@ -229,6 +230,8 @@
 		C95A0BA11B06D2AD007AA777 /* KJVideoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoCollectionViewCell.h; path = Cells/KJVideoCollectionViewCell.h; sourceTree = "<group>"; };
 		C95A0BA21B06D2AD007AA777 /* KJVideoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoCollectionViewCell.m; path = Cells/KJVideoCollectionViewCell.m; sourceTree = "<group>"; };
 		C961F2621AA5598D0015E67F /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		C96734561B0AC27E00297754 /* KJVideoParseItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoParseItem.h; path = Models/Parse/KJVideoParseItem.h; sourceTree = "<group>"; };
+		C96734571B0AC27E00297754 /* KJVideoParseItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoParseItem.m; path = Models/Parse/KJVideoParseItem.m; sourceTree = "<group>"; };
 		C968D7D61A8C482800C3B621 /* KJComicListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListCell.h; path = Cells/KJComicListCell.h; sourceTree = "<group>"; };
 		C968D7D71A8C482800C3B621 /* KJComicListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicListCell.m; path = Cells/KJComicListCell.m; sourceTree = "<group>"; };
 		C968D7D81A8C482800C3B621 /* KJComicListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJComicListCell.xib; path = Cells/KJComicListCell.xib; sourceTree = "<group>"; };
@@ -533,6 +536,8 @@
 				68E461EC18609897008D3E36 /* KJVideo.m */,
 				68E1D0391A60BA6B0054C7E1 /* KJVideo+Methods.h */,
 				68E1D03A1A60BA6B0054C7E1 /* KJVideo+Methods.m */,
+				C96734561B0AC27E00297754 /* KJVideoParseItem.h */,
+				C96734571B0AC27E00297754 /* KJVideoParseItem.m */,
 				685C171518E29B5300088D26 /* KJComic.h */,
 				685C171618E29B5300088D26 /* KJComic.m */,
 				68E1D0361A6083650054C7E1 /* KJComic+Methods.h */,
@@ -767,6 +772,7 @@
 				683CAE5918C77DF2006173FA /* KJDoodleCell.m in Sources */,
 				68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */,
 				6837E5D51ADD052F00779F18 /* KJRandomViewDataSource.m in Sources */,
+				C96734581B0AC27E00297754 /* KJVideoParseItem.m in Sources */,
 				68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */,
 				C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */,
 				68DB55031B06A12900F74329 /* KJSecretAdminViewController.m in Sources */,
