@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 
 // Constants
+// Parse keys
+extern NSString * const KJParseKeyVideosId;
+extern NSString * const KJParseKeyVideosName;
+extern NSString * const KJParseKeyVideosDescription;
+extern NSString * const KJParseKeyVideosDate;
+extern NSString * const KJParseKeyVideosDuration;
+
+// NSNotifications
 extern NSString * const KJVideoDataFetchDidHappenNotification;
 
 @interface KJVideoStore : NSObject

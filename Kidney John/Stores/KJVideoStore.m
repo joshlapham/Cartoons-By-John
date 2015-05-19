@@ -14,12 +14,13 @@
 #import "NSUserDefaults+KJSettings.h"
 #import "KJVideo+Methods.h"
 
-// Constants for Parse object keys
-static NSString *kParseVideoIdKey = @"videoId";
-static NSString *kParseVideoNameKey = @"videoName";
-static NSString *kParseVideoDescriptionKey = @"videoDescription";
-static NSString *kParseVideoDateKey = @"date";
-static NSString *kParseVideoDurationKey = @"videoDuration";
+// Constants
+// Parse keys
+NSString * const KJParseKeyVideosId = @"videoId";
+NSString * const KJParseKeyVideosName = @"videoName";
+NSString * const KJParseKeyVideosDescription = @"videoDescription";
+NSString * const KJParseKeyVideosDate = @"date";
+NSString * const KJParseKeyVideosDuration = @"videoDuration";
 
 // Constant for NSNotification name
 NSString * const KJVideoDataFetchDidHappenNotification = @"KJVideoDataFetchDidHappen";
@@ -119,11 +120,11 @@ static NSString *kVideoAttributeKeyVideoDate = @"videoDate";
 // Method to check if existing videos in Core Data need updating if values from server have changed since last data fetch.
 - (void)checkIfVideoNeedsUpdateWithParseObject:(PFObject *)fetchedParseObject {
     // Init strings with values from Parse
-    NSString *videoId = fetchedParseObject[kParseVideoIdKey];
-    NSString *videoName = fetchedParseObject[kParseVideoNameKey];
-    NSString *videoDescription = fetchedParseObject[kParseVideoDescriptionKey];
-    NSString *videoDate = fetchedParseObject[kParseVideoDateKey];
-    NSString *videoDuration = fetchedParseObject[kParseVideoDurationKey];
+    NSString *videoId = fetchedParseObject[KJParseKeyVideosId];
+    NSString *videoName = fetchedParseObject[KJParseKeyVideosName];
+    NSString *videoDescription = fetchedParseObject[KJParseKeyVideosDescription];
+    NSString *videoDate = fetchedParseObject[KJParseKeyVideosDate];
+    NSString *videoDuration = fetchedParseObject[KJParseKeyVideosDuration];
     
     // Init fetch request for video matching video ID
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -295,7 +296,9 @@ static NSString *kVideoAttributeKeyVideoDate = @"videoDate";
         PFQuery *query = [PFQuery queryWithClassName:[KJVideo parseClassName]];
         
         // Query all videos
-        [query whereKey:kParseVideoNameKey notEqualTo:@"LOL"];
+        // TODO: do we really need this?
+        [query whereKey:KJParseKeyVideosName
+             notEqualTo:@"LOL"];
         
         // Cache policy
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
@@ -319,10 +322,11 @@ static NSString *kVideoAttributeKeyVideoDate = @"videoDate";
                 
                 for (PFObject *object in objects) {
                     // Init strings for video ID and name
-                    NSString *videoId = object[kParseVideoIdKey];
-                    NSString *videoName = object[kParseVideoNameKey];
+                    NSString *videoId = object[KJParseKeyVideosId];
+                    NSString *videoName = object[KJParseKeyVideosName];
                     
                     // Check if video is set to 'active' on server
+                    // TODO: update to use string constants here
                     if ([object[@"is_active"] isEqual:@"1"]) {
                         // If video doesn't aleady exist locally in Core Data, then create
                         if (![alreadyFetchedVideoIds containsObject:videoId]) {
@@ -332,11 +336,11 @@ static NSString *kVideoAttributeKeyVideoDate = @"videoDate";
                             KJVideo *newVideo = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([KJVideo class])
                                                                               inManagedObjectContext:self.managedObjectContext];
                             
-                            newVideo.videoId = object[kParseVideoIdKey];
-                            newVideo.videoName = object[kParseVideoNameKey];
-                            newVideo.videoDescription = object[kParseVideoDescriptionKey];
-                            newVideo.videoDate = object[kParseVideoDateKey];
-                            newVideo.videoDuration = object[kParseVideoDurationKey];
+                            newVideo.videoId = object[KJParseKeyVideosId];
+                            newVideo.videoName = object[KJParseKeyVideosName];
+                            newVideo.videoDescription = object[KJParseKeyVideosDescription];
+                            newVideo.videoDate = object[KJParseKeyVideosDate];
+                            newVideo.videoDuration = object[KJParseKeyVideosDuration];
                             
                             // Set changes to videos were made property so that we can trigger a managedObjectContext save later.
                             // This saves us from triggering a save every time we fetch data from the server.
