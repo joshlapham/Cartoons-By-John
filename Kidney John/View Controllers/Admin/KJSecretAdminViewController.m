@@ -13,6 +13,7 @@
 #import "KJVideoEditViewController.h"
 #import <MBProgressHUD.h>
 #import "UIColor+KJColours.h"
+#import "KJVideoStore.h"
 
 // ENUMs
 // Data type for view
@@ -300,17 +301,17 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                                                                                   // Init new PFObject
                                                                                   PFObject *newVideo = [PFObject objectWithClassName:@"Video"];
                                                                                   [newVideo setValue:fetchedName
-                                                                                              forKey:@"videoName"];
+                                                                                              forKey:KJParseKeyVideosName];
                                                                                   [newVideo setValue:fetchedDescription
-                                                                                              forKey:@"videoDescription"];
+                                                                                              forKey:KJParseKeyVideosDescription];
                                                                                   [newVideo setValue:parsedDate
-                                                                                              forKey:@"date"];
+                                                                                              forKey:KJParseKeyVideosDate];
                                                                                   [newVideo setValue:[NSNull null]
                                                                                               forKey:@"is_active"];
                                                                                   [newVideo setValue:videoIdToFetch
-                                                                                              forKey:@"videoId"];
+                                                                                              forKey:KJParseKeyVideosId];
                                                                                   [newVideo setValue:parsedDuration
-                                                                                              forKey:@"videoDuration"];
+                                                                                              forKey:KJParseKeyVideosDuration];
                                                                                   
                                                                                   // Init Edit Video VC
                                                                                   KJVideoEditViewController *viewController = [[KJVideoEditViewController alloc] initWithItemType:KJVideoEditItemTypeNew];
