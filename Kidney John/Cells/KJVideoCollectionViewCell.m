@@ -12,6 +12,7 @@
 #import "KJVideo+Methods.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "KJVideoStore.h"
 
 @interface KJVideoCollectionViewCell ()
 
@@ -61,11 +62,12 @@
     PFObject *cellData = (PFObject *)data;
     
     // TODO: implement
-    _nameLabel.text = [cellData valueForKey:@"videoName"];
-    _descriptionLabel.text = [cellData valueForKey:@"date"];
-    _durationLabel.text = [cellData valueForKey:@"videoDuration"];
+    _nameLabel.text = [cellData valueForKey:KJParseKeyVideosName];
+    // NOTE - description label is actually date
+    _descriptionLabel.text = [cellData valueForKey:KJParseKeyVideosDate];
+    _durationLabel.text = [cellData valueForKey:KJParseKeyVideosDuration];
     
-    NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, [cellData valueForKey:@"videoId"]];
+    NSString *urlString = [NSString stringWithFormat:KJYouTubeVideoThumbnailUrlString, [cellData valueForKey:KJParseKeyVideosId]];
     
     [_thumbnailView sd_setImageWithURL:[NSURL URLWithString:urlString]
                       placeholderImage:[UIImage imageNamed:@"placeholder.png"]

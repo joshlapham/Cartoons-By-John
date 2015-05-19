@@ -10,13 +10,7 @@
 #import "KJVideo.h"
 #import "KJVideo+Methods.h"
 #import "Parse.h"
-
-// Constants for Parse object keys
-static NSString *kParseVideoIdKey = @"videoId";
-static NSString *kParseVideoNameKey = @"videoName";
-static NSString *kParseVideoDescriptionKey = @"videoDescription";
-static NSString *kParseVideoDateKey = @"date";
-static NSString *kParseVideoDurationKey = @"videoDuration";
+#import "KJVideoStore.h"
 
 // Constant for NSNotification name
 NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStoreVideoDataFetchDidHappen";
@@ -74,7 +68,8 @@ NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStor
         PFQuery *query = [PFQuery queryWithClassName:[KJVideo parseClassName]];
         
         // Query all videos
-        [query whereKey:kParseVideoNameKey notEqualTo:@"LOL"];
+        [query whereKey:KJParseKeyVideosName
+             notEqualTo:@"LOL"];
         
         // Cache policy
         //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
