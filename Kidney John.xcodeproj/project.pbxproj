@@ -149,6 +149,7 @@
 		687BC373184D9C8900F45970 /* KJComicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicCell.m; path = Cells/KJComicCell.m; sourceTree = "<group>"; };
 		687BC377184EB75500F45970 /* KJComicDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicDetailView.h; path = "View Controllers/KJComicDetailView.h"; sourceTree = "<group>"; };
 		687BC378184EB75500F45970 /* KJComicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicDetailView.m; path = "View Controllers/KJComicDetailView.m"; sourceTree = "<group>"; };
+		687CE8141B8B204E00B1DD66 /* Kidney John-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Bridging-Header.h"; sourceTree = "<group>"; };
 		6891D13B191C7F1B001AD6A5 /* KJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJConstants.h; sourceTree = "<group>"; };
 		6891D13C191C7F1B001AD6A5 /* KJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJConstants.m; sourceTree = "<group>"; };
 		689C5B841AEC726900C70077 /* KJSocialLinkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLinkCell.h; path = Cells/KJSocialLinkCell.h; sourceTree = "<group>"; };
@@ -502,6 +503,7 @@
 				68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */,
 				6832C3741924B91E00E94788 /* Keys.plist */,
 				68211A231927A95000B24BF1 /* Localizable.strings */,
+				687CE8141B8B204E00B1DD66 /* Kidney John-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -619,6 +621,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = KJ;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Josh Lapham";
 				TargetAttributes = {
@@ -926,12 +929,14 @@
 			baseConfigurationReference = AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-l\"Pods-Bolts\"",
@@ -980,6 +985,8 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4ad5a33a-c37b-4354-a875-2e2b1040e7b5";
+				SWIFT_OBJC_BRIDGING_HEADER = "Kidney John/Kidney John-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -990,12 +997,14 @@
 			baseConfigurationReference = 4D94687170B9557CDE67339B /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-l\"Pods-Bolts\"",
@@ -1044,6 +1053,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "fbdd4278-7757-44a6-8e67-0d1e8b5eb8cb";
+				SWIFT_OBJC_BRIDGING_HEADER = "Kidney John/Kidney John-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
