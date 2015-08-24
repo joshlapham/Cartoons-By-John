@@ -307,7 +307,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         // TODO: update this to be complex!
         UITapGestureRecognizer *secretGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                         action:@selector(userDidPerformSecretGesture:)];
-        secretGesture.numberOfTapsRequired = 2;
+        secretGesture.numberOfTapsRequired = 13;
         [secretTapView addGestureRecognizer:secretGesture];
         
         return secretTapView;
