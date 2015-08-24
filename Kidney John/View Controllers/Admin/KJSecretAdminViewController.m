@@ -285,7 +285,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                             NSString *fetchedDuration = [[results valueForKeyPath:@"items.contentDetails.duration"] firstObject];
                             NSString *parsedDuration = [[fetchedDuration componentsSeparatedByString:@"PT"] lastObject];
                             
-                            NSLog(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@\nDURATION : %@", __func__, fetchedName, fetchedDescription, parsedDate, parsedDuration);
+                            DDLogVerbose(@"%s - fetched video:\nNAME : %@\nDESC : %@\nDATE : %@\nDURATION : %@", __func__, fetchedName, fetchedDescription, parsedDate, parsedDuration);
                             
                             // Show alert with fetched details
                             // Init alert
@@ -342,14 +342,14 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
                         // Handle parse JSON error
                         else {
                             // TODO: implement
-                            NSLog(@"%s - JSON PARSE ERROR : %@", __func__, [jsonError localizedDescription]);
+                            DDLogVerbose(@"%s - JSON PARSE ERROR : %@", __func__, [jsonError localizedDescription]);
                         }
                     }
                     
                     // Handle error
                     else {
                         // TODO: implement
-                        NSLog(@"%s - FETCH ERROR : %@", __func__, [error localizedDescription]);
+                        DDLogVerbose(@"%s - FETCH ERROR : %@", __func__, [error localizedDescription]);
                     }
                 }]
          
@@ -386,7 +386,7 @@ typedef NS_ENUM(NSUInteger, KJSecretAdminDataType) {
     
     // Videos
     if (_dataTypeForView == KJSecretAdminDataTypeVideos) {
-        NSLog(@"%s - chose Videos", __func__);
+        DDLogVerbose(@"%s - chose Videos", __func__);
         
         // Init data source
         _dataSourceForView = [[KJVideoDataSource alloc] init];

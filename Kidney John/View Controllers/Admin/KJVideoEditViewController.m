@@ -218,7 +218,7 @@
                 // TODO: fix compiler warning here
                 
                 //                NSLog(@"ELEMENT VALUE : %@", element.value);
-                NSLog(@"%s - CHOSEN DATE : %@", __func__, [[self dateFormatter] stringFromDate:element.dateValue]);
+                DDLogVerbose(@"%s - CHOSEN DATE : %@", __func__, [[self dateFormatter] stringFromDate:element.dateValue]);
                 
                 [self.chosenVideo setValue:[[self dateFormatter] stringFromDate:element.dateValue]
                                     forKey:KJParseKeyVideosDate];
@@ -336,7 +336,7 @@
                                                              [MBProgressHUD showHUDAddedTo:self.view
                                                                                   animated:YES];
                                                              
-                                                             NSLog(@"%s - CHOSEN VIDEO : %@", __func__, self.chosenVideo.debugDescription);
+                                                             DDLogVerbose(@"%s - CHOSEN VIDEO : %@", __func__, self.chosenVideo.debugDescription);
                                                              
                                                              // Delete object from Parse
                                                              [self.chosenVideo deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {

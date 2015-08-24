@@ -88,7 +88,7 @@ NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStor
                 // Show network activity monitor
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
                 
-                NSLog(@"%s - GOT VIDEO COUNT : %d", __func__, objects.count);
+                DDLogVerbose(@"%s - GOT VIDEO COUNT : %d", __func__, objects.count);
                 
                 
                 // Set fetched videos array
@@ -152,7 +152,7 @@ NSString * const KJAdminStoreVideoDataFetchDidHappenNotification = @"KJAdminStor
 - (void)setConnectionState:(KJAdminStoreConnectionState)connectionState {
     _connectionState = connectionState;
     
-    NSLog(@"%s", __func__);
+    DDLogVerbose(@"%s", __func__);
     
     // TODO: post notifications depending on connection state
 }
