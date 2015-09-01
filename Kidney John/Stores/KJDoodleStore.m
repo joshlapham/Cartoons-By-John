@@ -64,7 +64,6 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
     }
     
     // Cache URL for SDWebImage
-    [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls];
     [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:prefetchUrls
                                                       progress:nil
                                                      completed:^(NSUInteger finishedCount, NSUInteger skippedCount) {
