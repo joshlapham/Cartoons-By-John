@@ -33,6 +33,7 @@
 		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
+		687CE81B1B8B22C800B1DD66 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687CE81A1B8B22C800B1DD66 /* CameraViewController.swift */; };
 		6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D13C191C7F1B001AD6A5 /* KJConstants.m */; };
 		689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C5B851AEC726900C70077 /* KJSocialLinkCell.m */; };
 		689C5B891AEC8E3700C70077 /* KJParseAnalyticsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C5B881AEC8E3700C70077 /* KJParseAnalyticsStore.m */; };
@@ -150,6 +151,7 @@
 		687BC377184EB75500F45970 /* KJComicDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicDetailView.h; path = "View Controllers/KJComicDetailView.h"; sourceTree = "<group>"; };
 		687BC378184EB75500F45970 /* KJComicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicDetailView.m; path = "View Controllers/KJComicDetailView.m"; sourceTree = "<group>"; };
 		687CE8141B8B204E00B1DD66 /* Kidney John-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Bridging-Header.h"; sourceTree = "<group>"; };
+		687CE81A1B8B22C800B1DD66 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraViewController.swift; path = "View Controllers/Pals/CameraViewController.swift"; sourceTree = "<group>"; };
 		6891D13B191C7F1B001AD6A5 /* KJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJConstants.h; sourceTree = "<group>"; };
 		6891D13C191C7F1B001AD6A5 /* KJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJConstants.m; sourceTree = "<group>"; };
 		689C5B841AEC726900C70077 /* KJSocialLinkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLinkCell.h; path = Cells/KJSocialLinkCell.h; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */,
 				6834315E1A69A3A60050745D /* Favourites */,
 				685EE0651B054D24002E19FA /* Admin */,
+				687CE8191B8B22A000B1DD66 /* Pals */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -350,6 +353,14 @@
 				C9C4F9551B071AD700F0659C /* KJVideoEditViewController.m */,
 			);
 			name = Admin;
+			sourceTree = "<group>";
+		};
+		687CE8191B8B22A000B1DD66 /* Pals */ = {
+			isa = PBXGroup;
+			children = (
+				687CE81A1B8B22C800B1DD66 /* CameraViewController.swift */,
+			);
+			name = Pals;
 			sourceTree = "<group>";
 		};
 		68A2D60F1A5EBB65000DA2CF /* Categories */ = {
@@ -743,6 +754,7 @@
 				C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */,
 				C9CD4DD01AF1D5290015715A /* KJBaseCollectionViewCell.m in Sources */,
 				C95A0BA31B06D2AD007AA777 /* KJVideoCollectionViewCell.m in Sources */,
+				687CE81B1B8B22C800B1DD66 /* CameraViewController.swift in Sources */,
 				68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */,
 				68024D311A628D0900D2A900 /* KJRandomImage+Methods.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
@@ -932,6 +944,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
@@ -1000,6 +1013,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
