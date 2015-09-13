@@ -32,7 +32,7 @@ static NSString *kDoodleAttributeKeyInstagramId = @"instagramId";
 
 @implementation KJDoodleStore {
     BOOL __block changesToDoodlesWereMade;
-    NSArray __block *existingDoodlesInCoreDataBeforeFetch;
+    NSMutableArray __block *existingDoodlesInCoreDataBeforeFetch;
 }
 
 #pragma mark Init method
@@ -201,77 +201,48 @@ static NSString *kDoodleAttributeKeyInstagramId = @"instagramId";
     }
 }
 
-// TODO: fix this method; currently fails every time
 // Method to check if existing doodles in Core Data need updating if values from server have changed since last data fetch.
 - (void)checkIfDoodleNeedsUpdateWithParseObject:(PFObject *)fetchedParseObject {
     // Init strings with values from Parse
     NSString *imageId = fetchedParseObject[kParseImageIdKey];
     NSString *imageUrl = fetchedParseObject[kParseImageUrlKey];
-    NSString *imageDescription = fetchedParseObject[kParseImageDescriptionKey];
     NSString *imageDate = fetchedParseObject[kParseImageDateKey];
     NSString *instagramId = fetchedParseObject[kParseImageInstagramIdKey];
     
-    // Init fetch request for doodle matching image URL
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    // Init predicate for doodles matching image URL
-    NSPredicate *imageUrlPredicate = [NSPredicate predicateWithFormat:@"%@ == %@",
-                                      kDoodleAttributeKeyImageUrl,
-                                      imageUrl];
-    
-    // Init predicate for doodles in pre-fetched doodles array
-    NSPredicate *prefetchedDoodlesPredicate = [NSPredicate predicateWithFormat:@"self IN %@", existingDoodlesInCoreDataBeforeFetch];
-    
-    // Init final combined predicate to use
-    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[ imageUrlPredicate,
-                                                                                   prefetchedDoodlesPredicate ]];
-    
-    // Init entity
-    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
-                                              inManagedObjectContext:self.managedObjectContext];
-    
-    // Set fetch request properties
-    fetchRequest.predicate = predicate;
-    fetchRequest.entity = entity;
-    
-    // Execute the fetch
-    NSError *error;
-    NSArray *doodlesInCoreData = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                          error:&error];
-    
-    // If we found a matching doodle
-    if ([doodlesInCoreData count] > 0) {
-        // Checking doodles one at a time, so firstObject works here
-        KJRandomImage *doodleToCheck  = [doodlesInCoreData firstObject];
+    // TODO: implement check for existingDoodles count first? elsewhere?
+    for (KJRandomImage *doodle in existingDoodlesInCoreDataBeforeFetch) {
+        BOOL changesFound = NO;
         
-        // TODO: allow for instagramId property
-
-        if (![doodleToCheck.imageId isEqualToString:imageId] ||
-            ![doodleToCheck.imageUrl isEqualToString:imageUrl] ||
-            ![doodleToCheck.imageDescription isEqualToString:imageDescription] ||
-            ![doodleToCheck.imageDate isEqualToString:imageDate]) {
-            DDLogInfo(@"doodleStore: doodle needs update: %@", imageUrl);
+        if ([doodle.imageId isEqualToString:imageId]) {
+            // Check image URL
+            if (![doodle.imageUrl isEqualToString:imageUrl]) {
+                DDLogInfo(@"doodleStore: URL updated on server");
+                doodle.imageUrl = imageUrl;
+                changesFound = YES;
+            }
             
-            // Update properties
-            doodleToCheck.imageId = imageId;
-            doodleToCheck.imageUrl = imageUrl;
-            doodleToCheck.imageDescription = imageDescription;
-            doodleToCheck.imageDate = imageDate;
-            doodleToCheck.instagramId = instagramId;
+            // Check Instagram IDs
+            if (![doodle.instagramId isEqualToString:instagramId]) {
+                DDLogInfo(@"doodleStore: Instagram ID updated on server");
+                doodle.instagramId = instagramId;
+                changesFound = YES;
+            }
             
+            // Check image date
+            if (![doodle.imageDate isEqualToString:imageDate]) {
+                DDLogInfo(@"doodleStore: date updated on server");
+                doodle.imageDate = imageDate;
+                changesFound = YES;
+            }
+            
+            // TODO: check image description
+        }
+        
+        if (changesFound) {
             // Set changes to doodles were made property so that we can trigger a managedObjectContext save later.
             // This saves us from triggering a save every time we fetch data from the server.
             changesToDoodlesWereMade = YES;
         }
-        
-        else {
-            DDLogInfo(@"doodleStore: doodle doesn't need update: %@", imageUrl);
-        }
-    }
-    
-    // TODO: testing
-    else {
-        DDLogVerbose(@"%s - NO DOODLES IN CORE DATA FETCH", __func__);
     }
 }
 
@@ -302,7 +273,7 @@ static NSString *kDoodleAttributeKeyInstagramId = @"instagramId";
 }
 
 // Method to lazy init existingDoodlesInCoreDataBeforeFetch array.
-- (NSArray *)setupExistingDoodlesInCoreDataBeforeFetchArray {
+- (NSMutableArray *)setupExistingDoodlesInCoreDataBeforeFetchArray {
     // If we have already init'd, then return existing array
     if (existingDoodlesInCoreDataBeforeFetch != nil) {
         DDLogInfo(@"doodleStore: have already init'd existing doodles in Core Data array");
@@ -310,7 +281,7 @@ static NSString *kDoodleAttributeKeyInstagramId = @"instagramId";
     }
     
     // Init array with fetchExistingDoodlesInCoreData method
-    existingDoodlesInCoreDataBeforeFetch = [self fetchExistingDoodlesInCoreData];
+    existingDoodlesInCoreDataBeforeFetch =  [NSMutableArray arrayWithArray:[self fetchExistingDoodlesInCoreData]];
     
     return existingDoodlesInCoreDataBeforeFetch;
 }
@@ -355,7 +326,7 @@ static NSString *kDoodleAttributeKeyInstagramId = @"instagramId";
     return [imageUrlStrings copy];
 }
 
-// TODO: document this method
+// Method to fetch data from Parse backend.
 - (void)fetchDoodleData {
     // Check connection state
     switch (self.connectionState) {
@@ -445,53 +416,24 @@ static NSString *kDoodleAttributeKeyInstagramId = @"instagramId";
                     else {
                         DDLogInfo(@"doodleStore: doodle not active: %@", object[kParseImageUrlKey]);
                         
-                        if (![alreadyFetchedImageUrls containsObject:imageUrl]) {
-                            DDLogInfo(@"doodleStore: doodle %@ isn't active but isn't in database, so it's all good", imageUrl);
-                        }
+                        NSArray *existingDoodlesCopy = existingDoodlesInCoreDataBeforeFetch.copy;
                         
-                        // Doodle IS in Core Data, so delete
-                        else {
-                            DDLogInfo(@"doodleStore: doodle %@ isn't active and is in database; deleting now", imageUrl);
-                            
-                            // Init fetch request for Doodle to delete
-                            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"%@ == %@",
-                                                      kDoodleAttributeKeyImageUrl,
-                                                      imageUrl];
-                            fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
-                                                              inManagedObjectContext:self.managedObjectContext];
-                            
-                            // Execute the fetch
-                            NSError *fetchError;
-                            NSArray *itemsToDelete = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                                              error:&fetchError];
-                            
-                            // If we found doodle to delete ..
-                            if ([itemsToDelete count] > 0) {
-                                DDLogInfo(@"doodleStore: found %lu doodle to delete", (unsigned long)[itemsToDelete count]);
+                        for (KJRandomImage *existingDoodle in existingDoodlesCopy) {
+                            // Doodle IS in Core Data, so delete
+                            if ([existingDoodle.imageUrl isEqualToString:imageUrl]) {
+                                DDLogInfo(@"doodleStore: doodle %@ isn't active but is in database; deleting now", imageUrl);
                                 
-                                // Delete
-                                KJRandomImage *doodleToDelete = [itemsToDelete firstObject];
-                                [self.managedObjectContext deleteObject:doodleToDelete];
+                                [existingDoodlesInCoreDataBeforeFetch removeObject:existingDoodle];
                                 
-                                // Set changes to doodles were made property so that we can trigger a managedObjectContext save later.
-                                // This saves us from triggering a save every time we fetch data from the server.
+                                [self.managedObjectContext deleteObject:existingDoodle];
+                                
                                 changesToDoodlesWereMade = YES;
-                            }
-                            
-                            else {
-                                DDLogError(@"doodleStore: failed to find doodle to delete from Core Data: %@", imageUrl);
-                                
-                                if (fetchError != nil) {
-                                    DDLogError(@"doodleStore: failed to delete error : %@", fetchError.debugDescription);
-                                }
                             }
                         }
                     }
                 }
                 
-                // Save managedObjectContext
-                // Only save if we have changes
+                // Save managedObjectContext if we have changes
                 if (!changesToDoodlesWereMade) {
                     DDLogInfo(@"doodleStore: no changes to doodles were found, so no save managedObjectContext is required");
                 }
