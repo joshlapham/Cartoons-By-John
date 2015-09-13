@@ -28,9 +28,10 @@ typedef NS_ENUM(NSUInteger, KJDoodleStoreConnectionState) {
 // Init method
 + (KJDoodleStore *)sharedStore;
 
-// Class methods
+// Other methods
 - (void)fetchDoodleData;
 - (NSArray *)returnDoodlesArray;
 - (NSArray *)returnFavouritesArray;
+- (void)flushLocalDoodlesInContext:(NSManagedObjectContext *)context;
 
 @end

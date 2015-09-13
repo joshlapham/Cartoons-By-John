@@ -33,7 +33,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
     NSArray __block *existingDoodlesInCoreDataBeforeFetch;
 }
 
-#pragma mark - Init method
+#pragma mark Init method
 
 + (KJDoodleStore *)sharedStore {
     static KJDoodleStore *_sharedStore = nil;
@@ -46,8 +46,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
     return _sharedStore;
 }
 
-#pragma mark - Prefetch doodles method
-
+// TODO: document this method
 - (void)prefetchDoodles {
     // Perform fetch for doodles in Core Data
     NSArray *resultsArray = [self fetchExistingDoodlesInCoreData];
@@ -70,8 +69,6 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                                                          DDLogVerbose(@"doodleStore: prefetched doodles count: %lu, skipped: %lu", (unsigned long)finishedCount, (unsigned long)skippedCount);
                                                      }];
 }
-
-#pragma mark - Return all doodles method
 
 // Method to return all doodles.
 // NOTE - we need this for KJRandomView, as it isn't using NSFetchedResultsController due to how it loads favourites.
@@ -106,8 +103,6 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
         return fetchedObjects;
     }
 }
-
-#pragma mark - Return favourite doodles method
 
 // Method to return array of doodles that have their attribute isFavourite set to YES.
 - (NSArray *)returnFavouritesArray {
@@ -147,8 +142,64 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
     }
 }
 
-#pragma mark - Core data helper methods
+// Method to check if a doodle exists in Core Data.
+- (BOOL)checkIfDoodleExistsLocally:(PFObject *)fetchedParseObject {
+    BOOL exists = NO;
+    
+    // TODO:
+    // Check imageId
+    // Check imageUrl
+    // Check instagramId (this needs to be implemented on data model first)
+    
+    return exists;
+}
 
+// Method to delete all doodles locally from Core Data.
+- (void)flushLocalDoodlesInContext:(NSManagedObjectContext *)context {
+    DDLogInfo(@"doodleStore: deleting all doodles locally ..");
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
+                                              inManagedObjectContext:context];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Fetch
+    NSError *fetchError;
+    NSArray *fetchedObjects = [context
+                               executeFetchRequest:fetchRequest
+                               error:&fetchError];
+    
+    if (fetchedObjects.count > 0) {
+        DDLogInfo(@"doodleStore: found %lu doodles to flush", (unsigned long)fetchedObjects.count);
+        
+        for (KJRandomImage *image in fetchedObjects) {
+            // Delete
+            [context deleteObject:image];
+        }
+        
+        // Save
+        NSError *saveError;
+        BOOL didSave = [context save:&saveError];
+        
+        if (!didSave) {
+            DDLogError(@"doodleStore: error deleting all doodles locally : %@", saveError.debugDescription);
+        }
+        
+        else {
+            DDLogInfo(@"doodleStore: successfully deleted all doodles locally");
+        }
+    }
+    
+    // Error fetching objects to flush
+    else if (fetchError != nil) {
+        DDLogError(@"doodleStore: error finding doodles to flush: %@", [fetchError debugDescription]);
+    }
+}
+
+// TODO: fix this method; currently fails every time
 // Method to check if existing doodles in Core Data need updating if values from server have changed since last data fetch.
 - (void)checkIfDoodleNeedsUpdateWithParseObject:(PFObject *)fetchedParseObject {
     // Init strings with values from Parse
@@ -210,6 +261,11 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
         else {
             DDLogInfo(@"doodleStore: doodle doesn't need update: %@", imageUrl);
         }
+    }
+    
+    // TODO: testing
+    else {
+        DDLogVerbose(@"%s - NO DOODLES IN CORE DATA FETCH", __func__);
     }
 }
 
@@ -293,8 +349,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
     return [imageUrlStrings copy];
 }
 
-#pragma mark - Fetch data method
-
+// TODO: document this method
 - (void)fetchDoodleData {
     // Check connection state
     switch (self.connectionState) {
@@ -387,13 +442,13 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                             DDLogInfo(@"doodleStore: doodle %@ isn't active but isn't in database, so it's all good", imageUrl);
                         }
                         
-                        // Video IS in Core Data, so delete
+                        // Doodle IS in Core Data, so delete
                         else {
                             DDLogInfo(@"doodleStore: doodle %@ isn't active and is in database; deleting now", imageUrl);
                             
-                            // Init fetch request for video to delete
+                            // Init fetch request for Doodle to delete
                             NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"(%@ == %@)",
+                            fetchRequest.predicate = [NSPredicate predicateWithFormat: @"%@ == %@",
                                                       kDoodleAttributeKeyImageUrl,
                                                       imageUrl];
                             fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
@@ -419,6 +474,10 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                             
                             else {
                                 DDLogError(@"doodleStore: failed to find doodle to delete from Core Data: %@", imageUrl);
+                                
+                                if (fetchError != nil) {
+                                    DDLogError(@"doodleStore: failed to delete error : %@", fetchError.debugDescription);
+                                }
                             }
                         }
                     }

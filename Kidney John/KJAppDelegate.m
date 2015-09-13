@@ -22,6 +22,7 @@
 #import "KJComicListView.h"
 #import "KJTabBarController.h"
 #import <ParseCrashReporting/ParseCrashReporting.h>
+#import "KJAppDelegate+AppVersionChecks.h"
 
 // Constants
 static NSString *kKJParsePFConfigUseVersion11ColoursKey = @"useVersion11Colours";
@@ -177,20 +178,6 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
             DDLogError(@"%s - error fetching PFConfig from Parse", __func__);
         }
     }];
-}
-
-#pragma mark - App version check helper methods
-
-// Helper method to set NSUserDefaults on app launch
-- (void)checkAppVersion {
-    // TESTING - Version 1.1 colour scheme
-    if (![NSUserDefaults kj_hasAppCompletedVersion11FirstLaunchSetting]) {
-        // Force Version 1.1 colour scheme.
-        // After this, value can be changed from PFConfig.
-        [NSUserDefaults kj_setShouldUseVersion11ColourSchemeSetting:YES];
-        [NSUserDefaults kj_setHasAppCompletedVersion11FirstLaunchSetting:YES];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
 }
 
 #pragma mark - Init methods

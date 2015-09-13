@@ -16,8 +16,10 @@ static NSString *kHasFirstDoodleFetchCompletedSettingKey = @"firstRandomImagesFe
 static NSString *kHasFirstSocialLinksFetchCompletedSettingKey = @"firstSocialLinksFetchDone";
 
 // Version 1.1
-static NSString *kHasAppCompletedVersion11FirstLaunchSettingKey = @"kHasAppCompletedVersion11FirstLaunchSettingKey";
 static NSString *kShouldUseVersion11ColourSchemeKey = @"KJShouldUseVersion11ColourScheme";
+
+// Version 1.1.2
+static NSString *kHasAppCompletedVersion112FirstLaunchSettingKey = @"kHasAppCompletedVersion112FirstLaunchSettingKey";
 
 // Testing social links from Parse
 static NSString *kShouldUseSocialLinksFromParseSettingKey = @"KJShouldUseSocialLinksFromParseSettingKey";
@@ -39,14 +41,14 @@ static NSString * kShouldTrackViewedComicEventsWithParseSettingKey = @"KJShouldT
                                             forKey:kHasAppCompletedFirstLaunchSettingKey];
 }
 
-// Version 1.1 first launch setting
-+ (BOOL)kj_hasAppCompletedVersion11FirstLaunchSetting {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasAppCompletedFirstLaunchSettingKey];
+// Version 1.1.2 first launch setting
++ (BOOL)kj_hasAppCompletedVersion112FirstLaunchSetting {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasAppCompletedVersion112FirstLaunchSettingKey];
 }
 
-+ (void)kj_setHasAppCompletedVersion11FirstLaunchSetting:(BOOL)setting {
++ (void)kj_setHasAppCompletedVersion112FirstLaunchSetting:(BOOL)setting {
     [[NSUserDefaults standardUserDefaults] setBool:setting
-                                            forKey:kHasAppCompletedFirstLaunchSettingKey];
+                                            forKey:kHasAppCompletedVersion112FirstLaunchSettingKey];
 }
 
 // Videos

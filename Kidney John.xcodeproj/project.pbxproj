@@ -26,6 +26,7 @@
 		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
 		685EE0641B054D18002E19FA /* KJSecretLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */; };
 		68659F3E1A5E99240048A887 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68659F3D1A5E99240048A887 /* Settings.bundle */; };
+		6875F6C91BA529E700209015 /* KJAppDelegate+AppVersionChecks.m in Sources */ = {isa = PBXBuildFile; fileRef = 6875F6C81BA529E700209015 /* KJAppDelegate+AppVersionChecks.m */; settings = {ASSET_TAGS = (); }; };
 		6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */; };
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD21919938C003F3231 /* KJComicFavouriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */; };
@@ -138,6 +139,8 @@
 		685EE0621B054D18002E19FA /* KJSecretLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSecretLoginViewController.h; path = "View Controllers/Admin/KJSecretLoginViewController.h"; sourceTree = "<group>"; };
 		685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSecretLoginViewController.m; path = "View Controllers/Admin/KJSecretLoginViewController.m"; sourceTree = "<group>"; };
 		68659F3D1A5E99240048A887 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		6875F6C71BA529E700209015 /* KJAppDelegate+AppVersionChecks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJAppDelegate+AppVersionChecks.h"; path = "Categories/KJAppDelegate+AppVersionChecks.h"; sourceTree = "<group>"; };
+		6875F6C81BA529E700209015 /* KJAppDelegate+AppVersionChecks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KJAppDelegate+AppVersionChecks.m"; path = "Categories/KJAppDelegate+AppVersionChecks.m"; sourceTree = "<group>"; };
 		6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomFavouriteActivity.h; path = UIActivity/KJRandomFavouriteActivity.h; sourceTree = "<group>"; };
 		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
 		6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJFavDoodlesListView.h; path = "View Controllers/KJFavDoodlesListView.h"; sourceTree = "<group>"; };
@@ -503,6 +506,8 @@
 				68659F3D1A5E99240048A887 /* Settings.bundle */,
 				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
 				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
+				6875F6C71BA529E700209015 /* KJAppDelegate+AppVersionChecks.h */,
+				6875F6C81BA529E700209015 /* KJAppDelegate+AppVersionChecks.m */,
 				6891D13B191C7F1B001AD6A5 /* KJConstants.h */,
 				6891D13C191C7F1B001AD6A5 /* KJConstants.m */,
 				680006DF1910C4150002D604 /* ComicThumbs */,
@@ -773,6 +778,7 @@
 				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
 				68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */,
 				689C5B891AEC8E3700C70077 /* KJParseAnalyticsStore.m in Sources */,
+				6875F6C91BA529E700209015 /* KJAppDelegate+AppVersionChecks.m in Sources */,
 				68E48D28184A247D00600FA5 /* main.m in Sources */,
 				6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */,
 				68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */,
