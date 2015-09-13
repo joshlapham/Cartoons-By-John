@@ -1,17 +1,17 @@
 PODS:
-  - Bolts (1.1.5):
-    - Bolts/AppLinks (= 1.1.5)
-    - Bolts/Tasks (= 1.1.5)
-  - Bolts/AppLinks (1.1.5):
+  - Bolts (1.2.2):
+    - Bolts/AppLinks (= 1.2.2)
+    - Bolts/Tasks (= 1.2.2)
+  - Bolts/AppLinks (1.2.2):
     - Bolts/Tasks
-  - Bolts/Tasks (1.1.5)
+  - Bolts/Tasks (1.2.2)
   - CocoaLumberjack (1.9.1):
     - CocoaLumberjack/Extensions (= 1.9.1)
   - CocoaLumberjack/Core (1.9.1)
   - CocoaLumberjack/Extensions (1.9.1):
     - CocoaLumberjack/Core
-  - Facebook-iOS-SDK (3.23.2):
-    - Bolts (~> 1.0)
+  - Facebook-iOS-SDK (3.24.0):
+    - Bolts (~> 1.2)
   - MBProgressHUD (0.8)
   - Parse (1.7.1):
     - Bolts (~> 1.1)
@@ -46,9 +46,9 @@ DEPENDENCIES:
   - SDWebImage (= 3.7.1)
 
 SPEC CHECKSUMS:
-  Bolts: aac24961496d504aa56fc267cde95162a71bac39
+  Bolts: 20a2bd788273360cb1e31530dc19b8544eef2544
   CocoaLumberjack: e9b828e64142be63c1c130517b33aa5e235d2413
-  Facebook-iOS-SDK: cd87f0b2f0c1d9574b44e8fa2baacc275524bac3
+  Facebook-iOS-SDK: cb209af2e67e3a5d323f966c22e4e482e819405e
   MBProgressHUD: 8688c331cb64702283be37ab8d7d329cdd25f251
   Parse: fa8ec29de6d82035635986c11946299fb1b38316
   ParseCrashReporting: 9aeff8680d500e5e833564fca5b60333f7bb7403

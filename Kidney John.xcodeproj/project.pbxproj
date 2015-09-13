@@ -644,6 +644,11 @@
 				TargetAttributes = {
 					68E48D17184A247D00600FA5 = {
 						DevelopmentTeam = 7HSH26BZGU;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					68E48D3B184A247D00600FA5 = {
 						TestTargetID = 68E48D17184A247D00600FA5;
