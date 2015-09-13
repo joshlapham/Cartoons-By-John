@@ -8,6 +8,7 @@ Bug fixes:
 
 - fixed issue where doodle images would not be fetched or displayed on iOS 9
 - fixed issue where doodles would not be updated locally when fetching from server
+- fixed issue where video thumbnail and doodle images would be attempted to be fetched multiple times
 
 ## Version 1.1.1
 
