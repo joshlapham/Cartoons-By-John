@@ -289,30 +289,31 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
--   (UIView *)tableView:(UITableView *)tableView
- viewForFooterInSection:(NSInteger)section {
-    if (section != 1) {
-        return nil;
-    }
-    
-    else {
-        // Init footer view
-        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, tableView.tableFooterView.bounds.size.height);
-        UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
-        
-        // Set background colour
-        secretTapView.backgroundColor = [UIColor clearColor];
-        
-        // Init secret tap gesture
-        // TODO: update this to be complex!
-        UITapGestureRecognizer *secretGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                        action:@selector(userDidPerformSecretGesture:)];
-        secretGesture.numberOfTapsRequired = 13;
-        [secretTapView addGestureRecognizer:secretGesture];
-        
-        return secretTapView;
-    }
-}
+// TODO: disabled for App Store release (for now)
+//-   (UIView *)tableView:(UITableView *)tableView
+// viewForFooterInSection:(NSInteger)section {
+//    if (section != 1) {
+//        return nil;
+//    }
+//    
+//    else {
+//        // Init footer view
+//        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, tableView.tableFooterView.bounds.size.height);
+//        UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
+//        
+//        // Set background colour
+//        secretTapView.backgroundColor = [UIColor clearColor];
+//        
+//        // Init secret tap gesture
+//        // TODO: update this to be complex!
+//        UITapGestureRecognizer *secretGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                                                                        action:@selector(userDidPerformSecretGesture:)];
+//        secretGesture.numberOfTapsRequired = 13;
+//        [secretTapView addGestureRecognizer:secretGesture];
+//        
+//        return secretTapView;
+//    }
+//}
 
 - (IBAction)userDidPerformSecretGesture:(id)sender {
     DDLogVerbose(@"%s", __func__);
