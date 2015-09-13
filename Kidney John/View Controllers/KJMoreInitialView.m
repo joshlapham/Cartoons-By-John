@@ -453,7 +453,7 @@ titleForHeaderInSection:(NSInteger)section {
                                   @"url" : @"http://johnroderickpaine.tumblr.com",
                                   @"image" : @"tumblr.png" };
     NSDictionary *youtubeLink = @{ @"title" : @"YouTube",
-                                   @"url" : @"https://www.youtube.com/user/kidneyjohn",
+                                   @"url" : @"https://www.youtube.com/user/johnroderickpaine",
                                    @"image" : @"youtube.png" };
     NSDictionary *vimeoLink = @{ @"title" : @"Vimeo",
                                  @"url" : @"http://vimeo.com/johnroderickpaine",
