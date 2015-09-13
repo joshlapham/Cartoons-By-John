@@ -18,6 +18,7 @@
 static NSString *kParseImageIdKey = @"imageId";
 static NSString *kParseImageDescriptionKey = @"imageDescription";
 static NSString *kParseImageUrlKey = @"imageUrl";
+static NSString *kParseImageInstagramIdKey = @"instagramId";
 static NSString *kParseImageDateKey = @"date";
 
 // Constant for NSNotification name
@@ -27,6 +28,7 @@ NSString * const KJDoodleFetchDidHappenNotification = @"KJDoodleDataFetchDidHapp
 static NSString *kDoodleAttributeKeyImageId = @"imageId";
 static NSString *kDoodleAttributeKeyImageDate = @"imageDate";
 static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
+static NSString *kDoodleAttributeKeyInstagramId = @"instagramId";
 
 @implementation KJDoodleStore {
     BOOL __block changesToDoodlesWereMade;
@@ -207,6 +209,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
     NSString *imageUrl = fetchedParseObject[kParseImageUrlKey];
     NSString *imageDescription = fetchedParseObject[kParseImageDescriptionKey];
     NSString *imageDate = fetchedParseObject[kParseImageDateKey];
+    NSString *instagramId = fetchedParseObject[kParseImageInstagramIdKey];
     
     // Init fetch request for doodle matching image URL
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -241,6 +244,8 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
         // Checking doodles one at a time, so firstObject works here
         KJRandomImage *doodleToCheck  = [doodlesInCoreData firstObject];
         
+        // TODO: allow for instagramId property
+
         if (![doodleToCheck.imageId isEqualToString:imageId] ||
             ![doodleToCheck.imageUrl isEqualToString:imageUrl] ||
             ![doodleToCheck.imageDescription isEqualToString:imageDescription] ||
@@ -252,6 +257,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
             doodleToCheck.imageUrl = imageUrl;
             doodleToCheck.imageDescription = imageDescription;
             doodleToCheck.imageDate = imageDate;
+            doodleToCheck.instagramId = instagramId;
             
             // Set changes to doodles were made property so that we can trigger a managedObjectContext save later.
             // This saves us from triggering a save every time we fetch data from the server.
@@ -419,6 +425,7 @@ static NSString *kDoodleAttributeKeyImageUrl = @"imageUrl";
                             newDoodle.imageUrl = object[kParseImageUrlKey];
                             newDoodle.imageDescription = object[kParseImageDescriptionKey];
                             newDoodle.imageDate = object[kParseImageDateKey];
+                            newDoodle.instagramId = object[kParseImageInstagramIdKey];
                             
                             // Set changes to doodles were made property so that we can trigger a managedObjectContext save later.
                             // This saves us from triggering a save every time we fetch data from the server.
