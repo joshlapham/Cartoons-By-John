@@ -76,16 +76,8 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
     // Set navbar items to white
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
-    // Change status bar text to white
-    // TESTING - Version 1.1 colour scheme
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    }
-    
-    else {
-        // Version 1.1 colour
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    }
+    // Set status bar text
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
     // Set navbar items of UIActivityViews to white
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
@@ -135,13 +127,6 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
     // Get PFConfig object in background
     [PFConfig getConfigInBackgroundWithBlock:^(PFConfig *config, NSError *error) {
         if (!error && config) {
-            // Init should use version 1.1 colours
-            if (config[kKJParsePFConfigUseVersion11ColoursKey]) {
-                NSNumber *shouldUseVersion11Colours = config[kKJParsePFConfigUseVersion11ColoursKey];
-                DDLogInfo(@"PFConfig: should use version 1.1 colours: %@", [shouldUseVersion11Colours boolValue] ? @"YES" : @"NO");
-                [NSUserDefaults kj_setShouldUseVersion11ColourSchemeSetting:[shouldUseVersion11Colours boolValue]];
-            }
-            
             // Init should use social links from Parse
             if (config[kKJParsePFConfigUseSocialLinksFromParseKey]) {
                 NSNumber *shouldUseSocialLinks = config[kKJParsePFConfigUseSocialLinksFromParseKey];

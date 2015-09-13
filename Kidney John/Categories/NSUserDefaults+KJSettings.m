@@ -96,16 +96,6 @@ static NSString * kShouldTrackViewedComicEventsWithParseSettingKey = @"KJShouldT
 }
 
 // Testing/debugging
-// Colour schemes
-+ (BOOL)kj_shouldUseVersion11ColourSchemeSetting {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldUseVersion11ColourSchemeKey];
-}
-
-+ (void)kj_setShouldUseVersion11ColourSchemeSetting:(BOOL)setting {
-    [[NSUserDefaults standardUserDefaults] setBool:setting
-                                            forKey:kShouldUseVersion11ColourSchemeKey];
-}
-
 // Testing social links from Parse
 + (BOOL)kj_shouldUseSocialLinksFromParseSetting {
     return [[NSUserDefaults standardUserDefaults] boolForKey:kShouldUseSocialLinksFromParseSettingKey];

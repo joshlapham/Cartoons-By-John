@@ -24,48 +24,20 @@
 
 // Navbar
 + (UIColor *)kj_navbarColour {
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        // 'Kidney John' colour (Version 1.0)
-        return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
-    }
-    else {
-        // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
-    }
+    return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
 }
 
 + (UIColor *)kj_navbarTitleFontShadowColour {
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        // 'Kidney John' colour (Version 1.0)
-        return [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
-    }
-    else {
-        // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor lightGrayColor];
-    }
+    return [UIColor lightGrayColor];
 }
 
 + (UIColor *)kj_navbarTitleFontColour {
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        // 'Kidney John' colour (Version 1.0)
-        return [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    }
-    else {
-        // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor blackColor];
-    }
+    return [UIColor blackColor];
 }
 
 // Tab bar
 + (UIColor *)kj_tabBarBackgroundColour {
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        // 'Kidney John' colour (Version 1.0)
-        return [UIColor colorWithRed:0 green:0.2 blue:0.4 alpha:1];
-    }
-    else {
-        // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
-    }
+    return [UIColor colorWithRed:0.48 green:0.73 blue:0.73 alpha:1];
 }
 
 + (UIColor *)kj_tabBarItemFontStateNormalColour {
@@ -73,36 +45,15 @@
 }
 
 + (UIColor *)kj_tabBarItemFontStateSelectedColour {
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        // 'Kidney John' colour (Version 1.0)
-        return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
-    }
-    else {
-        // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor blackColor];
-    }
+    return [UIColor blackColor];
 }
 
 + (UIColor *)kj_tabBarItemIconStateNormalColour {
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        // 'Kidney John' colour (Version 1.0)
-        return [UIColor grayColor];
-    }
-    else {
-        // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor whiteColor];
-    }
+    return [UIColor whiteColor];
 }
 
 + (UIColor *)kj_tabBarItemIconStateSelectedColour {
-    if (![NSUserDefaults kj_shouldUseVersion11ColourSchemeSetting]) {
-        // 'Kidney John' colour (Version 1.0)
-        return [UIColor colorWithRed:0 green:0.9 blue:2.3 alpha:1];
-    }
-    else {
-        // 'JohnRodPaine' colour (Version 1.1)
-        return [UIColor blackColor];
-    }
+    return [UIColor blackColor];
 }
 
 // Video cells

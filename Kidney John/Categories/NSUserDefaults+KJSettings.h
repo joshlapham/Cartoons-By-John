@@ -39,10 +39,6 @@
 + (void)kj_setHasFirstSocialLinksFetchCompletedSetting:(BOOL)setting;
 
 // Testing/debugging
-// Colour schemes
-+ (BOOL)kj_shouldUseVersion11ColourSchemeSetting;
-+ (void)kj_setShouldUseVersion11ColourSchemeSetting:(BOOL)setting;
-
 // Testing social links from Parse
 + (BOOL)kj_shouldUseSocialLinksFromParseSetting;
 + (void)kj_setShouldUseSocialLinksFromParseSetting:(BOOL)setting;
