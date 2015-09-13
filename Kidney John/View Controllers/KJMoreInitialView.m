@@ -11,9 +11,7 @@
 #import "PBWebViewController.h"
 #import "KJVideoStore.h"
 #import "KJComicStore.h"
-//#import "KJDoodleStore.h"
 #import "KJSocialLinkStore.h"
-//#import "KJFavDoodlesListView.h"
 #import "JPLReachabilityManager.h"
 #import <Reachability/Reachability.h>
 #import "KJSocialLink.h"
@@ -22,6 +20,7 @@
 #import "KJSocialLinkCell.h"
 #import "KJSecretLoginViewController.h"
 #import <Parse/Parse.h>
+#import <SafariServices/SafariServices.h>
 
 // TODO: remove import after testing feature
 #import "KJSecretAdminViewController.h"
@@ -245,29 +244,58 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                                                                                     target:nil
                                                                                     action:nil];
             
-            // Initialize the web view controller and set it's URL
-            PBWebViewController *webViewController = [[PBWebViewController alloc] init];
+            
+            // Check OS version; use Safari VC if iOS 9 or above
+            NSOperatingSystemVersion iOS9 = (NSOperatingSystemVersion){9, 0, 0};
+            BOOL isiOS9OrHigher = [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:iOS9];
+            DDLogVerbose(@"Is iOS 9 : %@", isiOS9OrHigher ? @"YES" : @"NO");
+            
+            // Init URL and title for web VC
+            NSURL *url;
+            NSString *title;
             
             // FOR TESTING
             if (_areWeTestingSocialLinksFromParseFeature == YES) {
                 // Use Parse
                 KJSocialLink *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
-                webViewController.URL = [NSURL URLWithString:socialLink.url];
-                webViewController.title = socialLink.title;
+                url = [NSURL URLWithString:socialLink.url];
+                title = socialLink.title;
             }
             else {
                 // Use hardcoded social links
                 NSDictionary *socialLink = [_socialLinksArray objectAtIndex:indexPath.row];
-                webViewController.URL = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
-                webViewController.title = [socialLink objectForKey:@"title"];
+                url = [NSURL URLWithString:[socialLink objectForKey:@"url"]];
+                title = [socialLink objectForKey:@"title"];
             }
             
-            // Hide tabbar on detail view
-            webViewController.hidesBottomBarWhenPushed = YES;
+            if (isiOS9OrHigher) {
+                // Init web view controller
+                SFSafariViewController *webViewController = [[SFSafariViewController alloc] initWithURL:url];
+                webViewController.title = title;
+                
+                // Hide tabbar on detail view
+                webViewController.hidesBottomBarWhenPushed = YES;
+                
+                
+                // Push it
+                [self.navigationController pushViewController:webViewController
+                                                     animated:YES];
+            }
             
-            // Push it
-            [self.navigationController pushViewController:webViewController
-                                                 animated:YES];
+            // iOS 8
+            else {
+                // Initialize the web view controller and set its' URL
+                PBWebViewController *webViewController = [[PBWebViewController alloc] init];
+                webViewController.URL = url;
+                webViewController.title = title;
+                
+                // Hide tabbar on detail view
+                webViewController.hidesBottomBarWhenPushed = YES;
+                
+                // Push it
+                [self.navigationController pushViewController:webViewController
+                                                     animated:YES];
+            }
         }
             break;
             
@@ -295,22 +323,22 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    if (section != 1) {
 //        return nil;
 //    }
-//    
+//
 //    else {
 //        // Init footer view
 //        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, tableView.tableFooterView.bounds.size.height);
 //        UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
-//        
+//
 //        // Set background colour
 //        secretTapView.backgroundColor = [UIColor clearColor];
-//        
+//
 //        // Init secret tap gesture
 //        // TODO: update this to be complex!
 //        UITapGestureRecognizer *secretGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
 //                                                                                        action:@selector(userDidPerformSecretGesture:)];
 //        secretGesture.numberOfTapsRequired = 13;
 //        [secretTapView addGestureRecognizer:secretGesture];
-//        
+//
 //        return secretTapView;
 //    }
 //}
