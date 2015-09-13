@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * imageUrl;
 @property (nonatomic, retain) NSString * imageDescription;
 @property (nonatomic, retain) NSString * imageDate;
+@property (nonatomic, retain) NSString * instagramId;
 @property (nonatomic) BOOL isFavourite;
 @property (nonatomic) BOOL isActive;
 

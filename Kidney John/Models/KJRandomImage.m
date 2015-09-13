@@ -15,6 +15,7 @@
 @dynamic imageUrl;
 @dynamic imageDescription;
 @dynamic imageDate;
+@dynamic instagramId;
 @dynamic isFavourite;
 @dynamic isActive;
 

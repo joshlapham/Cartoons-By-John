@@ -141,6 +141,7 @@
 		68659F3D1A5E99240048A887 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		6875F6C71BA529E700209015 /* KJAppDelegate+AppVersionChecks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJAppDelegate+AppVersionChecks.h"; path = "Categories/KJAppDelegate+AppVersionChecks.h"; sourceTree = "<group>"; };
 		6875F6C81BA529E700209015 /* KJAppDelegate+AppVersionChecks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KJAppDelegate+AppVersionChecks.m"; path = "Categories/KJAppDelegate+AppVersionChecks.m"; sourceTree = "<group>"; };
+                6875F6CA1BA535BB00209015 /* Kidney John 1.1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.1.2.xcdatamodel"; sourceTree = "<group>"; };
 		6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomFavouriteActivity.h; path = UIActivity/KJRandomFavouriteActivity.h; sourceTree = "<group>"; };
 		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
 		6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJFavDoodlesListView.h; path = "View Controllers/KJFavDoodlesListView.h"; sourceTree = "<group>"; };
@@ -1157,6 +1158,7 @@
 		68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+                                6875F6CA1BA535BB00209015 /* Kidney John 1.1.2.xcdatamodel */,
 				683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */,
 				68E461DA18604EBB008D3E36 /* Kidney John.xcdatamodel */,
 			);
