@@ -1,5 +1,14 @@
 # Cartoons! By John
 
+## Version 1.1.2
+
+This update includes miscellaneous bug fixes for iOS 9.
+
+Bug fixes:
+
+- fixed issue where doodle images would not be fetched or displayed on iOS 9
+- fixed issue where doodles would not be updated locally when fetching from server
+
 ## Version 1.1.1
 
 This update is focused on supporting Accessibility features of iOS for Global Accessibility Awareness Day - globalaccessibilityawarenessday.org
