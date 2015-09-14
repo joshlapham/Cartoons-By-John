@@ -21,6 +21,7 @@
 #import "KJSecretLoginViewController.h"
 #import <Parse/Parse.h>
 #import <SafariServices/SafariServices.h>
+#import "UIViewController+KJUtils.h"
 
 // TODO: remove import after testing feature
 #import "KJSecretAdminViewController.h"
@@ -36,6 +37,7 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
 @property (nonatomic) NSInteger chosenRow;
 @property (nonatomic, strong) NSMutableArray *socialLinksArray;
 @property (nonatomic) BOOL areWeTestingSocialLinksFromParseFeature;
+@property (nonatomic, strong) UIAlertController *noNetworkAlertView;
 
 @end
 
@@ -184,7 +186,7 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
     }
     
     // If Social Links section ..
-    else {
+    else if (indexPath.section == 1) {
         // Set the cell text
         // FOR TESTING
         // Use links from Parse
@@ -217,6 +219,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0:
         {
+            // Favourites section
+            
             _chosenRow = indexPath.row;
             
             // If Doodles was tapped ..
@@ -236,7 +240,33 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             
         case 1:
         {
-            // Social media links
+            // Social media links section
+            
+            // GUARD - prevent if no network is available
+            if ([JPLReachabilityManager isUnreachable]) {
+                [tableView deselectRowAtIndexPath:indexPath
+                                         animated:YES];
+                
+                // Show noNetworkAlertView
+                NSString *okayButtonString = NSLocalizedString(@"Okay", @"Title of Okay button in No Network connection error alert");
+                
+                // NOTE - init using category method
+                _noNetworkAlertView = [self kj_noNetworkAlertControllerWithNoActions];
+                
+                // Init actions
+                UIAlertAction *okayAction = [UIAlertAction actionWithTitle:okayButtonString
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:nil];
+                
+                [_noNetworkAlertView addAction:okayAction];
+                
+                [self presentViewController:_noNetworkAlertView
+                                   animated:YES
+                                 completion:nil];
+                
+                return;
+            }
+            
             // Set back button to have no text
             // TODO: review this, not really best practice
             self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -393,6 +423,11 @@ titleForHeaderInSection:(NSInteger)section {
 - (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
         DDLogVerbose(@"%s: network became available", __func__);
+        
+        // Dismiss no network UIAlert
+        // TODO: review this; doesn't seem to be working but isn't affecting anything right now except that the alert stays on-screen if network becomes reachable
+        [_noNetworkAlertView dismissViewControllerAnimated:YES
+                                                completion:nil];
         
         // Fetch data
         [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
