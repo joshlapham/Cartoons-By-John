@@ -7,7 +7,7 @@
 //
 
 #import "KJVideoViewController.h"
-#import "KJVideoFavouriteActivity.h"
+#import "Kidney_John-Swift.h"
 #import "KJVideo.h"
 
 // Constants
