@@ -304,73 +304,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-#pragma mark - Secret Admin VC methods
-
--       (CGFloat)tableView:(UITableView *)tableView
-  heightForFooterInSection:(NSInteger)section {
-    if (section != 1) {
-        return 0;
-    }
-    
-    else {
-        return 25;
-    }
-}
-
-// TODO: disabled for App Store release (for now)
-//-   (UIView *)tableView:(UITableView *)tableView
-// viewForFooterInSection:(NSInteger)section {
-//    if (section != 1) {
-//        return nil;
-//    }
-//
-//    else {
-//        // Init footer view
-//        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, tableView.tableFooterView.bounds.size.height);
-//        UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
-//
-//        // Set background colour
-//        secretTapView.backgroundColor = [UIColor clearColor];
-//
-//        // Init secret tap gesture
-//        // TODO: update this to be complex!
-//        UITapGestureRecognizer *secretGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-//                                                                                        action:@selector(userDidPerformSecretGesture:)];
-//        secretGesture.numberOfTapsRequired = 13;
-//        [secretTapView addGestureRecognizer:secretGesture];
-//
-//        return secretTapView;
-//    }
-//}
-
-- (IBAction)userDidPerformSecretGesture:(id)sender {
-    DDLogVerbose(@"%s", __func__);
-    DDLogVerbose(@"%s - %@", __func__, [PFUser currentUser].debugDescription);
-    
-    // User is logged-in
-    // TODO: review this for security
-    if ([PFUser currentUser].username.length) {
-        KJSecretAdminViewController *secretAdminVC = [[KJSecretAdminViewController alloc] init];
-        UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:secretAdminVC];
-        
-        // Present modally
-        [self presentViewController:navCon
-                           animated:YES
-                         completion:nil];
-    }
-    
-    // User is NOT logged-in
-    else {
-        // Init secret login VC
-        KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
-        
-        // Present modally
-        [self.navigationController presentViewController:secretLoginViewController
-                                                animated:YES
-                                              completion:nil];
-    }
-}
-
 #pragma mark - Prepare for segue method
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
@@ -538,5 +471,73 @@ titleForHeaderInSection:(NSInteger)section {
     //        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
     //    }
 }
+
+#pragma mark - Secret Admin VC methods
+
+// TODO: disabled for App Store release (for now)
+
+//-       (CGFloat)tableView:(UITableView *)tableView
+//  heightForFooterInSection:(NSInteger)section {
+//    if (section != 1) {
+//        return 0;
+//    }
+//
+//    else {
+//        return 25;
+//    }
+//}
+
+//-   (UIView *)tableView:(UITableView *)tableView
+// viewForFooterInSection:(NSInteger)section {
+//    if (section != 1) {
+//        return nil;
+//    }
+//
+//    else {
+//        // Init footer view
+//        CGRect secretTapViewFrame = CGRectMake(tableView.tableFooterView.bounds.origin.x, tableView.tableFooterView.bounds.origin.y, tableView.tableFooterView.bounds.size.width, tableView.tableFooterView.bounds.size.height);
+//        UIView *secretTapView = [[UIView alloc] initWithFrame:secretTapViewFrame];
+//
+//        // Set background colour
+//        secretTapView.backgroundColor = [UIColor clearColor];
+//
+//        // Init secret tap gesture
+//        // TODO: update this to be complex!
+//        UITapGestureRecognizer *secretGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                                                                        action:@selector(userDidPerformSecretGesture:)];
+//        secretGesture.numberOfTapsRequired = 13;
+//        [secretTapView addGestureRecognizer:secretGesture];
+//
+//        return secretTapView;
+//    }
+//}
+
+//- (IBAction)userDidPerformSecretGesture:(id)sender {
+//    DDLogVerbose(@"%s", __func__);
+//    DDLogVerbose(@"%s - %@", __func__, [PFUser currentUser].debugDescription);
+//
+//    // User is logged-in
+//    // TODO: review this for security
+//    if ([PFUser currentUser].username.length) {
+//        KJSecretAdminViewController *secretAdminVC = [[KJSecretAdminViewController alloc] init];
+//        UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:secretAdminVC];
+//
+//        // Present modally
+//        [self presentViewController:navCon
+//                           animated:YES
+//                         completion:nil];
+//    }
+//
+//    // User is NOT logged-in
+//    else {
+//        // Init secret login VC
+//        KJSecretLoginViewController *secretLoginViewController = [[KJSecretLoginViewController alloc] init];
+//
+//        // Present modally
+//        [self.navigationController presentViewController:secretLoginViewController
+//                                                animated:YES
+//                                              completion:nil];
+//    }
+//}
 
 @end
