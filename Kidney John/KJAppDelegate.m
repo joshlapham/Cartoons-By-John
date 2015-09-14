@@ -127,6 +127,7 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
     // Get PFConfig object in background
     [PFConfig getConfigInBackgroundWithBlock:^(PFConfig *config, NSError *error) {
         if (!error && config) {
+            // SOCIAL MEDIA LINKS
             // Init should use social links from Parse
             if (config[kKJParsePFConfigUseSocialLinksFromParseKey]) {
                 NSNumber *shouldUseSocialLinks = config[kKJParsePFConfigUseSocialLinksFromParseKey];
@@ -134,6 +135,14 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
                 [NSUserDefaults kj_setShouldUseSocialLinksFromParseSetting:[shouldUseSocialLinks boolValue]];
             }
             
+            // ANALYTICS
+#if TARGET_IPHONE_SIMULATOR
+            // Disable analytics
+            DDLogInfo(@"DISABLING all analytics; skipping PFConfig setup for analytics");
+            [NSUserDefaults kj_setShouldTrackFavouritedItemEventsWithParseSetting:NO];
+            [NSUserDefaults kj_setShouldTrackPlayedVideoEventsWithParseSetting:NO];
+            [NSUserDefaults kj_setShouldTrackViewedComicEventsWithParseSetting:NO];
+#else
             // Init should track favourited item events with Parse Analytics
             if (config[kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey]) {
                 NSNumber *shouldTrackEventsWithAnalytics = config[kKJParsePFConfigTrackFavouritedItemEventsWithParseAnalyticsKey];
@@ -154,6 +163,7 @@ static NSString *kKJParsePFConfigTrackViewedComicEventsWithParseAnalyticsKey = @
                 DDLogInfo(@"PFConfig: should track viewed comic events with Parse Analytics: %@", [shouldTrackViewedComicEventsWithAnalytics boolValue] ? @"YES" : @"NO");
                 [NSUserDefaults kj_setShouldTrackViewedComicEventsWithParseSetting:[shouldTrackViewedComicEventsWithAnalytics boolValue]];
             }
+#endif
             
             // Sync NSUserDefaults
             [[NSUserDefaults standardUserDefaults] synchronize];
