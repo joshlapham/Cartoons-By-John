@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05DBFDFE16B54DF8ADCB2816 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52795D1CEF6142A9BA845EF1 /* libPods.a */; };
 		680006E01910C4150002D604 /* ComicThumbs in Resources */ = {isa = PBXBuildFile; fileRef = 680006DF1910C4150002D604 /* ComicThumbs */; };
+		68006C761BAB58E2007F8A00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68006C751BAB58E2007F8A00 /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
 		68024D311A628D0900D2A900 /* KJRandomImage+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024D301A628D0900D2A900 /* KJRandomImage+Methods.m */; };
 		68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024D331A628DA600D2A900 /* KJSocialLink+Methods.m */; };
 		680B6FF11A623D2D006807E4 /* UIFontDescriptor+JohnRoderickPaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 680B6FF01A623D2D006807E4 /* UIFontDescriptor+JohnRoderickPaine.m */; };
@@ -26,7 +27,6 @@
 		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
 		685EE0641B054D18002E19FA /* KJSecretLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */; };
 		68659F3E1A5E99240048A887 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68659F3D1A5E99240048A887 /* Settings.bundle */; };
-		6875F6C91BA529E700209015 /* KJAppDelegate+AppVersionChecks.m in Sources */ = {isa = PBXBuildFile; fileRef = 6875F6C81BA529E700209015 /* KJAppDelegate+AppVersionChecks.m */; settings = {ASSET_TAGS = (); }; };
 		6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */; };
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD21919938C003F3231 /* KJComicFavouriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */; };
@@ -60,8 +60,6 @@
 		68E48D1E184A247D00600FA5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1D184A247D00600FA5 /* CoreGraphics.framework */; };
 		68E48D20184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
 		68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D24184A247D00600FA5 /* InfoPlist.strings */; };
-		68E48D28184A247D00600FA5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D27184A247D00600FA5 /* main.m */; };
-		68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D2B184A247D00600FA5 /* KJAppDelegate.m */; };
 		68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */; };
 		68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D30184A247D00600FA5 /* Main_iPad.storyboard */; };
 		68E48D37184A247D00600FA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D36184A247D00600FA5 /* Images.xcassets */; };
@@ -104,6 +102,7 @@
 		4D94687170B9557CDE67339B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		52795D1CEF6142A9BA845EF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		680006DF1910C4150002D604 /* ComicThumbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ComicThumbs; sourceTree = "<group>"; };
+		68006C751BAB58E2007F8A00 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68024D2F1A628D0900D2A900 /* KJRandomImage+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJRandomImage+Methods.h"; path = "Models/KJRandomImage+Methods.h"; sourceTree = "<group>"; };
 		68024D301A628D0900D2A900 /* KJRandomImage+Methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KJRandomImage+Methods.m"; path = "Models/KJRandomImage+Methods.m"; sourceTree = "<group>"; };
 		68024D321A628DA600D2A900 /* KJSocialLink+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJSocialLink+Methods.h"; path = "Models/KJSocialLink+Methods.h"; sourceTree = "<group>"; };
@@ -139,8 +138,6 @@
 		685EE0621B054D18002E19FA /* KJSecretLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSecretLoginViewController.h; path = "View Controllers/Admin/KJSecretLoginViewController.h"; sourceTree = "<group>"; };
 		685EE0631B054D18002E19FA /* KJSecretLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSecretLoginViewController.m; path = "View Controllers/Admin/KJSecretLoginViewController.m"; sourceTree = "<group>"; };
 		68659F3D1A5E99240048A887 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		6875F6C71BA529E700209015 /* KJAppDelegate+AppVersionChecks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJAppDelegate+AppVersionChecks.h"; path = "Categories/KJAppDelegate+AppVersionChecks.h"; sourceTree = "<group>"; };
-		6875F6C81BA529E700209015 /* KJAppDelegate+AppVersionChecks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KJAppDelegate+AppVersionChecks.m"; path = "Categories/KJAppDelegate+AppVersionChecks.m"; sourceTree = "<group>"; };
 		6875F6CA1BA535BB00209015 /* Kidney John 1.1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.1.2.xcdatamodel"; sourceTree = "<group>"; };
 		6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomFavouriteActivity.h; path = UIActivity/KJRandomFavouriteActivity.h; sourceTree = "<group>"; };
 		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
@@ -201,10 +198,7 @@
 		68E48D1F184A247D00600FA5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68E48D23184A247D00600FA5 /* Kidney John-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Kidney John-Info.plist"; sourceTree = "<group>"; };
 		68E48D25184A247D00600FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		68E48D27184A247D00600FA5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Prefix.pch"; sourceTree = "<group>"; };
-		68E48D2A184A247D00600FA5 /* KJAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KJAppDelegate.h; sourceTree = "<group>"; };
-		68E48D2B184A247D00600FA5 /* KJAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJAppDelegate.m; sourceTree = "<group>"; };
 		68E48D2E184A247D00600FA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		68E48D31184A247D00600FA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		68E48D36184A247D00600FA5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -503,10 +497,7 @@
 			isa = PBXGroup;
 			children = (
 				68659F3D1A5E99240048A887 /* Settings.bundle */,
-				68E48D2A184A247D00600FA5 /* KJAppDelegate.h */,
-				68E48D2B184A247D00600FA5 /* KJAppDelegate.m */,
-				6875F6C71BA529E700209015 /* KJAppDelegate+AppVersionChecks.h */,
-				6875F6C81BA529E700209015 /* KJAppDelegate+AppVersionChecks.m */,
+				68006C751BAB58E2007F8A00 /* AppDelegate.swift */,
 				6891D13B191C7F1B001AD6A5 /* KJConstants.h */,
 				6891D13C191C7F1B001AD6A5 /* KJConstants.m */,
 				680006DF1910C4150002D604 /* ComicThumbs */,
@@ -514,7 +505,6 @@
 				68E461FD1865CA87008D3E36 /* JohnRoderickPaine.ttf */,
 				68E48D23184A247D00600FA5 /* Kidney John-Info.plist */,
 				68E48D24184A247D00600FA5 /* InfoPlist.strings */,
-				68E48D27184A247D00600FA5 /* main.m */,
 				68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */,
 				6832C3741924B91E00E94788 /* Keys.plist */,
 				68211A231927A95000B24BF1 /* Localizable.strings */,
@@ -778,12 +768,11 @@
 				685C171718E29B5300088D26 /* KJComic.m in Sources */,
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
 				6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */,
+				68006C761BAB58E2007F8A00 /* AppDelegate.swift in Sources */,
 				C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */,
 				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
 				68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */,
 				689C5B891AEC8E3700C70077 /* KJParseAnalyticsStore.m in Sources */,
-				6875F6C91BA529E700209015 /* KJAppDelegate+AppVersionChecks.m in Sources */,
-				68E48D28184A247D00600FA5 /* main.m in Sources */,
 				6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */,
 				68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */,
 				68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */,
@@ -798,7 +787,6 @@
 				68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */,
 				6837E5D51ADD052F00779F18 /* KJRandomViewDataSource.m in Sources */,
 				C96734581B0AC27E00297754 /* KJVideoParseItem.m in Sources */,
-				68E48D2C184A247D00600FA5 /* KJAppDelegate.m in Sources */,
 				C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */,
 				68DB55031B06A12900F74329 /* KJSecretAdminViewController.m in Sources */,
 			);
