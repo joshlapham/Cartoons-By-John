@@ -24,9 +24,9 @@ __NOTE__: This project uses [Parse.com](https://parse.com/) for the backend data
 
 ### Other Info
 
-#### Style Guide
+#### Language
 
-This project adheres to the [NYTimes Objective-C Style Guide](https://github.com/NYTimes/objective-c-style-guide).
+This project started life in Objective-C but is in the process of being rewritten in Swift.
 
 #### Third-Party Libraries
 

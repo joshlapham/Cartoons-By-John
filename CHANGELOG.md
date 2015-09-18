@@ -1,5 +1,13 @@
 # Cartoons! By John
 
+## Version 1.1.3
+
+This update focuses on introducing new iOS 9 features to the app.
+
+Bug fixes:
+
+- fixed issue where push notifications wouldn't be received
+
 ## Version 1.1.2
 
 This update includes miscellaneous bug fixes for iOS 9.
