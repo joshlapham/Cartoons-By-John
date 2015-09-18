@@ -29,7 +29,6 @@
 		68659F3E1A5E99240048A887 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68659F3D1A5E99240048A887 /* Settings.bundle */; };
 		6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */; };
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
-		6876CFD21919938C003F3231 /* KJComicFavouriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */; };
 		6876CFD51919A383003F3231 /* JPLReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFD41919A383003F3231 /* JPLReachabilityManager.m */; };
 		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
 		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
@@ -143,7 +142,6 @@
 		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
 		6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJFavDoodlesListView.h; path = "View Controllers/KJFavDoodlesListView.h"; sourceTree = "<group>"; };
 		6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJFavDoodlesListView.m; path = "View Controllers/KJFavDoodlesListView.m"; sourceTree = "<group>"; };
-		6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJComicFavouriteCell.xib; path = Cells/KJComicFavouriteCell.xib; sourceTree = "<group>"; };
 		6876CFD31919A383003F3231 /* JPLReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLReachabilityManager.h; path = Stores/JPLReachabilityManager.h; sourceTree = "<group>"; };
 		6876CFD41919A383003F3231 /* JPLReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLReachabilityManager.m; path = Stores/JPLReachabilityManager.m; sourceTree = "<group>"; };
 		6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJSocialLinkCell.xib; path = Cells/KJSocialLinkCell.xib; sourceTree = "<group>"; };
@@ -432,7 +430,6 @@
 				680CF070190F8DBD00A0E296 /* KJComicDetailCell.m */,
 				683CAE5718C77DF2006173FA /* KJDoodleCell.h */,
 				683CAE5818C77DF2006173FA /* KJDoodleCell.m */,
-				6876CFD11919938C003F3231 /* KJComicFavouriteCell.xib */,
 				689C5B841AEC726900C70077 /* KJSocialLinkCell.h */,
 				689C5B851AEC726900C70077 /* KJSocialLinkCell.m */,
 				6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */,
@@ -681,7 +678,6 @@
 				685C171118E2745A00088D26 /* Comics in Resources */,
 				68E461FE1865CA87008D3E36 /* JohnRoderickPaine.ttf in Resources */,
 				680CF0C71A7F730F009250E3 /* KJVideoCell.xib in Resources */,
-				6876CFD21919938C003F3231 /* KJComicFavouriteCell.xib in Resources */,
 				C9C4F9511B0700B200F0659C /* KJVideoCollectionViewCell.xib in Resources */,
 				680006E01910C4150002D604 /* ComicThumbs in Resources */,
 				C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */,

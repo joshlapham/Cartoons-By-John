@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *comicName;
 @property (weak, nonatomic) IBOutlet UILabel *comicTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *comicThumbnail;
+// TODO: `comicIsNew` label has been removed from .nib file; need to re-add
 @property (weak, nonatomic) IBOutlet UILabel *comicIsNew;
 
 @end
