@@ -12,12 +12,12 @@
 #import "KJComicStore.h"
 #import "KJDoodleStore.h"
 #import "KJSocialLinkStore.h"
-#import "KJTabBarController.h"
 #import "JPLYouTubeListView.h"
 #import "KJComicListView.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
+#import "UIImage+KJImageUtils.h"
 
 // Pods
 #import <Parse/Parse.h>
