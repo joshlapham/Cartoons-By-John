@@ -7,7 +7,6 @@
 //
 
 #import "KJDoodleCell.h"
-#import "KJRandomView.h"
 #import "KJFavDoodlesListView.h"
 #import "KJRandomImage.h"
 #import <SDWebImage/UIImageView+WebCache.h>

@@ -18,7 +18,14 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 #import "UIImage+KJImageUtils.h"
+#import "KJRandomViewDataSource.h"
+#import "KJDoodleCell.h"
+#import "UIViewController+KJUtils.h"
+#import "KJRandomFavouriteActivity.h"
 
 // Pods
 #import <Parse/Parse.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>
+#import "MBProgressHUD.h"
+#import "Reachability.h"
+#import <SDWebImage/UIImageView+WebCache.h>

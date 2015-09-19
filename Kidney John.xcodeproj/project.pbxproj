@@ -40,6 +40,8 @@
 		68A2D60E1A5EBB61000DA2CF /* UIFont+KJFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A2D60D1A5EBB61000DA2CF /* UIFont+KJFonts.m */; };
 		68A2D6121A5EC43C000DA2CF /* UIColor+KJColours.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A2D6111A5EC43C000DA2CF /* UIColor+KJColours.m */; };
 		68ADED0A1BACD1C400977DCF /* KJTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED091BACD1C400977DCF /* KJTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
+		68ADED0C1BACD9B100977DCF /* DoodlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED0B1BACD9B100977DCF /* DoodlesViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		68ADED0E1BACEB5400977DCF /* FlowLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED0D1BACEB5400977DCF /* FlowLayouts.swift */; settings = {ASSET_TAGS = (); }; };
 		68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
 		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
@@ -68,7 +70,6 @@
 		68E48D48184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D46184A247D00600FA5 /* InfoPlist.strings */; };
 		68E48D5B184BEA7400600FA5 /* JPLYouTubeListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */; };
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
-		68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D6D184D874500600FA5 /* KJRandomView.m */; };
 		68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */; };
 		68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4691A16D73D00D3D51B /* KJSocialLink.m */; };
 		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
@@ -162,6 +163,8 @@
 		68A2D6101A5EC43C000DA2CF /* UIColor+KJColours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+KJColours.h"; path = "Categories/UIColor+KJColours.h"; sourceTree = "<group>"; };
 		68A2D6111A5EC43C000DA2CF /* UIColor+KJColours.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+KJColours.m"; path = "Categories/UIColor+KJColours.m"; sourceTree = "<group>"; };
 		68ADED091BACD1C400977DCF /* KJTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJTabBarController.swift; path = "View Controllers/KJTabBarController.swift"; sourceTree = "<group>"; };
+		68ADED0B1BACD9B100977DCF /* DoodlesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoodlesViewController.swift; path = "View Controllers/DoodlesViewController.swift"; sourceTree = "<group>"; };
+		68ADED0D1BACEB5400977DCF /* FlowLayouts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowLayouts.swift; path = "Flow Layouts/FlowLayouts.swift"; sourceTree = "<group>"; };
 		68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJVideoFavouriteActivity.swift; path = UIActivity/KJVideoFavouriteActivity.swift; sourceTree = "<group>"; };
 		68CE160118BDDAF300127AA7 /* KJComicStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicStore.h; path = Stores/KJComicStore.h; sourceTree = "<group>"; };
 		68CE160218BDDAF300127AA7 /* KJComicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicStore.m; path = Stores/KJComicStore.m; sourceTree = "<group>"; };
@@ -207,8 +210,6 @@
 		68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLYouTubeListView.m; path = "View Controllers/JPLYouTubeListView.m"; sourceTree = "<group>"; };
 		68E48D66184C20A500600FA5 /* KJComicListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListView.h; path = "View Controllers/KJComicListView.h"; sourceTree = "<group>"; };
 		68E48D67184C20A500600FA5 /* KJComicListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicListView.m; path = "View Controllers/KJComicListView.m"; sourceTree = "<group>"; };
-		68E48D6C184D874500600FA5 /* KJRandomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomView.h; path = "View Controllers/KJRandomView.h"; sourceTree = "<group>"; };
-		68E48D6D184D874500600FA5 /* KJRandomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomView.m; path = "View Controllers/KJRandomView.m"; sourceTree = "<group>"; };
 		68E4D4651A16D50300D3D51B /* KJSocialLinkStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLinkStore.h; path = Stores/KJSocialLinkStore.h; sourceTree = "<group>"; };
 		68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSocialLinkStore.m; path = Stores/KJSocialLinkStore.m; sourceTree = "<group>"; };
 		68E4D4681A16D73D00D3D51B /* KJSocialLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLink.h; path = Models/KJSocialLink.h; sourceTree = "<group>"; };
@@ -303,8 +304,7 @@
 		6834315C1A69A38B0050745D /* Doodles */ = {
 			isa = PBXGroup;
 			children = (
-				68E48D6C184D874500600FA5 /* KJRandomView.h */,
-				68E48D6D184D874500600FA5 /* KJRandomView.m */,
+				68ADED0B1BACD9B100977DCF /* DoodlesViewController.swift */,
 			);
 			name = Doodles;
 			sourceTree = "<group>";
@@ -385,6 +385,14 @@
 				6834315D1A69A3940050745D /* More */,
 			);
 			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		68ADED0F1BACEB5700977DCF /* Flow Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				68ADED0D1BACEB5400977DCF /* FlowLayouts.swift */,
+			);
+			name = "Flow Layouts";
 			sourceTree = "<group>";
 		};
 		68CE160718BEB6B600127AA7 /* Stores */ = {
@@ -478,6 +486,7 @@
 				68DF729E18BEBA2F00878497 /* Cells */,
 				68CE160718BEB6B600127AA7 /* Stores */,
 				6832C37319245E7E00E94788 /* UIActivity */,
+				68ADED0F1BACEB5700977DCF /* Flow Layouts */,
 				68A7920A18BD58FE009F9CC7 /* View Controllers */,
 				C961F2621AA5598D0015E67F /* Launch Screen.xib */,
 				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
@@ -731,6 +740,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				680CF071190F8DBD00A0E296 /* KJComicDetailCell.m in Sources */,
+				68ADED0C1BACD9B100977DCF /* DoodlesViewController.swift in Sources */,
 				C95A0B9D1B06CF97007AA777 /* KJVideoDataSource.m in Sources */,
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
 				68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */,
@@ -752,7 +762,6 @@
 				68024D311A628D0900D2A900 /* KJRandomImage+Methods.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
 				683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */,
-				68E48D6E184D874500600FA5 /* KJRandomView.m in Sources */,
 				685EE0641B054D18002E19FA /* KJSecretLoginViewController.m in Sources */,
 				68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */,
 				687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */,
@@ -781,6 +790,7 @@
 				68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */,
 				6837E5D51ADD052F00779F18 /* KJRandomViewDataSource.m in Sources */,
 				C96734581B0AC27E00297754 /* KJVideoParseItem.m in Sources */,
+				68ADED0E1BACEB5400977DCF /* FlowLayouts.swift in Sources */,
 				C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */,
 				68DB55031B06A12900F74329 /* KJSecretAdminViewController.m in Sources */,
 			);

@@ -240,10 +240,10 @@
             </objects>
             <point key="canvasLocation" x="6807" y="2179"/>
         </scene>
-        <!--Random View-->
+        <!--Doodles View Controller-->
         <scene sceneID="mjP-c7-8uq">
             <objects>
-                <collectionViewController id="Yn2-9O-ON9" customClass="KJRandomView" sceneMemberID="viewController">
+                <collectionViewController id="Yn2-9O-ON9" customClass="DoodlesViewController" customModule="Kidney_John" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1001" contentMode="scaleToFill" dataMode="prototypes" id="W4u-ha-wbT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

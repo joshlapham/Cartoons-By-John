@@ -10,7 +10,7 @@
 #import "KJRandomImage.h"
 #import "KJDoodleStore.h"
 #import "KJDoodleCell.h"
-#import "KJRandomView.h"
+#import "Kidney_John-Swift.h"
 #import "UIColor+KJColours.h"
 #import "UIViewController+KJUtils.h"
 
@@ -134,7 +134,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
                  sender:(id)sender {
     if ([segue.identifier isEqualToString:kSegueIdentifierDoodleDetail]) {
         // Init destination view controller
-        KJRandomView *destViewController = segue.destinationViewController;
+        DoodlesViewController *destViewController = segue.destinationViewController;
         
         // Init cell data
         NSIndexPath *selectedIndex = [[self.collectionView indexPathsForSelectedItems] firstObject];
