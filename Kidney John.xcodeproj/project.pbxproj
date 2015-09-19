@@ -31,7 +31,6 @@
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD51919A383003F3231 /* JPLReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFD41919A383003F3231 /* JPLReachabilityManager.m */; };
 		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
-		687BC374184D9C8900F45970 /* KJComicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC373184D9C8900F45970 /* KJComicCell.m */; };
 		687BC379184EB75500F45970 /* KJComicDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687BC378184EB75500F45970 /* KJComicDetailView.m */; };
 		687CE81B1B8B22C800B1DD66 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687CE81A1B8B22C800B1DD66 /* CameraViewController.swift */; };
 		6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D13C191C7F1B001AD6A5 /* KJConstants.m */; };
@@ -42,6 +41,8 @@
 		68ADED0A1BACD1C400977DCF /* KJTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED091BACD1C400977DCF /* KJTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
 		68ADED0C1BACD9B100977DCF /* DoodlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED0B1BACD9B100977DCF /* DoodlesViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68ADED0E1BACEB5400977DCF /* FlowLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED0D1BACEB5400977DCF /* FlowLayouts.swift */; settings = {ASSET_TAGS = (); }; };
+		68ADED111BACFA7600977DCF /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED101BACFA7600977DCF /* BaseCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		68ADED131BACFA8C00977DCF /* ComicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED121BACFA8C00977DCF /* ComicCell.swift */; settings = {ASSET_TAGS = (); }; };
 		68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
 		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
@@ -146,8 +147,6 @@
 		6876CFD31919A383003F3231 /* JPLReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLReachabilityManager.h; path = Stores/JPLReachabilityManager.h; sourceTree = "<group>"; };
 		6876CFD41919A383003F3231 /* JPLReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLReachabilityManager.m; path = Stores/JPLReachabilityManager.m; sourceTree = "<group>"; };
 		6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJSocialLinkCell.xib; path = Cells/KJSocialLinkCell.xib; sourceTree = "<group>"; };
-		687BC372184D9C8900F45970 /* KJComicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicCell.h; path = Cells/KJComicCell.h; sourceTree = "<group>"; };
-		687BC373184D9C8900F45970 /* KJComicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicCell.m; path = Cells/KJComicCell.m; sourceTree = "<group>"; };
 		687BC377184EB75500F45970 /* KJComicDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicDetailView.h; path = "View Controllers/KJComicDetailView.h"; sourceTree = "<group>"; };
 		687BC378184EB75500F45970 /* KJComicDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicDetailView.m; path = "View Controllers/KJComicDetailView.m"; sourceTree = "<group>"; };
 		687CE8141B8B204E00B1DD66 /* Kidney John-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -165,6 +164,8 @@
 		68ADED091BACD1C400977DCF /* KJTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJTabBarController.swift; path = "View Controllers/KJTabBarController.swift"; sourceTree = "<group>"; };
 		68ADED0B1BACD9B100977DCF /* DoodlesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoodlesViewController.swift; path = "View Controllers/DoodlesViewController.swift"; sourceTree = "<group>"; };
 		68ADED0D1BACEB5400977DCF /* FlowLayouts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowLayouts.swift; path = "Flow Layouts/FlowLayouts.swift"; sourceTree = "<group>"; };
+		68ADED101BACFA7600977DCF /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseCollectionViewCell.swift; path = Cells/BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		68ADED121BACFA8C00977DCF /* ComicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComicCell.swift; path = Cells/ComicCell.swift; sourceTree = "<group>"; };
 		68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJVideoFavouriteActivity.swift; path = UIActivity/KJVideoFavouriteActivity.swift; sourceTree = "<group>"; };
 		68CE160118BDDAF300127AA7 /* KJComicStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicStore.h; path = Stores/KJComicStore.h; sourceTree = "<group>"; };
 		68CE160218BDDAF300127AA7 /* KJComicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicStore.m; path = Stores/KJComicStore.m; sourceTree = "<group>"; };
@@ -421,6 +422,7 @@
 				C9E467261AF1BDE8001F369C /* KJBaseTableViewCell.m */,
 				C9CD4DCE1AF1D5290015715A /* KJBaseCollectionViewCell.h */,
 				C9CD4DCF1AF1D5290015715A /* KJBaseCollectionViewCell.m */,
+				68ADED101BACFA7600977DCF /* BaseCollectionViewCell.swift */,
 				680CF0C31A7F730F009250E3 /* KJVideoCell.h */,
 				680CF0C41A7F730F009250E3 /* KJVideoCell.m */,
 				680CF0C51A7F730F009250E3 /* KJVideoCell.xib */,
@@ -430,8 +432,7 @@
 				C968D7D61A8C482800C3B621 /* KJComicListCell.h */,
 				C968D7D71A8C482800C3B621 /* KJComicListCell.m */,
 				C968D7D81A8C482800C3B621 /* KJComicListCell.xib */,
-				687BC372184D9C8900F45970 /* KJComicCell.h */,
-				687BC373184D9C8900F45970 /* KJComicCell.m */,
+				68ADED121BACFA8C00977DCF /* ComicCell.swift */,
 				680CF06F190F8DBD00A0E296 /* KJComicDetailCell.h */,
 				680CF070190F8DBD00A0E296 /* KJComicDetailCell.m */,
 				683CAE5718C77DF2006173FA /* KJDoodleCell.h */,
@@ -744,7 +745,6 @@
 				C95A0B9D1B06CF97007AA777 /* KJVideoDataSource.m in Sources */,
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
 				68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */,
-				687BC374184D9C8900F45970 /* KJComicCell.m in Sources */,
 				C95A0B991B06CEFD007AA777 /* KJBaseDataSource.m in Sources */,
 				680CF0C61A7F730F009250E3 /* KJVideoCell.m in Sources */,
 				C9C4F9561B071AD700F0659C /* KJVideoEditViewController.m in Sources */,
@@ -752,8 +752,10 @@
 				68E1D03B1A60BA6B0054C7E1 /* KJVideo+Methods.m in Sources */,
 				68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */,
 				68DB8F041A6006D0005D33E2 /* UIImage+KJImageUtils.m in Sources */,
+				68ADED131BACFA8C00977DCF /* ComicCell.swift in Sources */,
 				68493EFA18BD69BE004D5CB3 /* KJDoodleStore.m in Sources */,
 				C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */,
+				68ADED111BACFA7600977DCF /* BaseCollectionViewCell.swift in Sources */,
 				68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */,
 				C9CD4DD01AF1D5290015715A /* KJBaseCollectionViewCell.m in Sources */,
 				C95A0BA31B06D2AD007AA777 /* KJVideoCollectionViewCell.m in Sources */,

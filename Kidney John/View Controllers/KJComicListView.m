@@ -7,7 +7,7 @@
 //
 
 #import "KJComicListView.h"
-#import "KJComicCell.h"
+#import "Kidney_John-Swift.h"
 #import "KJComicDetailView.h"
 #import "KJComic.h"
 #import "MBProgressHUD.h"

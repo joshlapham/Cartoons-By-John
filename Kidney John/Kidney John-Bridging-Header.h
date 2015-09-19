@@ -22,6 +22,8 @@
 #import "KJDoodleCell.h"
 #import "UIViewController+KJUtils.h"
 #import "KJRandomFavouriteActivity.h"
+#import "KJComic.h"
+#import "KJComic+Methods.h"
 
 // Pods
 #import <Parse/Parse.h>
