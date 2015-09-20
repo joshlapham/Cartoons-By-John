@@ -107,11 +107,7 @@
                                                size:((NSNumber *)fontSizeTable[style][contentSize]).floatValue];
 }
 
-+(NSString *)preferredFontName {
-    return @"JohnRoderickPaine";
-}
-
-+(NSString *)preferredBoldFontName {
++ (NSString *)preferredFontName {
     return @"JohnRoderickPaine";
 }
 
