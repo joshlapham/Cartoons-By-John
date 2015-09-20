@@ -56,6 +56,9 @@ static NSString * kSegueIdentifierComicDetailFavourites = @"comicDetailSegueFrom
     self.tableView.estimatedRowHeight = 122;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
+    // Remove excess cells from tableView
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     // Check for Favourites results
     if ([self.cellResults count] == 0) {
         [self kj_showthereAreNoFavouritesAlertWithTitle:self.titleForView];

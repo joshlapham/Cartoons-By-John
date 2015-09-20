@@ -161,10 +161,10 @@
         <scene sceneID="OfK-3q-sV6">
             <objects>
                 <tableViewController id="pdg-rQ-Sxt" customClass="KJFavouritesListView" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="100" sectionHeaderHeight="10" sectionFooterHeight="10" id="KZF-NZ-IGb">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KZF-NZ-IGb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
                             <outlet property="dataSource" destination="pdg-rQ-Sxt" id="ezb-nz-eG4"/>
                             <outlet property="delegate" destination="pdg-rQ-Sxt" id="yT5-cz-C3v"/>
@@ -361,7 +361,7 @@
         <image name="video-tab-icon" width="32" height="21"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Hfi-Tv-zMT"/>
         <segue reference="5zS-gt-cTt"/>
-        <segue reference="nGw-FC-YiY"/>
     </inferredMetricsTieBreakers>
 </document>
