@@ -7,8 +7,8 @@
 //
 
 #import "KJRandomViewDataSource.h"
-#import "KJDoodleCell.h"
 #import "KJRandomImage.h"
+#import "Kidney_John-Swift.h"
 
 @implementation KJRandomViewDataSource
 

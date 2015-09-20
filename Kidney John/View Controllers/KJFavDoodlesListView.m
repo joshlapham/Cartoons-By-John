@@ -9,10 +9,10 @@
 #import "KJFavDoodlesListView.h"
 #import "KJRandomImage.h"
 #import "KJDoodleStore.h"
-#import "KJDoodleCell.h"
 #import "Kidney_John-Swift.h"
 #import "UIColor+KJColours.h"
 #import "UIViewController+KJUtils.h"
+#import "Kidney_John-Swift.h"
 
 // Constants
 // collectionView insets (for all edges)
