@@ -8,12 +8,9 @@
 
 #import "UIFontDescriptor+JohnRoderickPaine.h"
 
-NSString *const ANUIFontTextStyleCaption3 = @"ANUIFontTextStyleCaption3";
-NSString *const ANUIFontTextStyleCaption4 = @"ANUIFontTextStyleCaption4";
-
 @implementation UIFontDescriptor (JohnRoderickPaine)
 
-+(UIFontDescriptor *)preferredJohnRoderickPaineFontDescriptorWithTextStyle:(NSString *)style {
++ (UIFontDescriptor *)preferredJohnRoderickPaineFontDescriptorWithTextStyle:(NSString *)style {
     static dispatch_once_t onceToken;
     static NSDictionary *fontSizeTable;
     dispatch_once(&onceToken, ^{
@@ -88,20 +85,6 @@ NSString *const ANUIFontTextStyleCaption4 = @"ANUIFontTextStyleCaption4";
                                   UIContentSizeCategorySmall: @12,
                                   UIContentSizeCategoryExtraSmall: @11,},
                           
-                          ANUIFontTextStyleCaption3: @{
-                                  UIContentSizeCategoryAccessibilityExtraExtraExtraLarge: @17,
-                                  UIContentSizeCategoryAccessibilityExtraExtraLarge: @16,
-                                  UIContentSizeCategoryAccessibilityExtraLarge: @15,
-                                  UIContentSizeCategoryAccessibilityLarge: @15,
-                                  UIContentSizeCategoryAccessibilityMedium: @14,
-                                  UIContentSizeCategoryExtraExtraExtraLarge: @14,
-                                  UIContentSizeCategoryExtraExtraLarge: @13,
-                                  UIContentSizeCategoryExtraLarge: @12,
-                                  UIContentSizeCategoryLarge: @12,
-                                  UIContentSizeCategoryMedium: @12,
-                                  UIContentSizeCategorySmall: @11,
-                                  UIContentSizeCategoryExtraSmall: @10,},
-                          
                           UIFontTextStyleFootnote: @{
                                   UIContentSizeCategoryAccessibilityExtraExtraExtraLarge: @16,
                                   UIContentSizeCategoryAccessibilityExtraExtraLarge: @15,
@@ -115,38 +98,19 @@ NSString *const ANUIFontTextStyleCaption4 = @"ANUIFontTextStyleCaption4";
                                   UIContentSizeCategoryMedium: @11,
                                   UIContentSizeCategorySmall: @10,
                                   UIContentSizeCategoryExtraSmall: @10,},
-                          
-                          ANUIFontTextStyleCaption4: @{
-                                  UIContentSizeCategoryAccessibilityExtraExtraExtraLarge: @15,
-                                  UIContentSizeCategoryAccessibilityExtraExtraLarge: @14,
-                                  UIContentSizeCategoryAccessibilityExtraLarge: @13,
-                                  UIContentSizeCategoryAccessibilityLarge: @13,
-                                  UIContentSizeCategoryAccessibilityMedium: @12,
-                                  UIContentSizeCategoryExtraExtraExtraLarge: @12,
-                                  UIContentSizeCategoryExtraExtraLarge: @11,
-                                  UIContentSizeCategoryExtraLarge: @11,
-                                  UIContentSizeCategoryLarge: @10,
-                                  UIContentSizeCategoryMedium: @10,
-                                  UIContentSizeCategorySmall: @9,
-                                  UIContentSizeCategoryExtraSmall: @9,},
                           };
     });
     
-    
     NSString *contentSize = [UIApplication sharedApplication].preferredContentSizeCategory;
-    return [UIFontDescriptor fontDescriptorWithName:[self preferredFontName] size:((NSNumber *)fontSizeTable[style][contentSize]).floatValue];
-}
-+(UIFontDescriptor *)preferredJohnRoderickPaineDemiBoldFontDescriptorWithTextStyle:(NSString *)style {
-    return [[self preferredJohnRoderickPaineFontDescriptorWithTextStyle:style] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
-}
-
-+(UIFontDescriptor *)preferredAvenirNextBoldFontDescriptorWithTextStyle:(NSString *)style {
-    return [UIFontDescriptor fontDescriptorWithName:[self preferredBoldFontName] size:[self preferredJohnRoderickPaineFontDescriptorWithTextStyle:style].pointSize];
+    
+    return [UIFontDescriptor fontDescriptorWithName:[self preferredFontName]
+                                               size:((NSNumber *)fontSizeTable[style][contentSize]).floatValue];
 }
 
 +(NSString *)preferredFontName {
     return @"JohnRoderickPaine";
 }
+
 +(NSString *)preferredBoldFontName {
     return @"JohnRoderickPaine";
 }

@@ -8,10 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const ANUIFontTextStyleCaption3;
-
 @interface UIFontDescriptor (JohnRoderickPaine)
 
-+(UIFontDescriptor *)preferredJohnRoderickPaineFontDescriptorWithTextStyle:(NSString *)style;
++ (UIFontDescriptor *)preferredJohnRoderickPaineFontDescriptorWithTextStyle:(NSString *)style;
 
 @end
