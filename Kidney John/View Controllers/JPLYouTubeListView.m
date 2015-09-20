@@ -113,6 +113,9 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     self.searchDisplayController.searchResultsTableView.estimatedRowHeight = 120;
     self.searchDisplayController.searchResultsTableView.rowHeight = UITableViewAutomaticDimension;
     
+    // Remove excess cells from tableView
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     // Set background colour for view
     // Accessibility
     if (UIAccessibilityDarkerSystemColorsEnabled()) {
