@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -11,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="T0l-9u-lLr" id="sEC-O7-lRZ">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="119"/>
+                <rect key="frame" x="0.0" y="0.0" width="287" height="121.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ahD-8N-kjs">
@@ -22,7 +23,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tUf-6b-Xzr">
-                        <rect key="frame" x="151" y="12" width="33" height="21"/>
+                        <rect key="frame" x="151" y="12" width="136" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="QzS-nh-BCt"/>
                         </constraints>
@@ -31,12 +32,12 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="103" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3:00" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Jf-Jd-KOI">
-                        <rect key="frame" x="151" y="69" width="30" height="18"/>
+                        <rect key="frame" x="151" y="69" width="32" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pA5-5D-tWo">
-                        <rect key="frame" x="151" y="41" width="83" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pA5-5D-tWo">
+                        <rect key="frame" x="151" y="41" width="136" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="n3U-tO-Z1p"/>
                         </constraints>
@@ -59,8 +60,10 @@
                 <constraints>
                     <constraint firstItem="wU4-eM-aTh" firstAttribute="top" secondItem="sEC-O7-lRZ" secondAttribute="topMargin" constant="-5" id="0sw-1t-rBY"/>
                     <constraint firstItem="1Jf-Jd-KOI" firstAttribute="top" secondItem="pA5-5D-tWo" secondAttribute="bottom" constant="8" id="16N-rk-at0"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="pA5-5D-tWo" secondAttribute="trailing" constant="-8" id="76w-kb-DDJ"/>
                     <constraint firstItem="tUf-6b-Xzr" firstAttribute="top" secondItem="ahD-8N-kjs" secondAttribute="top" id="7ZN-pX-iw1"/>
                     <constraint firstItem="tUf-6b-Xzr" firstAttribute="leading" secondItem="pA5-5D-tWo" secondAttribute="leading" id="DZ8-t6-qnS"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="tUf-6b-Xzr" secondAttribute="trailing" constant="-8" id="P5H-8M-cQb"/>
                     <constraint firstItem="pA5-5D-tWo" firstAttribute="top" secondItem="tUf-6b-Xzr" secondAttribute="bottom" constant="8" id="TY1-NS-mkJ"/>
                     <constraint firstItem="tUf-6b-Xzr" firstAttribute="leading" secondItem="wU4-eM-aTh" secondAttribute="trailing" constant="111" id="YuS-pv-GP2"/>
                     <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="pA5-5D-tWo" secondAttribute="bottom" constant="40" id="hbF-2c-Qw6"/>

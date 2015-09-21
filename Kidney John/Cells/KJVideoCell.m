@@ -16,9 +16,6 @@
 // Constants
 static NSString * kVideoDateFormat = @"YYYY-MM-dd";
 
-// Modifier for name & description labels max layout width
-static CGFloat kMaxLayoutWidthModifier = 195;
-
 // Fallback placeholder for video duration
 static NSString * kVideoDurationFallbackString = @"0:30";
 
@@ -34,20 +31,14 @@ static NSString * kVideoDurationFallbackString = @"0:30";
 #pragma mark - Awake from NIB method
 
 - (void)awakeFromNib {
-    // Calculate max layout width for video name & description labels
-    CGFloat mainScreenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat maxLayoutWidth = mainScreenWidth - kMaxLayoutWidthModifier;
-    
     // Video name
     self.videoTitle.font = [UIFont kj_videoNameFont];
     self.videoTitle.numberOfLines = 0;
-    self.videoTitle.preferredMaxLayoutWidth = maxLayoutWidth;
     
     // Video description
     self.videoDescription.font = [UIFont kj_videoDescriptionFont];
     self.videoDescription.textColor = [UIColor kj_videoDurationTextColour];
     self.videoDescription.numberOfLines = 0;
-    self.videoDescription.preferredMaxLayoutWidth = maxLayoutWidth;
     
     // Video duration
     self.videoDuration.font = [UIFont kj_videoDurationFont];
