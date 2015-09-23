@@ -48,6 +48,7 @@ static NSString *kYouTubeVideoUrlForSharing = @"https://www.youtube.com/watch?v=
     // Init view controller for UIActivity
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[activityUrl]
                                                                              applicationActivities:@[favouriteActivity]];
+    activityVC.excludedActivityTypes = @[ UIActivityTypeAddToReadingList ];
     
     // Show UIActivity
     [self.navigationController presentViewController:activityVC
