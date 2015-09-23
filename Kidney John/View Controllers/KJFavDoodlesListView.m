@@ -83,9 +83,20 @@ static NSString * kSegueIdentifierDoodleDetail = @"doodleDetailSegueFromFavourit
 
 -   (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    // Perform segue
-    [self performSegueWithIdentifier:kSegueIdentifierDoodleDetail
-                              sender:self];
+    // Init from storyboard
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ImageStoryboard" bundle:nil];
+    SingleImageViewController *destViewController = [storyboard instantiateViewControllerWithIdentifier:@"SingleImageViewController"];
+    destViewController.hidesBottomBarWhenPushed = YES;
+    
+    // Init cell data
+    KJRandomImage *cellData = [_cellResults objectAtIndex:indexPath.row];
+    
+    // Set image
+    destViewController.imageToShow = cellData;
+    
+    // Push it
+    [self.navigationController pushViewController:destViewController
+                                         animated:YES];
 }
 
 #pragma mark UICollectionViewDataSource delegate methods
@@ -126,24 +137,6 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [cell configureCellWithData:cellData];
     
     return cell;
-}
-
-#pragma mark - Prepare for segue method
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue
-                 sender:(id)sender {
-    if ([segue.identifier isEqualToString:kSegueIdentifierDoodleDetail]) {
-        // Init destination view controller
-        DoodlesViewController *destViewController = segue.destinationViewController;
-        
-        // Init cell data
-        NSIndexPath *selectedIndex = [[self.collectionView indexPathsForSelectedItems] firstObject];
-        KJRandomImage *doodleCell = [_cellResults objectAtIndex:selectedIndex.row];
-        
-        // Pass doodle to destination VC.
-        // Destination VC then checks if selectedImage property is nil when it inits, and loads things appropriately.
-        destViewController.selectedImageFromFavouritesList = doodleCell;
-    }
 }
 
 @end

@@ -44,6 +44,7 @@
 		68ADED111BACFA7600977DCF /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED101BACFA7600977DCF /* BaseCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		68ADED131BACFA8C00977DCF /* ComicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED121BACFA8C00977DCF /* ComicCell.swift */; settings = {ASSET_TAGS = (); }; };
 		68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
+		68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160218BDDAF300127AA7 /* KJComicStore.m */; };
 		68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CE160518BEAF7800127AA7 /* KJVideoStore.m */; };
 		68DB55031B06A12900F74329 /* KJSecretAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB55011B06A12900F74329 /* KJSecretAdminViewController.m */; };
@@ -63,7 +64,6 @@
 		68E48D20184A247D00600FA5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1F184A247D00600FA5 /* UIKit.framework */; };
 		68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D24184A247D00600FA5 /* InfoPlist.strings */; };
 		68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */; };
-		68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D30184A247D00600FA5 /* Main_iPad.storyboard */; };
 		68E48D37184A247D00600FA5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D36184A247D00600FA5 /* Images.xcassets */; };
 		68E48D3E184A247D00600FA5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D3D184A247D00600FA5 /* XCTest.framework */; };
 		68E48D3F184A247D00600FA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E48D1B184A247D00600FA5 /* Foundation.framework */; };
@@ -73,6 +73,7 @@
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
 		68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */; };
 		68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4691A16D73D00D3D51B /* KJSocialLink.m */; };
+		68E891331BB204B30005A5DA /* ImageStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */; settings = {ASSET_TAGS = (); }; };
 		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
 		C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C956F61E1AF204D600D5B9B0 /* UIViewController+KJUtils.m */; };
 		C95A0B961B06CBC5007AA777 /* KJAdminStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A0B951B06CBC5007AA777 /* KJAdminStore.m */; };
@@ -117,7 +118,6 @@
 		680CF0C51A7F730F009250E3 /* KJVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJVideoCell.xib; path = Cells/KJVideoCell.xib; sourceTree = "<group>"; };
 		681347041AF26781009DCF88 /* KJVideoCellTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJVideoCellTests.m; sourceTree = "<group>"; };
 		68211A1B1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
-		68211A1C1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main_iPad.strings; sourceTree = "<group>"; };
 		68211A1D1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68211A1E1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68211A221927A95000B24BF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -166,6 +166,7 @@
 		68ADED101BACFA7600977DCF /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseCollectionViewCell.swift; path = Cells/BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		68ADED121BACFA8C00977DCF /* ComicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComicCell.swift; path = Cells/ComicCell.swift; sourceTree = "<group>"; };
 		68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJVideoFavouriteActivity.swift; path = UIActivity/KJVideoFavouriteActivity.swift; sourceTree = "<group>"; };
+		68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleImageViewController.swift; path = "View Controllers/SingleImageViewController.swift"; sourceTree = "<group>"; };
 		68CE160118BDDAF300127AA7 /* KJComicStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicStore.h; path = Stores/KJComicStore.h; sourceTree = "<group>"; };
 		68CE160218BDDAF300127AA7 /* KJComicStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicStore.m; path = Stores/KJComicStore.m; sourceTree = "<group>"; };
 		68CE160418BEAF7800127AA7 /* KJVideoStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoStore.h; path = Stores/KJVideoStore.h; sourceTree = "<group>"; };
@@ -200,7 +201,6 @@
 		68E48D25184A247D00600FA5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Prefix.pch"; sourceTree = "<group>"; };
 		68E48D2E184A247D00600FA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		68E48D31184A247D00600FA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		68E48D36184A247D00600FA5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		68E48D3C184A247D00600FA5 /* Kidney JohnTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kidney JohnTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E48D3D184A247D00600FA5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -214,6 +214,7 @@
 		68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSocialLinkStore.m; path = Stores/KJSocialLinkStore.m; sourceTree = "<group>"; };
 		68E4D4681A16D73D00D3D51B /* KJSocialLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLink.h; path = Models/KJSocialLink.h; sourceTree = "<group>"; };
 		68E4D4691A16D73D00D3D51B /* KJSocialLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSocialLink.m; path = Models/KJSocialLink.m; sourceTree = "<group>"; };
+		68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ImageStoryboard.storyboard; path = Storyboards/ImageStoryboard.storyboard; sourceTree = "<group>"; };
 		68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicFavouriteActivity.h; path = UIActivity/KJComicFavouriteActivity.h; sourceTree = "<group>"; };
 		68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicFavouriteActivity.m; path = UIActivity/KJComicFavouriteActivity.m; sourceTree = "<group>"; };
 		AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -379,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				68ADED091BACD1C400977DCF /* KJTabBarController.swift */,
+				68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */,
 				6834315A1A69A37C0050745D /* Videos */,
 				6834315B1A69A3830050745D /* Comix */,
 				6834315C1A69A38B0050745D /* Doodles */,
@@ -489,7 +491,7 @@
 				68A7920A18BD58FE009F9CC7 /* View Controllers */,
 				C961F2621AA5598D0015E67F /* Launch Screen.xib */,
 				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
-				68E48D30184A247D00600FA5 /* Main_iPad.storyboard */,
+				68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
 				68E48D22184A247D00600FA5 /* Supporting Files */,
 			);
@@ -671,7 +673,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68E48D32184A247D00600FA5 /* Main_iPad.storyboard in Resources */,
+				68E891331BB204B30005A5DA /* ImageStoryboard.storyboard in Resources */,
 				68E48D37184A247D00600FA5 /* Images.xcassets in Resources */,
 				C968D7DA1A8C482800C3B621 /* KJComicListCell.xib in Resources */,
 				68DB55041B06A12900F74329 /* KJSecretAdminViewController.xib in Resources */,
@@ -746,6 +748,7 @@
 				C95A0B991B06CEFD007AA777 /* KJBaseDataSource.m in Sources */,
 				680CF0C61A7F730F009250E3 /* KJVideoCell.m in Sources */,
 				C9C4F9561B071AD700F0659C /* KJVideoEditViewController.m in Sources */,
+				68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */,
 				689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */,
 				68E1D03B1A60BA6B0054C7E1 /* KJVideo+Methods.m in Sources */,
 				68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */,
@@ -840,15 +843,6 @@
 				68211A1B1927A70900B24BF1 /* es */,
 			);
 			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		68E48D30184A247D00600FA5 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				68E48D31184A247D00600FA5 /* Base */,
-				68211A1C1927A70900B24BF1 /* es */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		68E48D46184A247D00600FA5 /* InfoPlist.strings */ = {
@@ -950,6 +944,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";
@@ -1020,6 +1018,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
 				INFOPLIST_FILE = "Kidney John/Kidney John-Info.plist";

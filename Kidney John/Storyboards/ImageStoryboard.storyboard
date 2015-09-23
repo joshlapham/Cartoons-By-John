@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <scenes>
+        <!--Single Image View Controller-->
+        <scene sceneID="rIC-HB-IMD">
+            <objects>
+                <viewController storyboardIdentifier="SingleImageViewController" autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="CAC-gd-cXQ" customClass="SingleImageViewController" customModule="Kidney_John" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qLA-1q-lk3"/>
+                        <viewControllerLayoutGuide type="bottom" id="7e6-EC-A3w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="tZF-a6-XEN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wDB-lL-HRV">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wDB-lL-HRV" firstAttribute="leading" secondItem="tZF-a6-XEN" secondAttribute="leading" id="3uZ-TP-qrd"/>
+                            <constraint firstAttribute="trailing" secondItem="wDB-lL-HRV" secondAttribute="trailing" id="DQv-R4-feK"/>
+                            <constraint firstItem="wDB-lL-HRV" firstAttribute="top" secondItem="tZF-a6-XEN" secondAttribute="top" id="GtA-4c-qxb"/>
+                            <constraint firstItem="7e6-EC-A3w" firstAttribute="top" secondItem="wDB-lL-HRV" secondAttribute="bottom" id="fu2-3q-HCR"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="imageView" destination="wDB-lL-HRV" id="4nd-V5-mfB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gok-jN-ScB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="298" y="372"/>
+        </scene>
+    </scenes>
+</document>

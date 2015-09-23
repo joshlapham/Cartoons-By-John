@@ -8,9 +8,10 @@
 
 import Foundation
 
+// TODO: update to use Cocoalumberjack for logging on this class
+
 class DoodlesViewController: UICollectionViewController {
     // Properties
-    var selectedImageFromFavouritesList: KJRandomImage?
     var dataSource: KJRandomViewDataSource?
     var progressHud: MBProgressHUD?
     var backgroundImageView: UIImageView?
@@ -39,10 +40,8 @@ class DoodlesViewController: UICollectionViewController {
         
         // Set background if no network is available
         if JPLReachabilityManager.isUnreachable() == true {
-            // Init image to use for background
+            // Init background image for collectionView
             self.backgroundImageView = self.kj_noNetworkImageView()
-            
-            // Add to background
             self.collectionView?.backgroundView = self.backgroundImageView
             self.collectionView?.backgroundView?.contentMode = .ScaleAspectFit
             
@@ -54,12 +53,6 @@ class DoodlesViewController: UICollectionViewController {
         
         // Setup collection view
         self.setupCollectionView()
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.selectedImageFromFavouritesList = nil
     }
 }
 
@@ -102,17 +95,10 @@ extension DoodlesViewController {
         //        DDLogVerbose(@"%s: data fetch did happen", __func__);
         
         // Init data source array
-        // Check if coming from Favourites list ..
-        // Is coming from favourites list, so init data source array with just that one image
-        if self.selectedImageFromFavouritesList != nil {
-            self.dataSource?.cellDataSource = [ self.selectedImageFromFavouritesList! ]
-        } else {
-            // Not coming from favourites list, so init data source array with all doodles
-            self.dataSource?.cellDataSource = KJDoodleStore.sharedStore().returnDoodlesArray()
-        }
+        self.dataSource?.cellDataSource = KJDoodleStore.sharedStore().returnDoodlesArray()
         
-        // Init action button in top right hand corner of navbar
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("showActivityView"))
+        // TODO: testing flow layout toggle
+        //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("toggleLayouts:"))
         
         // Hide progress
         self.progressHud?.hide(true)
@@ -177,9 +163,8 @@ extension DoodlesViewController {
 // MARK: - Helper methods
 extension DoodlesViewController {
     func setupCollectionView() {
-        // Set collectionView properties
-        self.collectionView?.pagingEnabled = true
-        self.collectionView?.frame = self.view.bounds
+        // NOTE - this ensures correct layout after changing collectionView layout
+        self.automaticallyAdjustsScrollViewInsets = false
         
         // Accessibility
         if (UIAccessibilityDarkerSystemColorsEnabled()) {
@@ -189,7 +174,9 @@ extension DoodlesViewController {
         }
         
         // Init flow layout
-        let flowLayout = SwipeFlowLayout(forCollectionView: self.collectionView)
+        // TODO: testing flow layout toggle
+        //                let flowLayout = SwipeFlowLayout(forCollectionView: self.collectionView)
+        let flowLayout = GridFlowLayout(forCollectionView: self.collectionView)
         self.collectionView?.collectionViewLayout = flowLayout
         
         // Init data source
@@ -197,6 +184,7 @@ extension DoodlesViewController {
         
         // Set delegates
         self.collectionView?.dataSource = self.dataSource
+        self.collectionView?.delegate = self
     }
     
     func reachabilityDidChange() {
@@ -212,28 +200,45 @@ extension DoodlesViewController {
     }
 }
 
-// MARK: - UIActivityView methods
+// MARK: - UICollectionViewDelegate methods
 extension DoodlesViewController {
-    func showActivityView() {
-        // TODO: should we be returning out of `guard` statements?
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let cellData = self.dataSource?.cellDataSource[indexPath.row] as? KJRandomImage
         
-        // Get data for doodle currently on screen
-        guard let currentCellIndex = self.collectionView?.indexPathsForVisibleItems().first  else { return }
-        guard let cellData = self.dataSource?.cellDataSource[currentCellIndex.row] as? KJRandomImage else { return }
+        let storyboard = UIStoryboard(name: "ImageStoryboard", bundle: nil)
+        let destViewController = storyboard.instantiateViewControllerWithIdentifier("SingleImageViewController") as? SingleImageViewController
+        destViewController?.imageToShow = cellData
+        destViewController?.hidesBottomBarWhenPushed = true
         
-        // TODO: refactor setting of image here to use same class as video thumbnails fetcher for CoreSpotlight results
-        
-        // Image to share (using SDImageCache)
-        guard let doodleImageToShare = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(cellData.imageUrl) else { return }
-        
-        // Init UIActivity
-        let favouriteActivity = KJRandomFavouriteActivity(doodle: cellData)
-        
-        // Init view controller for UIActivity
-        let activityVC = UIActivityViewController(activityItems: [ doodleImageToShare ], applicationActivities: [ favouriteActivity ])
-        activityVC.excludedActivityTypes = [ UIActivityTypeAddToReadingList ]
-        
-        // Present UIActivityController
-        self.navigationController?.presentViewController(activityVC, animated: true, completion: nil)
+        self.navigationController?.pushViewController(destViewController!, animated: true)
     }
 }
+
+// TODO: testing flow layout toggle
+//// MARK: - Toggle flow layout helper methods
+//extension DoodlesViewController {
+//    @IBAction func toggleLayouts(sender: AnyObject) {
+//        // TODO: calculate contentOffset and adjust accordingly
+//        // NOTE - when switching from grid to swipe layout, cells can be placed slightly off screen and need to snap back in place.
+//        //        print("CV CONTENT OFFSET : \(self.collectionView?.contentOffset)")
+//
+//        // NOTE - this still seems to animate layout change
+//        let shouldAnimateLayoutChange = false
+//
+//        if self.collectionView?.collectionViewLayout is SwipeFlowLayout {
+//            let flowLayout = GridFlowLayout(forCollectionView: self.collectionView)
+//            self.collectionView?.setCollectionViewLayout(flowLayout, animated: shouldAnimateLayoutChange)
+//            self.collectionView?.delegate = flowLayout
+//
+//        } else if self.collectionView?.collectionViewLayout is GridFlowLayout {
+//            let flowLayout = SwipeFlowLayout(forCollectionView: self.collectionView)
+//            self.collectionView?.setCollectionViewLayout(flowLayout, animated: shouldAnimateLayoutChange)
+//            self.collectionView?.delegate = flowLayout
+//        }
+//
+//        // NOTE - not sure if this has any effect
+//        self.collectionView?.collectionViewLayout.invalidateLayout()
+//
+//        NSNotificationCenter.defaultCenter().postNotificationName("DoodlesLayoutDidChange", object: nil)
+//    }
+//}

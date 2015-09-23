@@ -46,6 +46,10 @@
     // Configure cell
     [cell configureCellWithData:cellData];
     
+    // TODO: testing flow layout toggle
+    //    cell.collectionView = collectionView;
+    //    cell.indexPath = indexPath;
+    
     return cell;
 }
 
