@@ -492,6 +492,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // Init destination VC
     KJVideoViewController *destViewController = [[KJVideoViewController alloc] initWithVideoId:cellData.videoId];
+    destViewController.hidesBottomBarWhenPushed = YES;
     destViewController.title = cellData.videoName;
     destViewController.chosenVideo = cellData;
     
