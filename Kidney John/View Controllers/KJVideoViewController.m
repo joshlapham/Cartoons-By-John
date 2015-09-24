@@ -49,6 +49,8 @@ static NSString *kYouTubeVideoUrlForSharing = @"https://www.youtube.com/watch?v=
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[activityUrl]
                                                                              applicationActivities:@[favouriteActivity]];
     activityVC.excludedActivityTypes = @[ UIActivityTypeAddToReadingList ];
+    activityVC.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
+    activityVC.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
     
     // Show UIActivity
     [self.navigationController presentViewController:activityVC

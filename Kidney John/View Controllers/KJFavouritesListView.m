@@ -10,7 +10,6 @@
 #import "KJVideoViewController.h"
 #import "KJVideo.h"
 #import "KJComic.h"
-#import "KJComicDetailView.h"
 #import "UIColor+KJColours.h"
 #import "KJVideoCell.h"
 #import "KJComicListCell.h"

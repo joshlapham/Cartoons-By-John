@@ -169,6 +169,8 @@ extension SingleImageViewController {
             // Init view controller for UIActivity
             let activityVC = UIActivityViewController(activityItems: [ doodleImageToShare ], applicationActivities: [ favouriteActivity ])
             activityVC.excludedActivityTypes = [ UIActivityTypeAddToReadingList ]
+            activityVC.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+            activityVC.popoverPresentationController?.permittedArrowDirections = .Up
             
             // Present UIActivityController
             self.navigationController?.presentViewController(activityVC, animated: true, completion: nil)
@@ -180,8 +182,9 @@ extension SingleImageViewController {
             let favouriteActivity = KJComicFavouriteActivity(comic: cellData)
             
             let activityVC = UIActivityViewController(activityItems: [ comicImageToShare ], applicationActivities: [ favouriteActivity ])
-            
             activityVC.excludedActivityTypes = [ UIActivityTypeAddToReadingList ]
+            activityVC.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+            activityVC.popoverPresentationController?.permittedArrowDirections = .Up
             
             // Present UIActivityController
             self.navigationController?.presentViewController(activityVC, animated: true, completion: nil)

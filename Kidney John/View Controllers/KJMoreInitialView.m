@@ -267,14 +267,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
                 return;
             }
             
-            // Set back button to have no text
-            // TODO: review this, not really best practice
-            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                                     style:UIBarButtonItemStylePlain
-                                                                                    target:nil
-                                                                                    action:nil];
-            
-            
             // Check OS version; use Safari VC if iOS 9 or above
             NSOperatingSystemVersion iOS9 = (NSOperatingSystemVersion){9, 0, 0};
             BOOL isiOS9OrHigher = [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:iOS9];

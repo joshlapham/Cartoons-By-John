@@ -204,11 +204,11 @@ extension KJAppDelegate: UIApplicationDelegate {
         // TODO: log error with analytics
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        // TODO: implement this method to fetch new data when new stuff is available
-        // TODO: determine data type that was updated (video, comics, doodles, social links)
-        // TODO: fetch data using store depending on data type
-    }
+    //    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+    //        // TODO: implement this method to fetch new data when new stuff is available
+    //        // TODO: determine data type that was updated (video, comics, doodles, social links)
+    //        // TODO: fetch data using store depending on data type
+    //    }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         //        DDLogVerbose(@"%s - did receive push notification", __func__);

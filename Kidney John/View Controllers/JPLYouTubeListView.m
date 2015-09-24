@@ -496,12 +496,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     destViewController.title = cellData.videoName;
     destViewController.chosenVideo = cellData;
     
-    // Init back button
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Videos", nil)
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:nil
-                                                                            action:nil];
-    
     // Push it
     [self.navigationController pushViewController:destViewController
                                          animated:YES];
