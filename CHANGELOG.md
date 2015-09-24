@@ -2,11 +2,15 @@
 
 ## Version 1.1.3
 
-This update focuses on introducing new iOS 9 features to the app.
+- now a Universal app! Enjoy some 'toons and comics on your iPad
+- updated to support device rotation. Finally, videos in landscape!
+- Doodles are now shown as a grid, 'cause there's just so many doodles
+- things have been tweaked to just look a little nicer
 
 Bug fixes:
 
 - fixed issue where push notifications wouldn't be received
+- fixed issue where social media links would try to load even if no network available
 
 ## Version 1.1.2
 
