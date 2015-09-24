@@ -33,6 +33,7 @@ static NSString * kParseAnalyticsKeyDoodleEventName = @"doodleFavourite";
 static NSString * kParseAnalyticsKeyDoodleUrl = @"doodleURL";
 static NSString * kParseAnalyticsKeyDoodleId = @"doodleId";
 static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
+static NSString * kParseAnalyticsKeyInstagramId = @"instagramId";
 
 @implementation KJParseAnalyticsStore
 
@@ -123,6 +124,19 @@ static NSString * kParseAnalyticsKeyDoodleIsFavourite = @"isFavourite";
                                  };
     
     [PFAnalytics trackEvent:kParseAnalyticsKeyComicViewedEventName
+                 dimensions:dimensions];
+}
+
+#pragma mark - Viewed doodle event method
+
+- (void)trackDoodleViewEventForDoodle:(KJRandomImage *)doodle {
+    NSDictionary *dimensions = @{
+                                 kParseAnalyticsKeyDoodleId : doodle.imageId,
+                                 kParseAnalyticsKeyInstagramId : doodle.instagramId,
+                                 kParseAnalyticsKeyDoodleIsFavourite : doodle.isFavourite ? @"YES" : @"NO",
+                                 };
+    
+    [PFAnalytics trackEvent:kParseAnalyticsKeyDoodleEventName
                  dimensions:dimensions];
 }
 

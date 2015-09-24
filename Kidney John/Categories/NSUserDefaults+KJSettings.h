@@ -53,4 +53,7 @@
 + (BOOL)kj_shouldTrackViewedComicEventsWithParseSetting;
 + (void)kj_setShouldTrackViewedComicEventsWithParseSetting:(BOOL)setting;
 
++ (BOOL)kj_shouldTrackViewedDoodleEventsWithParseSetting;
++ (void)kj_setShouldTrackViewedDoodleEventsWithParseSetting:(BOOL)setting;
+
 @end

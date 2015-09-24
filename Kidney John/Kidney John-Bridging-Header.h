@@ -25,6 +25,7 @@
 #import "KJComic+Methods.h"
 #import "KJRandomImage.h"
 #import "KJRandomImage+Methods.h"
+#import "KJComicFavouriteActivity.h"
 
 // Pods
 #import <Parse/Parse.h>

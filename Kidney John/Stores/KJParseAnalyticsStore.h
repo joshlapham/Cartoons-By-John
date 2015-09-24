@@ -32,4 +32,7 @@
 // Viewed comic event method
 - (void)trackComicViewEventForComic:(KJComic *)comic;
 
+// Viewed doodle event methods
+- (void)trackDoodleViewEventForDoodle:(KJRandomImage *)doodle;
+
 @end

@@ -290,6 +290,7 @@ extension KJAppDelegate {
         static let TrackFavouritedItemEventsWithParseAnalytics = "trackFavouritedItemEventsWithParseAnalytics"
         static let TrackPlayedVideoEventsWithParseAnalytics = "trackPlayedVideoEventsWithParseAnalytics"
         static let TrackViewedComicEventsWithParseAnalytics = "trackViewedComicEventsWithParseAnalytics"
+        static let TrackViewedDoodleEventsWithParseAnalytics = "trackViewedDoodleEventsWithParseAnalytics"
     }
     
     // Fetch PFConfig values from Parse and store locally in NSUserDefaults
@@ -319,6 +320,7 @@ extension KJAppDelegate {
                 NSUserDefaults.kj_setShouldTrackFavouritedItemEventsWithParseSetting(false)
                 NSUserDefaults.kj_setShouldTrackPlayedVideoEventsWithParseSetting(false)
                 NSUserDefaults.kj_setShouldTrackViewedComicEventsWithParseSetting(false)
+                NSUserDefaults.kj_setShouldTrackViewedDoodleEventsWithParseSetting(false)
                 
                 #else
                 
@@ -338,6 +340,12 @@ extension KJAppDelegate {
                 if let shouldTrack = config[ParsePFConfigKey.TrackViewedComicEventsWithParseAnalytics] as? NSNumber {
                     //                    DDLogInfo(@"PFConfig: should track viewed comic events with Parse Analytics: %@", [shouldTrackViewedComicEventsWithAnalytics boolValue] ? @"YES" : @"NO");
                     NSUserDefaults.kj_setShouldTrackViewedComicEventsWithParseSetting(shouldTrack.boolValue)
+                }
+                
+                // Init should track viewed doodle events with Parse Analytics
+                if let shouldTrack = config[ParsePFConfigKey.TrackViewedDoodleEventsWithParseAnalytics] as? NSNumber {
+                    //                    DDLogInfo(@"PFConfig: should track viewed doodle events with Parse Analytics: %@", [shouldTrackViewedDoodleEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+                    NSUserDefaults.kj_setShouldTrackViewedDoodleEventsWithParseSetting(shouldTrack.boolValue)
                 }
                 
             #endif

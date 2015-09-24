@@ -270,41 +270,29 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
 -   (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:kSegueIdentifierComicDetail
-                              sender:self];
+    // Init from storyboard
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ImageStoryboard" bundle:nil];
+    SingleImageViewController *destViewController = [storyboard instantiateViewControllerWithIdentifier:@"SingleImageViewController"];
+    destViewController.hidesBottomBarWhenPushed = YES;
     
+    // Init path to chosen cell
+    NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
+
+    // Init cell data
+    KJComic *cellData = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+
+    // Set image
+    destViewController.imageToShow = cellData;
+
+    // Push it
+    [self.navigationController pushViewController:destViewController
+                                         animated:YES];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(kCollectionViewEdgeInset, kCollectionViewEdgeInset, kCollectionViewEdgeInset, kCollectionViewEdgeInset);
-}
-
-#pragma mark - Prepare for segue method
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue
-                 sender:(id)sender {
-    // Comic detail segue
-    if ([segue.identifier isEqualToString:kSegueIdentifierComicDetail]) {
-        // Init destination view controller
-        KJComicDetailView *destViewController = segue.destinationViewController;
-        
-        // Init path to chosen cell
-        NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
-        
-        // Init cell data
-        KJComic *comicCell = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
-        
-        // Pass comic to destination VC
-        destViewController.initialComicToShow = comicCell;
-        
-        // Pass selected index path to destination VC
-        destViewController.collectionViewIndexFromList = selectedIndexPath;
-        
-        // Hide tabbar on detail view
-        destViewController.hidesBottomBarWhenPushed = YES;
-    }
 }
 
 #pragma mark - Data fetch did happen method

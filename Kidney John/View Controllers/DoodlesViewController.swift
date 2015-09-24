@@ -203,6 +203,8 @@ extension DoodlesViewController {
 // MARK: - UICollectionViewDelegate methods
 extension DoodlesViewController {
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        // TODO: implement `guard`s here (prevent force unwrap)
+        
         let cellData = self.dataSource?.cellDataSource[indexPath.row] as? KJRandomImage
         
         let storyboard = UIStoryboard(name: "ImageStoryboard", bundle: nil)

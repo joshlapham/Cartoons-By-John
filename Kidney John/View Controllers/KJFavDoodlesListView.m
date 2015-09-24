@@ -22,9 +22,6 @@ static CGFloat kCollectionViewEdgeInset = 20;
 static CGFloat kCollectionViewCellWidth = 75;
 static CGFloat kCollectionViewCellHeight = 75;
 
-// Segue identifiers
-static NSString * kSegueIdentifierDoodleDetail = @"doodleDetailSegueFromFavourites";
-
 @interface KJFavDoodlesListView ()
 
 // Properties

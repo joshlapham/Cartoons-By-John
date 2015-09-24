@@ -15,10 +15,7 @@
 #import "KJVideoCell.h"
 #import "KJComicListCell.h"
 #import "UIViewController+KJUtils.h"
-
-// Constants
-// Segue identifiers
-static NSString * kSegueIdentifierComicDetailFavourites = @"comicDetailSegueFromFavourites";
+#import "Kidney_John-Swift.h"
 
 @interface KJFavouritesListView () <UITableViewDelegate, UITableViewDataSource>
 
@@ -133,31 +130,20 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // Comics
     else if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJComic class]]) {
-        [self performSegueWithIdentifier:kSegueIdentifierComicDetailFavourites
-                                  sender:self];
-    }
-}
-
-#pragma mark - Prepare for segue method
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue
-                 sender:(id)sender {
-    // Comics
-    if ([segue.identifier isEqualToString:kSegueIdentifierComicDetailFavourites]) {
-        // Init index path
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        
-        // Init destination view controller
-        KJComicDetailView *destViewController = segue.destinationViewController;
+        // Init from storyboard
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ImageStoryboard" bundle:nil];
+        SingleImageViewController *destViewController = [storyboard instantiateViewControllerWithIdentifier:@"SingleImageViewController"];
+        destViewController.hidesBottomBarWhenPushed = YES;
         
         // Init cell data
-        KJComic *comicCell = [self.cellResults objectAtIndex:indexPath.row];
+        KJComic *cellData = [_cellResults objectAtIndex:indexPath.row];
         
-        // Pass chosen comic to detail view
-        destViewController.initialComicToShow = comicCell;
+        // Set image
+        destViewController.imageToShow = cellData;
         
-        // Hide tabbar on detail view
-        destViewController.hidesBottomBarWhenPushed = YES;
+        // Push it
+        [self.navigationController pushViewController:destViewController
+                                             animated:YES];
     }
 }
 
