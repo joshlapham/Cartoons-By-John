@@ -175,6 +175,10 @@ extension KJAppDelegate: UIApplicationDelegate {
         // Reachability
         JPLReachabilityManager.sharedManager()
         
+        // TESTING
+        //        self.flushAllLocalDataFromCoreData(self.managedObjectContext)
+        // END OF TESTING
+        
         return true
     }
     
@@ -278,6 +282,22 @@ extension KJAppDelegate {
         } catch {
             throw APIKeysFileError.CouldNotParseKeysFromFile
         }
+    }
+    
+    /**
+    Flushes all data locally from Core Data. We might want to do this every now and then.
+    */
+    private func flushAllLocalDataFromCoreData(context: NSManagedObjectContext) {
+        print(__FUNCTION__)
+        let queue = NSOperationQueue()
+        let operation = FlushCoreData(context: context)
+        operation.completionBlock = {
+            print("Videos flushed: \(operation.videosFlushed)")
+            print("Comics flushed: \(operation.comicsFlushed)")
+            print("Doodles flushed: \(operation.doodlesFlushed)")
+        }
+        
+        queue.addOperation(operation)
     }
 }
 

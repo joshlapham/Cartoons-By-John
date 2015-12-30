@@ -50,6 +50,8 @@
 		68DB55041B06A12900F74329 /* KJSecretAdminViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68DB55021B06A12900F74329 /* KJSecretAdminViewController.xib */; };
 		68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */; };
 		68DB8F041A6006D0005D33E2 /* UIImage+KJImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F031A6006D0005D33E2 /* UIImage+KJImageUtils.m */; };
+		68DE98581C347E9700F6AAC0 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE98571C347E9700F6AAC0 /* Operation.swift */; settings = {ASSET_TAGS = (); }; };
+		68DE985B1C347F2F00F6AAC0 /* FlushCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DE985A1C347F2F00F6AAC0 /* FlushCoreData.swift */; settings = {ASSET_TAGS = (); }; };
 		68E1D0381A6083650054C7E1 /* KJComic+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1D0371A6083650054C7E1 /* KJComic+Methods.m */; };
 		68E1D03B1A60BA6B0054C7E1 /* KJVideo+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1D03A1A60BA6B0054C7E1 /* KJVideo+Methods.m */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
@@ -175,6 +177,8 @@
 		68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+KJSettings.m"; path = "Categories/NSUserDefaults+KJSettings.m"; sourceTree = "<group>"; };
 		68DB8F021A6006D0005D33E2 /* UIImage+KJImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+KJImageUtils.h"; path = "Categories/UIImage+KJImageUtils.h"; sourceTree = "<group>"; };
 		68DB8F031A6006D0005D33E2 /* UIImage+KJImageUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+KJImageUtils.m"; path = "Categories/UIImage+KJImageUtils.m"; sourceTree = "<group>"; };
+		68DE98571C347E9700F6AAC0 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operation.swift; path = Operations/Operation.swift; sourceTree = "<group>"; };
+		68DE985A1C347F2F00F6AAC0 /* FlushCoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlushCoreData.swift; path = Operations/FlushCoreData.swift; sourceTree = "<group>"; };
 		68E1D0361A6083650054C7E1 /* KJComic+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJComic+Methods.h"; path = "Models/KJComic+Methods.h"; sourceTree = "<group>"; };
 		68E1D0371A6083650054C7E1 /* KJComic+Methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KJComic+Methods.m"; path = "Models/KJComic+Methods.m"; sourceTree = "<group>"; };
 		68E1D0391A60BA6B0054C7E1 /* KJVideo+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJVideo+Methods.h"; path = "Models/KJVideo+Methods.h"; sourceTree = "<group>"; };
@@ -411,6 +415,15 @@
 			name = Stores;
 			sourceTree = "<group>";
 		};
+		68DE98591C347E9B00F6AAC0 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				68DE98571C347E9700F6AAC0 /* Operation.swift */,
+				68DE985A1C347F2F00F6AAC0 /* FlushCoreData.swift */,
+			);
+			name = Operations;
+			sourceTree = "<group>";
+		};
 		68DF729E18BEBA2F00878497 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -481,6 +494,7 @@
 				C95A0B9A1B06CF0D007AA777 /* Data Sources */,
 				68DF729E18BEBA2F00878497 /* Cells */,
 				68CE160718BEB6B600127AA7 /* Stores */,
+				68DE98591C347E9B00F6AAC0 /* Operations */,
 				6832C37319245E7E00E94788 /* UIActivity */,
 				68ADED0F1BACEB5700977DCF /* Flow Layouts */,
 				68A7920A18BD58FE009F9CC7 /* View Controllers */,
@@ -753,6 +767,7 @@
 				C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */,
 				68ADED111BACFA7600977DCF /* BaseCollectionViewCell.swift in Sources */,
 				68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */,
+				68DE985B1C347F2F00F6AAC0 /* FlushCoreData.swift in Sources */,
 				C9CD4DD01AF1D5290015715A /* KJBaseCollectionViewCell.m in Sources */,
 				68953A5A1BAE471E005CB192 /* DoodleCell.swift in Sources */,
 				C95A0BA31B06D2AD007AA777 /* KJVideoCollectionViewCell.m in Sources */,
@@ -778,6 +793,7 @@
 				68CE160318BDDAF300127AA7 /* KJComicStore.m in Sources */,
 				68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */,
 				68A2D60E1A5EBB61000DA2CF /* UIFont+KJFonts.m in Sources */,
+				68DE98581C347E9700F6AAC0 /* Operation.swift in Sources */,
 				C95A0B961B06CBC5007AA777 /* KJAdminStore.m in Sources */,
 				680B6FF11A623D2D006807E4 /* UIFontDescriptor+JohnRoderickPaine.m in Sources */,
 				68E48D5B184BEA7400600FA5 /* JPLYouTubeListView.m in Sources */,
