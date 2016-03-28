@@ -19,7 +19,8 @@ class FetchDataOperation: Operation {
     private var managedObjectContext: NSManagedObjectContext
     private var queryType: QueryType
     private let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
-    private let predicate = NSPredicate(format: "TRUEPREDICATE")
+    private let allPredicate = NSPredicate(format: "TRUEPREDICATE")
+    private let videoActivePredicate = NSPredicate(format: "isVisibleInApp == 1")
     
     // To be checked in completion handler of this operation
     var results: [CKRecord] = []
@@ -30,11 +31,11 @@ class FetchDataOperation: Operation {
         
         switch self.queryType {
         case .Video:
-            query = CKQuery(recordType: "Video", predicate: predicate)
+            query = CKQuery(recordType: "Video", predicate: videoActivePredicate)
         case .Comic:
-            query = CKQuery(recordType: "Comic", predicate: predicate)
+            query = CKQuery(recordType: "Comic", predicate: allPredicate)
         case .Doodle:
-            query = CKQuery(recordType: "Doodle", predicate: predicate)
+            query = CKQuery(recordType: "Doodle", predicate: allPredicate)
         }
         
         print("CloudKit: fetching ..")

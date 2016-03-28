@@ -9,10 +9,7 @@
 import CoreData
 import CloudKit
 
-class ParseVideoDataOperation: Operation {
-    private var managedObjectContext: NSManagedObjectContext
-    private var dataToParse: [CKRecord]
-    
+class ParseVideoDataOperation: ParseDataOperation {
     private func checkIfExistsInCoreData(videoId: String, completion: (KJVideo?, NSError?) -> ()) {
         let predicate = NSPredicate(format: "videoId == %@", videoId)
         let request = NSFetchRequest(entityName: "KJVideo")
@@ -32,8 +29,64 @@ class ParseVideoDataOperation: Operation {
         return needsUpdate
     }
     
+    private func fetchAllExistingInCoreData(completion: ([KJVideo]?, NSError?) -> ()) {
+        let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let request = NSFetchRequest(entityName: "KJVideo")
+        request.predicate = predicate
+        
+        do {
+            let existingVideos = try self.managedObjectContext.executeFetchRequest(request) as? [KJVideo]
+            completion(existingVideos, nil)
+            
+        } catch let error as NSError {
+            completion(nil, error)
+        }
+    }
+    
+    private func deleteRedundant(results: [CKRecord], completion: ([KJVideo]?) -> ()) {
+        self.fetchAllExistingInCoreData { (existingVideos: [KJVideo]?, error: NSError?) -> () in
+            guard error == nil else {
+                print("Error fetching all existing videos in Core Data : \(error?.localizedDescription)")
+                return
+            }
+            
+            guard let existingVideos = existingVideos else {
+                print("Error forming existing videos object")
+                return
+            }
+            
+            var videosToDelete: [KJVideo]? = []
+            let serverResultsVideoIds = results.map({ $0.valueForKey("youtubeId") as? String })
+            
+            for video in existingVideos {
+                if serverResultsVideoIds.indexOf({ $0 == video.videoId }) == nil {
+                    print("Video found in Core Data but not in server results; must no longer be active : \(video.videoName)")
+                    
+                    // Mark for deletion from Core Data
+                    videosToDelete?.append(video)
+                }
+            }
+            
+            completion(videosToDelete)
+        }
+    }
+    
     private func parseVideoData(results: [CKRecord]) {
         var changesMadeToContext = false
+        
+        // Delete any existing in Core Data that do not exist in `results` received from server; as they're not set to be visible in-app
+        self.deleteRedundant(results) { (videosToDelete: [KJVideo]?) -> () in
+            guard let videosToDelete = videosToDelete where videosToDelete.count > 0 else {
+                print("No videos found in Core Data to delete")
+                return
+            }
+            
+            for video in videosToDelete {
+                self.managedObjectContext.deleteObject(video)
+            }
+            
+            changesMadeToContext = true
+        }
         
         for video in results {
             let videoId = video.valueForKey("youtubeId") as? String
@@ -42,8 +95,8 @@ class ParseVideoDataOperation: Operation {
             let videoDuration = video.valueForKey("duration") as? String
             let videoDate = video.valueForKey("date") as? String
             
-            // Check if exists in Core Data
             if let videoId = videoId {
+                // Check if exists in Core Data
                 self.checkIfExistsInCoreData(videoId, completion: { (video: KJVideo?, error: NSError?) -> () in
                     guard error == nil else {
                         print("Error performing check for existing video : \(error?.localizedDescription)")
@@ -123,12 +176,5 @@ class ParseVideoDataOperation: Operation {
     // MARK: NSOperation
     override func execute() {
         self.parseVideoData(self.dataToParse)
-    }
-    
-    // MARK: NSObject
-    required init(context: NSManagedObjectContext, data: [CKRecord]) {
-        self.managedObjectContext = context
-        self.dataToParse = data
-        super.init()
     }
 }

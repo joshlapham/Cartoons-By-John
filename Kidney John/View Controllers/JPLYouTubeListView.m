@@ -182,7 +182,7 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
                                                 completion:nil];
         
         // Fetch data
-        [[KJVideoStore sharedStore] fetchVideoData];
+//        [[KJVideoStore sharedStore] fetchVideoData];
     }
 }
 
@@ -202,7 +202,7 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {
-            [[KJVideoStore sharedStore] fetchVideoData];
+//            [[KJVideoStore sharedStore] fetchVideoData];
         }
         else if ([JPLReachabilityManager isUnreachable]) {
             [self noNetworkConnection];
@@ -214,7 +214,7 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
         
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
-            [[KJVideoStore sharedStore] fetchVideoData];
+//            [[KJVideoStore sharedStore] fetchVideoData];
         }
     }
 }

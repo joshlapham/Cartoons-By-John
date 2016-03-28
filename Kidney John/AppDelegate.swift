@@ -150,7 +150,7 @@ extension KJAppDelegate: UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         // Init item stores
-        KJVideoStore.sharedStore()
+//        KJVideoStore.sharedStore()
         KJComicStore.sharedStore()
         KJDoodleStore.sharedStore()
         KJSocialLinkStore.sharedStore()
