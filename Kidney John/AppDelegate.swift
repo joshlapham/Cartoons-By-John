@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CloudKit
 
 @UIApplicationMain
 
@@ -175,9 +176,31 @@ extension KJAppDelegate: UIApplicationDelegate {
         // Reachability
         JPLReachabilityManager.sharedManager()
         
-        // TESTING
-        //        self.flushAllLocalDataFromCoreData(self.managedObjectContext)
-        // END OF TESTING
+        // TESTING - CloudKit
+        let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
+        let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let query = CKQuery(recordType: "Video", predicate: predicate)
+
+        print("CloudKit: fetching ..")
+
+        publicDatabase.performQuery(query, inZoneWithID: nil) { (results, error) -> Void in
+            guard error == nil else {
+                print("CloudKit: error - \(error?.localizedDescription)")
+                return
+            }
+
+            guard let results = results else {
+                print("CloudKit: could not get results object")
+                return
+            }
+
+//            print("CloudKit: got results - \(results.debugDescription)")
+
+            for video in results {
+                print(video.valueForKey("title"))
+            }
+        }
+        // END OF TESTING - CloudKit
         
         return true
     }

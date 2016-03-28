@@ -29,6 +29,7 @@
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD51919A383003F3231 /* JPLReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFD41919A383003F3231 /* JPLReachabilityManager.m */; };
 		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
+                6877E18B1CA8B7E7005319F2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6877E18A1CA8B7E7005319F2 /* CloudKit.framework */; };
 		6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D13C191C7F1B001AD6A5 /* KJConstants.m */; };
 		68953A5A1BAE471E005CB192 /* DoodleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68953A591BAE471E005CB192 /* DoodleCell.swift */; settings = {ASSET_TAGS = (); }; };
 		689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C5B851AEC726900C70077 /* KJSocialLinkCell.m */; };
@@ -138,6 +139,8 @@
 		6876CFD31919A383003F3231 /* JPLReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLReachabilityManager.h; path = Stores/JPLReachabilityManager.h; sourceTree = "<group>"; };
 		6876CFD41919A383003F3231 /* JPLReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLReachabilityManager.m; path = Stores/JPLReachabilityManager.m; sourceTree = "<group>"; };
 		6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJSocialLinkCell.xib; path = Cells/KJSocialLinkCell.xib; sourceTree = "<group>"; };
+                6877E1891CA8B7E3005319F2 /* Kidney John.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Kidney John.entitlements"; sourceTree = "<group>"; };
+                6877E18A1CA8B7E7005319F2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		687CE8141B8B204E00B1DD66 /* Kidney John-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Bridging-Header.h"; sourceTree = "<group>"; };
 		6891D13B191C7F1B001AD6A5 /* KJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJConstants.h; sourceTree = "<group>"; };
 		6891D13C191C7F1B001AD6A5 /* KJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJConstants.m; sourceTree = "<group>"; };
@@ -233,6 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+                                6877E18B1CA8B7E7005319F2 /* CloudKit.framework in Frameworks */,
 				68E48D1E184A247D00600FA5 /* CoreGraphics.framework in Frameworks */,
 				68E48D20184A247D00600FA5 /* UIKit.framework in Frameworks */,
 				68E48D1C184A247D00600FA5 /* Foundation.framework in Frameworks */,
@@ -433,6 +437,7 @@
 		68E48D1A184A247D00600FA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+                                6877E18A1CA8B7E7005319F2 /* CloudKit.framework */,
 				685C164518E21A4900088D26 /* MessageUI.framework */,
 				68E461CF185B4BD5008D3E36 /* Social.framework */,
 				68E48D1B184A247D00600FA5 /* Foundation.framework */,
@@ -447,6 +452,7 @@
 		68E48D21184A247D00600FA5 /* Kidney John */ = {
 			isa = PBXGroup;
 			children = (
+                                6877E1891CA8B7E3005319F2 /* Kidney John.entitlements */,
 				68A2D60F1A5EBB65000DA2CF /* Categories */,
 				68E48D5F184C062F00600FA5 /* Models */,
 				C95A0B9A1B06CF0D007AA777 /* Data Sources */,
@@ -608,6 +614,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+                                                        com.apple.iCloud = {
+                                                                enabled = 1;
+                                                        };
 						};
 					};
 					68E48D3B184A247D00600FA5 = {
@@ -903,6 +912,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+                                CODE_SIGN_ENTITLEMENTS = "Kidney John/Kidney John.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -963,7 +973,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.joshlapham.Kidney-John";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4ad5a33a-c37b-4354-a875-2e2b1040e7b5";
+                                PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Kidney John/Kidney John-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -977,6 +987,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+                                CODE_SIGN_ENTITLEMENTS = "Kidney John/Kidney John.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
@@ -1037,7 +1048,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.joshlapham.Kidney-John";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fbdd4278-7757-44a6-8e67-0d1e8b5eb8cb";
+                                PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Kidney John/Kidney John-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
