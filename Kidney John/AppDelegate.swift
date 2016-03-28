@@ -176,9 +176,18 @@ extension KJAppDelegate: UIApplicationDelegate {
         JPLReachabilityManager.sharedManager()
         
         // TESTING - CloudKit
-        let operation = FetchVideosOperation(context: self.managedObjectContext)
-        let queue = NSOperationQueue.mainQueue()
-        queue.addOperation(operation)
+        let queue = NSOperationQueue()
+        
+        let dataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Video)
+        
+        dataFetch.completionBlock = {
+            if dataFetch.results.count > 0 {
+                let parseData = ParseVideoDataOperation(context: self.managedObjectContext, data: dataFetch.results)
+                queue.addOperation(parseData)
+            }
+        }
+        
+        queue.addOperation(dataFetch)
         // END OF TESTING - CloudKit
         
         return true
