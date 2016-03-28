@@ -29,7 +29,8 @@
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD51919A383003F3231 /* JPLReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFD41919A383003F3231 /* JPLReachabilityManager.m */; };
 		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
-                6877E18B1CA8B7E7005319F2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6877E18A1CA8B7E7005319F2 /* CloudKit.framework */; };
+		6877E18B1CA8B7E7005319F2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6877E18A1CA8B7E7005319F2 /* CloudKit.framework */; };
+                6877E18D1CA8BF03005319F2 /* FetchVideosOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6877E18C1CA8BF03005319F2 /* FetchVideosOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D13C191C7F1B001AD6A5 /* KJConstants.m */; };
 		68953A5A1BAE471E005CB192 /* DoodleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68953A591BAE471E005CB192 /* DoodleCell.swift */; settings = {ASSET_TAGS = (); }; };
 		689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C5B851AEC726900C70077 /* KJSocialLinkCell.m */; };
@@ -139,8 +140,9 @@
 		6876CFD31919A383003F3231 /* JPLReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLReachabilityManager.h; path = Stores/JPLReachabilityManager.h; sourceTree = "<group>"; };
 		6876CFD41919A383003F3231 /* JPLReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLReachabilityManager.m; path = Stores/JPLReachabilityManager.m; sourceTree = "<group>"; };
 		6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJSocialLinkCell.xib; path = Cells/KJSocialLinkCell.xib; sourceTree = "<group>"; };
-                6877E1891CA8B7E3005319F2 /* Kidney John.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Kidney John.entitlements"; sourceTree = "<group>"; };
-                6877E18A1CA8B7E7005319F2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		6877E1891CA8B7E3005319F2 /* Kidney John.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Kidney John.entitlements"; sourceTree = "<group>"; };
+		6877E18A1CA8B7E7005319F2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+                6877E18C1CA8BF03005319F2 /* FetchVideosOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchVideosOperation.swift; path = Operations/FetchVideosOperation.swift; sourceTree = "<group>"; };
 		687CE8141B8B204E00B1DD66 /* Kidney John-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Kidney John-Bridging-Header.h"; sourceTree = "<group>"; };
 		6891D13B191C7F1B001AD6A5 /* KJConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJConstants.h; sourceTree = "<group>"; };
 		6891D13C191C7F1B001AD6A5 /* KJConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJConstants.m; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 			children = (
 				68DE98571C347E9700F6AAC0 /* Operation.swift */,
 				68DE985A1C347F2F00F6AAC0 /* FlushCoreData.swift */,
+                                6877E18C1CA8BF03005319F2 /* FetchVideosOperation.swift */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -724,6 +727,7 @@
 				680CF0C61A7F730F009250E3 /* KJVideoCell.m in Sources */,
 				68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */,
 				689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */,
+                                6877E18D1CA8BF03005319F2 /* FetchVideosOperation.swift in Sources */,
 				68E1D03B1A60BA6B0054C7E1 /* KJVideo+Methods.m in Sources */,
 				68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */,
 				68DB8F041A6006D0005D33E2 /* UIImage+KJImageUtils.m in Sources */,
