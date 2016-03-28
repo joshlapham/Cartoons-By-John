@@ -9,10 +9,20 @@
 import CoreData
 import CloudKit
 
+// CloudKit keys
+private struct VideoKey {
+    static let Id = "youtube_id"
+    static let Title = "title"
+    static let Description = "description"
+    static let Duration = "duration"
+    static let Date = "date"
+    static let MatureContent = "is_mature"
+}
+
 class ParseVideoDataOperation: ParseDataOperation {
     private func checkIfExistsInCoreData(videoId: String, completion: (KJVideo?, NSError?) -> ()) {
         let predicate = NSPredicate(format: "videoId == %@", videoId)
-        let request = NSFetchRequest(entityName: "KJVideo")
+        let request = NSFetchRequest(entityName: NSStringFromClass(KJVideo.self))
         request.predicate = predicate
         
         do {
@@ -31,7 +41,7 @@ class ParseVideoDataOperation: ParseDataOperation {
     
     private func fetchAllExistingInCoreData(completion: ([KJVideo]?, NSError?) -> ()) {
         let predicate = NSPredicate(format: "TRUEPREDICATE")
-        let request = NSFetchRequest(entityName: "KJVideo")
+        let request = NSFetchRequest(entityName: NSStringFromClass(KJVideo.self))
         request.predicate = predicate
         
         do {
@@ -56,7 +66,7 @@ class ParseVideoDataOperation: ParseDataOperation {
             }
             
             var videosToDelete: [KJVideo]? = []
-            let serverResultsVideoIds = results.map({ $0.valueForKey("youtubeId") as? String })
+            let serverResultsVideoIds = results.map({ $0.valueForKey(VideoKey.Id) as? String })
             
             for video in existingVideos {
                 if serverResultsVideoIds.indexOf({ $0 == video.videoId }) == nil {
@@ -89,11 +99,11 @@ class ParseVideoDataOperation: ParseDataOperation {
         }
         
         for video in results {
-            let videoId = video.valueForKey("youtubeId") as? String
-            let videoName = video.valueForKey("title") as? String
-            let videoDescription = video.valueForKey("description") as? String
-            let videoDuration = video.valueForKey("duration") as? String
-            let videoDate = video.valueForKey("date") as? String
+            let videoId = video.valueForKey(VideoKey.Id) as? String
+            let videoName = video.valueForKey(VideoKey.Title) as? String
+            let videoDescription = video.valueForKey(VideoKey.Description) as? String
+            let videoDuration = video.valueForKey(VideoKey.Duration) as? String
+            let videoDate = video.valueForKey(VideoKey.Date) as? String
             
             if let videoId = videoId {
                 // Check if exists in Core Data
@@ -134,7 +144,7 @@ class ParseVideoDataOperation: ParseDataOperation {
                         }
                         
                     } else {
-                        print("Video does not exist in Core Data")
+                        print("Video does not exist in Core Data : \(videoName)")
                         
                         // Insert into managed object context
                         let newVideo = NSEntityDescription.insertNewObjectForEntityForName(NSStringFromClass(KJVideo.self),
@@ -151,7 +161,7 @@ class ParseVideoDataOperation: ParseDataOperation {
                 })
                 
             } else {
-                // TODO: handle this
+                // TODO: handle this -- if we need to?
                 fatalError("No video ID! Need to handle this error")
             }
         }

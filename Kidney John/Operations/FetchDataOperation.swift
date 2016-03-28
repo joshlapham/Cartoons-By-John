@@ -20,7 +20,7 @@ class FetchDataOperation: Operation {
     private var queryType: QueryType
     private let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
     private let allPredicate = NSPredicate(format: "TRUEPREDICATE")
-    private let videoActivePredicate = NSPredicate(format: "isVisibleInApp == 1")
+    private let videoActivePredicate = NSPredicate(format: "is_visible_in_app == 1")
     
     // To be checked in completion handler of this operation
     var results: [CKRecord] = []

@@ -9,7 +9,6 @@
 #import "JPLYouTubeListView.h"
 #import "MBProgressHUD.h"
 #import "KJVideo.h"
-#import "KJVideoStore.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
@@ -43,11 +42,6 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
 #pragma mark - dealloc method
 
 - (void)dealloc {
-    // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:KJVideoDataFetchDidHappenNotification
-                                                  object:nil];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kReachabilityChangedNotification
                                                   object:nil];
@@ -60,12 +54,6 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     
     // Set title
     self.title = NSLocalizedString(@"Videos", @"Title of Videos view");
-    
-    // Set up NSNotification receiving for when videoStore finishes data fetch
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(videoFetchDidFinish)
-                                                 name:KJVideoDataFetchDidHappenNotification
-                                               object:nil];
     
     // Reachability NSNotification
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -182,7 +170,8 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
                                                 completion:nil];
         
         // Fetch data
-//        [[KJVideoStore sharedStore] fetchVideoData];
+        // TODO: refactor this to use CloudKit instead of singleton
+        //        [[KJVideoStore sharedStore] fetchVideoData];
     }
 }
 
@@ -202,7 +191,8 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {
-//            [[KJVideoStore sharedStore] fetchVideoData];
+            // TODO: refactor this to use CloudKit instead of singleton
+            //            [[KJVideoStore sharedStore] fetchVideoData];
         }
         else if ([JPLReachabilityManager isUnreachable]) {
             [self noNetworkConnection];
@@ -214,7 +204,8 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
         
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
-//            [[KJVideoStore sharedStore] fetchVideoData];
+            // TODO: refactor this to use CloudKit instead of singleton
+            //            [[KJVideoStore sharedStore] fetchVideoData];
         }
     }
 }

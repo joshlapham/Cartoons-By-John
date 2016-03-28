@@ -150,7 +150,7 @@ extension KJAppDelegate: UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         // Init item stores
-//        KJVideoStore.sharedStore()
+        // TODO: remove these calls once switched over to CloudKit
         KJComicStore.sharedStore()
         KJDoodleStore.sharedStore()
         KJSocialLinkStore.sharedStore()
@@ -168,6 +168,7 @@ extension KJAppDelegate: UIApplicationDelegate {
         comicListViewController?.managedObjectContext = self.managedObjectContext
         
         // Pass managedObjectContext to stores
+        // TODO: remove these calls once switched over to CloudKit
         KJVideoStore.sharedStore().managedObjectContext = self.managedObjectContext
         KJComicStore.sharedStore().managedObjectContext = self.managedObjectContext
         KJDoodleStore.sharedStore().managedObjectContext = self.managedObjectContext
@@ -178,6 +179,7 @@ extension KJAppDelegate: UIApplicationDelegate {
         // TESTING - CloudKit
         let queue = NSOperationQueue()
         
+        // Fetch video data
         let dataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Video)
         
         dataFetch.completionBlock = {
