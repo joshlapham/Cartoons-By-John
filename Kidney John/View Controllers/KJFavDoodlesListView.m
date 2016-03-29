@@ -8,7 +8,6 @@
 
 #import "KJFavDoodlesListView.h"
 #import "KJRandomImage.h"
-#import "KJDoodleStore.h"
 #import "Kidney_John-Swift.h"
 #import "UIColor+KJColours.h"
 #import "UIViewController+KJUtils.h"

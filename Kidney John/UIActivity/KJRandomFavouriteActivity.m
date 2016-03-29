@@ -7,7 +7,6 @@
 //
 
 #import "KJRandomFavouriteActivity.h"
-#import "KJDoodleStore.h"
 #import "KJRandomImage.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "KJParseAnalyticsStore.h"

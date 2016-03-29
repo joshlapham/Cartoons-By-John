@@ -8,9 +8,6 @@
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "KJConstants.h"
-//#import "KJVideoStore.h"
-//#import "KJComicStore.h"
-//#import "KJDoodleStore.h"
 #import "KJSocialLinkStore.h"
 #import "JPLYouTubeListView.h"
 #import "KJComicListView.h"
@@ -23,7 +20,6 @@
 #import "KJComic.h"
 #import "KJComic+Methods.h"
 #import "KJRandomImage.h"
-#import "KJRandomImage+Methods.h"
 #import "KJComicFavouriteActivity.h"
 #import "KJMoreInitialView.h"
 
