@@ -27,6 +27,7 @@
 		68659F3E1A5E99240048A887 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68659F3D1A5E99240048A887 /* Settings.bundle */; };
 		686803AA1CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686803A91CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		686803AC1CAA0D960058FA0A /* DoodlesViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686803AB1CAA0D960058FA0A /* DoodlesViewDataSource.swift */; settings = {ASSET_TAGS = (); }; };
+		686803AE1CAA17F80058FA0A /* ParseComicDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686803AD1CAA17F80058FA0A /* ParseComicDataOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */; };
 		6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */; };
 		6876CFD51919A383003F3231 /* JPLReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFD41919A383003F3231 /* JPLReachabilityManager.m */; };
@@ -136,6 +137,7 @@
 		68659F3D1A5E99240048A887 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		686803A91CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseDoodleDataOperation.swift; path = Operations/ParseDoodleDataOperation.swift; sourceTree = "<group>"; };
 		686803AB1CAA0D960058FA0A /* DoodlesViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoodlesViewDataSource.swift; path = "Data Sources/DoodlesViewDataSource.swift"; sourceTree = "<group>"; };
+		686803AD1CAA17F80058FA0A /* ParseComicDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseComicDataOperation.swift; path = Operations/ParseComicDataOperation.swift; sourceTree = "<group>"; };
 		6875F6CA1BA535BB00209015 /* Kidney John 1.1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.1.2.xcdatamodel"; sourceTree = "<group>"; };
 		6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomFavouriteActivity.h; path = UIActivity/KJRandomFavouriteActivity.h; sourceTree = "<group>"; };
 		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				6809619A1CA9D33C00980379 /* ParseDataOperation.swift */,
 				68B1BFA91CA9107600F498F0 /* ParseVideoDataOperation.swift */,
 				686803A91CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift */,
+				686803AD1CAA17F80058FA0A /* ParseComicDataOperation.swift */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				68E1D03B1A60BA6B0054C7E1 /* KJVideo+Methods.m in Sources */,
 				68CE160618BEAF7800127AA7 /* KJVideoStore.m in Sources */,
 				686803AC1CAA0D960058FA0A /* DoodlesViewDataSource.swift in Sources */,
+				686803AE1CAA17F80058FA0A /* ParseComicDataOperation.swift in Sources */,
 				68DB8F041A6006D0005D33E2 /* UIImage+KJImageUtils.m in Sources */,
 				68ADED131BACFA8C00977DCF /* ComicCell.swift in Sources */,
 				686803AA1CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift in Sources */,

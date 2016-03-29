@@ -9,8 +9,6 @@
 #import "KJMoreInitialView.h"
 #import "KJFavouritesListView.h"
 #import "PBWebViewController.h"
-#import "KJVideoStore.h"
-#import "KJComicStore.h"
 #import "KJSocialLinkStore.h"
 #import "JPLReachabilityManager.h"
 #import <Reachability/Reachability.h>
@@ -21,6 +19,9 @@
 #import <Parse/Parse.h>
 #import <SafariServices/SafariServices.h>
 #import "UIViewController+KJUtils.h"
+#import "KJComic.h"
+#import "KJVideo.h"
+#import "KJFavDoodlesListView.h"
 
 // Constants
 static NSString *kSegueIdentifierDoodleFavourite = @"doodleFavouriteSegue";
@@ -324,6 +325,76 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 #pragma mark - Prepare for segue method
 
+- (NSArray *)returnVideoFavouritesArray {
+    // Init predicate for videos where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJVideo class])
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by video date; newest at the top)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"videoDate"
+                                                                   ascending:NO];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+    
+    // Set predicate
+    fetchRequest.predicate = predicate;
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"videoStore: error fetching favourites: %@", [error localizedDescription]);
+        return nil;
+    } else {
+        return fetchedObjects;
+    }
+}
+
+- (NSArray *)returnComicFavouritesArray {
+    // Init predicate for comics where isFavourite is TRUE
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isFavourite != FALSE"];
+    
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJComic class])
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by comic name)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"comicName"
+                                                                   ascending:NO];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+    
+    // Set predicate
+    fetchRequest.predicate = predicate;
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"comicStore: error fetching favourites: %@", [error localizedDescription]);
+        return nil;
+    } else {
+        return fetchedObjects;
+    }
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue
                  sender:(id)sender {
     // Videos or Comix
@@ -339,15 +410,19 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         
         // Videos
         if (_chosenRow == 0) {
-            favouritesDataToPass = [[KJVideoStore sharedStore] returnFavouritesArray];
+            favouritesDataToPass = [self returnVideoFavouritesArray];
         }
         
         // Comix
         else if (_chosenRow == 1) {
-            favouritesDataToPass = [[KJComicStore sharedStore] returnFavouritesArray];
+            favouritesDataToPass = [self returnComicFavouritesArray];
         }
         
         destViewController.cellResults = favouritesDataToPass;
+        
+    } else if ([[segue identifier] isEqualToString:kSegueIdentifierDoodleFavourite]) {
+        KJFavDoodlesListView *destViewController = segue.destinationViewController;
+        destViewController.managedObjectContext = self.managedObjectContext;
     }
 }
 

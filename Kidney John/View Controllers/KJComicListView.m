@@ -326,7 +326,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
                                             completion:nil];
         
         // Fetch data
-        [[KJComicStore sharedStore] fetchComicData];
+        // TODO: revise this after refactor to CloudKit
+//        [[KJComicStore sharedStore] fetchComicData];
     }
 }
 
@@ -387,7 +388,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {
-            [[KJComicStore sharedStore] fetchComicData];
+            // TODO: revise this after refactor to CloudKit
+//            [[KJComicStore sharedStore] fetchComicData];
         }
         
         else if ([JPLReachabilityManager isUnreachable]) {
@@ -402,7 +404,8 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
-            [[KJComicStore sharedStore] fetchComicData];
+            // TODO: revise this after refactor to CloudKit
+//            [[KJComicStore sharedStore] fetchComicData];
         }
     }
 }

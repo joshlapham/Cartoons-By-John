@@ -32,31 +32,56 @@ static CGFloat kCollectionViewCellHeight = 75;
 
 @implementation KJFavDoodlesListView
 
+- (NSArray *)returnDoodlesFavouriteArray {
+    // Init entity
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([KJRandomImage class])
+                                              inManagedObjectContext:self.managedObjectContext];
+    
+    // Init fetch request
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    fetchRequest.entity = entity;
+    
+    // Set sort descriptor (by doodle date; newest at the top)
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"imageId"
+                                                                   ascending:YES];
+    fetchRequest.sortDescriptors = @[ sortDescriptor ];
+    
+    // Fetch
+    NSError *error;
+    NSArray *fetchedObjects = [self.managedObjectContext
+                               executeFetchRequest:fetchRequest
+                               error:&error];
+    
+    if (fetchedObjects == nil) {
+        // Handle the error
+        DDLogError(@"doodleStore: error fetching doodles: %@", [error localizedDescription]);
+        return nil;
+    }
+    
+    else {
+        return fetchedObjects;
+    }
+}
+
 #pragma mark - viewDid methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Set title
     self.title = NSLocalizedString(@"Doodles", @"Title of Doodles (drawings) favourites list view");
     
-    // Register cell with collectionView
     [self.collectionView registerClass:[KJDoodleCell class]
             forCellWithReuseIdentifier:[KJDoodleCell cellIdentifier]];
     
-    // Setup collectionView
     [self setupCollectionView];
     
-    // Init data source array
-    // TODO: review this, init another way using Core Data
-    _cellResults = [[KJDoodleStore sharedStore] returnFavouritesArray];
+    _cellResults = [self returnDoodlesFavouriteArray];
     
     // Check for Favourites results
     if ([_cellResults count] == 0) {
         [self kj_showthereAreNoFavouritesAlertWithTitle:self.title];
     }
     
-    // Reload collectionView
     [self.collectionView reloadData];
 }
 

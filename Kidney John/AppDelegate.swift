@@ -11,16 +11,58 @@ import CoreData
 
 @UIApplicationMain
 
-// MARK: - AppDelegate class
 class KJAppDelegate: UIResponder {
-    // MARK: Properties
     var window: UIWindow?
     
-    // Parse API keys
-    private var parseAppId: String? = nil
-    private var parseClientKey: String? = nil
+    private func setupUI() {
+        // Show status bar after app launch image has shown
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
+        
+        // Navbar colour
+        UINavigationBar.appearance().barTintColor = UIColor.kj_navbarColour()
+        
+        // Shadow for navbar font
+        let shadow = NSShadow()
+        shadow.shadowColor = UIColor.kj_navbarTitleFontShadowColour()
+        shadow.shadowOffset = CGSizeMake(0, 1)
+        
+        // Navbar title font, colour, shadow, etc
+        let titleAttributes = [ NSForegroundColorAttributeName : UIColor.kj_navbarTitleFontColour(), NSShadowAttributeName : shadow, NSFontAttributeName : UIFont.kj_navbarFont() ]
+        UINavigationBar.appearance().titleTextAttributes = titleAttributes
+        
+        // Set navbar items to white
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: false)
+    }
     
-    // MARK: - Core Data stack
+    private func checkAppVersion() {
+        // Initial first app launch
+        if NSUserDefaults.kj_hasAppCompletedFirstLaunchSetting() == false {
+            NSUserDefaults.kj_setHasAppCompletedFirstLaunchSetting(true)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+        
+        // Version 1.1.2
+        self.doVersion112Checks()
+    }
+    
+    // Version 1.1.2
+    private func doVersion112Checks() {
+        if NSUserDefaults.kj_hasAppCompletedVersion112FirstLaunchSetting() == false {
+            // Flush all doodles locally
+            // NOTE - only flushing if doodle data fetch has happened
+            if NSUserDefaults.kj_hasFirstDoodleFetchCompletedSetting() == true {
+                // NOTE - doing this as there was an issue with more than half of all doodle image URLs just prior to version 1.1.2 being submitted to App Store. Image URLs were updated on server side, but there was a bug in the app code which caused older doodle images already existing in Core Data locally not to be updated. Forcing deletion of all local doodle images here as a quick workaround.
+                // TODO: revise this after CloudKit refactor
+                //                KJDoodleStore.sharedStore().flushLocalDoodlesInContext(self.managedObjectContext)
+                
+                NSUserDefaults.kj_setHasAppCompletedVersion112FirstLaunchSetting(true)
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+    }
+    
+    // MARK: Core Data stack
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
@@ -74,7 +116,6 @@ class KJAppDelegate: UIResponder {
         return managedObjectContext
         }()
     
-    // MARK: Core Data Saving support
     func saveContext () {
         if managedObjectContext.hasChanges {
             do {
@@ -94,7 +135,7 @@ class KJAppDelegate: UIResponder {
     }
 }
 
-// MARK: - App lifecycle methods extension
+// MARK: - UIApplicationDelegate
 extension KJAppDelegate: UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Do app version checks
@@ -112,71 +153,35 @@ extension KJAppDelegate: UIApplicationDelegate {
         // Setup XCode console logger
         DDLog.addLogger(DDTTYLogger.sharedInstance())
         
-        // Parse
-        // Parse App and client ID
-        // Read from Keys.plist (not checked into Git)
-        // TODO: update logging statements here to use cocoalumberjack
-        do {
-            try self.readAPIKeysFromPlist()
-            
-        } catch APIKeysFileError.CouldNotReadContentsOfFile {
-            print("ERROR reading contents of Keys.plist file")
-        } catch APIKeysFileError.CouldNotParseKeysFromFile {
-            print("ERROR parsing API keys from Keys.plist file")
-        } catch {
-            print("ERROR setting API keys from Keys.plist file")
-        }
-        
-        // If parseAppId is nil then Keys.plist is most likely missing from the project
-        guard let parseAppId = self.parseAppId, let parseClientKey = self.parseClientKey else {
-            fatalError("Failed to load Parse.com keys from Keys.plist. Is the file present?")
-        }
-        
-        // Init Parse crash reporting
-        ParseCrashReporting.enable()
-        
-        // Set keys after method reads from Keys.plist
-        Parse.setApplicationId(parseAppId, clientKey: parseClientKey)
-        
-        // Parse analytics
-        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
-        
         // Init PFConfig
-        self.setupPFConfigFromParse()
-        
-        // Push notifications
-        let notificationSettings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-        application.registerUserNotificationSettings(notificationSettings)
-        application.registerForRemoteNotifications()
+        // TODO: how to handle config with CloudKit
+        //        self.setupPFConfigFromParse()
         
         // Init item stores
         // TODO: remove these calls once switched over to CloudKit
-        KJComicStore.sharedStore()
-//        KJDoodleStore.sharedStore()
         KJSocialLinkStore.sharedStore()
         
-        // Core Data
-        // Pass NSManagedObjectContext to initial view set in storyboard
+        // Pass NSManagedObjectContext view controllers
+        // Videos view
         let tabBarController = self.window?.rootViewController as? KJTabBarController
         let navController = tabBarController?.viewControllers?.first as? UINavigationController
         let initialViewController = navController?.topViewController as? JPLYouTubeListView
         initialViewController?.managedObjectContext = self.managedObjectContext
         
-        // Pass to comics list view
+        // Comics view
         let comicsNavController = tabBarController?.viewControllers![1] as? UINavigationController
         let comicListViewController = comicsNavController?.topViewController as? KJComicListView
         comicListViewController?.managedObjectContext = self.managedObjectContext
         
-        // Pass to Doodles view
+        // Doodles view
         let doodlesNavController = tabBarController?.viewControllers![2] as? UINavigationController
         let doodlesViewController = doodlesNavController?.topViewController as? DoodlesViewController
         doodlesViewController?.managedObjectContext = self.managedObjectContext
         
-        // Pass managedObjectContext to stores
-        // TODO: remove these calls once switched over to CloudKit
-        KJVideoStore.sharedStore().managedObjectContext = self.managedObjectContext
-        KJComicStore.sharedStore().managedObjectContext = self.managedObjectContext
-        KJDoodleStore.sharedStore().managedObjectContext = self.managedObjectContext
+        // More view
+        let moreNavController = tabBarController?.viewControllers![3] as? UINavigationController
+        let moreViewController = moreNavController?.topViewController as? KJMoreInitialView
+        moreViewController?.managedObjectContext = self.managedObjectContext
         
         // Reachability
         JPLReachabilityManager.sharedManager()
@@ -184,8 +189,8 @@ extension KJAppDelegate: UIApplicationDelegate {
         // TESTING - CloudKit
         let queue = NSOperationQueue()
         
-//        let flush = FlushCoreData(context: self.managedObjectContext)
-//        queue.addOperation(flush)
+        //        let flush = FlushCoreData(context: self.managedObjectContext)
+        //        queue.addOperation(flush)
         
         // Fetch video data
         let videoDataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Video)
@@ -197,6 +202,21 @@ extension KJAppDelegate: UIApplicationDelegate {
             }
         }
         
+        
+        // Fetch comic data
+        let comicDataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Comic)
+        
+        // TODO: update other completion blocks to follow this pattern -- don't check for a results count, just pass to operation
+        comicDataFetch.completionBlock = {
+            let parseData = ParseComicDataOperation(context: self.managedObjectContext, data: comicDataFetch.results)
+            parseData.completionBlock = {
+                //                    NSUserDefaults.kj_setHasFirstDoodleFetchCompletedSetting(true)
+                //                    print("POSTING NOTIFICATION")
+                //                    NSNotificationCenter.defaultCenter().postNotificationName(KJDoodleFetchDidHappenNotification, object: nil)
+            }
+            queue.addOperation(parseData)
+        }
+        
         // Fetch doodle data
         let doodleDataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Doodle)
         
@@ -205,14 +225,17 @@ extension KJAppDelegate: UIApplicationDelegate {
                 let parseData = ParseDoodleDataOperation(context: self.managedObjectContext, data: doodleDataFetch.results)
                 parseData.completionBlock = {
                     NSUserDefaults.kj_setHasFirstDoodleFetchCompletedSetting(true)
-                    print("POSTING NOTIFICATION")
-                    NSNotificationCenter.defaultCenter().postNotificationName(KJDoodleFetchDidHappenNotification, object: nil)
+                    
+                    // TODO: is this notification needed?
+                    //                    print("POSTING NOTIFICATION")
+                    //                    NSNotificationCenter.defaultCenter().postNotificationName(KJDoodleFetchDidHappenNotification, object: nil)
                 }
                 queue.addOperation(parseData)
             }
         }
         
         queue.addOperation(videoDataFetch)
+        queue.addOperation(comicDataFetch)
         queue.addOperation(doodleDataFetch)
         // END OF TESTING - CloudKit
         
@@ -226,118 +249,9 @@ extension KJAppDelegate: UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         self.saveContext()
     }
-    
-    // Push notifications
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        // Store the deviceToken in the current installation and save it to Parse.
-        let currentInstallation = PFInstallation.currentInstallation()
-        currentInstallation.setDeviceTokenFromData(deviceToken)
-        
-        currentInstallation.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
-            guard error == nil else {
-                // TODO: log error with analytics
-                return
-            }
-        }
-    }
-    
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        // TODO: log error with analytics
-    }
-    
-    //    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-    //        // TODO: implement this method to fetch new data when new stuff is available
-    //        // TODO: determine data type that was updated (video, comics, doodles, social links)
-    //        // TODO: fetch data using store depending on data type
-    //    }
-    
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        //        DDLogVerbose(@"%s - did receive push notification", __func__);
-        PFPush.handlePush(userInfo)
-    }
 }
 
-// MARK: - Helper methods
-extension KJAppDelegate {
-    // Setup and style UI
-    private func setupUI() {
-        // Show status bar after app launch image has shown
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .None)
-        
-        // Set navbar colour
-        UINavigationBar.appearance().barTintColor = UIColor.kj_navbarColour()
-        
-        // Init shadow for navbar font
-        let shadow = NSShadow()
-        shadow.shadowColor = UIColor.kj_navbarTitleFontShadowColour()
-        shadow.shadowOffset = CGSizeMake(0, 1)
-        
-        // Set navbar title font, colour, shadow, etc
-        let titleAttributes = [ NSForegroundColorAttributeName : UIColor.kj_navbarTitleFontColour(), NSShadowAttributeName : shadow, NSFontAttributeName : UIFont.kj_navbarFont() ]
-        
-        // Set title attributes
-        UINavigationBar.appearance().titleTextAttributes = titleAttributes
-        
-        // Set navbar items to white
-        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
-        
-        // Set status bar text
-        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: false)
-    }
-    
-    // API Keys.plist file error ENUM
-    private enum APIKeysFileError: ErrorType {
-        case CouldNotReadContentsOfFile
-        case CouldNotParseKeysFromFile
-    }
-    
-    // Read and load API keys from file
-    private func readAPIKeysFromPlist() throws {
-        let filename = "Keys"
-        let fileExt = "plist"
-        let rootPath = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
-        var plistPath = rootPath.URLByAppendingPathComponent(filename).URLByAppendingPathExtension(fileExt)
-        
-        // If file doesn't exist then load from app bundle
-        if NSFileManager.defaultManager().fileExistsAtPath(plistPath.absoluteString) == false {
-            plistPath = NSBundle.mainBundle().URLForResource(filename, withExtension: fileExt)!
-        }
-        
-        // Load contents of file
-        guard let plistXML = NSData(contentsOfURL: plistPath) else {
-            throw APIKeysFileError.CouldNotReadContentsOfFile
-        }
-        
-        // Init dict from file contents
-        do {
-            let dict = try NSPropertyListSerialization.propertyListWithData(plistXML, options: .MutableContainersAndLeaves, format: nil)
-            
-            // Set Parse API key properties
-            self.parseAppId = dict["appId"] as? String
-            self.parseClientKey = dict["clientKey"] as? String
-            
-        } catch {
-            throw APIKeysFileError.CouldNotParseKeysFromFile
-        }
-    }
-    
-    /**
-    Flushes all data locally from Core Data. We might want to do this every now and then.
-    */
-    private func flushAllLocalDataFromCoreData(context: NSManagedObjectContext) {
-        print(__FUNCTION__)
-        let queue = NSOperationQueue()
-        let operation = FlushCoreData(context: context)
-        operation.completionBlock = {
-            print("Videos flushed: \(operation.videosFlushed)")
-            print("Comics flushed: \(operation.comicsFlushed)")
-            print("Doodles flushed: \(operation.doodlesFlushed)")
-        }
-        
-        queue.addOperation(operation)
-    }
-}
-
+// TODO: how to handle this with CloudKit?
 // MARK: - PFConfig helper methods
 extension KJAppDelegate {
     // Struct for PFConfig keys on Parse
@@ -409,35 +323,6 @@ extension KJAppDelegate {
             
             // Sync NSUserDefaults
             NSUserDefaults.standardUserDefaults().synchronize()
-        }
-    }
-}
-
-// MARK: - App version check helper methods
-extension KJAppDelegate {
-    private func checkAppVersion() {
-        // Initial first app launch
-        if NSUserDefaults.kj_hasAppCompletedFirstLaunchSetting() == false {
-            NSUserDefaults.kj_setHasAppCompletedFirstLaunchSetting(true)
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-        
-        // Version 1.1.2
-        self.doVersion112Checks()
-    }
-    
-    // Version 1.1.2
-    private func doVersion112Checks() {
-        if NSUserDefaults.kj_hasAppCompletedVersion112FirstLaunchSetting() == false {
-            // Flush all doodles locally
-            // NOTE - only flushing if doodle data fetch has happened
-            if NSUserDefaults.kj_hasFirstDoodleFetchCompletedSetting() == true {
-                // NOTE - doing this as there was an issue with more than half of all doodle image URLs just prior to version 1.1.2 being submitted to App Store. Image URLs were updated on server side, but there was a bug in the app code which caused older doodle images already existing in Core Data locally not to be updated. Forcing deletion of all local doodle images here as a quick workaround.
-                KJDoodleStore.sharedStore().flushLocalDoodlesInContext(self.managedObjectContext)
-                
-                NSUserDefaults.kj_setHasAppCompletedVersion112FirstLaunchSetting(true)
-                NSUserDefaults.standardUserDefaults().synchronize()
-            }
         }
     }
 }

@@ -21,6 +21,8 @@ private struct DoodleKey {
 
 class ParseDoodleDataOperation: ParseDataOperation {
     private func checkIfExistsInCoreData(imageUrl: String, completion: (KJRandomImage?, NSError?) -> ()) {
+        print(__FUNCTION__)
+        
         let predicate = NSPredicate(format: "imageUrl == %@", imageUrl)
         let request = NSFetchRequest(entityName: NSStringFromClass(KJRandomImage.self))
         request.predicate = predicate
@@ -34,8 +36,10 @@ class ParseDoodleDataOperation: ParseDataOperation {
         }
     }
     
-    private func checkIfExistingInCoreDataNeedsUpdate(existingDoodle: KJRandomImage, imageId: String, instagramId: String, description: String, imageUrl: String, date: String) -> Bool {
-        let needsUpdate: Bool = existingDoodle.imageId != imageId || existingDoodle.instagramId != instagramId || existingDoodle.imageDescription != description || existingDoodle.imageUrl != imageUrl || existingDoodle.imageDate != date
+    private func checkIfExistingInCoreDataNeedsUpdate(existingDoodle: KJRandomImage, imageId: String, instagramId: String, imageUrl: String, date: String) -> Bool {
+        print(__FUNCTION__)
+        
+        let needsUpdate: Bool = existingDoodle.imageId != imageId || existingDoodle.instagramId != instagramId || existingDoodle.imageUrl != imageUrl || existingDoodle.imageDate != date
         return needsUpdate
     }
     
@@ -121,11 +125,11 @@ class ParseDoodleDataOperation: ParseDataOperation {
                         
                         // Check if any of its' properties need updating
                         if let instagramId = doodleInstagramId,
-                            let description = doodleDescription,
+                            //                            let description = doodleDescription,
                             let date = doodleDate,
                             let imageUrl = doodleImageUrl,
                             let imageId = doodleId {
-                                let needsUpdate = self.checkIfExistingInCoreDataNeedsUpdate(existingDoodle, imageId: imageId, instagramId: instagramId, description: description, imageUrl: imageUrl, date: date)
+                                let needsUpdate = self.checkIfExistingInCoreDataNeedsUpdate(existingDoodle, imageId: imageId, instagramId: instagramId, imageUrl: imageUrl, date: date)
                                 
                                 switch needsUpdate {
                                 case true :
@@ -134,7 +138,7 @@ class ParseDoodleDataOperation: ParseDataOperation {
                                     // TODO: include ID here?
                                     existingDoodle.imageId = imageId
                                     existingDoodle.instagramId = instagramId
-                                    existingDoodle.imageDescription = description
+                                    //                                    existingDoodle.imageDescription = description
                                     existingDoodle.imageUrl = imageUrl
                                     existingDoodle.imageDate = date
                                     
@@ -147,6 +151,7 @@ class ParseDoodleDataOperation: ParseDataOperation {
                                 
                         } else {
                             // Could not get all properties required for a doodle object in order to check if it needs update -- just assume nothing needs updating
+                            //                            fatalError("Something happened while trying to check if Doodle needs update")
                         }
                         
                     } else {

@@ -19,8 +19,8 @@ class FetchDataOperation: Operation {
     private var managedObjectContext: NSManagedObjectContext
     private var queryType: QueryType
     private let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
-    private let allPredicate = NSPredicate(format: "TRUEPREDICATE")
     private let videoActivePredicate = NSPredicate(format: "is_visible_in_app == 1")
+    private let comicActivePredicate = NSPredicate(format: "is_visible_in_app == 1")
     private let doodleActivePredicate = NSPredicate(format: "is_visible_in_app == 1")
     
     // To be checked in completion handler of this operation
@@ -34,7 +34,7 @@ class FetchDataOperation: Operation {
         case .Video:
             query = CKQuery(recordType: "Video", predicate: videoActivePredicate)
         case .Comic:
-            query = CKQuery(recordType: "Comic", predicate: allPredicate)
+            query = CKQuery(recordType: "Comic", predicate: comicActivePredicate)
         case .Doodle:
             query = CKQuery(recordType: "Doodle", predicate: doodleActivePredicate)
         }

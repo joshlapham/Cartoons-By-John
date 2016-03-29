@@ -26,7 +26,8 @@ class DoodlesViewController: UICollectionViewController {
         
         self.collectionView?.registerClass(KJDoodleCell.classForCoder(), forCellWithReuseIdentifier: KJDoodleCell.cellIdentifier())
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("doodleFetchDidHappen"), name: KJDoodleFetchDidHappenNotification, object: nil)
+        // TODO: do we need this notification?
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("doodleFetchDidHappen"), name: KJDoodleFetchDidHappenNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("reachabilityDidChange"), name: kReachabilityChangedNotification, object: nil)
         
         self.setupCollectionView()
