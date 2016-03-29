@@ -7,16 +7,15 @@
 //
 
 #import "JPLYouTubeListView.h"
-//#import "MBProgressHUD.h"
 #import "KJVideo.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
 #import "NSUserDefaults+KJSettings.h"
-#import "KJVideoViewController.h"
 #import "KJVideoCell.h"
 #import "UIColor+KJColours.h"
 #import "UIViewController+KJUtils.h"
+#import "Kidney_John-Swift.h"
 
 // Constants
 // Segue identifiers
@@ -27,7 +26,6 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
 // Properties
 @property (nonatomic, strong) NSArray *videoResults;
 @property (nonatomic, strong) NSArray *searchResults;
-//@property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSFetchedResultsController *searchFetchedResultsController;
@@ -482,7 +480,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     }
     
     // Init destination VC
-    KJVideoViewController *destViewController = [[KJVideoViewController alloc] initWithVideoId:cellData.videoId];
+    VideoDetailViewController *destViewController = [[VideoDetailViewController alloc] initWithVideoId:cellData.videoId];
     destViewController.hidesBottomBarWhenPushed = YES;
     destViewController.title = cellData.videoName;
     destViewController.chosenVideo = cellData;

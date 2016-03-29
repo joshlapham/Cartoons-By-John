@@ -7,7 +7,6 @@
 //
 
 #import "KJFavouritesListView.h"
-#import "KJVideoViewController.h"
 #import "KJVideo.h"
 #import "KJComic.h"
 #import "UIColor+KJColours.h"
@@ -118,7 +117,7 @@
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Videos
     if ([[self.cellResults objectAtIndex:indexPath.row] isKindOfClass:[KJVideo class]]) {
-        KJVideoViewController *destViewController = [[KJVideoViewController alloc] init];
+        VideoDetailViewController *destViewController = [[VideoDetailViewController alloc] init];
         KJVideo *cellVideo = [self.cellResults objectAtIndex:indexPath.row];
         destViewController.chosenVideo = cellVideo;
         

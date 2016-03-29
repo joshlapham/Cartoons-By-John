@@ -17,7 +17,6 @@
 		680CF0C71A7F730F009250E3 /* KJVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680CF0C51A7F730F009250E3 /* KJVideoCell.xib */; };
 		681347051AF26781009DCF88 /* KJVideoCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 681347041AF26781009DCF88 /* KJVideoCellTests.m */; };
 		68211A211927A95000B24BF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68211A231927A95000B24BF1 /* Localizable.strings */; };
-		683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */; };
 		685C171118E2745A00088D26 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 685C171018E2745A00088D26 /* Comics */; };
 		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
 		68659F3E1A5E99240048A887 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68659F3D1A5E99240048A887 /* Settings.bundle */; };
@@ -42,6 +41,7 @@
 		68ADED0E1BACEB5400977DCF /* FlowLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED0D1BACEB5400977DCF /* FlowLayouts.swift */; settings = {ASSET_TAGS = (); }; };
 		68ADED131BACFA8C00977DCF /* ComicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED121BACFA8C00977DCF /* ComicCell.swift */; settings = {ASSET_TAGS = (); }; };
 		68B1BFAA1CA9107600F498F0 /* ParseVideoDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1BFA91CA9107600F498F0 /* ParseVideoDataOperation.swift */; settings = {ASSET_TAGS = (); }; };
+		68B53B581CAB03110093DFB3 /* VideoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B53B571CAB03110093DFB3 /* VideoDetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
 		68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */; };
@@ -114,8 +114,6 @@
 		68211A221927A95000B24BF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68211A241927A98400B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.2.xcdatamodel"; sourceTree = "<group>"; };
-		683DC0321A6B5DF40051A7DB /* KJVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoViewController.h; path = "View Controllers/KJVideoViewController.h"; sourceTree = "<group>"; };
-		683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoViewController.m; path = "View Controllers/KJVideoViewController.m"; sourceTree = "<group>"; };
 		685C164518E21A4900088D26 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		685C171018E2745A00088D26 /* Comics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Comics; sourceTree = "<group>"; };
 		685C171518E29B5300088D26 /* KJComic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComic.h; path = Models/KJComic.h; sourceTree = "<group>"; };
@@ -153,6 +151,7 @@
 		68ADED0D1BACEB5400977DCF /* FlowLayouts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlowLayouts.swift; path = "Flow Layouts/FlowLayouts.swift"; sourceTree = "<group>"; };
 		68ADED121BACFA8C00977DCF /* ComicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComicCell.swift; path = Cells/ComicCell.swift; sourceTree = "<group>"; };
 		68B1BFA91CA9107600F498F0 /* ParseVideoDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseVideoDataOperation.swift; path = Operations/ParseVideoDataOperation.swift; sourceTree = "<group>"; };
+		68B53B571CAB03110093DFB3 /* VideoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoDetailViewController.swift; path = "View Controllers/VideoDetailViewController.swift"; sourceTree = "<group>"; };
 		68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJVideoFavouriteActivity.swift; path = UIActivity/KJVideoFavouriteActivity.swift; sourceTree = "<group>"; };
 		68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleImageViewController.swift; path = "View Controllers/SingleImageViewController.swift"; sourceTree = "<group>"; };
 		68DB8EFF1A5FE296005D33E2 /* NSUserDefaults+KJSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+KJSettings.h"; path = "Categories/NSUserDefaults+KJSettings.h"; sourceTree = "<group>"; };
@@ -262,8 +261,7 @@
 			children = (
 				68E48D59184BEA7400600FA5 /* JPLYouTubeListView.h */,
 				68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */,
-				683DC0321A6B5DF40051A7DB /* KJVideoViewController.h */,
-				683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */,
+				68B53B571CAB03110093DFB3 /* VideoDetailViewController.swift */,
 			);
 			name = Videos;
 			sourceTree = "<group>";
@@ -682,6 +680,7 @@
 				68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */,
 				689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */,
 				6877E18D1CA8BF03005319F2 /* FetchDataOperation.swift in Sources */,
+				68B53B581CAB03110093DFB3 /* VideoDetailViewController.swift in Sources */,
 				68E1D03B1A60BA6B0054C7E1 /* KJVideo+Methods.m in Sources */,
 				686803AC1CAA0D960058FA0A /* DoodlesViewDataSource.swift in Sources */,
 				686803AE1CAA17F80058FA0A /* ParseComicDataOperation.swift in Sources */,
@@ -698,7 +697,6 @@
 				68B1BFAA1CA9107600F498F0 /* ParseVideoDataOperation.swift in Sources */,
 				68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */,
 				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
-				683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */,
 				68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */,
 				68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */,
 				68ADED0A1BACD1C400977DCF /* KJTabBarController.swift in Sources */,
