@@ -7,7 +7,6 @@
 //
 
 #import "KJComicFavouriteActivity.h"
-#import "KJComicStore.h"
 #import "KJComic.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "KJParseAnalyticsStore.h"

@@ -16,12 +16,6 @@ static NSString *kComicThumbnailsLocalDirectoryName = @"ComicThumbs";
 
 @implementation KJComic (Methods)
 
-#pragma mark - Parse helper methods
-
-+ (NSString *)parseClassName {
-    return @"Comic";
-}
-
 #pragma mark - Return comic image methods
 
 #pragma mark Comic thumbnails

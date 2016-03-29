@@ -10,7 +10,6 @@
 #import "Kidney_John-Swift.h"
 #import "KJComic.h"
 #import "MBProgressHUD.h"
-#import "KJComicStore.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
@@ -47,9 +46,10 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 
 - (void)dealloc {
     // Remove NSNotificationCenter observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:KJComicDataFetchDidHappenNotification
-                                                  object:nil];
+    // TODO: do we need this notification after CloudKit refactor?
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self
+    //                                                    name:KJComicDataFetchDidHappenNotification
+    //                                                  object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kReachabilityChangedNotification
@@ -72,10 +72,11 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     [self setupCollectionView];
     
     // Register NSNotifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(comicFetchDidHappen)
-                                                 name:KJComicDataFetchDidHappenNotification
-                                               object:nil];
+    // TODO: do we need this notification after CloudKit refactor?
+    //    [[NSNotificationCenter defaultCenter] addObserver:self
+    //                                             selector:@selector(comicFetchDidHappen)
+    //                                                 name:KJComicDataFetchDidHappenNotification
+    //                                               object:nil];
     
     // Reachability NSNotification
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -276,13 +277,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     // Init path to chosen cell
     NSIndexPath *selectedIndexPath = [[self.collectionView indexPathsForSelectedItems] objectAtIndex:0];
-
+    
     // Init cell data
     KJComic *cellData = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
-
+    
     // Set image
     destViewController.imageToShow = cellData;
-
+    
     // Push it
     [self.navigationController pushViewController:destViewController
                                          animated:YES];
@@ -327,7 +328,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         
         // Fetch data
         // TODO: revise this after refactor to CloudKit
-//        [[KJComicStore sharedStore] fetchComicData];
+        //        [[KJComicStore sharedStore] fetchComicData];
     }
 }
 
@@ -389,7 +390,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         // Check if network is reachable
         if ([JPLReachabilityManager isReachable]) {
             // TODO: revise this after refactor to CloudKit
-//            [[KJComicStore sharedStore] fetchComicData];
+            //            [[KJComicStore sharedStore] fetchComicData];
         }
         
         else if ([JPLReachabilityManager isUnreachable]) {
@@ -405,7 +406,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         // Fetch new data if network is available
         if ([JPLReachabilityManager isReachable]) {
             // TODO: revise this after refactor to CloudKit
-//            [[KJComicStore sharedStore] fetchComicData];
+            //            [[KJComicStore sharedStore] fetchComicData];
         }
     }
 }
