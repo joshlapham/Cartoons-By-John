@@ -21,6 +21,7 @@ class FetchDataOperation: Operation {
     private let publicDatabase = CKContainer.defaultContainer().publicCloudDatabase
     private let allPredicate = NSPredicate(format: "TRUEPREDICATE")
     private let videoActivePredicate = NSPredicate(format: "is_visible_in_app == 1")
+    private let doodleActivePredicate = NSPredicate(format: "is_visible_in_app == 1")
     
     // To be checked in completion handler of this operation
     var results: [CKRecord] = []
@@ -35,7 +36,7 @@ class FetchDataOperation: Operation {
         case .Comic:
             query = CKQuery(recordType: "Comic", predicate: allPredicate)
         case .Doodle:
-            query = CKQuery(recordType: "Doodle", predicate: allPredicate)
+            query = CKQuery(recordType: "Doodle", predicate: doodleActivePredicate)
         }
         
         print("CloudKit: fetching ..")

@@ -73,9 +73,10 @@ extension SingleImageViewController {
             imageView.sd_setImageWithURL(imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
             
             // Track doodle viewed with Parse Analytics (if enabled)
-            if NSUserDefaults.kj_shouldTrackViewedDoodleEventsWithParseSetting() {
-                KJParseAnalyticsStore.sharedStore().trackDoodleViewEventForDoodle(image)
-            }
+            // TODO: revise this after CloudKit refactor
+//            if NSUserDefaults.kj_shouldTrackViewedDoodleEventsWithParseSetting() {
+//                KJParseAnalyticsStore.sharedStore().trackDoodleViewEventForDoodle(image)
+//            }
             
         } else if image is KJComic {
             // NOTE - we know `image` is of type `KJComic` so we can force unwrap
@@ -90,6 +91,7 @@ extension SingleImageViewController {
             imageView.image = image.returnComicImageFromComic()
             
             // Track comic viewed with Parse Analytics (if enabled)
+            // TODO: revise this after CloudKit refactor
             if NSUserDefaults.kj_shouldTrackViewedComicEventsWithParseSetting() {
                 KJParseAnalyticsStore.sharedStore().trackComicViewEventForComic(image)
             }

@@ -152,7 +152,7 @@ extension KJAppDelegate: UIApplicationDelegate {
         // Init item stores
         // TODO: remove these calls once switched over to CloudKit
         KJComicStore.sharedStore()
-        KJDoodleStore.sharedStore()
+//        KJDoodleStore.sharedStore()
         KJSocialLinkStore.sharedStore()
         
         // Core Data
@@ -167,6 +167,11 @@ extension KJAppDelegate: UIApplicationDelegate {
         let comicListViewController = comicsNavController?.topViewController as? KJComicListView
         comicListViewController?.managedObjectContext = self.managedObjectContext
         
+        // Pass to Doodles view
+        let doodlesNavController = tabBarController?.viewControllers![2] as? UINavigationController
+        let doodlesViewController = doodlesNavController?.topViewController as? DoodlesViewController
+        doodlesViewController?.managedObjectContext = self.managedObjectContext
+        
         // Pass managedObjectContext to stores
         // TODO: remove these calls once switched over to CloudKit
         KJVideoStore.sharedStore().managedObjectContext = self.managedObjectContext
@@ -179,17 +184,36 @@ extension KJAppDelegate: UIApplicationDelegate {
         // TESTING - CloudKit
         let queue = NSOperationQueue()
         
-        // Fetch video data
-        let dataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Video)
+//        let flush = FlushCoreData(context: self.managedObjectContext)
+//        queue.addOperation(flush)
         
-        dataFetch.completionBlock = {
-            if dataFetch.results.count > 0 {
-                let parseData = ParseVideoDataOperation(context: self.managedObjectContext, data: dataFetch.results)
+        // Fetch video data
+        let videoDataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Video)
+        
+        videoDataFetch.completionBlock = {
+            if videoDataFetch.results.count > 0 {
+                let parseData = ParseVideoDataOperation(context: self.managedObjectContext, data: videoDataFetch.results)
                 queue.addOperation(parseData)
             }
         }
         
-        queue.addOperation(dataFetch)
+        // Fetch doodle data
+        let doodleDataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Doodle)
+        
+        doodleDataFetch.completionBlock = {
+            if doodleDataFetch.results.count > 0 {
+                let parseData = ParseDoodleDataOperation(context: self.managedObjectContext, data: doodleDataFetch.results)
+                parseData.completionBlock = {
+                    NSUserDefaults.kj_setHasFirstDoodleFetchCompletedSetting(true)
+                    print("POSTING NOTIFICATION")
+                    NSNotificationCenter.defaultCenter().postNotificationName(KJDoodleFetchDidHappenNotification, object: nil)
+                }
+                queue.addOperation(parseData)
+            }
+        }
+        
+        queue.addOperation(videoDataFetch)
+        queue.addOperation(doodleDataFetch)
         // END OF TESTING - CloudKit
         
         return true

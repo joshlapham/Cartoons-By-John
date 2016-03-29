@@ -11,36 +11,30 @@ import Foundation
 // TODO: update to use Cocoalumberjack for logging on this class
 
 class DoodlesViewController: UICollectionViewController {
-    // Properties
-    var dataSource: KJRandomViewDataSource?
+    var dataSource: DoodlesViewDataSource?
     var progressHud: MBProgressHUD?
     var backgroundImageView: UIImageView?
     var singleTap: UITapGestureRecognizer?
     var noNetworkAlertView: UIAlertController?
+    var managedObjectContext: NSManagedObjectContext?
     
-    // Methods
-    // MARK: View lifecycle methods
+    // MARK: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set title
         self.title = NSLocalizedString("Doodles", comment: "Title of view")
         
-        // Register custom UICollectionViewCell
         self.collectionView?.registerClass(KJDoodleCell.classForCoder(), forCellWithReuseIdentifier: KJDoodleCell.cellIdentifier())
         
-        // Register for NSNotifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("doodleFetchDidHappen"), name: KJDoodleFetchDidHappenNotification, object: nil)
-        
-        // Reachability NSNotification
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("reachabilityDidChange"), name: kReachabilityChangedNotification, object: nil)
         
-        // Fetch doodle data
+        self.setupCollectionView()
+        
         self.fetchDataWithNetworkCheck()
         
         // Set background if no network is available
         if JPLReachabilityManager.isUnreachable() == true {
-            // Init background image for collectionView
             self.backgroundImageView = self.kj_noNetworkImageView()
             self.collectionView?.backgroundView = self.backgroundImageView
             self.collectionView?.backgroundView?.contentMode = .ScaleAspectFit
@@ -50,9 +44,6 @@ class DoodlesViewController: UICollectionViewController {
             self.singleTap?.numberOfTapsRequired = 1
             self.collectionView?.addGestureRecognizer(self.singleTap!)
         }
-        
-        // Setup collection view
-        self.setupCollectionView()
     }
 }
 
@@ -60,21 +51,20 @@ class DoodlesViewController: UICollectionViewController {
 extension DoodlesViewController {
     func fetchDataWithNetworkCheck() {
         // Show progress
-        // Init MBProgressHUD
         self.progressHud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         self.progressHud?.userInteractionEnabled = false
         let progressHudString = NSLocalizedString("Loading Doodles ...", comment: "Message shown under progress wheel when doodles (drawings) are loading")
         self.progressHud?.labelText = progressHudString
         self.progressHud?.labelFont = UIFont.kj_progressHudFont()
         
-        // Show network activity indicator
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         // Check if first doodle data fetch has happened
         if NSUserDefaults.kj_hasFirstDoodleFetchCompletedSetting() == false {
-            // Check if network is reachable
             if JPLReachabilityManager.isReachable() == true {
-                KJDoodleStore.sharedStore().fetchDoodleData()
+                // TODO: revise this for CloudKit
+                //                KJDoodleStore.sharedStore().fetchDoodleData()
+                
             } else if JPLReachabilityManager.isUnreachable() == true {
                 // Show noNetworkAlertView
                 self.noNetworkConnection()
@@ -86,24 +76,52 @@ extension DoodlesViewController {
             
             // Fetch new data if network is available
             if JPLReachabilityManager.isReachable() == true {
-                KJDoodleStore.sharedStore().fetchDoodleData()
+                // TODO: revise this for CloudKit
+                //                KJDoodleStore.sharedStore().fetchDoodleData()
             }
         }
     }
     
-    func doodleFetchDidHappen() {
-        //        DDLogVerbose(@"%s: data fetch did happen", __func__);
+    private func fetchDoodlesFromCoreData(completion: ([KJRandomImage]?, NSError?) -> ()) {
+        let predicate = NSPredicate(format: "TRUEPREDICATE")
+        let request = NSFetchRequest(entityName: NSStringFromClass(KJRandomImage.self))
+        request.predicate = predicate
         
-        // Init data source array
-        self.dataSource?.cellDataSource = KJDoodleStore.sharedStore().returnDoodlesArray()
+        do {
+            let doodles = try self.managedObjectContext?.executeFetchRequest(request) as? [KJRandomImage]
+            completion(doodles, nil)
+            
+        } catch let error as NSError {
+            completion(nil, error)
+        }
+    }
+    
+    func doodleFetchDidHappen() {
+        print(__FUNCTION__)
+        
+        // Init data source array from Core Data
+        // TODO: update so `collectionView` will use `NSFetchedResultsController`
+        self.fetchDoodlesFromCoreData { (doodles: [KJRandomImage]?, error: NSError?) -> () in
+            guard error == nil else {
+                print("Error fetching Doodles from Core Data : \(error?.localizedDescription)")
+                // TODO: shouldn't really return
+                return
+            }
+            
+            guard let doodles = doodles else {
+                print("Error forming Doodles object")
+                // TODO: shouldn't really return
+                return
+            }
+            
+            self.dataSource?.cellDataSource = doodles
+        }
         
         // TODO: testing flow layout toggle
         //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("toggleLayouts:"))
         
         // Hide progress
         self.progressHud?.hide(true)
-        
-        // Hide network activity monitor
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
         // Set background of collectionView to nil to remove any network error image showing
@@ -112,12 +130,10 @@ extension DoodlesViewController {
             self.collectionView?.backgroundView = nil
         }
         
-        // Remove tap gesture recognizer
         if let tap = self.singleTap {
             self.collectionView?.removeGestureRecognizer(tap)
         }
         
-        // Reload collectionView data
         self.collectionView?.reloadData()
     }
     
@@ -180,7 +196,7 @@ extension DoodlesViewController {
         self.collectionView?.collectionViewLayout = flowLayout
         
         // Init data source
-        self.dataSource = KJRandomViewDataSource()
+        self.dataSource = DoodlesViewDataSource()
         
         // Set delegates
         self.collectionView?.dataSource = self.dataSource
@@ -195,17 +211,19 @@ extension DoodlesViewController {
             self.noNetworkAlertView?.dismissViewControllerAnimated(true, completion: nil)
             
             // Fetch data
-            KJDoodleStore.sharedStore().fetchDoodleData()
+            // TODO: revise this for CloudKit
+            //            KJDoodleStore.sharedStore().fetchDoodleData()
         }
     }
 }
 
-// MARK: - UICollectionViewDelegate methods
+// MARK: - UICollectionViewDelegate
 extension DoodlesViewController {
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        // TODO: implement `guard`s here (prevent force unwrap)
-        
-        let cellData = self.dataSource?.cellDataSource[indexPath.row] as? KJRandomImage
+        guard let cellData = self.dataSource?.cellDataSource?[indexPath.row] else {
+            print("Error forming cell data object to pass to next VC; aborting")
+            return
+        }
         
         let storyboard = UIStoryboard(name: "ImageStoryboard", bundle: nil)
         let destViewController = storyboard.instantiateViewControllerWithIdentifier("SingleImageViewController") as? SingleImageViewController

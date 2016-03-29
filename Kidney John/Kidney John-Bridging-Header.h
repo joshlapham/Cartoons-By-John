@@ -18,7 +18,6 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 #import "UIImage+KJImageUtils.h"
-#import "KJRandomViewDataSource.h"
 #import "UIViewController+KJUtils.h"
 #import "KJRandomFavouriteActivity.h"
 #import "KJComic.h"
