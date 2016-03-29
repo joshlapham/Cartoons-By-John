@@ -1,0 +1,6 @@
+#github "https://github.com/matej/MBProgressHUD"
+#github "https://github.com/kmikael/PBWebViewController"
+github "https://github.com/rs/SDWebImage"
+#github "https://github.com/tonymillion/Reachability"
+github "https://github.com/CocoaLumberjack/CocoaLumberjack"
+#github "https://github.com/pbernery/PBYouTubeVideoViewController"

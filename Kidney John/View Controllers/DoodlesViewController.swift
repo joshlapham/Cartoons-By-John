@@ -7,16 +7,16 @@
 //
 
 import Foundation
+import CocoaLumberjackSwift
 
-// TODO: update to use Cocoalumberjack for logging on this class
-
-class DoodlesViewController: UICollectionViewController {
-    var dataSource: DoodlesViewDataSource?
-    var progressHud: MBProgressHUD?
-    var backgroundImageView: UIImageView?
-    var singleTap: UITapGestureRecognizer?
-    var noNetworkAlertView: UIAlertController?
+class DoodlesViewController: UIViewController {
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var progressHud: UIActivityIndicatorView!
     var managedObjectContext: NSManagedObjectContext?
+    private var dataSource: DoodlesViewDataSource?
+    private var backgroundImageView: UIImageView?
+    private var singleTap: UITapGestureRecognizer?
+    private var noNetworkAlertView: UIAlertController?
     
     // MARK: UIViewController
     override func viewDidLoad() {
@@ -24,10 +24,12 @@ class DoodlesViewController: UICollectionViewController {
         
         self.title = NSLocalizedString("Doodles", comment: "Title of view")
         
+        self.progressHud.hidesWhenStopped = true
+        
         self.collectionView?.registerClass(KJDoodleCell.classForCoder(), forCellWithReuseIdentifier: KJDoodleCell.cellIdentifier())
         
         // TODO: do we need this notification?
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("doodleFetchDidHappen"), name: KJDoodleFetchDidHappenNotification, object: nil)
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("doodleFetchDidHappen"), name: KJDoodleFetchDidHappenNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("reachabilityDidChange"), name: kReachabilityChangedNotification, object: nil)
         
         self.setupCollectionView()
@@ -52,12 +54,7 @@ class DoodlesViewController: UICollectionViewController {
 extension DoodlesViewController {
     func fetchDataWithNetworkCheck() {
         // Show progress
-        self.progressHud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        self.progressHud?.userInteractionEnabled = false
-        let progressHudString = NSLocalizedString("Loading Doodles ...", comment: "Message shown under progress wheel when doodles (drawings) are loading")
-        self.progressHud?.labelText = progressHudString
-        self.progressHud?.labelFont = UIFont.kj_progressHudFont()
-        
+        self.progressHud.startAnimating()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
         
         // Check if first doodle data fetch has happened
@@ -98,19 +95,17 @@ extension DoodlesViewController {
     }
     
     func doodleFetchDidHappen() {
-        print(__FUNCTION__)
-        
         // Init data source array from Core Data
         // TODO: update so `collectionView` will use `NSFetchedResultsController`
         self.fetchDoodlesFromCoreData { (doodles: [KJRandomImage]?, error: NSError?) -> () in
             guard error == nil else {
-                print("Error fetching Doodles from Core Data : \(error?.localizedDescription)")
+                DDLogError("Error fetching Doodles from Core Data : \(error?.localizedDescription)")
                 // TODO: shouldn't really return
                 return
             }
             
             guard let doodles = doodles else {
-                print("Error forming Doodles object")
+                DDLogError("Error forming Doodles object")
                 // TODO: shouldn't really return
                 return
             }
@@ -122,7 +117,7 @@ extension DoodlesViewController {
         //        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("toggleLayouts:"))
         
         // Hide progress
-        self.progressHud?.hide(true)
+        self.progressHud.stopAnimating()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
         // Set background of collectionView to nil to remove any network error image showing
@@ -149,7 +144,6 @@ extension DoodlesViewController {
         // Init actions
         // Retry
         let retryAction = UIAlertAction(title: retryButtonString, style: .Default) { (action: UIAlertAction) -> Void in
-            // Retry data fetch
             self.fetchDataWithNetworkCheck()
         }
         
@@ -166,7 +160,7 @@ extension DoodlesViewController {
         // Check if first doodle data fetch has happened
         if NSUserDefaults.kj_hasFirstDoodleFetchCompletedSetting() == false {
             // Hide progress
-            self.progressHud?.hide(true)
+            self.progressHud.stopAnimating()
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
             
             // Show alertView
@@ -219,10 +213,10 @@ extension DoodlesViewController {
 }
 
 // MARK: - UICollectionViewDelegate
-extension DoodlesViewController {
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+extension DoodlesViewController: UICollectionViewDelegate {
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard let cellData = self.dataSource?.cellDataSource?[indexPath.row] else {
-            print("Error forming cell data object to pass to next VC; aborting")
+            DDLogError("Error forming cell data object to pass to next VC; aborting")
             return
         }
         

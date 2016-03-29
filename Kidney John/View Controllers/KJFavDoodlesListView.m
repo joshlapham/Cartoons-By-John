@@ -12,6 +12,7 @@
 #import "UIColor+KJColours.h"
 #import "UIViewController+KJUtils.h"
 #import "Kidney_John-Swift.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 // Constants
 // collectionView insets (for all edges)
@@ -53,7 +54,7 @@ static CGFloat kCollectionViewCellHeight = 75;
     
     if (fetchedObjects == nil) {
         // Handle the error
-        DDLogError(@"doodleStore: error fetching doodles: %@", [error localizedDescription]);
+//        DDLogError(@"doodleStore: error fetching doodles: %@", [error localizedDescription]);
         return nil;
     }
     

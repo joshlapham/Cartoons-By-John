@@ -9,7 +9,6 @@
 #import "KJRandomFavouriteActivity.h"
 #import "KJRandomImage.h"
 #import "NSUserDefaults+KJSettings.h"
-#import "KJParseAnalyticsStore.h"
 
 @implementation KJRandomFavouriteActivity {
     NSString *titleOfActivity;
@@ -65,19 +64,20 @@
     doodleObject.isFavourite = !doodleObject.isFavourite;
     
     // Track action with Parse analytics (if enabled)
-    if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
-        [[KJParseAnalyticsStore sharedStore] trackDoodleFavouriteEventForDoodle:doodleObject];
-    }
+    // TODO: revise this after CloudKit refactor
+    //    if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
+    //        [[KJParseAnalyticsStore sharedStore] trackDoodleFavouriteEventForDoodle:doodleObject];
+    //    }
     
     // Save managedObjectContext
     NSError *error;
     if (![doodleObject.managedObjectContext save:&error]) {
         // Handle the error.
-        DDLogError(@"Doodle: failed to save managedObjectContext: %@", [error debugDescription]);
+//        DDLogError(@"Doodle: failed to save managedObjectContext: %@", [error debugDescription]);
     }
     
     else {
-        DDLogInfo(@"Doodle: saved managedObjectContext");
+//        DDLogInfo(@"Doodle: saved managedObjectContext");
     }
 }
 

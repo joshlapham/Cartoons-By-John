@@ -10,7 +10,7 @@
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 #import "KJVideo.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import <WebImage/UIImageView+WebCache.h>
 #import "KJVideo+Methods.h"
 
 // Constants
@@ -117,9 +117,9 @@ static NSString * kVideoDurationFallbackString = @"0:30";
                            placeholderImage:[UIImage imageNamed:@"placeholder.png"]
                                   completed:^(UIImage *cellImage, NSError *error, SDImageCacheType cacheType, NSURL *url) {
                                       if (cellImage && !error) {
-                                          DDLogVerbose(@"%s: fetched video thumbnail image from URL: %@", __func__, url);
+//                                          DDLogVerbose(@"%s: fetched video thumbnail image from URL: %@", __func__, url);
                                       } else {
-                                          DDLogError(@"%s: error fetching video thumbnail image: %@", __func__, [error localizedDescription]);
+//                                          DDLogError(@"%s: error fetching video thumbnail image: %@", __func__, [error localizedDescription]);
                                       }
                                   }];
 }
@@ -147,7 +147,7 @@ static NSString * kVideoDurationFallbackString = @"0:30";
     
     // Check if video is less than 14 days old
     if (dateComponents.day < 15) {
-        DDLogVerbose(@"%s: video %@ is new!", __func__, video.videoName);
+//        DDLogVerbose(@"%s: video %@ is new!", __func__, video.videoName);
         return YES;
     }
     else {

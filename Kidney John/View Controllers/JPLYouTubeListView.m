@@ -7,7 +7,7 @@
 //
 
 #import "JPLYouTubeListView.h"
-#import "MBProgressHUD.h"
+//#import "MBProgressHUD.h"
 #import "KJVideo.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
@@ -27,7 +27,7 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
 // Properties
 @property (nonatomic, strong) NSArray *videoResults;
 @property (nonatomic, strong) NSArray *searchResults;
-@property (nonatomic, strong) MBProgressHUD *progressHud;
+//@property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSFetchedResultsController *searchFetchedResultsController;
@@ -149,7 +149,7 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     // NOTE - this will only show on very first app launch
     if (![NSUserDefaults kj_hasFirstVideoFetchCompletedSetting]) {
         // Hide progress
-        [_progressHud hide:YES];
+//        [_progressHud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         // Show alertView
@@ -163,7 +163,7 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
 
 - (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
-        DDLogVerbose(@"Videos: network became available");
+//        DDLogVerbose(@"Videos: network became available");
         
         // Dismiss no network UIAlert
         [_noNetworkAlertView dismissViewControllerAnimated:YES
@@ -178,11 +178,11 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
 - (void)fetchDataWithNetworkCheck {
     // Show progress
     // Init MBProgressHUD
-    _progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    _progressHud.userInteractionEnabled = NO;
-    NSString *progressHudString = NSLocalizedString(@"Loading Videos ...", @"Message shown under progress wheel when videos are loading");
-    _progressHud.labelText = progressHudString;
-    _progressHud.labelFont = [UIFont kj_progressHudFont];
+//    _progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    _progressHud.userInteractionEnabled = NO;
+//    NSString *progressHudString = NSLocalizedString(@"Loading Videos ...", @"Message shown under progress wheel when videos are loading");
+//    _progressHud.labelText = progressHudString;
+//    _progressHud.labelFont = [UIFont kj_progressHudFont];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -213,10 +213,10 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
 #pragma mark - Data fetch did happen method
 
 - (void)videoFetchDidFinish {
-    DDLogVerbose(@"Videos: did receive notification that data fetch is complete");
+//    DDLogVerbose(@"Videos: did receive notification that data fetch is complete");
     
     // Hide progress
-    [_progressHud hide:YES];
+//    [_progressHud hide:YES];
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -274,7 +274,7 @@ static NSString * kSegueIdentifierVideoDetail = @"videoIdSegue";
     // Perform fetch
     NSError *error = nil;
     if (![fetchedResultsController performFetch:&error]) {
-        DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
+//        DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
         
         // Show fatal error alert
         [self showFatalErrorAlert];

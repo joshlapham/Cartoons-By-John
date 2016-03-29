@@ -9,13 +9,14 @@
 #import "KJComicListView.h"
 #import "Kidney_John-Swift.h"
 #import "KJComic.h"
-#import "MBProgressHUD.h"
+//#import "MBProgressHUD.h"
 #import "Reachability.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
 #import "NSUserDefaults+KJSettings.h"
 #import "UIColor+KJColours.h"
 #import "UIViewController+KJUtils.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 // Constants
 // collectionView insets (for all edges)
@@ -29,7 +30,7 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
 // Properties
 @property (nonatomic, strong) NSArray *comicResults;
 @property (nonatomic, strong) UIAlertController *noNetworkAlert;
-@property (nonatomic, strong) MBProgressHUD *progressHud;
+//@property (nonatomic, strong) MBProgressHUD *progressHud;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UITapGestureRecognizer *singleTap;
 
@@ -87,7 +88,7 @@ static NSString * kSegueIdentifierComicDetail = @"comicDetailSegue";
     // Perform fetch
     NSError *error;
     if (![[self fetchedResultsController] performFetch:&error]) {
-        DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
+//        DDLogError(@"%s - unresolved error %@, %@", __func__, error, [error userInfo]);
         
         // Show fatal error alert
         [self showFatalErrorAlert];
@@ -298,13 +299,13 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark - Data fetch did happen method
 
 - (void)comicFetchDidHappen {
-    DDLogVerbose(@"%s - comic fetch did happen ..", __func__);
+//    DDLogVerbose(@"%s - comic fetch did happen ..", __func__);
     
     // Hide network activity monitor
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // Hide progress
-    [_progressHud hide:YES];
+//    [_progressHud hide:YES];
     
     // Set background of collectionView to nil to remove any network error image showing
     if (![_backgroundImageView isHidden]) {
@@ -320,7 +321,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
-        DDLogVerbose(@"%s: network became available", __func__);
+//        DDLogVerbose(@"%s: network became available", __func__);
         
         // Dismiss no network UIAlert
         [_noNetworkAlert dismissViewControllerAnimated:YES
@@ -363,7 +364,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     // Check if first comic data fetch has happened
     if (![NSUserDefaults kj_hasFirstComicFetchCompletedSetting]) {
         // Hide progress
-        [_progressHud hide:YES];
+//        [_progressHud hide:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         // Show alertView
@@ -376,11 +377,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 - (void)fetchDataWithNetworkCheck {
     // Show progress
     // Init MBProgressHUD
-    _progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    _progressHud.userInteractionEnabled = NO;
-    NSString *progressHudString = NSLocalizedString(@"Loading Comix ...", @"Message shown under progress wheel when comics are loading");
-    _progressHud.labelText = progressHudString;
-    _progressHud.labelFont = [UIFont kj_progressHudFont];
+//    _progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    _progressHud.userInteractionEnabled = NO;
+//    NSString *progressHudString = NSLocalizedString(@"Loading Comix ...", @"Message shown under progress wheel when comics are loading");
+//    _progressHud.labelText = progressHudString;
+//    _progressHud.labelFont = [UIFont kj_progressHudFont];
     
     // Show network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

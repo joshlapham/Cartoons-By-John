@@ -7,14 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DDLog.h"
+
+// TODO: fix these imports after Carthage update
+//#import <CocoaLumberjack/DDLog.h>
+//#import <CocoaLumberjack/CocoaLumberjack.h>
 
 // Constants
 extern NSString * const KJAppErrorDomain;
 
 // CocoaLumberjack
 // Set logging level
-static int ddLogLevel = LOG_LEVEL_OFF;
+//static int ddLogLevel = LOG_LEVEL_OFF;
 
 @interface KJConstants : NSObject
 

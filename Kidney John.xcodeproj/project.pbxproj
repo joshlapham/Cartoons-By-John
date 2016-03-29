@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05DBFDFE16B54DF8ADCB2816 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52795D1CEF6142A9BA845EF1 /* libPods.a */; };
 		680006E01910C4150002D604 /* ComicThumbs in Resources */ = {isa = PBXBuildFile; fileRef = 680006DF1910C4150002D604 /* ComicThumbs */; };
 		68006C761BAB58E2007F8A00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68006C751BAB58E2007F8A00 /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
 		68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024D331A628DA600D2A900 /* KJSocialLink+Methods.m */; };
@@ -18,7 +17,6 @@
 		680CF0C71A7F730F009250E3 /* KJVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680CF0C51A7F730F009250E3 /* KJVideoCell.xib */; };
 		681347051AF26781009DCF88 /* KJVideoCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 681347041AF26781009DCF88 /* KJVideoCellTests.m */; };
 		68211A211927A95000B24BF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68211A231927A95000B24BF1 /* Localizable.strings */; };
-		6832C3751924B91E00E94788 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6832C3741924B91E00E94788 /* Keys.plist */; };
 		683DC0341A6B5DF40051A7DB /* KJVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */; };
 		685C171118E2745A00088D26 /* Comics in Resources */ = {isa = PBXBuildFile; fileRef = 685C171018E2745A00088D26 /* Comics */; };
 		685C171718E29B5300088D26 /* KJComic.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C171618E29B5300088D26 /* KJComic.m */; };
@@ -37,7 +35,6 @@
 		6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D13C191C7F1B001AD6A5 /* KJConstants.m */; };
 		68953A5A1BAE471E005CB192 /* DoodleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68953A591BAE471E005CB192 /* DoodleCell.swift */; settings = {ASSET_TAGS = (); }; };
 		689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C5B851AEC726900C70077 /* KJSocialLinkCell.m */; };
-		689C5B891AEC8E3700C70077 /* KJParseAnalyticsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C5B881AEC8E3700C70077 /* KJParseAnalyticsStore.m */; };
 		68A2D60E1A5EBB61000DA2CF /* UIFont+KJFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A2D60D1A5EBB61000DA2CF /* UIFont+KJFonts.m */; };
 		68A2D6121A5EC43C000DA2CF /* UIColor+KJColours.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A2D6111A5EC43C000DA2CF /* UIColor+KJColours.m */; };
 		68ADED0A1BACD1C400977DCF /* KJTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED091BACD1C400977DCF /* KJTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -71,10 +68,15 @@
 		68E48D48184A247D00600FA5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68E48D46184A247D00600FA5 /* InfoPlist.strings */; };
 		68E48D5B184BEA7400600FA5 /* JPLYouTubeListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */; };
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
-		68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */; };
 		68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4691A16D73D00D3D51B /* KJSocialLink.m */; };
 		68E891331BB204B30005A5DA /* ImageStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */; settings = {ASSET_TAGS = (); }; };
 		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
+		68FBB1CE1CAA3AD40014F350 /* PBWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FBB1CD1CAA3AD40014F350 /* PBWebViewController.m */; settings = {ASSET_TAGS = (); }; };
+		68FBB1D21CAA3ADA0014F350 /* PBYouTubeVideoView.html in Resources */ = {isa = PBXBuildFile; fileRef = 68FBB1CF1CAA3ADA0014F350 /* PBYouTubeVideoView.html */; settings = {ASSET_TAGS = (); }; };
+		68FBB1D31CAA3ADA0014F350 /* PBYouTubeVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FBB1D11CAA3ADA0014F350 /* PBYouTubeVideoViewController.m */; settings = {ASSET_TAGS = (); }; };
+		68FBB1D61CAA3AE10014F350 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FBB1D51CAA3AE10014F350 /* Reachability.m */; settings = {ASSET_TAGS = (); }; };
+		68FBB1D81CAA3C970014F350 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FBB1D71CAA3C970014F350 /* CocoaLumberjackSwift.framework */; };
+		68FBB1DA1CAA3C9F0014F350 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68FBB1D91CAA3C9F0014F350 /* WebImage.framework */; };
 		C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C956F61E1AF204D600D5B9B0 /* UIViewController+KJUtils.m */; };
 		C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C961F2621AA5598D0015E67F /* Launch Screen.xib */; };
 		C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C968D7D71A8C482800C3B621 /* KJComicListCell.m */; };
@@ -93,8 +95,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4D94687170B9557CDE67339B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		52795D1CEF6142A9BA845EF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		680006DF1910C4150002D604 /* ComicThumbs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ComicThumbs; sourceTree = "<group>"; };
 		68006C751BAB58E2007F8A00 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68024D321A628DA600D2A900 /* KJSocialLink+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KJSocialLink+Methods.h"; path = "Models/KJSocialLink+Methods.h"; sourceTree = "<group>"; };
@@ -113,7 +113,6 @@
 		68211A1E1927A70900B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68211A221927A95000B24BF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68211A241927A98400B24BF1 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6832C3741924B91E00E94788 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		683431621A69AD550050745D /* Kidney John 1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.2.xcdatamodel"; sourceTree = "<group>"; };
 		683DC0321A6B5DF40051A7DB /* KJVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideoViewController.h; path = "View Controllers/KJVideoViewController.h"; sourceTree = "<group>"; };
 		683DC0331A6B5DF40051A7DB /* KJVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJVideoViewController.m; path = "View Controllers/KJVideoViewController.m"; sourceTree = "<group>"; };
@@ -145,8 +144,6 @@
 		68953A591BAE471E005CB192 /* DoodleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoodleCell.swift; path = Cells/DoodleCell.swift; sourceTree = "<group>"; };
 		689C5B841AEC726900C70077 /* KJSocialLinkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLinkCell.h; path = Cells/KJSocialLinkCell.h; sourceTree = "<group>"; };
 		689C5B851AEC726900C70077 /* KJSocialLinkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSocialLinkCell.m; path = Cells/KJSocialLinkCell.m; sourceTree = "<group>"; };
-		689C5B871AEC8E3700C70077 /* KJParseAnalyticsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJParseAnalyticsStore.h; path = Stores/KJParseAnalyticsStore.h; sourceTree = "<group>"; };
-		689C5B881AEC8E3700C70077 /* KJParseAnalyticsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJParseAnalyticsStore.m; path = Stores/KJParseAnalyticsStore.m; sourceTree = "<group>"; };
 		68A2D60C1A5EBB61000DA2CF /* UIFont+KJFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIFont+KJFonts.h"; path = "Categories/UIFont+KJFonts.h"; sourceTree = "<group>"; };
 		68A2D60D1A5EBB61000DA2CF /* UIFont+KJFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIFont+KJFonts.m"; path = "Categories/UIFont+KJFonts.m"; sourceTree = "<group>"; };
 		68A2D6101A5EC43C000DA2CF /* UIColor+KJColours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+KJColours.h"; path = "Categories/UIColor+KJColours.h"; sourceTree = "<group>"; };
@@ -196,14 +193,21 @@
 		68E48D5A184BEA7400600FA5 /* JPLYouTubeListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLYouTubeListView.m; path = "View Controllers/JPLYouTubeListView.m"; sourceTree = "<group>"; };
 		68E48D66184C20A500600FA5 /* KJComicListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicListView.h; path = "View Controllers/KJComicListView.h"; sourceTree = "<group>"; };
 		68E48D67184C20A500600FA5 /* KJComicListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicListView.m; path = "View Controllers/KJComicListView.m"; sourceTree = "<group>"; };
-		68E4D4651A16D50300D3D51B /* KJSocialLinkStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLinkStore.h; path = Stores/KJSocialLinkStore.h; sourceTree = "<group>"; };
-		68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSocialLinkStore.m; path = Stores/KJSocialLinkStore.m; sourceTree = "<group>"; };
 		68E4D4681A16D73D00D3D51B /* KJSocialLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLink.h; path = Models/KJSocialLink.h; sourceTree = "<group>"; };
 		68E4D4691A16D73D00D3D51B /* KJSocialLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSocialLink.m; path = Models/KJSocialLink.m; sourceTree = "<group>"; };
 		68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ImageStoryboard.storyboard; path = Storyboards/ImageStoryboard.storyboard; sourceTree = "<group>"; };
 		68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicFavouriteActivity.h; path = UIActivity/KJComicFavouriteActivity.h; sourceTree = "<group>"; };
 		68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicFavouriteActivity.m; path = UIActivity/KJComicFavouriteActivity.m; sourceTree = "<group>"; };
-		AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		68FBB1C51CAA39430014F350 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
+		68FBB1CC1CAA3AD40014F350 /* PBWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PBWebViewController.h; path = "3rd-Party Libraries/PBWebViewController.h"; sourceTree = "<group>"; };
+		68FBB1CD1CAA3AD40014F350 /* PBWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PBWebViewController.m; path = "3rd-Party Libraries/PBWebViewController.m"; sourceTree = "<group>"; };
+		68FBB1CF1CAA3ADA0014F350 /* PBYouTubeVideoView.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = PBYouTubeVideoView.html; path = "3rd-Party Libraries/PBYouTubeVideoView.html"; sourceTree = "<group>"; };
+		68FBB1D01CAA3ADA0014F350 /* PBYouTubeVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PBYouTubeVideoViewController.h; path = "3rd-Party Libraries/PBYouTubeVideoViewController.h"; sourceTree = "<group>"; };
+		68FBB1D11CAA3ADA0014F350 /* PBYouTubeVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PBYouTubeVideoViewController.m; path = "3rd-Party Libraries/PBYouTubeVideoViewController.m"; sourceTree = "<group>"; };
+		68FBB1D41CAA3AE10014F350 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = "3rd-Party Libraries/Reachability.h"; sourceTree = "<group>"; };
+		68FBB1D51CAA3AE10014F350 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = "3rd-Party Libraries/Reachability.m"; sourceTree = "<group>"; };
+		68FBB1D71CAA3C970014F350 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = Carthage/Build/iOS/CocoaLumberjackSwift.framework; sourceTree = "<group>"; };
+		68FBB1D91CAA3C9F0014F350 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		C956F61D1AF204D600D5B9B0 /* UIViewController+KJUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+KJUtils.h"; path = "Categories/UIViewController+KJUtils.h"; sourceTree = "<group>"; };
 		C956F61E1AF204D600D5B9B0 /* UIViewController+KJUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+KJUtils.m"; path = "Categories/UIViewController+KJUtils.m"; sourceTree = "<group>"; };
 		C961F2621AA5598D0015E67F /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
@@ -223,7 +227,8 @@
 				68E48D1E184A247D00600FA5 /* CoreGraphics.framework in Frameworks */,
 				68E48D20184A247D00600FA5 /* UIKit.framework in Frameworks */,
 				68E48D1C184A247D00600FA5 /* Foundation.framework in Frameworks */,
-				05DBFDFE16B54DF8ADCB2816 /* libPods.a in Frameworks */,
+				68FBB1D81CAA3C970014F350 /* CocoaLumberjackSwift.framework in Frameworks */,
+				68FBB1DA1CAA3C9F0014F350 /* WebImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,12 +349,8 @@
 		68CE160718BEB6B600127AA7 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
-				68E4D4651A16D50300D3D51B /* KJSocialLinkStore.h */,
-				68E4D4661A16D50300D3D51B /* KJSocialLinkStore.m */,
 				6876CFD31919A383003F3231 /* JPLReachabilityManager.h */,
 				6876CFD41919A383003F3231 /* JPLReachabilityManager.m */,
-				689C5B871AEC8E3700C70077 /* KJParseAnalyticsStore.h */,
-				689C5B881AEC8E3700C70077 /* KJParseAnalyticsStore.m */,
 			);
 			name = Stores;
 			sourceTree = "<group>";
@@ -400,7 +401,6 @@
 				68E48D43184A247D00600FA5 /* Kidney JohnTests */,
 				68E48D1A184A247D00600FA5 /* Frameworks */,
 				68E48D19184A247D00600FA5 /* Products */,
-				C3F39471CE9A082CDF116918 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -416,6 +416,9 @@
 		68E48D1A184A247D00600FA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68FBB1D91CAA3C9F0014F350 /* WebImage.framework */,
+				68FBB1D71CAA3C970014F350 /* CocoaLumberjackSwift.framework */,
+				68FBB1C51CAA39430014F350 /* CocoaLumberjack.framework */,
 				6877E18A1CA8B7E7005319F2 /* CloudKit.framework */,
 				685C164518E21A4900088D26 /* MessageUI.framework */,
 				68E461CF185B4BD5008D3E36 /* Social.framework */,
@@ -423,7 +426,6 @@
 				68E48D1D184A247D00600FA5 /* CoreGraphics.framework */,
 				68E48D1F184A247D00600FA5 /* UIKit.framework */,
 				68E48D3D184A247D00600FA5 /* XCTest.framework */,
-				52795D1CEF6142A9BA845EF1 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -445,6 +447,7 @@
 				68E48D2D184A247D00600FA5 /* Main_iPhone.storyboard */,
 				68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */,
 				68E48D36184A247D00600FA5 /* Images.xcassets */,
+				68FBB1C81CAA3AAF0014F350 /* 3rd-Party Libraries */,
 				68E48D22184A247D00600FA5 /* Supporting Files */,
 			);
 			path = "Kidney John";
@@ -463,7 +466,6 @@
 				68E48D23184A247D00600FA5 /* Kidney John-Info.plist */,
 				68E48D24184A247D00600FA5 /* InfoPlist.strings */,
 				68E48D29184A247D00600FA5 /* Kidney John-Prefix.pch */,
-				6832C3741924B91E00E94788 /* Keys.plist */,
 				68211A231927A95000B24BF1 /* Localizable.strings */,
 				687CE8141B8B204E00B1DD66 /* Kidney John-Bridging-Header.h */,
 			);
@@ -510,13 +512,18 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		C3F39471CE9A082CDF116918 /* Pods */ = {
+		68FBB1C81CAA3AAF0014F350 /* 3rd-Party Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */,
-				4D94687170B9557CDE67339B /* Pods.release.xcconfig */,
+				68FBB1CC1CAA3AD40014F350 /* PBWebViewController.h */,
+				68FBB1CD1CAA3AD40014F350 /* PBWebViewController.m */,
+				68FBB1CF1CAA3ADA0014F350 /* PBYouTubeVideoView.html */,
+				68FBB1D01CAA3ADA0014F350 /* PBYouTubeVideoViewController.h */,
+				68FBB1D11CAA3ADA0014F350 /* PBYouTubeVideoViewController.m */,
+				68FBB1D41CAA3AE10014F350 /* Reachability.h */,
+				68FBB1D51CAA3AE10014F350 /* Reachability.m */,
 			);
-			name = Pods;
+			name = "3rd-Party Libraries";
 			sourceTree = "<group>";
 		};
 		C95A0B9A1B06CF0D007AA777 /* Data Sources */ = {
@@ -534,11 +541,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 68E48D4D184A247D00600FA5 /* Build configuration list for PBXNativeTarget "Kidney John" */;
 			buildPhases = (
-				B2586506AB6D411DA3408D9D /* Check Pods Manifest.lock */,
 				68E48D14184A247D00600FA5 /* Sources */,
 				68E48D15184A247D00600FA5 /* Frameworks */,
 				68E48D16184A247D00600FA5 /* Resources */,
-				122529237A2A4BD2BE392183 /* Copy Pods Resources */,
+				68FBB1C71CAA39520014F350 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -582,7 +588,7 @@
 						DevelopmentTeam = 7HSH26BZGU;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -626,11 +632,11 @@
 				6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */,
 				68659F3E1A5E99240048A887 /* Settings.bundle in Resources */,
 				68E48D2F184A247D00600FA5 /* Main_iPhone.storyboard in Resources */,
-				6832C3751924B91E00E94788 /* Keys.plist in Resources */,
 				68E48D26184A247D00600FA5 /* InfoPlist.strings in Resources */,
 				685C171118E2745A00088D26 /* Comics in Resources */,
 				68E461FE1865CA87008D3E36 /* JohnRoderickPaine.ttf in Resources */,
 				680CF0C71A7F730F009250E3 /* KJVideoCell.xib in Resources */,
+				68FBB1D21CAA3ADA0014F350 /* PBYouTubeVideoView.html in Resources */,
 				680006E01910C4150002D604 /* ComicThumbs in Resources */,
 				C961F2631AA5598D0015E67F /* Launch Screen.xib in Resources */,
 			);
@@ -647,35 +653,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		122529237A2A4BD2BE392183 /* Copy Pods Resources */ = {
+		68FBB1C71CAA39520014F350 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/CocoaLumberjackSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/WebImage.framework",
 			);
-			name = "Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B2586506AB6D411DA3408D9D /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -687,7 +678,6 @@
 				680CF071190F8DBD00A0E296 /* KJComicDetailCell.m in Sources */,
 				68ADED0C1BACD9B100977DCF /* DoodlesViewController.swift in Sources */,
 				68E461ED18609897008D3E36 /* KJVideo.m in Sources */,
-				68E4D4671A16D50300D3D51B /* KJSocialLinkStore.m in Sources */,
 				680CF0C61A7F730F009250E3 /* KJVideoCell.m in Sources */,
 				68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */,
 				689C5B861AEC726900C70077 /* KJSocialLinkCell.m in Sources */,
@@ -701,6 +691,7 @@
 				686803AA1CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift in Sources */,
 				C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */,
 				68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */,
+				68FBB1D61CAA3AE10014F350 /* Reachability.m in Sources */,
 				68DE985B1C347F2F00F6AAC0 /* FlushCoreData.swift in Sources */,
 				6809619B1CA9D33C00980379 /* ParseDataOperation.swift in Sources */,
 				68953A5A1BAE471E005CB192 /* DoodleCell.swift in Sources */,
@@ -714,12 +705,12 @@
 				68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */,
 				685C171718E29B5300088D26 /* KJComic.m in Sources */,
 				68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */,
+				68FBB1CE1CAA3AD40014F350 /* PBWebViewController.m in Sources */,
 				6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */,
 				68006C761BAB58E2007F8A00 /* AppDelegate.swift in Sources */,
 				C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */,
 				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
 				68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */,
-				689C5B891AEC8E3700C70077 /* KJParseAnalyticsStore.m in Sources */,
 				6876CFD0191882B4003F3231 /* KJFavDoodlesListView.m in Sources */,
 				68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */,
 				68A2D60E1A5EBB61000DA2CF /* UIFont+KJFonts.m in Sources */,
@@ -732,6 +723,7 @@
 				68E1D0381A6083650054C7E1 /* KJComic+Methods.m in Sources */,
 				68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */,
 				68ADED0E1BACEB5400977DCF /* FlowLayouts.swift in Sources */,
+				68FBB1D31CAA3ADA0014F350 /* PBYouTubeVideoViewController.m in Sources */,
 				C956F61F1AF204D600D5B9B0 /* UIViewController+KJUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -874,7 +866,6 @@
 		};
 		68E48D4E184A247D00600FA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -885,6 +876,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
@@ -893,13 +885,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-l\"Pods-Bolts\"",
-					"-l\"Pods-CocoaLumberjack\"",
-					"-l\"Pods-MBProgressHUD\"",
-					"-l\"Pods-PBWebViewController\"",
-					"-l\"Pods-PBYouTubeVideoViewController\"",
-					"-l\"Pods-Reachability\"",
-					"-l\"Pods-SDWebImage\"",
 					"-l\"sqlite3\"",
 					"-l\"stdc++.6\"",
 					"-l\"z\"",
@@ -919,10 +904,6 @@
 					"\"ImageIO\"",
 					"-framework",
 					"\"MobileCoreServices\"",
-					"-framework",
-					"\"Parse\"",
-					"-framework",
-					"\"ParseCrashReporting\"",
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
@@ -949,7 +930,6 @@
 		};
 		68E48D4F184A247D00600FA5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D94687170B9557CDE67339B /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -960,6 +940,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Kidney John/Kidney John-Prefix.pch";
@@ -968,13 +949,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-l\"Pods-Bolts\"",
-					"-l\"Pods-CocoaLumberjack\"",
-					"-l\"Pods-MBProgressHUD\"",
-					"-l\"Pods-PBWebViewController\"",
-					"-l\"Pods-PBYouTubeVideoViewController\"",
-					"-l\"Pods-Reachability\"",
-					"-l\"Pods-SDWebImage\"",
 					"-l\"sqlite3\"",
 					"-l\"stdc++.6\"",
 					"-l\"z\"",
@@ -994,10 +968,6 @@
 					"\"ImageIO\"",
 					"-framework",
 					"\"MobileCoreServices\"",
-					"-framework",
-					"\"Parse\"",
-					"-framework",
-					"\"ParseCrashReporting\"",
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
@@ -1023,7 +993,6 @@
 		};
 		68E48D51184A247D00600FA5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB3625056C8B85FC7EDC494B /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Kidney John.app/Kidney John";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1047,7 +1016,6 @@
 		};
 		68E48D52184A247D00600FA5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D94687170B9557CDE67339B /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Kidney John.app/Kidney John";
 				FRAMEWORK_SEARCH_PATHS = (

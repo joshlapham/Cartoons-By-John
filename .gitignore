@@ -1,33 +1,11 @@
 *.swp
-Kidney John.xcworkspace
-kj-app.db
-.parse/
 
-# Parse.com API keys
-Kidney John/Keys.plist
+# NOTE - this won't be needed once all dependencies are converted to Carthage
+Kidney John/3rd-Party Libraries/
 
 # Created by http://www.gitignore.io
 
 ### Objective-C ###
-# Xcode
-#
-build/
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-xcuserdata
-*.xccheckout
-*.moved-aside
-DerivedData
-*.hmap
-*.ipa
-*.xcuserstate
-
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
@@ -76,3 +54,11 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+### Carthage ###
+# Carthage - A simple, decentralized dependency manager for Cocoa
+# Add this line if you want to avoid checking in source code from Carthage dependencies.
+Carthage/Checkouts
+Carthage/Build
+Carthage.checkout
+Carthage.build

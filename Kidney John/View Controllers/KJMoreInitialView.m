@@ -9,14 +9,12 @@
 #import "KJMoreInitialView.h"
 #import "KJFavouritesListView.h"
 #import "PBWebViewController.h"
-#import "KJSocialLinkStore.h"
 #import "JPLReachabilityManager.h"
-#import <Reachability/Reachability.h>
+#import "Reachability.h"
 #import "KJSocialLink.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
 #import "KJSocialLinkCell.h"
-#import <Parse/Parse.h>
 #import <SafariServices/SafariServices.h>
 #import "UIViewController+KJUtils.h"
 #import "KJComic.h"
@@ -43,11 +41,6 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
 #pragma mark - dealloc method
 
 - (void)dealloc {
-    // Remove NSNotification observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:KJSocialLinkDataFetchDidHappenNotification
-                                                  object:nil];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kReachabilityChangedNotification
                                                   object:nil];
@@ -66,13 +59,8 @@ static NSString *kSegueIdentifierFavourite = @"favouritesSegue";
     _areWeTestingSocialLinksFromParseFeature = NO;
     
     // Use links from Parse
+    // TODO: refactor this after CloudKit
     if (_areWeTestingSocialLinksFromParseFeature == YES) {
-        // Set up NSNotification receiving for when socialLinkStore finishes data fetch
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didFetchSocialLinks)
-                                                     name:KJSocialLinkDataFetchDidHappenNotification
-                                                   object:nil];
-        
         // Reachability NSNotification
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reachabilityDidChange)
@@ -267,7 +255,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
             // Check OS version; use Safari VC if iOS 9 or above
             NSOperatingSystemVersion iOS9 = (NSOperatingSystemVersion){9, 0, 0};
             BOOL isiOS9OrHigher = [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:iOS9];
-            DDLogVerbose(@"Is iOS 9 : %@", isiOS9OrHigher ? @"YES" : @"NO");
+//            DDLogVerbose(@"Is iOS 9 : %@", isiOS9OrHigher ? @"YES" : @"NO");
             
             // Init URL and title for web VC
             NSURL *url;
@@ -353,7 +341,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (fetchedObjects == nil) {
         // Handle the error
-        DDLogError(@"videoStore: error fetching favourites: %@", [error localizedDescription]);
+//        DDLogError(@"videoStore: error fetching favourites: %@", [error localizedDescription]);
         return nil;
     } else {
         return fetchedObjects;
@@ -388,7 +376,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (fetchedObjects == nil) {
         // Handle the error
-        DDLogError(@"comicStore: error fetching favourites: %@", [error localizedDescription]);
+//        DDLogError(@"comicStore: error fetching favourites: %@", [error localizedDescription]);
         return nil;
     } else {
         return fetchedObjects;
@@ -485,7 +473,7 @@ titleForHeaderInSection:(NSInteger)section {
 
 - (void)reachabilityDidChange {
     if ([JPLReachabilityManager isReachable]) {
-        DDLogVerbose(@"%s: network became available", __func__);
+//        DDLogVerbose(@"%s: network became available", __func__);
         
         // Dismiss no network UIAlert
         // TODO: review this; doesn't seem to be working but isn't affecting anything right now except that the alert stays on-screen if network becomes reachable
@@ -493,7 +481,8 @@ titleForHeaderInSection:(NSInteger)section {
                                                 completion:nil];
         
         // Fetch data
-        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
+        // TODO: revise this after CloudKit refactor
+//        [[KJSocialLinkStore sharedStore] fetchSocialLinkData];
     }
 }
 

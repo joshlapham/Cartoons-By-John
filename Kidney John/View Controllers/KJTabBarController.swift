@@ -9,32 +9,6 @@
 import Foundation
 
 class KJTabBarController: UITabBarController {
-    // MARK: View lifecycle methods
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Set tab button titles
-        let videos = self.tabBar.items?[0]
-        let comics = self.tabBar.items?[1]
-        let doodles = self.tabBar.items?[2]
-        let more = self.tabBar.items?[3]
-        
-        videos?.title = NSLocalizedString("Videos", comment: "Title of view")
-        comics?.title = NSLocalizedString("Comix", comment: "Title of view")
-        doodles?.title = NSLocalizedString("Doodles", comment: "Title of view")
-        more?.title = NSLocalizedString("More", comment: "Title of view")
-        
-        // Register for NSNotification if dynamic type font size changes
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("setupUI"), name: UIContentSizeCategoryDidChangeNotification, object: nil)
-        
-        // Setup UI
-        self.setupUI()
-    }
-}
-
-// MARK: - Helper methods
-extension KJTabBarController {
-    // Setup and style UI
     func setupUI() {
         // Set tab bar background colour
         UITabBar.appearance().barTintColor = UIColor.kj_tabBarBackgroundColour()
@@ -55,5 +29,24 @@ extension KJTabBarController {
             // Use the UIImage category code (KJImageUtils) for the imageWithColor: method
             item.image = item.selectedImage?.imageWithColor(UIColor.kj_tabBarItemIconStateNormalColour()).imageWithRenderingMode(.AlwaysOriginal)
         }
+    }
+    
+    // MARK: UIViewController
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let videos = self.tabBar.items?[0]
+        let comics = self.tabBar.items?[1]
+        let doodles = self.tabBar.items?[2]
+        let more = self.tabBar.items?[3]
+        
+        videos?.title = NSLocalizedString("Videos", comment: "Title of view")
+        comics?.title = NSLocalizedString("Comix", comment: "Title of view")
+        doodles?.title = NSLocalizedString("Doodles", comment: "Title of view")
+        more?.title = NSLocalizedString("More", comment: "Title of view")
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("setupUI"), name: UIContentSizeCategoryDidChangeNotification, object: nil)
+        
+        self.setupUI()
     }
 }

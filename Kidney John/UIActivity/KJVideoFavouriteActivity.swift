@@ -9,11 +9,10 @@
 import UIKit
 
 class KJVideoFavouriteActivity: UIActivity {
-    // MARK: Properties
     var titleOfActivity: String
     var videoObject: KJVideo
     
-    // MARK: Methods
+    // MARK: UIActivity
     required init(video: KJVideo) {
         self.videoObject = video
         
@@ -65,15 +64,17 @@ extension KJVideoFavouriteActivity {
         // TODO: add/remove item to/from Spotlight API index
         
         // Track action with Parse analytics (if enabled)
-        if NSUserDefaults.kj_shouldTrackFavouritedItemEventsWithParseSetting() == true {
-            KJParseAnalyticsStore.sharedStore().trackVideoFavouriteEventForVideo(self.videoObject)
-        }
+        // TODO: revise this after CloudKit refactor
+        //        if NSUserDefaults.kj_shouldTrackFavouritedItemEventsWithParseSetting() == true {
+        //            KJParseAnalyticsStore.sharedStore().trackVideoFavouriteEventForVideo(self.videoObject)
+        //        }
         
         // Save managedObjectContext
         // TODO: update log messages to use Cocoalumberjack here; or disable completely before App Store release!
         do {
             try self.videoObject.managedObjectContext?.save()
             print("\(__FUNCTION__) - saved managedObjectContext")
+            
         } catch let error as NSError {
             print("\(__FUNCTION__) - failed to save managedObjectContext: \(error.debugDescription)")
         }

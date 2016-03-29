@@ -8,44 +8,16 @@
 
 import Foundation
 import UIKit
+import WebImage
+import CocoaLumberjackSwift
 
-// TODO: update to use Cocoalumberjack for logging on this class
 // TODO: implement accessibility on this class
 
 class SingleImageViewController: UIViewController {
-    // Properties
     var imageToShow: AnyObject?
     @IBOutlet weak private var imageView: UIImageView!
     @IBOutlet weak private var scrollView: UIScrollView!
     
-    // Methods
-    // View lifecycle methods
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // NOTE - `title` for this VC is set in `setImageForView` method after `imageToShow` data type has been determined.
-        
-        self.view.backgroundColor = UIColor.kj_viewBackgroundColour()
-        
-        // Set image for view
-        do {
-            try self.setImageForView()
-            
-            // Init navbar action button
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("showActivityView"))
-            
-        } catch SetImageError.NoImageSetForView {
-            print("ERROR : no image set for view!")
-        } catch SetImageError.NoImageViewForView {
-            print("ERROR : no imageView set for view!")
-        } catch {
-            print("ERROR : \(error)")
-        }
-    }
-}
-
-// MARK: - Helper methods to set image for view
-extension SingleImageViewController {
     // TODO: move all `ErrorType` structs to own file
     private enum SetImageError: ErrorType {
         case NoImageSetForView
@@ -74,9 +46,9 @@ extension SingleImageViewController {
             
             // Track doodle viewed with Parse Analytics (if enabled)
             // TODO: revise this after CloudKit refactor
-//            if NSUserDefaults.kj_shouldTrackViewedDoodleEventsWithParseSetting() {
-//                KJParseAnalyticsStore.sharedStore().trackDoodleViewEventForDoodle(image)
-//            }
+            //            if NSUserDefaults.kj_shouldTrackViewedDoodleEventsWithParseSetting() {
+            //                KJParseAnalyticsStore.sharedStore().trackDoodleViewEventForDoodle(image)
+            //            }
             
         } else if image is KJComic {
             // NOTE - we know `image` is of type `KJComic` so we can force unwrap
@@ -92,9 +64,9 @@ extension SingleImageViewController {
             
             // Track comic viewed with Parse Analytics (if enabled)
             // TODO: revise this after CloudKit refactor
-            if NSUserDefaults.kj_shouldTrackViewedComicEventsWithParseSetting() {
-                KJParseAnalyticsStore.sharedStore().trackComicViewEventForComic(image)
-            }
+            //            if NSUserDefaults.kj_shouldTrackViewedComicEventsWithParseSetting() {
+            //                KJParseAnalyticsStore.sharedStore().trackComicViewEventForComic(image)
+            //            }
         }
         
         self.scrollView.minimumZoomScale = 1.0
@@ -117,40 +89,7 @@ extension SingleImageViewController {
         // Differentiate between single tap and double tap
         singleTap.requireGestureRecognizerToFail(doubleTap)
     }
-}
-
-// MARK: - Image zoom methods
-extension SingleImageViewController: UIScrollViewDelegate {
-    // UIScrollView delegate method
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return self.imageView
-    }
     
-    // Method to handle double tap on image and control zooming in/out
-    func handleDoubleTap() {
-        if self.scrollView.zoomScale > self.scrollView.minimumZoomScale {
-            self.scrollView.setZoomScale(self.scrollView.minimumZoomScale, animated: true)
-        } else {
-            self.scrollView.setZoomScale(self.scrollView.maximumZoomScale, animated: true)
-        }
-    }
-    
-    // Method to handle single tap on image which toggles navbar and status visibility
-    func handleSingleTap() {
-        guard let navController = self.navigationController else { return }
-        
-        // Toggle navbar
-        let navBarVisible = !navController.navigationBarHidden
-        navController.setNavigationBarHidden(navBarVisible, animated: true)
-        
-        // Toggle status bar
-        let statusBarVisible = !UIApplication.sharedApplication().statusBarHidden
-        UIApplication.sharedApplication().setStatusBarHidden(statusBarVisible, withAnimation: .Slide)
-    }
-}
-
-// MARK: - UIActivityView methods
-extension SingleImageViewController {
     func showActivityView() {
         // TODO: should we be returning out of `guard` statements?
         // TODO: UIActivityVC logic here could be refactored to not double up on code
@@ -191,5 +130,58 @@ extension SingleImageViewController {
             // Present UIActivityController
             self.navigationController?.presentViewController(activityVC, animated: true, completion: nil)
         }
+    }
+    
+    // Method to handle double tap on image and control zooming in/out
+    func handleDoubleTap() {
+        if self.scrollView.zoomScale > self.scrollView.minimumZoomScale {
+            self.scrollView.setZoomScale(self.scrollView.minimumZoomScale, animated: true)
+        } else {
+            self.scrollView.setZoomScale(self.scrollView.maximumZoomScale, animated: true)
+        }
+    }
+    
+    // Method to handle single tap on image which toggles navbar and status visibility
+    func handleSingleTap() {
+        guard let navController = self.navigationController else { return }
+        
+        // Toggle navbar
+        let navBarVisible = !navController.navigationBarHidden
+        navController.setNavigationBarHidden(navBarVisible, animated: true)
+        
+        // Toggle status bar
+        let statusBarVisible = !UIApplication.sharedApplication().statusBarHidden
+        UIApplication.sharedApplication().setStatusBarHidden(statusBarVisible, withAnimation: .Slide)
+    }
+    
+    // MARK: UIViewController
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // NOTE - `title` for this VC is set in `setImageForView` method after `imageToShow` data type has been determined.
+        
+        self.view.backgroundColor = UIColor.kj_viewBackgroundColour()
+        
+        // Set image for view
+        do {
+            try self.setImageForView()
+            
+            // Init navbar action button
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("showActivityView"))
+            
+        } catch SetImageError.NoImageSetForView {
+            DDLogError("ERROR : no image set for view!")
+        } catch SetImageError.NoImageViewForView {
+            DDLogError("ERROR : no imageView set for view!")
+        } catch {
+            DDLogError("ERROR : \(error)")
+        }
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension SingleImageViewController: UIScrollViewDelegate {
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return self.imageView
     }
 }

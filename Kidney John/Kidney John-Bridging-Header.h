@@ -4,11 +4,7 @@
 
 #import "KJVideo.h"
 #import "NSUserDefaults+KJSettings.h"
-#import "KJParseAnalyticsStore.h"
-#import "DDLog.h"
-#import "DDTTYLogger.h"
 #import "KJConstants.h"
-#import "KJSocialLinkStore.h"
 #import "JPLYouTubeListView.h"
 #import "KJComicListView.h"
 #import "JPLReachabilityManager.h"
@@ -23,9 +19,5 @@
 #import "KJComicFavouriteActivity.h"
 #import "KJMoreInitialView.h"
 
-// Pods
-#import <Parse/Parse.h>
-#import <ParseCrashReporting/ParseCrashReporting.h>
-#import "MBProgressHUD.h"
+// 3rd-party libraries
 #import "Reachability.h"
-#import <SDWebImage/UIImageView+WebCache.h>

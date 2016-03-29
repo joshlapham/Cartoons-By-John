@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CocoaLumberjackSwift
 
 @UIApplicationMain
 
@@ -154,12 +155,8 @@ extension KJAppDelegate: UIApplicationDelegate {
         DDLog.addLogger(DDTTYLogger.sharedInstance())
         
         // Init PFConfig
-        // TODO: how to handle config with CloudKit
+        // TODO: how to handle config with CloudKit?
         //        self.setupPFConfigFromParse()
-        
-        // Init item stores
-        // TODO: remove these calls once switched over to CloudKit
-        KJSocialLinkStore.sharedStore()
         
         // Pass NSManagedObjectContext view controllers
         // Videos view
@@ -189,8 +186,8 @@ extension KJAppDelegate: UIApplicationDelegate {
         // TESTING - CloudKit
         let queue = NSOperationQueue()
         
-        //        let flush = FlushCoreData(context: self.managedObjectContext)
-        //        queue.addOperation(flush)
+//                let flush = FlushCoreData(context: self.managedObjectContext)
+//                queue.addOperation(flush)
         
         // Fetch video data
         let videoDataFetch = FetchDataOperation(context: self.managedObjectContext, query: .Video)
@@ -224,6 +221,7 @@ extension KJAppDelegate: UIApplicationDelegate {
             if doodleDataFetch.results.count > 0 {
                 let parseData = ParseDoodleDataOperation(context: self.managedObjectContext, data: doodleDataFetch.results)
                 parseData.completionBlock = {
+                    // TODO: review this
                     NSUserDefaults.kj_setHasFirstDoodleFetchCompletedSetting(true)
                     
                     // TODO: is this notification needed?
@@ -253,76 +251,76 @@ extension KJAppDelegate: UIApplicationDelegate {
 
 // TODO: how to handle this with CloudKit?
 // MARK: - PFConfig helper methods
-extension KJAppDelegate {
-    // Struct for PFConfig keys on Parse
-    private struct ParsePFConfigKey {
-        static let UseVersion11Colours = "useVersion11Colours"
-        static let UseSocialLinksFromParse = "useSocialLinksFromParse"
-        static let TrackFavouritedItemEventsWithParseAnalytics = "trackFavouritedItemEventsWithParseAnalytics"
-        static let TrackPlayedVideoEventsWithParseAnalytics = "trackPlayedVideoEventsWithParseAnalytics"
-        static let TrackViewedComicEventsWithParseAnalytics = "trackViewedComicEventsWithParseAnalytics"
-        static let TrackViewedDoodleEventsWithParseAnalytics = "trackViewedDoodleEventsWithParseAnalytics"
-    }
-    
-    // Fetch PFConfig values from Parse and store locally in NSUserDefaults
-    private func setupPFConfigFromParse() {
-        // TODO: update logging statements to use cocoalumberjack
-        
-        // Get PFConfig object in background
-        PFConfig.getConfigInBackgroundWithBlock { (config: PFConfig?, error: NSError?) -> Void in
-            guard let config = config where error == nil else {
-                print("ERROR fetching PFConfig from Parse : \(error?.debugDescription)")
-                return
-            }
-            
-            // SOCIAL MEDIA LINKS
-            // Init should use social links from Parse
-            if let shouldUse = config[ParsePFConfigKey.UseSocialLinksFromParse] as? NSNumber {
-                //                "PFConfig: should use social links from Parse: %@", [shouldUseSocialLinks boolValue] ? @"YES" : @"NO"
-                NSUserDefaults.kj_setShouldUseSocialLinksFromParseSetting(shouldUse.boolValue)
-            }
-            
-            // ANALYTICS
-            // TODO: review this #if statement is working correctly
-            #if TARGET_IPHONE_SIMULATOR
-                
-                // Disable analytics
-                //                DDLogInfo(@"DISABLING all analytics; skipping PFConfig setup for analytics");
-                NSUserDefaults.kj_setShouldTrackFavouritedItemEventsWithParseSetting(false)
-                NSUserDefaults.kj_setShouldTrackPlayedVideoEventsWithParseSetting(false)
-                NSUserDefaults.kj_setShouldTrackViewedComicEventsWithParseSetting(false)
-                NSUserDefaults.kj_setShouldTrackViewedDoodleEventsWithParseSetting(false)
-                
-                #else
-                
-                // Init should track favourited item events with Parse Analytics
-                if let shouldTrack = config[ParsePFConfigKey.TrackFavouritedItemEventsWithParseAnalytics] as? NSNumber {
-                    //                    DDLogInfo(@"PFConfig: should track favourited item events with Parse Analytics: %@", [shouldTrackEventsWithAnalytics boolValue] ? @"YES" : @"NO");
-                    NSUserDefaults.kj_setShouldTrackFavouritedItemEventsWithParseSetting(shouldTrack.boolValue)
-                }
-                
-                // Init should track played video events with Parse Analytics
-                if let shouldTrack = config[ParsePFConfigKey.TrackPlayedVideoEventsWithParseAnalytics] as? NSNumber {
-                    //                        DDLogInfo(@"PFConfig: should track played video events with Parse Analytics: %@", [shouldTrackPlayedVideoEventsWithAnalytics boolValue] ? @"YES" : @"NO");
-                    NSUserDefaults.kj_setShouldTrackPlayedVideoEventsWithParseSetting(shouldTrack.boolValue)
-                }
-                
-                // Init should track viewed comic events with Parse Analytics
-                if let shouldTrack = config[ParsePFConfigKey.TrackViewedComicEventsWithParseAnalytics] as? NSNumber {
-                    //                    DDLogInfo(@"PFConfig: should track viewed comic events with Parse Analytics: %@", [shouldTrackViewedComicEventsWithAnalytics boolValue] ? @"YES" : @"NO");
-                    NSUserDefaults.kj_setShouldTrackViewedComicEventsWithParseSetting(shouldTrack.boolValue)
-                }
-                
-                // Init should track viewed doodle events with Parse Analytics
-                if let shouldTrack = config[ParsePFConfigKey.TrackViewedDoodleEventsWithParseAnalytics] as? NSNumber {
-                    //                    DDLogInfo(@"PFConfig: should track viewed doodle events with Parse Analytics: %@", [shouldTrackViewedDoodleEventsWithAnalytics boolValue] ? @"YES" : @"NO");
-                    NSUserDefaults.kj_setShouldTrackViewedDoodleEventsWithParseSetting(shouldTrack.boolValue)
-                }
-                
-            #endif
-            
-            // Sync NSUserDefaults
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-    }
-}
+//extension KJAppDelegate {
+//    // Struct for PFConfig keys on Parse
+//    private struct ParsePFConfigKey {
+//        static let UseVersion11Colours = "useVersion11Colours"
+//        static let UseSocialLinksFromParse = "useSocialLinksFromParse"
+//        static let TrackFavouritedItemEventsWithParseAnalytics = "trackFavouritedItemEventsWithParseAnalytics"
+//        static let TrackPlayedVideoEventsWithParseAnalytics = "trackPlayedVideoEventsWithParseAnalytics"
+//        static let TrackViewedComicEventsWithParseAnalytics = "trackViewedComicEventsWithParseAnalytics"
+//        static let TrackViewedDoodleEventsWithParseAnalytics = "trackViewedDoodleEventsWithParseAnalytics"
+//    }
+//    
+//    // Fetch PFConfig values from Parse and store locally in NSUserDefaults
+//    private func setupPFConfigFromParse() {
+//        // TODO: update logging statements to use cocoalumberjack
+//        
+//        // Get PFConfig object in background
+//        PFConfig.getConfigInBackgroundWithBlock { (config: PFConfig?, error: NSError?) -> Void in
+//            guard let config = config where error == nil else {
+//                print("ERROR fetching PFConfig from Parse : \(error?.debugDescription)")
+//                return
+//            }
+//            
+//            // SOCIAL MEDIA LINKS
+//            // Init should use social links from Parse
+//            if let shouldUse = config[ParsePFConfigKey.UseSocialLinksFromParse] as? NSNumber {
+//                //                "PFConfig: should use social links from Parse: %@", [shouldUseSocialLinks boolValue] ? @"YES" : @"NO"
+//                NSUserDefaults.kj_setShouldUseSocialLinksFromParseSetting(shouldUse.boolValue)
+//            }
+//            
+//            // ANALYTICS
+//            // TODO: review this #if statement is working correctly
+//            #if TARGET_IPHONE_SIMULATOR
+//                
+//                // Disable analytics
+//                //                DDLogInfo(@"DISABLING all analytics; skipping PFConfig setup for analytics");
+//                NSUserDefaults.kj_setShouldTrackFavouritedItemEventsWithParseSetting(false)
+//                NSUserDefaults.kj_setShouldTrackPlayedVideoEventsWithParseSetting(false)
+//                NSUserDefaults.kj_setShouldTrackViewedComicEventsWithParseSetting(false)
+//                NSUserDefaults.kj_setShouldTrackViewedDoodleEventsWithParseSetting(false)
+//                
+//                #else
+//                
+//                // Init should track favourited item events with Parse Analytics
+//                if let shouldTrack = config[ParsePFConfigKey.TrackFavouritedItemEventsWithParseAnalytics] as? NSNumber {
+//                    //                    DDLogInfo(@"PFConfig: should track favourited item events with Parse Analytics: %@", [shouldTrackEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+//                    NSUserDefaults.kj_setShouldTrackFavouritedItemEventsWithParseSetting(shouldTrack.boolValue)
+//                }
+//                
+//                // Init should track played video events with Parse Analytics
+//                if let shouldTrack = config[ParsePFConfigKey.TrackPlayedVideoEventsWithParseAnalytics] as? NSNumber {
+//                    //                        DDLogInfo(@"PFConfig: should track played video events with Parse Analytics: %@", [shouldTrackPlayedVideoEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+//                    NSUserDefaults.kj_setShouldTrackPlayedVideoEventsWithParseSetting(shouldTrack.boolValue)
+//                }
+//                
+//                // Init should track viewed comic events with Parse Analytics
+//                if let shouldTrack = config[ParsePFConfigKey.TrackViewedComicEventsWithParseAnalytics] as? NSNumber {
+//                    //                    DDLogInfo(@"PFConfig: should track viewed comic events with Parse Analytics: %@", [shouldTrackViewedComicEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+//                    NSUserDefaults.kj_setShouldTrackViewedComicEventsWithParseSetting(shouldTrack.boolValue)
+//                }
+//                
+//                // Init should track viewed doodle events with Parse Analytics
+//                if let shouldTrack = config[ParsePFConfigKey.TrackViewedDoodleEventsWithParseAnalytics] as? NSNumber {
+//                    //                    DDLogInfo(@"PFConfig: should track viewed doodle events with Parse Analytics: %@", [shouldTrackViewedDoodleEventsWithAnalytics boolValue] ? @"YES" : @"NO");
+//                    NSUserDefaults.kj_setShouldTrackViewedDoodleEventsWithParseSetting(shouldTrack.boolValue)
+//                }
+//                
+//            #endif
+//            
+//            // Sync NSUserDefaults
+//            NSUserDefaults.standardUserDefaults().synchronize()
+//        }
+//    }
+//}

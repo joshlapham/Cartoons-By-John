@@ -9,7 +9,7 @@
 #import "KJComicFavouriteActivity.h"
 #import "KJComic.h"
 #import "NSUserDefaults+KJSettings.h"
-#import "KJParseAnalyticsStore.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 @implementation KJComicFavouriteActivity {
     NSString *titleOfActivity;
@@ -64,19 +64,20 @@
     comicObject.isFavourite = !comicObject.isFavourite;
     
     // Track action with Parse analytics (if enabled)
-    if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
-        [[KJParseAnalyticsStore sharedStore] trackComicFavouriteEventForComic:comicObject];
-    }
+    // TODO: revise this after CloudKit refactor
+    //    if ([NSUserDefaults kj_shouldTrackFavouritedItemEventsWithParseSetting]) {
+    //        [[KJParseAnalyticsStore sharedStore] trackComicFavouriteEventForComic:comicObject];
+    //    }
     
     // Save managedObjectContext
     NSError *error;
     if (![comicObject.managedObjectContext save:&error]) {
         // Handle the error.
-        DDLogError(@"Comic: failed to save managedObjectContext: %@", [error debugDescription]);
+//        DDLogError(@"Comic: failed to save managedObjectContext: %@", [error debugDescription]);
     }
     
     else {
-        DDLogInfo(@"Comic: saved managedObjectContext");
+//        DDLogInfo(@"Comic: saved managedObjectContext");
     }
 }
 
