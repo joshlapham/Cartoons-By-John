@@ -154,10 +154,10 @@
             </objects>
             <point key="canvasLocation" x="8873" y="795"/>
         </scene>
-        <!--Favourites List View-->
+        <!--Favourites Table View Controller-->
         <scene sceneID="OfK-3q-sV6">
             <objects>
-                <tableViewController id="pdg-rQ-Sxt" customClass="KJFavouritesListView" sceneMemberID="viewController">
+                <tableViewController id="pdg-rQ-Sxt" customClass="FavouritesTableViewController" customModule="Kidney_John" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KZF-NZ-IGb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

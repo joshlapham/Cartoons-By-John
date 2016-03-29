@@ -7,7 +7,6 @@
 //
 
 #import "KJMoreInitialView.h"
-#import "KJFavouritesListView.h"
 #import "PBWebViewController.h"
 #import "JPLReachabilityManager.h"
 #import "Reachability.h"
@@ -20,6 +19,7 @@
 #import "KJComic.h"
 #import "KJVideo.h"
 #import "KJFavDoodlesListView.h"
+#import "Kidney_John-Swift.h"
 
 // Constants
 static NSString *kSegueIdentifierDoodleFavourite = @"doodleFavouriteSegue";
@@ -393,7 +393,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         NSArray *favouritesDataToPass;
         
         // Init destination view controller
-        KJFavouritesListView *destViewController = segue.destinationViewController;
+        FavouritesTableViewController *destViewController = segue.destinationViewController;
         destViewController.titleForView = typeOfFavourite;
         
         // Videos

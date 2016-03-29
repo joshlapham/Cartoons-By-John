@@ -42,6 +42,7 @@
 		68ADED131BACFA8C00977DCF /* ComicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADED121BACFA8C00977DCF /* ComicCell.swift */; settings = {ASSET_TAGS = (); }; };
 		68B1BFAA1CA9107600F498F0 /* ParseVideoDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1BFA91CA9107600F498F0 /* ParseVideoDataOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		68B53B581CAB03110093DFB3 /* VideoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B53B571CAB03110093DFB3 /* VideoDetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		68B53B5A1CAB12C90093DFB3 /* FavouritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B53B591CAB12C90093DFB3 /* FavouritesTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
 		68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */; };
@@ -51,7 +52,6 @@
 		68E1D0381A6083650054C7E1 /* KJComic+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1D0371A6083650054C7E1 /* KJComic+Methods.m */; };
 		68E1D03B1A60BA6B0054C7E1 /* KJVideo+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1D03A1A60BA6B0054C7E1 /* KJVideo+Methods.m */; };
 		68E461CB185B26F4008D3E36 /* KJMoreInitialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */; };
-		68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461CD185B272A008D3E36 /* KJFavouritesListView.m */; };
 		68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68E461D918604EBB008D3E36 /* Kidney John.xcdatamodeld */; };
 		68E461ED18609897008D3E36 /* KJVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461EC18609897008D3E36 /* KJVideo.m */; };
 		68E461F31860BD94008D3E36 /* KJRandomImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E461F21860BD94008D3E36 /* KJRandomImage.m */; };
@@ -152,6 +152,7 @@
 		68ADED121BACFA8C00977DCF /* ComicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComicCell.swift; path = Cells/ComicCell.swift; sourceTree = "<group>"; };
 		68B1BFA91CA9107600F498F0 /* ParseVideoDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseVideoDataOperation.swift; path = Operations/ParseVideoDataOperation.swift; sourceTree = "<group>"; };
 		68B53B571CAB03110093DFB3 /* VideoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoDetailViewController.swift; path = "View Controllers/VideoDetailViewController.swift"; sourceTree = "<group>"; };
+		68B53B591CAB12C90093DFB3 /* FavouritesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FavouritesTableViewController.swift; path = "View Controllers/FavouritesTableViewController.swift"; sourceTree = "<group>"; };
 		68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJVideoFavouriteActivity.swift; path = UIActivity/KJVideoFavouriteActivity.swift; sourceTree = "<group>"; };
 		68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleImageViewController.swift; path = "View Controllers/SingleImageViewController.swift"; sourceTree = "<group>"; };
 		68DB8EFF1A5FE296005D33E2 /* NSUserDefaults+KJSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+KJSettings.h"; path = "Categories/NSUserDefaults+KJSettings.h"; sourceTree = "<group>"; };
@@ -166,8 +167,6 @@
 		68E1D03A1A60BA6B0054C7E1 /* KJVideo+Methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KJVideo+Methods.m"; path = "Models/KJVideo+Methods.m"; sourceTree = "<group>"; };
 		68E461C9185B26F4008D3E36 /* KJMoreInitialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJMoreInitialView.h; path = "View Controllers/KJMoreInitialView.h"; sourceTree = "<group>"; };
 		68E461CA185B26F4008D3E36 /* KJMoreInitialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJMoreInitialView.m; path = "View Controllers/KJMoreInitialView.m"; sourceTree = "<group>"; };
-		68E461CC185B272A008D3E36 /* KJFavouritesListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJFavouritesListView.h; path = "View Controllers/KJFavouritesListView.h"; sourceTree = "<group>"; };
-		68E461CD185B272A008D3E36 /* KJFavouritesListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJFavouritesListView.m; path = "View Controllers/KJFavouritesListView.m"; sourceTree = "<group>"; };
 		68E461CF185B4BD5008D3E36 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		68E461DA18604EBB008D3E36 /* Kidney John.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John.xcdatamodel"; sourceTree = "<group>"; };
 		68E461EB18609897008D3E36 /* KJVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJVideo.h; path = Models/KJVideo.h; sourceTree = "<group>"; };
@@ -296,8 +295,7 @@
 		6834315E1A69A3A60050745D /* Favourites */ = {
 			isa = PBXGroup;
 			children = (
-				68E461CC185B272A008D3E36 /* KJFavouritesListView.h */,
-				68E461CD185B272A008D3E36 /* KJFavouritesListView.m */,
+				68B53B591CAB12C90093DFB3 /* FavouritesTableViewController.swift */,
 				6876CFCE191882B4003F3231 /* KJFavDoodlesListView.h */,
 				6876CFCF191882B4003F3231 /* KJFavDoodlesListView.m */,
 			);
@@ -693,10 +691,10 @@
 				68FBB1D61CAA3AE10014F350 /* Reachability.m in Sources */,
 				68DE985B1C347F2F00F6AAC0 /* FlushCoreData.swift in Sources */,
 				6809619B1CA9D33C00980379 /* ParseDataOperation.swift in Sources */,
+				68B53B5A1CAB12C90093DFB3 /* FavouritesTableViewController.swift in Sources */,
 				68953A5A1BAE471E005CB192 /* DoodleCell.swift in Sources */,
 				68B1BFAA1CA9107600F498F0 /* ParseVideoDataOperation.swift in Sources */,
 				68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */,
-				68E461CE185B272A008D3E36 /* KJFavouritesListView.m in Sources */,
 				68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */,
 				68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */,
 				68ADED0A1BACD1C400977DCF /* KJTabBarController.swift in Sources */,

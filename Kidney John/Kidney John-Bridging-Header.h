@@ -7,6 +7,8 @@
 #import "KJConstants.h"
 #import "JPLYouTubeListView.h"
 #import "KJComicListView.h"
+#import "KJComicListCell.h"
+#import "KJVideoCell.h"
 #import "JPLReachabilityManager.h"
 #import "UIFont+KJFonts.h"
 #import "UIColor+KJColours.h"
