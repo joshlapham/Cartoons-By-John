@@ -1,21 +1,21 @@
 //
-//  KJVideoFavouriteActivity.swift
+//  DoodleFavouriteActivity.swift
 //  Kidney John
 //
-//  Created by Josh Lapham on 15/09/2015.
-//  Copyright © 2015 Josh Lapham. All rights reserved.
+//  Created by Josh Lapham on 31/03/2016.
+//  Copyright © 2016 Josh Lapham. All rights reserved.
 //
 
 import UIKit
 import CocoaLumberjackSwift
 
-class KJVideoFavouriteActivity: UIActivity {
+class DoodleFavouriteActivity: UIActivity {
     var titleOfActivity: String
-    var videoObject: KJVideo
+    var doodleObject: KJRandomImage
     
     // MARK: UIActivity
     override func activityType() -> String? {
-        return "com.joshlapham.Kidney-John favourite video"
+        return "com.joshlapham.Kidney-John favourite doodle"
     }
     
     override func activityTitle() -> String? {
@@ -23,7 +23,7 @@ class KJVideoFavouriteActivity: UIActivity {
     }
     
     override func activityImage() -> UIImage? {
-        if self.videoObject.isFavourite == false {
+        if self.doodleObject.isFavourite == false {
             return UIImage(named: "add-to-fav.png")
         } else {
             return UIImage(named: "remove-from-fav.png")
@@ -43,8 +43,8 @@ class KJVideoFavouriteActivity: UIActivity {
     }
     
     override func prepareWithActivityItems(activityItems: [AnyObject]) {
-        // Toggle favourite status for videoObject
-        videoObject.isFavourite = !videoObject.isFavourite;
+        // Toggle favourite status
+        doodleObject.isFavourite = !doodleObject.isFavourite;
         
         // TODO: add/remove item to/from Spotlight API index
         
@@ -55,7 +55,7 @@ class KJVideoFavouriteActivity: UIActivity {
         //        }
         
         do {
-            try self.videoObject.managedObjectContext?.save()
+            try self.doodleObject.managedObjectContext?.save()
             DDLogVerbose("Saved managedObjectContext")
             
         } catch let error as NSError {
@@ -64,10 +64,10 @@ class KJVideoFavouriteActivity: UIActivity {
     }
     
     // MARK: NSObject
-    required init(video: KJVideo) {
-        self.videoObject = video
+    required init(doodle: KJRandomImage) {
+        self.doodleObject = doodle
         
-        if self.videoObject.isFavourite == false {
+        if self.doodleObject.isFavourite == false {
             self.titleOfActivity = NSLocalizedString("Add To Favourites", comment: "Title of button to favourite an item")
         } else {
             self.titleOfActivity = NSLocalizedString("Remove From Favourites", comment: "Title of button to remove an item as a favourite")

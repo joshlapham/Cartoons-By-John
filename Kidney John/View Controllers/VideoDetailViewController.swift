@@ -18,7 +18,7 @@ class VideoDetailViewController: PBYouTubeVideoViewController {
             return
         }
         
-        let favouriteActivity = KJVideoFavouriteActivity(video: video)
+        let favouriteActivity = VideoFavouriteActivity(video: video)
         
         guard let activityUrl = NSURL(string: "https://www.youtube.com/watch?v=\(video.videoId)") else {
             DDLogError("No URL to share for favourite activity")

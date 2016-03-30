@@ -105,7 +105,7 @@ class SingleImageViewController: UIViewController {
             guard let doodleImageToShare = SDImageCache.sharedImageCache().imageFromDiskCacheForKey(cellData.imageUrl) else { return }
             
             // Init UIActivity
-            let favouriteActivity = KJRandomFavouriteActivity(doodle: cellData)
+            let favouriteActivity = DoodleFavouriteActivity(doodle: cellData)
             
             // Init view controller for UIActivity
             let activityVC = UIActivityViewController(activityItems: [ doodleImageToShare ], applicationActivities: [ favouriteActivity ])
@@ -120,7 +120,7 @@ class SingleImageViewController: UIViewController {
             guard let cellData = cellData as? KJComic else { return }
             guard let comicImageToShare = cellData.returnComicImageFromComic() else { return }
             
-            let favouriteActivity = KJComicFavouriteActivity(comic: cellData)
+            let favouriteActivity = ComicFavouriteActivity(comic: cellData)
             
             let activityVC = UIActivityViewController(activityItems: [ comicImageToShare ], applicationActivities: [ favouriteActivity ])
             activityVC.excludedActivityTypes = [ UIActivityTypeAddToReadingList ]

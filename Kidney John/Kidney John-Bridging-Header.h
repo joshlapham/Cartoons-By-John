@@ -14,11 +14,8 @@
 #import "UIColor+KJColours.h"
 #import "UIImage+KJImageUtils.h"
 #import "UIViewController+KJUtils.h"
-#import "KJRandomFavouriteActivity.h"
-#import "KJComic.h"
 #import "KJComic+Methods.h"
 #import "KJRandomImage.h"
-#import "KJComicFavouriteActivity.h"
 #import "KJMoreInitialView.h"
 
 // 3rd-party libraries

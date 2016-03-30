@@ -23,9 +23,10 @@
 		686803AA1CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686803A91CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		686803AC1CAA0D960058FA0A /* DoodlesViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686803AB1CAA0D960058FA0A /* DoodlesViewDataSource.swift */; settings = {ASSET_TAGS = (); }; };
 		686803AE1CAA17F80058FA0A /* ParseComicDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686803AD1CAA17F80058FA0A /* ParseComicDataOperation.swift */; settings = {ASSET_TAGS = (); }; };
-		6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */; };
 		6876CFD51919A383003F3231 /* JPLReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876CFD41919A383003F3231 /* JPLReachabilityManager.m */; };
 		6876CFD71919B797003F3231 /* KJSocialLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */; };
+		6876EBD31CAC6D6300F6825D /* ComicFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876EBD21CAC6D6300F6825D /* ComicFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
+		6876EBD51CAC6E1700F6825D /* DoodleFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876EBD41CAC6E1700F6825D /* DoodleFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
 		6877E18B1CA8B7E7005319F2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6877E18A1CA8B7E7005319F2 /* CloudKit.framework */; };
 		6877E18D1CA8BF03005319F2 /* FetchDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6877E18C1CA8BF03005319F2 /* FetchDataOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		688715551CAA2C340016BDED /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688715541CAA2C340016BDED /* BaseCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
@@ -43,7 +44,7 @@
 		68B53B581CAB03110093DFB3 /* VideoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B53B571CAB03110093DFB3 /* VideoDetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68B53B5A1CAB12C90093DFB3 /* FavouritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B53B591CAB12C90093DFB3 /* FavouritesTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68B53B5C1CAB19EC0093DFB3 /* FavouriteDoodlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B53B5B1CAB19EC0093DFB3 /* FavouriteDoodlesViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
+		68B9B83A1BA773F800B24B53 /* VideoFavouriteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B8391BA773F800B24B53 /* VideoFavouriteActivity.swift */; settings = {ASSET_TAGS = (); }; };
 		68CB19281BB1F3C50020DC56 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */; };
 		68DB8F041A6006D0005D33E2 /* UIImage+KJImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB8F031A6006D0005D33E2 /* UIImage+KJImageUtils.m */; };
@@ -70,7 +71,6 @@
 		68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E48D67184C20A500600FA5 /* KJComicListView.m */; };
 		68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E4D4691A16D73D00D3D51B /* KJSocialLink.m */; };
 		68E891331BB204B30005A5DA /* ImageStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */; settings = {ASSET_TAGS = (); }; };
-		68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */; };
 		68FBB1CE1CAA3AD40014F350 /* PBWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FBB1CD1CAA3AD40014F350 /* PBWebViewController.m */; settings = {ASSET_TAGS = (); }; };
 		68FBB1D21CAA3ADA0014F350 /* PBYouTubeVideoView.html in Resources */ = {isa = PBXBuildFile; fileRef = 68FBB1CF1CAA3ADA0014F350 /* PBYouTubeVideoView.html */; settings = {ASSET_TAGS = (); }; };
 		68FBB1D31CAA3ADA0014F350 /* PBYouTubeVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FBB1D11CAA3ADA0014F350 /* PBYouTubeVideoViewController.m */; settings = {ASSET_TAGS = (); }; };
@@ -123,11 +123,11 @@
 		686803AB1CAA0D960058FA0A /* DoodlesViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoodlesViewDataSource.swift; path = "Data Sources/DoodlesViewDataSource.swift"; sourceTree = "<group>"; };
 		686803AD1CAA17F80058FA0A /* ParseComicDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseComicDataOperation.swift; path = Operations/ParseComicDataOperation.swift; sourceTree = "<group>"; };
 		6875F6CA1BA535BB00209015 /* Kidney John 1.1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Kidney John 1.1.2.xcdatamodel"; sourceTree = "<group>"; };
-		6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJRandomFavouriteActivity.h; path = UIActivity/KJRandomFavouriteActivity.h; sourceTree = "<group>"; };
-		6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJRandomFavouriteActivity.m; path = UIActivity/KJRandomFavouriteActivity.m; sourceTree = "<group>"; };
 		6876CFD31919A383003F3231 /* JPLReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JPLReachabilityManager.h; path = Stores/JPLReachabilityManager.h; sourceTree = "<group>"; };
 		6876CFD41919A383003F3231 /* JPLReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JPLReachabilityManager.m; path = Stores/JPLReachabilityManager.m; sourceTree = "<group>"; };
 		6876CFD61919B797003F3231 /* KJSocialLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = KJSocialLinkCell.xib; path = Cells/KJSocialLinkCell.xib; sourceTree = "<group>"; };
+		6876EBD21CAC6D6300F6825D /* ComicFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComicFavouriteActivity.swift; path = UIActivity/ComicFavouriteActivity.swift; sourceTree = "<group>"; };
+		6876EBD41CAC6E1700F6825D /* DoodleFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DoodleFavouriteActivity.swift; path = UIActivity/DoodleFavouriteActivity.swift; sourceTree = "<group>"; };
 		6877E1891CA8B7E3005319F2 /* Kidney John.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Kidney John.entitlements"; sourceTree = "<group>"; };
 		6877E18A1CA8B7E7005319F2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		6877E18C1CA8BF03005319F2 /* FetchDataOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchDataOperation.swift; path = Operations/FetchDataOperation.swift; sourceTree = "<group>"; };
@@ -152,7 +152,7 @@
 		68B53B571CAB03110093DFB3 /* VideoDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoDetailViewController.swift; path = "View Controllers/VideoDetailViewController.swift"; sourceTree = "<group>"; };
 		68B53B591CAB12C90093DFB3 /* FavouritesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FavouritesTableViewController.swift; path = "View Controllers/FavouritesTableViewController.swift"; sourceTree = "<group>"; };
 		68B53B5B1CAB19EC0093DFB3 /* FavouriteDoodlesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FavouriteDoodlesViewController.swift; path = "View Controllers/FavouriteDoodlesViewController.swift"; sourceTree = "<group>"; };
-		68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KJVideoFavouriteActivity.swift; path = UIActivity/KJVideoFavouriteActivity.swift; sourceTree = "<group>"; };
+		68B9B8391BA773F800B24B53 /* VideoFavouriteActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoFavouriteActivity.swift; path = UIActivity/VideoFavouriteActivity.swift; sourceTree = "<group>"; };
 		68CB19271BB1F3C50020DC56 /* SingleImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SingleImageViewController.swift; path = "View Controllers/SingleImageViewController.swift"; sourceTree = "<group>"; };
 		68DB8EFF1A5FE296005D33E2 /* NSUserDefaults+KJSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+KJSettings.h"; path = "Categories/NSUserDefaults+KJSettings.h"; sourceTree = "<group>"; };
 		68DB8F001A5FE296005D33E2 /* NSUserDefaults+KJSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+KJSettings.m"; path = "Categories/NSUserDefaults+KJSettings.m"; sourceTree = "<group>"; };
@@ -193,8 +193,6 @@
 		68E4D4681A16D73D00D3D51B /* KJSocialLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJSocialLink.h; path = Models/KJSocialLink.h; sourceTree = "<group>"; };
 		68E4D4691A16D73D00D3D51B /* KJSocialLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJSocialLink.m; path = Models/KJSocialLink.m; sourceTree = "<group>"; };
 		68E891321BB204B30005A5DA /* ImageStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ImageStoryboard.storyboard; path = Storyboards/ImageStoryboard.storyboard; sourceTree = "<group>"; };
-		68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJComicFavouriteActivity.h; path = UIActivity/KJComicFavouriteActivity.h; sourceTree = "<group>"; };
-		68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KJComicFavouriteActivity.m; path = UIActivity/KJComicFavouriteActivity.m; sourceTree = "<group>"; };
 		68FBB1C51CAA39430014F350 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		68FBB1CC1CAA3AD40014F350 /* PBWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PBWebViewController.h; path = "3rd-Party Libraries/PBWebViewController.h"; sourceTree = "<group>"; };
 		68FBB1CD1CAA3AD40014F350 /* PBWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PBWebViewController.m; path = "3rd-Party Libraries/PBWebViewController.m"; sourceTree = "<group>"; };
@@ -245,11 +243,9 @@
 		6832C37319245E7E00E94788 /* UIActivity */ = {
 			isa = PBXGroup;
 			children = (
-				68B9B8391BA773F800B24B53 /* KJVideoFavouriteActivity.swift */,
-				68F31AF919183A9200E816DC /* KJComicFavouriteActivity.h */,
-				68F31AFA19183A9200E816DC /* KJComicFavouriteActivity.m */,
-				6876CFCB19184EC3003F3231 /* KJRandomFavouriteActivity.h */,
-				6876CFCC19184EC3003F3231 /* KJRandomFavouriteActivity.m */,
+				68B9B8391BA773F800B24B53 /* VideoFavouriteActivity.swift */,
+				6876EBD21CAC6D6300F6825D /* ComicFavouriteActivity.swift */,
+				6876EBD41CAC6E1700F6825D /* DoodleFavouriteActivity.swift */,
 			);
 			name = UIActivity;
 			sourceTree = "<group>";
@@ -685,16 +681,17 @@
 				68ADED131BACFA8C00977DCF /* ComicCell.swift in Sources */,
 				686803AA1CA9ED7C0058FA0A /* ParseDoodleDataOperation.swift in Sources */,
 				C9E467271AF1BDE8001F369C /* KJBaseTableViewCell.m in Sources */,
-				68B9B83A1BA773F800B24B53 /* KJVideoFavouriteActivity.swift in Sources */,
+				68B9B83A1BA773F800B24B53 /* VideoFavouriteActivity.swift in Sources */,
 				68FBB1D61CAA3AE10014F350 /* Reachability.m in Sources */,
+				6876EBD51CAC6E1700F6825D /* DoodleFavouriteActivity.swift in Sources */,
 				68DE985B1C347F2F00F6AAC0 /* FlushCoreData.swift in Sources */,
 				6809619B1CA9D33C00980379 /* ParseDataOperation.swift in Sources */,
 				68B53B5A1CAB12C90093DFB3 /* FavouritesTableViewController.swift in Sources */,
 				68953A5A1BAE471E005CB192 /* DoodleCell.swift in Sources */,
+				6876EBD31CAC6D6300F6825D /* ComicFavouriteActivity.swift in Sources */,
 				68B1BFAA1CA9107600F498F0 /* ParseVideoDataOperation.swift in Sources */,
 				68024D341A628DA600D2A900 /* KJSocialLink+Methods.m in Sources */,
 				68E4D46A1A16D73D00D3D51B /* KJSocialLink.m in Sources */,
-				68F31AFB19183A9200E816DC /* KJComicFavouriteActivity.m in Sources */,
 				68ADED0A1BACD1C400977DCF /* KJTabBarController.swift in Sources */,
 				68E48D68184C20A500600FA5 /* KJComicListView.m in Sources */,
 				685C171718E29B5300088D26 /* KJComic.m in Sources */,
@@ -703,7 +700,6 @@
 				6891D13D191C7F1B001AD6A5 /* KJConstants.m in Sources */,
 				68006C761BAB58E2007F8A00 /* AppDelegate.swift in Sources */,
 				C968D7D91A8C482800C3B621 /* KJComicListCell.m in Sources */,
-				6876CFCD19184EC3003F3231 /* KJRandomFavouriteActivity.m in Sources */,
 				68DB8F011A5FE296005D33E2 /* NSUserDefaults+KJSettings.m in Sources */,
 				68E461DB18604EBB008D3E36 /* Kidney John.xcdatamodeld in Sources */,
 				68A2D60E1A5EBB61000DA2CF /* UIFont+KJFonts.m in Sources */,
