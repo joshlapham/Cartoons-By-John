@@ -10,14 +10,30 @@ import Foundation
 import UIKit
 
 class KJComicCell: BaseCollectionViewCell_Swift {
-    // Properties
     var comicTitle: NSString?
     
     // TODO: review use of optional here
     var comicImageView: UIImageView?
     
-    // Methods
-    // Init
+    // Accessibility for this class
+    func setupAccessibility() {
+        self.isAccessibilityElement = true
+        let accessibilityString = "Comic title: \(self.comicTitle)"
+        self.accessibilityLabel = NSLocalizedString(accessibilityString, comment: "Title of comic")
+        self.accessibilityHint = NSLocalizedString("Tap to view comic", comment: "Accessibility instructions")
+    }
+    
+    override func configureCellWithData(data: AnyObject) {
+        if let cellData = data as? KJComic {
+            self.comicTitle = cellData.comicName
+            
+            // TODO: remove SDWebImage eventually
+            let filePath = NSURL.fileURLWithPath(cellData.returnThumbnailFilepathForComic())
+            self.comicImageView?.sd_setImageWithURL(filePath, placeholderImage: UIImage(named: "placeholder.png"), completed: nil)
+        }
+    }
+    
+    // MARK: NSObject
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -25,38 +41,10 @@ class KJComicCell: BaseCollectionViewCell_Swift {
         self.comicImageView?.contentMode = .ScaleToFill;
         self.addSubview(self.comicImageView!)
         
-        // Accessibility
         self.setupAccessibility()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-}
-
-// MARK: - Helper methods
-extension KJComicCell {
-    override func configureCellWithData(data: AnyObject) {
-        // Init cell data
-        if let cellData = data as? KJComic {
-            // Set comic title
-            self.comicTitle = cellData.comicName
-            
-            // Set comic thumbnail using SDWebImage
-            // TODO: remove SDWebImage eventually
-            let filePath = NSURL.fileURLWithPath(cellData.returnThumbnailFilepathForComic())
-            self.comicImageView?.sd_setImageWithURL(filePath, placeholderImage: UIImage(named: "placeholder.png"), completed: nil)
-        }
-    }
-}
-
-// MARK: - Accessibility methods
-extension KJComicCell {
-    // Helper method called from `init` method to setup accessibility for this class
-    func setupAccessibility() {
-        self.isAccessibilityElement = true
-        let accessibilityString = "Comic title: \(self.comicTitle)"
-        self.accessibilityLabel = NSLocalizedString(accessibilityString, comment: "Title of comic")
-        self.accessibilityHint = NSLocalizedString("Tap to view comic", comment: "Accessibility instructions")
     }
 }

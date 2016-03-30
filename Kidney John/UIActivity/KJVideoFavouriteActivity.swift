@@ -7,28 +7,13 @@
 //
 
 import UIKit
+import CocoaLumberjackSwift
 
 class KJVideoFavouriteActivity: UIActivity {
     var titleOfActivity: String
     var videoObject: KJVideo
     
     // MARK: UIActivity
-    required init(video: KJVideo) {
-        self.videoObject = video
-        
-        // Init activity title, depending on favourite status of video
-        if self.videoObject.isFavourite == false {
-            self.titleOfActivity = NSLocalizedString("Add To Favourites", comment: "Title of button to favourite an item")
-        } else {
-            self.titleOfActivity = NSLocalizedString("Remove From Favourites", comment: "Title of button to remove an item as a favourite")
-        }
-        
-        super.init()
-    }
-}
-
-extension KJVideoFavouriteActivity {
-    // MARK: Methods
     override func activityType() -> String? {
         return "com.joshlapham.Kidney-John favourite video"
     }
@@ -69,14 +54,25 @@ extension KJVideoFavouriteActivity {
         //            KJParseAnalyticsStore.sharedStore().trackVideoFavouriteEventForVideo(self.videoObject)
         //        }
         
-        // Save managedObjectContext
-        // TODO: update log messages to use Cocoalumberjack here; or disable completely before App Store release!
         do {
             try self.videoObject.managedObjectContext?.save()
-            print("\(__FUNCTION__) - saved managedObjectContext")
+            DDLogVerbose("Saved managedObjectContext")
             
         } catch let error as NSError {
-            print("\(__FUNCTION__) - failed to save managedObjectContext: \(error.debugDescription)")
+            DDLogError("Failed to save managedObjectContext : \(error.debugDescription)")
         }
+    }
+    
+    // MARK: NSObject
+    required init(video: KJVideo) {
+        self.videoObject = video
+        
+        if self.videoObject.isFavourite == false {
+            self.titleOfActivity = NSLocalizedString("Add To Favourites", comment: "Title of button to favourite an item")
+        } else {
+            self.titleOfActivity = NSLocalizedString("Remove From Favourites", comment: "Title of button to remove an item as a favourite")
+        }
+        
+        super.init()
     }
 }

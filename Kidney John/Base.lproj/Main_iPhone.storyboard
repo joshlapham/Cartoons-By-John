@@ -173,10 +173,10 @@
             </objects>
             <point key="canvasLocation" x="8945" y="1899"/>
         </scene>
-        <!--Fav Doodles List View-->
+        <!--Favourite Doodles View Controller-->
         <scene sceneID="ztu-Da-keP">
             <objects>
-                <collectionViewController id="PtG-sp-CFM" customClass="KJFavDoodlesListView" sceneMemberID="viewController">
+                <collectionViewController id="PtG-sp-CFM" customClass="FavouriteDoodlesViewController" customModule="Kidney_John" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1002" contentMode="scaleToFill" dataMode="prototypes" id="MRw-9W-94C">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

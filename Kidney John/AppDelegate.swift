@@ -139,10 +139,7 @@ class KJAppDelegate: UIResponder {
 // MARK: - UIApplicationDelegate
 extension KJAppDelegate: UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Do app version checks
         self.checkAppVersion()
-        
-        // Customize UI
         self.setupUI()
         
         // Init NSNotification observer if dynamic type font size changes.
@@ -151,14 +148,14 @@ extension KJAppDelegate: UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("setupUI"), name: UIContentSizeCategoryDidChangeNotification, object: nil)
         
         // CocoaLumberjack
-        // Setup XCode console logger
-        DDLog.addLogger(DDTTYLogger.sharedInstance())
+//        DDLog.addLogger(DDTTYLogger.sharedInstance())
+        DDLog.addLogger(DDTTYLogger.sharedInstance(), withLevel: .Info)
         
         // Init PFConfig
         // TODO: how to handle config with CloudKit?
         //        self.setupPFConfigFromParse()
         
-        // Pass NSManagedObjectContext view controllers
+        // Pass NSManagedObjectContext to view controllers
         // Videos view
         let tabBarController = self.window?.rootViewController as? KJTabBarController
         let navController = tabBarController?.viewControllers?.first as? UINavigationController

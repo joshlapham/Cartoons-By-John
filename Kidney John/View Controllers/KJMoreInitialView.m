@@ -18,7 +18,6 @@
 #import "UIViewController+KJUtils.h"
 #import "KJComic.h"
 #import "KJVideo.h"
-#import "KJFavDoodlesListView.h"
 #import "Kidney_John-Swift.h"
 
 // Constants
@@ -409,7 +408,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         destViewController.cellResults = favouritesDataToPass;
         
     } else if ([[segue identifier] isEqualToString:kSegueIdentifierDoodleFavourite]) {
-        KJFavDoodlesListView *destViewController = segue.destinationViewController;
+        FavouriteDoodlesViewController *destViewController = segue.destinationViewController;
         destViewController.managedObjectContext = self.managedObjectContext;
     }
 }

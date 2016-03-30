@@ -8,6 +8,7 @@
 
 import CoreData
 import CloudKit
+import CocoaLumberjackSwift
 
 // CloudKit keys
 private struct DoodleKey {
@@ -21,8 +22,6 @@ private struct DoodleKey {
 
 class ParseDoodleDataOperation: ParseDataOperation {
     private func checkIfExistsInCoreData(imageUrl: String, completion: (KJRandomImage?, NSError?) -> ()) {
-        print(__FUNCTION__)
-        
         let predicate = NSPredicate(format: "imageUrl == %@", imageUrl)
         let request = NSFetchRequest(entityName: NSStringFromClass(KJRandomImage.self))
         request.predicate = predicate
@@ -37,8 +36,6 @@ class ParseDoodleDataOperation: ParseDataOperation {
     }
     
     private func checkIfExistingInCoreDataNeedsUpdate(existingDoodle: KJRandomImage, imageId: String, instagramId: String, imageUrl: String, date: String) -> Bool {
-        print(__FUNCTION__)
-        
         let needsUpdate: Bool = existingDoodle.imageId != imageId || existingDoodle.instagramId != instagramId || existingDoodle.imageUrl != imageUrl || existingDoodle.imageDate != date
         return needsUpdate
     }
@@ -60,12 +57,12 @@ class ParseDoodleDataOperation: ParseDataOperation {
     private func deleteRedundant(results: [CKRecord], completion: ([KJRandomImage]?) -> ()) {
         self.fetchAllExistingInCoreData { (existingDoodles: [KJRandomImage]?, error: NSError?) -> () in
             guard error == nil else {
-                print("Error fetching all existing doodles in Core Data : \(error?.localizedDescription)")
+                DDLogError("Error fetching all existing doodles in Core Data : \(error?.localizedDescription)")
                 return
             }
             
             guard let existingDoodles = existingDoodles else {
-                print("Error forming existing doodles object")
+                DDLogError("Error forming existing doodles object")
                 return
             }
             
@@ -74,7 +71,7 @@ class ParseDoodleDataOperation: ParseDataOperation {
             
             for doodle in existingDoodles {
                 if serverResultsImageUrls.indexOf({ $0 == doodle.imageUrl }) == nil {
-                    print("Doodles found in Core Data but not in server results; must no longer be active : \(doodle.imageUrl)")
+                    DDLogVerbose("Doodles found in Core Data but not in server results; must no longer be active : \(doodle.imageUrl)")
                     
                     // Mark for deletion from Core Data
                     doodlesToDelete?.append(doodle)
@@ -91,7 +88,7 @@ class ParseDoodleDataOperation: ParseDataOperation {
         // Delete any existing in Core Data that do not exist in `results` received from server; as they're not set to be visible in-app
         self.deleteRedundant(results) { (doodlesToDelete: [KJRandomImage]?) -> () in
             guard let doodlesToDelete = doodlesToDelete where doodlesToDelete.count > 0 else {
-                print("No doodles found in Core Data to delete")
+                DDLogVerbose("No doodles found in Core Data to delete")
                 self.cancel()
                 return
             }
@@ -115,13 +112,13 @@ class ParseDoodleDataOperation: ParseDataOperation {
                 // Check if exists in Core Data
                 self.checkIfExistsInCoreData(imageUrl, completion: { (doodle: KJRandomImage?, error: NSError?) -> () in
                     guard error == nil else {
-                        print("Error performing check for existing doodle : \(error?.localizedDescription)")
+                        DDLogError("Error performing check for existing doodle : \(error?.localizedDescription)")
                         self.cancel()
                         return
                     }
                     
                     if let existingDoodle = doodle {
-                        print("Doodle exists in Core Data : \(existingDoodle.imageUrl)")
+                        DDLogVerbose("Doodle exists in Core Data : \(existingDoodle.imageUrl)")
                         
                         // Check if any of its' properties need updating
                         if let instagramId = doodleInstagramId,
@@ -133,7 +130,7 @@ class ParseDoodleDataOperation: ParseDataOperation {
                                 
                                 switch needsUpdate {
                                 case true :
-                                    print("Doodle needs update : \(imageUrl)")
+                                    DDLogVerbose("Doodle needs update : \(imageUrl)")
                                     
                                     // TODO: include ID here?
                                     existingDoodle.imageId = imageId
@@ -146,7 +143,7 @@ class ParseDoodleDataOperation: ParseDataOperation {
                                     
                                 case false:
                                     // Doodle exists in Core Data and does not need update; nothing is required
-                                    print("Doodle exists but does not require update")
+                                    DDLogVerbose("Doodle exists but does not require update")
                                 }
                                 
                         } else {
@@ -155,7 +152,7 @@ class ParseDoodleDataOperation: ParseDataOperation {
                         }
                         
                     } else {
-                        print("Doodle does not exist in Core Data : \(imageUrl)")
+                        DDLogVerbose("Doodle does not exist in Core Data : \(imageUrl)")
                         
                         // Insert into managed object context
                         let newDoodle = NSEntityDescription.insertNewObjectForEntityForName(NSStringFromClass(KJRandomImage.self),
@@ -178,21 +175,21 @@ class ParseDoodleDataOperation: ParseDataOperation {
         }
         
         if changesMadeToContext == true {
-            print("Changes were made to Core Data, now saving")
+            DDLogVerbose("Changes were made to Core Data, now saving")
             
             // Save managed object context
             do {
                 try self.managedObjectContext.save()
-                print("Saved managed object context")
+                DDLogVerbose("Saved managed object context")
                 self.finish()
                 
             } catch let error as NSError {
-                print("Error saving managed object context : \(error.localizedDescription)")
+                DDLogError("Error saving managed object context : \(error.localizedDescription)")
                 self.cancel()
             }
             
         } else {
-            print("No changes were made to Core Data, no need to save")
+            DDLogVerbose("No changes were made to Core Data, no need to save")
             self.finish()
         }
     }

@@ -8,6 +8,7 @@
 
 import CoreData
 import CloudKit
+import CocoaLumberjackSwift
 
 // CloudKit keys
 private struct ComicKey {
@@ -54,12 +55,12 @@ class ParseComicDataOperation: ParseDataOperation {
     private func deleteRedundant(results: [CKRecord], completion: ([KJComic]?) -> ()) {
         self.fetchAllExistingInCoreData { (existingComics: [KJComic]?, error: NSError?) -> () in
             guard error == nil else {
-                print("Error fetching all existing comics in Core Data : \(error?.localizedDescription)")
+                DDLogError("Error fetching all existing comics in Core Data : \(error?.localizedDescription)")
                 return
             }
             
             guard let existingComics = existingComics else {
-                print("Error forming existing comics object")
+                DDLogError("Error forming existing comics object")
                 return
             }
             
@@ -68,7 +69,7 @@ class ParseComicDataOperation: ParseDataOperation {
             
             for comic in existingComics {
                 if serverResultsComicNumbers.indexOf({ $0 == comic.comicNumber }) == nil {
-                    print("Comic found in Core Data but not in server results; must no longer be active : \(comic.comicName)")
+                    DDLogVerbose("Comic found in Core Data but not in server results; must no longer be active : \(comic.comicName)")
                     
                     // Mark for deletion from Core Data
                     comicsToDelete?.append(comic)
@@ -80,14 +81,12 @@ class ParseComicDataOperation: ParseDataOperation {
     }
     
     private func parseComicData(results: [CKRecord]) {
-        print(__FUNCTION__)
-        
         var changesMadeToContext = false
         
         // Delete any existing in Core Data that do not exist in `results` received from server; as they're not set to be visible in-app
         self.deleteRedundant(results) { (comicsToDelete: [KJComic]?) -> () in
             guard let comicsToDelete = comicsToDelete where comicsToDelete.count > 0 else {
-                print("No comics found in Core Data to delete")
+                DDLogVerbose("No comics found in Core Data to delete")
                 self.cancel()
                 return
             }
@@ -108,13 +107,13 @@ class ParseComicDataOperation: ParseDataOperation {
                 // Check if exists in Core Data
                 self.checkIfExistsInCoreData(comicNumber, completion: { (comic: KJComic?, error: NSError?) -> () in
                     guard error == nil else {
-                        print("Error performing check for existing comic : \(error?.localizedDescription)")
+                        DDLogError("Error performing check for existing comic : \(error?.localizedDescription)")
                         self.cancel()
                         return
                     }
                     
                     if let existingComic = comic {
-                        print("Comic exists in Core Data : \(existingComic.comicName)")
+                        DDLogVerbose("Comic exists in Core Data : \(existingComic.comicName)")
                         
                         // Check if any of its' properties need updating
                         if let name = comicName,
@@ -123,7 +122,7 @@ class ParseComicDataOperation: ParseDataOperation {
                                 
                                 switch needsUpdate {
                                 case true :
-                                    print("Comic needs update : \(name)")
+                                    DDLogVerbose("Comic needs update : \(name)")
                                     
                                     existingComic.comicName = name
                                     existingComic.comicNumber = comicNumber
@@ -133,7 +132,7 @@ class ParseComicDataOperation: ParseDataOperation {
                                     
                                 case false:
                                     // Video exists in Core Data and does not need update; nothing is required
-                                    print("Comic exists but does not require update")
+                                    DDLogVerbose("Comic exists but does not require update")
                                 }
                                 
                         } else {
@@ -141,7 +140,7 @@ class ParseComicDataOperation: ParseDataOperation {
                         }
                         
                     } else {
-                        print("Comic does not exist in Core Data : \(comicName)")
+                        DDLogVerbose("Comic does not exist in Core Data : \(comicName)")
                         
                         // Insert into managed object context
                         let newComic = NSEntityDescription.insertNewObjectForEntityForName(NSStringFromClass(KJComic.self),
@@ -162,28 +161,27 @@ class ParseComicDataOperation: ParseDataOperation {
         }
         
         if changesMadeToContext == true {
-            print("Changes were made to Core Data, now saving")
+            DDLogVerbose("Changes were made to Core Data, now saving")
             
             // Save managed object context
             do {
                 try self.managedObjectContext.save()
-                print("Saved managed object context")
+                DDLogVerbose("Saved managed object context")
                 self.finish()
                 
             } catch let error as NSError {
-                print("Error saving managed object context : \(error.localizedDescription)")
+                DDLogError("Error saving managed object context : \(error.localizedDescription)")
                 self.cancel()
             }
             
         } else {
-            print("No changes were made to Core Data, no need to save")
+            DDLogVerbose("No changes were made to Core Data, no need to save")
             self.finish()
         }
     }
     
     // MARK: NSOperation
     override func execute() {
-        print(__FUNCTION__)
         self.parseComicData(self.dataToParse)
     }
 }

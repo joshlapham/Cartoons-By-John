@@ -8,6 +8,7 @@
 
 import CloudKit
 import CoreData
+import CocoaLumberjackSwift
 
 enum QueryType {
     case Video
@@ -39,17 +40,17 @@ class FetchDataOperation: Operation {
             query = CKQuery(recordType: "Doodle", predicate: doodleActivePredicate)
         }
         
-        print("CloudKit: fetching ..")
+        DDLogVerbose("CloudKit: fetching ..")
         
         publicDatabase.performQuery(query, inZoneWithID: nil) { (results, error) -> Void in
             guard error == nil else {
-                print("CloudKit: error - \(error?.localizedDescription)")
+                DDLogError("CloudKit: error - \(error?.localizedDescription)")
                 self.cancel()
                 return
             }
             
             guard let results = results else {
-                print("CloudKit: could not get results object")
+                DDLogError("CloudKit: could not get results object")
                 self.cancel()
                 return
             }

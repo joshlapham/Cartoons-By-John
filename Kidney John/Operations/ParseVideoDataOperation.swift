@@ -8,6 +8,7 @@
 
 import CoreData
 import CloudKit
+import CocoaLumberjackSwift
 
 // CloudKit keys
 private struct VideoKey {
@@ -56,12 +57,12 @@ class ParseVideoDataOperation: ParseDataOperation {
     private func deleteRedundant(results: [CKRecord], completion: ([KJVideo]?) -> ()) {
         self.fetchAllExistingInCoreData { (existingVideos: [KJVideo]?, error: NSError?) -> () in
             guard error == nil else {
-                print("Error fetching all existing videos in Core Data : \(error?.localizedDescription)")
+                DDLogError("Error fetching all existing videos in Core Data : \(error?.localizedDescription)")
                 return
             }
             
             guard let existingVideos = existingVideos else {
-                print("Error forming existing videos object")
+                DDLogError("Error forming existing videos object")
                 return
             }
             
@@ -70,7 +71,7 @@ class ParseVideoDataOperation: ParseDataOperation {
             
             for video in existingVideos {
                 if serverResultsVideoIds.indexOf({ $0 == video.videoId }) == nil {
-                    print("Video found in Core Data but not in server results; must no longer be active : \(video.videoName)")
+                    DDLogVerbose("Video found in Core Data but not in server results; must no longer be active : \(video.videoName)")
                     
                     // Mark for deletion from Core Data
                     videosToDelete?.append(video)
@@ -87,7 +88,7 @@ class ParseVideoDataOperation: ParseDataOperation {
         // Delete any existing in Core Data that do not exist in `results` received from server; as they're not set to be visible in-app
         self.deleteRedundant(results) { (videosToDelete: [KJVideo]?) -> () in
             guard let videosToDelete = videosToDelete where videosToDelete.count > 0 else {
-                print("No videos found in Core Data to delete")
+                DDLogVerbose("No videos found in Core Data to delete")
                 return
             }
             
@@ -109,12 +110,12 @@ class ParseVideoDataOperation: ParseDataOperation {
                 // Check if exists in Core Data
                 self.checkIfExistsInCoreData(videoId, completion: { (video: KJVideo?, error: NSError?) -> () in
                     guard error == nil else {
-                        print("Error performing check for existing video : \(error?.localizedDescription)")
+                        DDLogError("Error performing check for existing video : \(error?.localizedDescription)")
                         return
                     }
                     
                     if let existingVideo = video {
-                        print("Video exists in Core Data : \(existingVideo.videoName)")
+                        DDLogVerbose("Video exists in Core Data : \(existingVideo.videoName)")
                         
                         // Check if any of its' properties need updating
                         if let name = videoName,
@@ -125,7 +126,7 @@ class ParseVideoDataOperation: ParseDataOperation {
                                 
                                 switch needsUpdate {
                                 case true :
-                                    print("Video needs update : \(name)")
+                                    DDLogVerbose("Video needs update : \(name)")
                                     
                                     existingVideo.videoName = name
                                     existingVideo.videoDescription = description
@@ -136,7 +137,7 @@ class ParseVideoDataOperation: ParseDataOperation {
                                     
                                 case false:
                                     // Video exists in Core Data and does not need update; nothing is required
-                                    print("Video exists but does not require update")
+                                    DDLogVerbose("Video exists but does not require update")
                                 }
                                 
                         } else {
@@ -144,7 +145,7 @@ class ParseVideoDataOperation: ParseDataOperation {
                         }
                         
                     } else {
-                        print("Video does not exist in Core Data : \(videoName)")
+                        DDLogVerbose("Video does not exist in Core Data : \(videoName)")
                         
                         // Insert into managed object context
                         let newVideo = NSEntityDescription.insertNewObjectForEntityForName(NSStringFromClass(KJVideo.self),
@@ -167,19 +168,19 @@ class ParseVideoDataOperation: ParseDataOperation {
         }
         
         if changesMadeToContext == true {
-            print("Changes were made to Core Data, now saving")
+            DDLogVerbose("Changes were made to Core Data, now saving")
             
             // Save managed object context
             do {
                 try self.managedObjectContext.save()
-                print("Saved managed object context")
+                DDLogVerbose("Saved managed object context")
                 
             } catch let error as NSError {
-                print("Error saving managed object context : \(error.localizedDescription)")
+                DDLogError("Error saving managed object context : \(error.localizedDescription)")
             }
             
         } else {
-            print("No changes were made to Core Data, no need to save")
+            DDLogVerbose("No changes were made to Core Data, no need to save")
         }
     }
     
